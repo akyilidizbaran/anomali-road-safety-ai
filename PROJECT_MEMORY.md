@@ -2,14 +2,14 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR ve PCR/FTR şablonlarına dayalı, sıfırdan kurulmuş kapsamlı Markdown proje dokümantasyon ve klasör yapısı hazırlandı.
-* Son değişiklik neydi? Public/pretrained model + fine-tune/adaptation yaklaşımı dokümanlara eklendi; kök `README.md` ve `.gitignore` oluşturuldu.
+* Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
+* Son değişiklik neydi? Kullanıcı adı/şifre sonrası Number Verification, normal modda ortam analizi, riskli araçta QoD aday/request akışı ve genel yol/araç dışı kullanıcı durumu proje dokümanlarına ve `architecture/flows/auth_normal_qod_flow.md` akışına eklendi.
 * Bir sonraki net adım ne? Araç tespiti için araştırma karşılaştırma tablosu ve Colab deney planı hazırlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
-* Amaç: Telefon kamerasından alınan canlı yol görüntüsünü edge destekli yapay zeka çıkarım hattında analiz ederek araç, plaka, hız, şerit, sürücü/yolcu, yol-hava koşulu ve çevre insanlarını değerlendiren; riskli olayları mobil arayüzde gösteren ve kritik olayları denetlenebilir evidence paketlerine dönüştüren karar destek sistemi geliştirmek.
-* Kapsam içi: Mobil kamera, edge/backend çıkarım, araç tespiti, tracking, tek hedef araç, plaka/OCR, hız yaklaşımı, şerit/road marking, sahne/hava/görüş, cabin risk koşullu analizi, normal/kritik mod, QoD seçici karar, Number Verification adapter, event JSON, evidence package, test metrikleri, KVKK/etik.
+* Amaç: Kullanıcı adı/şifre ve Number Verification doğrulaması sonrası telefon kamerasından alınan canlı yol görüntüsünü edge destekli yapay zeka çıkarım hattında analiz ederek araç, plaka, hız, şerit, sürücü/yolcu, yol-hava-ışık koşulu ve araç dışı kullanıcı/yaya durumunu değerlendiren; riskli olayları mobil arayüzde gösteren ve kritik olayları denetlenebilir evidence paketlerine dönüştüren karar destek sistemi geliştirmek.
+* Kapsam içi: Mobil login, Number Verification request/response, mobil kamera, edge/backend çıkarım, ortam/sahne analizi, araç tespiti, tracking, tek hedef araç, genel yol durumu, araç dışı kullanıcı/yaya durumu, plaka/OCR, hız yaklaşımı, şerit/road marking, cabin risk koşullu analizi, normal/kritik mod, riskli araçta QoD aday/request/aktif akışı, event JSON, evidence package, test metrikleri, KVKK/etik.
 * Kapsam dışı: Otomatik ceza kesme, hukuki kusur kararı verme, her koşulda kesin km/s iddiası, QoD’nin her riskte otomatik açılması, izinsiz kişisel veri saklama.
 
 ## 2) Non-negotiables / Kırmızı Çizgiler
@@ -28,14 +28,14 @@
 
 ## 3) Mimari Özet
 
-* Bileşenler: Android mobil istemci, video aktarım katmanı, edge/backend inference server, normal mode pipeline, critical mode expert selector, QoD/Number Verification adapter, event fusion, evidence store, explanation layer.
-* Veri akışı: CameraX frame üretir -> edge/backend alır -> preprocess -> normal mod araç tespiti/takip/sahne analizi -> risk pre-score -> kritik mod gerekiyorsa uzman modeller -> event JSON -> evidence store -> mobil overlay/evidence ekranı.
+* Bileşenler: Login/Auth client, Number Verification adapter, Android mobil istemci, video aktarım katmanı, edge/backend inference server, normal mode pipeline, critical mode expert selector, QoD/5G adapter, event fusion, evidence store, explanation layer.
+* Veri akışı: Kullanıcı adı/şifre girilir -> Number Verification API kullanıcı/cihaz/oturum eşleşmesini doğrular -> CameraX frame üretir -> edge/backend alır -> preprocess -> normal mod ortam/sahne analizi -> araç tespiti/takip -> genel yol ve araç dışı kullanıcı durumu -> risk pre-score -> riskli araçta QoD aday/request akışı -> kritik mod gerekiyorsa uzman modeller -> event JSON -> evidence store -> mobil overlay/evidence ekranı.
 * Önemli dizinler/modüller: `docs/` rapor ve teknik açıklamalar; `research/` derin araştırma başlıkları; `reports/` resmi rapor çalışma alanı; `architecture/` diyagram ve contract; `project/` karar/risk/gereksinim; `mobile/`, `backend/`, `data/`, `models/`, `testing/`, `governance/` geliştirme alanları.
 
 ## 4) Konvansiyonlar ve Standartlar
 
 * Kod stili / lint / format: Henüz kod projesi kurulmadı; bu aşama dokümantasyon ve planlama aşamasıdır.
-* Branch/commit yaklaşımı: Git repo yok; kararlar `PROJECT_MEMORY.md` ve `project/decisions/README.md` üzerinden takip edilecek.
+* Branch/commit yaklaşımı: Public GitHub repo `akyilidizbaran/anomali-road-safety-ai` üzerinde `main` branch kullanılıyor; kararlar `PROJECT_MEMORY.md` ve `project/decisions/README.md` üzerinden takip edilecek.
 * İsimlendirme/klasör düzeni: Resmi raporlar `PDR_OTR` ve `PCR_FTR` adlarıyla tutulur; PDR=ÖTR, PCR=FTR karşılığı olarak not edilmiştir.
 
 ## 5) Kurulum & Çalıştırma
@@ -67,12 +67,17 @@
 * 2026-06-07 — Karar: Model geliştirme public/pretrained model araştırması + fine-tune/adaptation şeklinde yürütülecek. | Gerekçe: Proje çok görevli; sıfırdan model eğitmek veri/donanım/süre açısından ana hedef değil. | Etki: Colab deneyleri, veri işleme, post-processing, model seçimi ve dengeli benchmark öncelik kazanır. | Alternatifler: Sıfırdan model eğitimi.
 * 2026-06-07 — Karar: Repo public olarak oluşturulacak. | Gerekçe: Kullanıcı public repo istedi ve gerekirse sonradan private alacağını belirtti. | Etki: Büyük veri, checkpoint, secrets ve kişisel veri içeren materyaller `.gitignore` ile dışarıda tutulmalı. | Alternatifler: Private repo.
 * 2026-06-07 — Karar: Public GitHub repo `akyilidizbaran/anomali-road-safety-ai` olarak oluşturuldu. | Gerekçe: Kullanıcı gerekli düzenlemeleri GitHub üzerinden yapmak istedi. | Etki: İlk dokümantasyon commit’i `main` branch’e pushlandı. | Alternatifler: Repo oluşturmadan lokal kalmak.
+* 2026-06-07 — Karar: Ana erişim akışı kullanıcı adı/şifre sonrası Number Verification API doğrulaması olacak. | Gerekçe: Kullanıcı ana isteği bu şekilde netleştirdi ve `leD24n5kb...pdf` içeriği Number Verification kapısını destekliyor. | Etki: Mobil login ve auth contract dokümanları bu akışa göre yazıldı. | Alternatifler: Doğrudan mock verified state ile sisteme giriş.
+* 2026-06-07 — Karar: Normal modda ilk erken bağlam sinyali ortam/sahne analizi olacak. | Gerekçe: Hava, ışık, görüş ve yol koşulu detection, OCR, hız ve QoD kararlarını etkiler. | Etki: Sistem mimarisi ve normal/kritik mod dokümanları ortam analizi önceliğiyle güncellendi. | Alternatifler: Önce detection, sonra sahne analizi.
+* 2026-06-07 — Karar: Riskli araç tespitinde QoD tetikleme aday/request akışı başlatılacak, ancak her riskte otomatik aktif olmayacak. | Gerekçe: PDF kapsamındaki QoD yaklaşımı seçici kullanım gerektiriyor; kullanıcı riskli araçta QoD tetikleneceğini belirtti. | Etki: QoD dokümanı “trigger/candidate/request/active” ayrımıyla hizalandı. | Alternatifler: Her riskte sürekli QoD aktif etmek.
+* 2026-06-07 — Karar: Genel yol durumu ve araç dışı kullanıcı/yaya durumu ayrı bağlam modülü olarak eklendi. | Gerekçe: Kullanıcı genel yol ve araç dışı kullanıcı durumunun sistem içinde belirtilmesini istedi. | Etki: Model yol haritası, event JSON ve mimari dokümanları yeni modülü kapsıyor. | Alternatifler: Bu bilgileri yalnız sahne analizi altında yan alan olarak tutmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
 * 2026-06-06 — Milestone: İlk web demo prototipi oluşturuldu. | Sonuç: Kullanıcı 2026-06-07’de bu kapsamı istemediğini belirtti; yeni yapı sıfırdan kuruldu.
 * 2026-06-07 — Milestone: Resmi rapor başlıkları çıkarıldı. | Sonuç: ÖTR/PDR ve FTR/PCR `.docx` şablon başlıkları Markdown dosyalarına ayrıldı.
 * 2026-06-07 — Milestone: Kapsamlı proje klasör yapısı kuruldu. | Sonuç: Rapor, mimari, araştırma, veri, model, mobil, backend, test ve governance alanları oluşturuldu.
+* 2026-06-07 — Milestone: PDF ana akışı repo dokümantasyonuna işlendi. | Sonuç: Number Verification, ortam analizi, riskli araçta QoD ve yol/araç dışı kullanıcı durumu README, mimari, AI ve event şemasına eklendi.
 
 ## 8) Yapılanlar
 
@@ -83,6 +88,9 @@
 * [x] Proje kapsamı, sistem mimarisi, AI, veri seti, mobil, backend, 5G/QoD, evidence, test, etik ve rapor yazımı dokümanları oluşturuldu.
 * [x] 14 araştırma başlığı `research/` altında ayrı klasörlere ayrıldı.
 * [x] Açık sorular merkezi dosyada toplandı.
+* [x] `leD24n5kb...pdf` içindeki ana akış mevcut repo kapsamıyla karşılaştırıldı.
+* [x] Login/Number Verification, ortam analizi, riskli araçta QoD ve araç dışı kullanıcı/yol durumu dokümanlaştırıldı.
+* [x] Ana auth-normal mode-QoD akışı `architecture/flows/auth_normal_qod_flow.md` dosyasına Mermaid diyagramı olarak eklendi.
 
 ## 9) Yapılacaklar (Next)
 

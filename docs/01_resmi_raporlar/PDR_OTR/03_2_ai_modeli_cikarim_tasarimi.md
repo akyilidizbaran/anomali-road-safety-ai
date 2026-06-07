@@ -20,20 +20,23 @@ Tek büyük model yerine **modüler ve seçici uzman model mimarisi** kullanılm
 | Hız | Homography + tracking | Kritik/koşullu | Kalibrasyon varsa km/s, yoksa göreli risk |
 | Şerit | YOLOP / lane-specific | Normal/Kritik | Şerit yakınlığı ve ihlal sinyali |
 | Sahne/hava | ResNet18 / MobileNetV3 | Düşük frekans | Görüş koşulu ve QoD adaylığı |
+| Yol/araç dışı kullanıcı | Public detector + rule-based proximity | Normal/Kritik | Yaya/bisikletli/motosikletli ve riskli araca yakınlık bağlamı |
 | Cabin risk | ROI detector/classifier | Kritik/koşullu | Görünürlük yeterliyse araç içi risk |
 
 ## Çıkarım İş Hattı
 
 1. Frame preprocessing.
-2. Araç tespiti.
-3. Araç takibi ve track ID.
-4. Hedef araç skoru.
-5. Sahne/görüş kalitesi.
-6. Risk ön skoru.
-7. Kritik mod kararı.
-8. Uzman model çağrıları.
-9. Event fusion.
-10. Evidence package.
+2. Ortam/sahne, hava, ışık ve görüş bağlamı.
+3. Araç tespiti.
+4. Araç takibi ve track ID.
+5. Hedef araç skoru.
+6. Genel yol durumu ve araç dışı kullanıcı/yaya sinyali.
+7. Risk ön skoru.
+8. Riskli araç için QoD aday/request kararı.
+9. Kritik mod kararı.
+10. Uzman model çağrıları.
+11. Event fusion.
+12. Evidence package.
 
 ## Optimizasyon Yaklaşımı
 

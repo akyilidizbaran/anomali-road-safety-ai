@@ -10,6 +10,7 @@
 
 ## Ana Ekranlar
 
+* Login.
 * Camera.
 * Evidence.
 * System.
@@ -18,6 +19,8 @@
 ## Mobilin Sorumluluğu
 
 * Kamera akışı.
+* Kullanıcı adı/şifre girişini backend auth endpoint’ine iletme.
+* Number Verification durumunu kullanıcıya güvenli biçimde gösterme.
 * Frame gönderimi.
 * Overlay gösterimi.
 * Event listesi.
@@ -28,6 +31,7 @@
 ## Mobilin Sorumlu Olmadığı Kısım
 
 * Ağır yapay zeka çıkarımı.
+* Şifre doğrulamasının kalıcı kimlik yönetimi.
 * Uzman model orchestration.
 * Evidence storage ana kaydı.
 * Model training.

@@ -57,13 +57,29 @@
     "visibility": "good",
     "confidence": 0.91
   },
+  "road_context": {
+    "surface_condition": "dry",
+    "lane_marking_visibility": "medium",
+    "roadside_activity": "pedestrian_present",
+    "confidence": 0.78
+  },
+  "external_users": [
+    {
+      "type": "pedestrian",
+      "bbox": [120, 240, 180, 410],
+      "confidence": 0.84,
+      "relative_position": "roadside",
+      "risk_relation": "near_target_vehicle"
+    }
+  ],
   "risk": {
     "risk_score": 0.68,
     "risk_level": "medium",
     "reasons": [
       "lane_boundary_proximity",
       "plate_readable",
-      "target_vehicle_stable"
+      "target_vehicle_stable",
+      "external_user_near_target_vehicle"
     ]
   },
   "models": {

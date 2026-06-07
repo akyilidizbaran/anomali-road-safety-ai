@@ -38,7 +38,23 @@ Bu dosya, proje için sorulan karar noktalarını ve verilen cevapları merkezi 
 
 * API keyler model geliştirmesi tamamlanmadan sağlanacak varsayımıyla ilerlenir.
 * QoD sağlandığında gerçek video kalitesi artırılacak.
+* Riskli araç tespit edildiğinde QoD aday/request akışı tetiklenecek.
 * QoD yine her riskte otomatik açılmayacak; kalite/güven artışı beklenen durumda seçici kullanılacak.
+
+## Cevaplandı - Auth ve Normal Mod Akışı
+
+* Kullanıcı sisteme kullanıcı adı ve şifreyle giriş yapacak.
+* Başarılı credential kontrolünden sonra Number Verification API’ye request gidecek.
+* Kullanıcı/cihaz/oturum eşleşirse canlı analiz ekranlarına erişim verilecek.
+* Normal modda ilk bağlam katmanı ortam/sahne analizi olacak; hava, ışık, görüş ve yol koşulu detection/tracking yorumunu etkileyecek.
+* Normal detection ve tracking ortam analizinden sonra veya onunla paralel çalışacak.
+
+## Cevaplandı - Genel Yol ve Araç Dışı Kullanıcı
+
+* Sistem yalnız hedef aracı değil, genel yol durumunu da raporlayacak.
+* Araç dışı kullanıcı/yaya durumu bağlamsal risk sinyali olarak tutulacak.
+* İlk yaklaşım public/pretrained object detection modellerindeki person/bicycle/motorcycle sınıflarından yararlanmak olacak.
+* Riskli araca yakınlık, düşük görüş ve yol kenarı aktivitesi risk açıklamasına bağlanacak.
 
 ## Cevaplandı - Veri
 

@@ -2,7 +2,9 @@
 
 ## Number Verification
 
-Amaç, kullanıcı/cihaz oturum doğrulamasını temsil etmektir. API key gelene kadar mock verified state kullanılabilir.
+Amaç, kullanıcı/cihaz oturum doğrulamasını temsil etmektir. Kullanıcı mobil uygulamada kullanıcı adı ve şifreyle giriş yaptıktan sonra Number Verification API’ye request gönderilir. Kullanıcı/cihaz/oturum eşleşmesi başarılıysa sistem canlı analiz ekranlarına erişim verir; başarısızsa erişim reddedilir.
+
+API key gelene kadar mock verified state kullanılabilir. Ancak mock doğrulama raporda ve demo notlarında açıkça belirtilmelidir.
 
 ## QoD
 
@@ -31,6 +33,7 @@ QoD sistemin çalışması için zorunlu değil, kaliteyi artırabilecek seçici
 
 * API keylerin model geliştirmesi tamamlanmadan sağlanacağı varsayımıyla ilerlenir.
 * QoD sağlandığında gerçek video kalitesi artırılacak.
+* Riskli araç tespit edildiğinde QoD aday/request akışı tetiklenecek.
 * QoD buna rağmen her riskte otomatik açılmayacak; karar güveni veya kanıt kalitesini artıracağı durumlarda kısa süreli devreye alınacak.
 
 ## Sorulacak Noktalar

@@ -11,10 +11,12 @@ Mobil uygulama ve sunucu bileşenleri tanımlanmalı; canlı video aktarımı, y
 * Kamera: CameraX.
 * Canlı sonuç: WebSocket.
 * Evidence detay: REST.
+* Giriş: Kullanıcı adı/şifre + Number Verification durumu.
 
 Mobil ekranlar:
 
-* **Camera:** Canlı görüntü, bbox overlay, hedef araç, risk seviyesi, FPS/latency, QoD durumu.
+* **Login:** Kullanıcı adı/şifre, Number Verification pending/verified/rejected durumları.
+* **Camera:** Canlı görüntü, bbox overlay, hedef araç, risk seviyesi, ortam/hava/ışık/görüş etiketi, genel yol ve araç dışı kullanıcı/yaya durumu, FPS/latency, QoD durumu.
 * **Evidence:** Son 10 olay, kanıt göster, detay göster.
 * **System:** Kamera, edge, model, backend, QoD ve evidence storage sağlığı.
 * **Settings:** Risk threshold, OCR threshold, model modu, QoD mock, frame skipping, endpoint.
@@ -30,7 +32,7 @@ Mobil ekranlar:
 
 ## Eşzamanlılık
 
-Backend canlı frame akışını alırken normal mod inference sürekli çalışır. Kritik olay penceresinde uzman modeller ayrı görevler olarak tetiklenir. Böylece tek bir ağır model çağrısı tüm sistemi kilitlemez.
+Backend canlı frame akışını alırken normal mod inference sürekli çalışır. Normal modda ortam/sahne bağlamı, araç tespiti/takip, genel yol durumu ve araç dışı kullanıcı/yaya sinyali birlikte değerlendirilir. Kritik olay penceresinde QoD aday/request akışı ve uzman modeller ayrı görevler olarak tetiklenir. Böylece tek bir ağır model çağrısı tüm sistemi kilitlemez.
 
 ## Sorulacak Noktalar
 

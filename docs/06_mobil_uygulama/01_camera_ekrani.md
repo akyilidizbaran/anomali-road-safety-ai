@@ -16,9 +16,11 @@ Canlı demo ekranıdır. Kullanıcı sistemin şu anda ne gördüğünü ve hang
 * Risk seviyesi.
 * Normal/kritik mod.
 * QoD durumu.
+* Ortam/hava/ışık/görüş etiketi.
+* Genel yol durumu.
+* Araç dışı kullanıcı/yaya varlığı.
 * FPS.
 * Latency.
-* Hava/görüş etiketi.
 
 ## Overlay Kuralları
 

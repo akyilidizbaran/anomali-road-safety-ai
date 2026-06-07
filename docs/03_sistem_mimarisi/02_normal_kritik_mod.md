@@ -10,15 +10,18 @@ Sürekli çalışan hafif analiz hattıdır.
 
 Çalışabilecek bileşenler:
 
+* Ortam/sahne analizi.
+* Hava, ışık ve görüş koşulu.
+* Genel yol durumu.
+* Araç dışı kullanıcı/yaya durumu.
 * Araç tespiti.
 * Araç takibi.
 * Hedef araç seçimi.
 * Temel araç tipi.
-* Sahne/görüş koşulu.
 * Görüntü kalitesi.
 * Risk ön sinyali.
 
-Normal modun amacı tüm detayları çıkarmak değil, hangi olayın kritikleşebileceğini anlamaktır.
+Normal modda ilk bağlam sinyali ortam analizidir. Hava, ışık, görüş ve yol koşulu detection/tracking çıktılarının nasıl yorumlanacağını belirler. Normal modun amacı tüm detayları çıkarmak değil, hangi aracın veya yol olayının kritikleşebileceğini anlamaktır.
 
 ## Kritik Mod
 
@@ -34,6 +37,7 @@ Tetikleyiciler:
 * Görüş düşük.
 * OCR güveni düşük.
 * Cabin risk görünürlüğü yeterli.
+* Riskli araç, yaya/bisikletli veya yol kenarındaki araç dışı kullanıcıya yakın.
 
 Kritik modda çağrılabilecek uzmanlar:
 
@@ -41,6 +45,7 @@ Kritik modda çağrılabilecek uzmanlar:
 * OCR.
 * Lane detection.
 * Speed estimation.
+* Road/external user risk analysis.
 * Cabin risk analysis.
 * QoD decision module.
 * Evidence quality selector.

@@ -2,7 +2,7 @@
 
 ## Ana Demo
 
-Bir Android telefon yol kenarında sabit bir açıyla konumlandırılır. Camera ekranında canlı görüntü açılır. Görüntü edge/backend sistemine aktarılır. Edge sistemi araçları tespit eder, hedef aracı seçer, track ID üretir ve mobil ekrana overlay sonucu döndürür.
+Bir Android telefon yol kenarında sabit bir açıyla konumlandırılır. Kullanıcı kullanıcı adı/şifreyle giriş yapar, Number Verification eşleşmesi başarılıysa Camera ekranında canlı görüntü açılır. Görüntü edge/backend sistemine aktarılır. Edge sistemi önce ortam/sahne koşullarını değerlendirir, ardından araçları tespit eder, hedef aracı seçer, track ID üretir ve mobil ekrana overlay sonucu döndürür.
 
 ## Mevcut Demo Kararı
 
@@ -15,11 +15,12 @@ Bir Android telefon yol kenarında sabit bir açıyla konumlandırılır. Camera
 
 1. Kamera canlı görüntü üretir.
 2. Edge bağlantısı kurulur.
-3. Araç tespiti çalışır.
-4. Araçlara track ID verilir.
-5. Hedef araç seçilir.
-6. Sahne/görüş koşulu sınıflandırılır.
-7. Risk skoru düşükse normal mod devam eder.
+3. Ortam, hava, ışık ve görüş koşulu sınıflandırılır.
+4. Genel yol durumu ve araç dışı kullanıcı/yaya sinyali çıkarılır.
+5. Araç tespiti çalışır.
+6. Araçlara track ID verilir.
+7. Hedef araç seçilir.
+8. Risk skoru düşükse normal mod devam eder.
 
 ## Kritik Olay Akışı
 
@@ -28,9 +29,10 @@ Bir Android telefon yol kenarında sabit bir açıyla konumlandırılır. Camera
 3. Risk skoru eşik değerini aşar.
 4. Kritik mod açılır.
 5. Plaka OCR, hız, şerit veya cabin risk uzmanları çağrılır.
-6. QoD adaylığı değerlendirilir.
-7. Event JSON ve evidence package üretilir.
-8. Evidence ekranında olay kartı oluşur.
+6. Riskli araç özelinde QoD aday/request akışı tetiklenir.
+7. QoD karar güveni veya kanıt kalitesini artıracaksa kısa süreli aktif edilir.
+8. Event JSON ve evidence package üretilir.
+9. Evidence ekranında olay kartı oluşur.
 
 ## Offline Alternatif
 

@@ -6,7 +6,7 @@ Bu repo, resmi PDR/ÖTR ve PCR/FTR rapor şablonları ile proje kapsam metnine g
 
 ## Proje Konumu
 
-Anomali Road Safety AI; telefon kamerasından alınan canlı yol görüntüsünü edge destekli yapay zeka çıkarım hattında analiz ederek araç, plaka, hız, şerit, sahne/görüş ve koşullu cabin risk sinyallerini değerlendiren bir karar destek sistemi olarak tasarlanır.
+Anomali Road Safety AI; kullanıcı adı/şifre ve Number Verification doğrulaması sonrası telefon kamerasından alınan canlı yol görüntüsünü edge destekli yapay zeka çıkarım hattında analiz ederek araç, plaka, hız, şerit, sahne/görüş, genel yol durumu, araç dışı kullanıcı/yaya durumu ve koşullu cabin risk sinyallerini değerlendiren bir karar destek sistemi olarak tasarlanır.
 
 Sistem hukuki karar veya otomatik ceza üretmez. Risk skoru, güven skoru, açıklama ve evidence package üretir.
 
@@ -31,13 +31,14 @@ Planlanan yaklaşım:
 3. Plaka tespiti ve OCR
 4. Evidence package sistemi
 5. Sahne, hava, ışık ve görüş koşulu analizi
-6. Şerit / road marking analizi
-7. Hız kestirimi
-8. Sürücü/yolcu ve araç içi risk analizi
-9. Risk skoru, kritik mod ve uzman model orkestrasyonu
-10. 5G QoD ve Number Verification adapterları
-11. LLM açıklama katmanı
-12. Test, metrik ve rapor kanıt sistemi
+6. Genel yol ve araç dışı kullanıcı/yaya durumu
+7. Şerit / road marking analizi
+8. Hız kestirimi
+9. Sürücü/yolcu ve araç içi risk analizi
+10. Risk skoru, kritik mod ve uzman model orkestrasyonu
+11. 5G QoD ve Number Verification adapterları
+12. LLM açıklama katmanı
+13. Test, metrik ve rapor kanıt sistemi
 
 ## Klasörler
 
@@ -58,8 +59,11 @@ Planlanan yaklaşım:
 ## Başlangıç Dosyaları
 
 * `docs/README.md`
+* `docs/03_sistem_mimarisi/05_auth_normal_mode_flow.md`
 * `docs/04_yapay_zeka/08_model_gelistirme_yol_haritasi.md`
 * `docs/04_yapay_zeka/09_pretrained_finetune_stratejisi.md`
+* `docs/04_yapay_zeka/10_yol_ve_arac_disi_kullanici_durumu.md`
+* `docs/06_mobil_uygulama/04_login_number_verification.md`
 * `docs/10_test_metrikler/01_dengeli_basari_metrikleri.md`
 * `docs/15_acik_sorular/00_acik_sorular.md`
 * `PROJECT_MEMORY.md`

@@ -13,9 +13,10 @@ Eğitimin ana yükü sıfırdan model eğitmek olmayacak. İnternet üzerinde er
 3. Plaka tespiti ve OCR.
 4. Evidence sistemi.
 5. Sahne/hava/görüş koşulu analizi.
-6. Şerit/road marking analizi.
-7. Hız kestirimi.
-8. Sürücü/yolcu ve cabin risk analizi.
+6. Genel yol ve araç dışı kullanıcı/yaya durumu.
+7. Şerit/road marking analizi.
+8. Hız kestirimi.
+9. Sürücü/yolcu ve cabin risk analizi.
 
 ## Eğitim Ortamı
 
@@ -55,12 +56,13 @@ Araç tespitinden sonra tasarlanan modüller sırasıyla:
 2. **Plaka tespiti ve OCR:** Hedef araç ROI’den plate bbox ve OCR sonucu üretilir.
 3. **Evidence package sistemi:** Model çıktıları, görsel kesit ve metadata olay kaydına dönüşür.
 4. **Sahne/hava/görüş analizi:** Işık, hava ve görüş koşulu sınıflandırılır.
-5. **Şerit / road marking analizi:** Hedef aracın şerit içindeki konumu ve ihlal şüphesi çıkarılır.
-6. **Hız kestirimi:** Kalibre edilmiş modda km/s, başarısız durumda göreli hız/risk sınıfı üretilir.
-7. **Sürücü/yolcu ve cabin risk:** Kontrollü video ve görünürlük yeterliyse final genişletme olarak çalışır.
-8. **Risk skoru ve kritik mod orkestrasyonu:** Modül çıktıları tek risk skoruna ve uzman çağırma politikasına bağlanır.
-9. **5G/QoD adapter:** QoD geldiğinde gerçek video kalite artırımı seçici şekilde bağlanır.
-10. **LLM açıklama katmanı:** Event JSON, API/local LLM/template fallback ile insan okunur açıklamaya çevrilir.
+5. **Genel yol ve araç dışı kullanıcı/yaya durumu:** Yol bağlamı, yaya/bisikletli/motosikletli ve riskli araca yakınlık sinyali üretilir.
+6. **Şerit / road marking analizi:** Hedef aracın şerit içindeki konumu ve ihlal şüphesi çıkarılır.
+7. **Hız kestirimi:** Kalibre edilmiş modda km/s, başarısız durumda göreli hız/risk sınıfı üretilir.
+8. **Sürücü/yolcu ve cabin risk:** Kontrollü video ve görünürlük yeterliyse final genişletme olarak çalışır.
+9. **Risk skoru ve kritik mod orkestrasyonu:** Modül çıktıları tek risk skoruna ve uzman çağırma politikasına bağlanır.
+10. **5G/QoD adapter:** Riskli araçta QoD aday/request akışı başlatılır; aktif olursa gerçek video kalite artırımı seçici şekilde bağlanır.
+11. **LLM açıklama katmanı:** Event JSON, API/local LLM/template fallback ile insan okunur açıklamaya çevrilir.
 
 ## İlk Model İçin Kabul Kriteri
 

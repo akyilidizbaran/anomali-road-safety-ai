@@ -17,8 +17,11 @@ Durum:
 ## İlk Kararlar
 
 * Mobil + edge hibrit mimari.
+* Login sonrası Number Verification kapısı.
 * Single-target MVP.
 * Normal/kritik mod.
+* Normal modda ortam/sahne analizi erken bağlam sinyali.
 * Görev bazlı uzman model sistemi.
-* QoD’nin seçici kullanımı.
+* Genel yol ve araç dışı kullanıcı/yaya durumunun risk bağlamına eklenmesi.
+* Riskli araçta QoD aday/request akışı; QoD’nin seçici kullanımı.
 * LLM’in yalnız açıklama katmanı olması.
