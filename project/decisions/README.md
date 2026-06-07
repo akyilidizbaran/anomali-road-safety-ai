@@ -32,3 +32,4 @@ Durum:
 * `2026-06-07-edge-first-balanced-mobile.md`
 * `2026-06-07-llm-explanation-only.md`
 * `2026-06-07-qod-selective-policy.md`
+* `2026-06-08-repository-private.md`

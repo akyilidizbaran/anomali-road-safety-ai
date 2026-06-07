@@ -4,7 +4,7 @@
 
 Sistem otomatik ceza veya hukuki hüküm üretmez.
 
-## NFR-002 Public Repo Safety
+## NFR-002 Repository Safety
 
 Repo içine secret, model ağırlığı, raw video, evidence image veya kişisel veri içeren medya commit edilmez.
 

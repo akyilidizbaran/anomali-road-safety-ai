@@ -28,7 +28,7 @@
 * Contains faces:
 * Contains cabin/driver/passenger:
 * Redistribution allowed:
-* Public repo storage allowed: No
+* Git repo storage allowed: No
 
 ## Decision
 

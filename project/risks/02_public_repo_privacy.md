@@ -1,8 +1,8 @@
-# Risk: Public Repo Privacy
+# Risk: Repository Privacy
 
 ## Risk
 
-Plaka, yüz, cabin, raw video veya evidence görüntüleri public repoya yanlışlıkla commit edilebilir.
+Plaka, yüz, cabin, raw video veya evidence görüntüleri repoya yanlışlıkla commit edilebilir. Repo private olsa bile bu dosyalar Git geçmişinde kalıcı risk oluşturur.
 
 ## Impact
 
@@ -10,7 +10,7 @@ KVKK/etik risk ve güvenlik ihlali oluşur.
 
 ## Mitigation
 
-* `.gitignore` public medya ve secret dosyalarını engeller.
+* `.gitignore` medya, model artifact ve secret dosyalarını engeller.
 * Commit öncesi `governance/security/public_repo_safety_checklist.md` uygulanır.
 * Evidence medyası private/local storage altında tutulur.
 

@@ -1,12 +1,12 @@
-# Security and Public Repository Policy
+# Security and Repository Policy
 
-## Public Repo Rule
+## Repository Rule
 
-Do not commit credentials, API keys, raw videos, evidence images, license-restricted datasets, model weights or files containing identifiable plate/face/cabin data.
+Do not commit credentials, API keys, raw videos, evidence images, license-restricted datasets, model weights or files containing identifiable plate/face/cabin data. This rule applies even when the repository is private.
 
 ## Sensitive Files
 
-The following must stay outside the public repository:
+The following must stay outside the Git repository:
 
 * `.env` and environment-specific config files.
 * API keys and service account credentials.

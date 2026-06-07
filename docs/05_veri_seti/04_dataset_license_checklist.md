@@ -9,7 +9,7 @@ Her veri seti kullanılmadan önce bu kontrol tamamlanmalıdır.
 * [ ] Atıf/citation metni kaydedildi.
 * [ ] Kullanım sınırları okundu.
 * [ ] Yeniden dağıtım izni kontrol edildi.
-* [ ] Public repo içine veri dosyası konulmayacağı doğrulandı.
+* [ ] Repo içine veri dosyası konulmayacağı doğrulandı.
 * [ ] Kişisel veri riski işaretlendi.
 * [ ] Rapor kaynakça formatı hazırlandı.
 

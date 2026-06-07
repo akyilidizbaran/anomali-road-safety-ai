@@ -33,7 +33,7 @@ API geliştirme aşamasında yoksa mock/stub doğrulama kullanılabilir. Ancak r
 
 * Şifreler loglanmamalıdır.
 * API key repoya eklenmemelidir.
-* Public repo içinde gerçek credential tutulmamalıdır.
+* Repo private olsa bile gerçek credential tutulmamalıdır.
 * Token/session yönetimi backend tarafında yapılmalıdır.
 * Başarısız doğrulama mesajları kullanıcı veya sistem bilgisini sızdırmamalıdır.
 

@@ -6,7 +6,7 @@ Ana tercih yerel veri toplamamak olsa da demo ve final genişletme için kontrol
 
 * Gerçek yol kenarı demo canlı kamera ile tasarlanır.
 * Kontrollü video yalnız risk azaltma, offline doğrulama veya cabin risk final genişletmesi için kullanılır.
-* Ham video ve evidence görüntüleri public repoya commit edilmez.
+* Ham video ve evidence görüntüleri repoya commit edilmez.
 
 ## Minimum Kural
 
@@ -24,4 +24,4 @@ Ana tercih yerel veri toplamamak olsa da demo ve final genişletme için kontrol
 | Konum Türü | Gerçek yol kenarı / kontrollü alan |
 | İzin Durumu | Alındı / gerekli değil / bekliyor |
 | Kullanım Amacı | Demo / test / cabin risk / rapor |
-| Public Repo | Hayır |
+| Git Repo | Hayır |

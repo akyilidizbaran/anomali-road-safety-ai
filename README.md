@@ -107,6 +107,6 @@ Planlanan yaklaşım:
 * `docs/15_acik_sorular/00_acik_sorular.md`
 * `PROJECT_MEMORY.md`
 
-## Public Repo Notu
+## Repo Visibility Notu
 
-Bu repo public oluşturulmuştur. Büyük veri, model checkpointleri, kişisel veri içeren görüntüler ve gizli API anahtarları repoya eklenmemelidir.
+Bu repo 2026-06-08 itibarıyla private yapılmıştır. Buna rağmen büyük veri, model checkpointleri, kişisel veri içeren görüntüler ve gizli API anahtarları repoya eklenmemelidir.

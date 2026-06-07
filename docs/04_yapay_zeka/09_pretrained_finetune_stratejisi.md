@@ -100,6 +100,6 @@ Model geliştirmede ana katkı veri işleme ve hedefe uyarlama olacaktır:
 Test verisinin gerçekleştirildiği ortam izole olacak. Maskeleme yapılmayacağı için:
 
 * Test verileri kontrollü erişimde tutulmalı.
-* Public repoya test görüntüsü eklenmemeli.
+* Repoya test görüntüsü eklenmemeli; private repo olsa bile ham/evidence görselleri Git dışında kalmalı.
 * Rapor için kullanılacak görseller ayrıca seçilmeli.
 * Veri seti lisansları doğrulanmalı.

@@ -1,8 +1,8 @@
 # Data Policy
 
-## Public Repo Rule
+## Repository Rule
 
-Raw video, evidence image, plate image, face image, cabin image and license-restricted dataset files must not be committed to this public repository.
+Raw video, evidence image, plate image, face image, cabin image and license-restricted dataset files must not be committed to this repository, even when it is private.
 
 ## Allowed in Git
 

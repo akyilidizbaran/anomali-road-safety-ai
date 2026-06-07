@@ -3,7 +3,7 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? Context-gated model routing kararı netleştirildi: ortam/sahne bağlamı model güveni, QoD adaylığı ve uzman model seçimini etkiler; normal mod tüm araçları hafif takip eder; ağır uzman modeller yalnız riskli/hedef araçta çalışır.
+* Son değişiklik neydi? GitHub repo `PRIVATE` görünürlüğe alındı; README ve güvenlik/veri notları private repo durumuna göre güncelleniyor.
 * Bir sonraki net adım ne? Araç tespiti için model aday araştırması ve Colab baseline deney planı hazırlamak.
 
 ## 1) Proje Amacı ve Kapsam
@@ -35,7 +35,7 @@
 ## 4) Konvansiyonlar ve Standartlar
 
 * Kod stili / lint / format: Henüz kod projesi kurulmadı; bu aşama dokümantasyon ve planlama aşamasıdır.
-* Branch/commit yaklaşımı: Public GitHub repo `akyilidizbaran/anomali-road-safety-ai` üzerinde `main` branch kullanılıyor. Araştırma/dokümantasyon değişiklikleri ayrı commitlerle yapılmalı; büyük mimari kararlar `project/decisions/` altında tarihli Markdown dosyalarıyla, riskler `project/risks/` altında takip edilmeli.
+* Branch/commit yaklaşımı: Private GitHub repo `akyilidizbaran/anomali-road-safety-ai` üzerinde `main` branch kullanılıyor. Araştırma/dokümantasyon değişiklikleri ayrı commitlerle yapılmalı; büyük mimari kararlar `project/decisions/` altında tarihli Markdown dosyalarıyla, riskler `project/risks/` altında takip edilmeli.
 * İsimlendirme/klasör düzeni: Resmi raporlar `PDR_OTR` ve `PCR_FTR` adlarıyla tutulur; PDR=ÖTR, PCR=FTR karşılığı olarak not edilmiştir.
 
 ## 5) Kurulum & Çalıştırma
@@ -44,7 +44,7 @@
 * Komutlar: Yok.
 * Ortam değişkenleri (sadece İSİMLER): Yok.
 * Lokal geliştirme notları: Kod geliştirme başladığında mobil/backend için ayrı kurulum dosyaları eklenmelidir.
-* Public repo: `https://github.com/akyilidizbaran/anomali-road-safety-ai`
+* GitHub repo: `https://github.com/akyilidizbaran/anomali-road-safety-ai` (`PRIVATE`)
 
 ## 6) Decision Log (append-only)
 
@@ -76,6 +76,7 @@
 * 2026-06-07 — Karar: Benchmark/experiment klasörlerinde küçük CSV/JSON/Markdown sonuçlar takip edilecek, ağır artifactler ignore edilecek. | Gerekçe: Final rapor metrik kanıtları Git’te kalmalı; model ağırlıkları ve büyük run çıktıları public repoya girmemeli. | Etki: `.gitignore`, model benchmark ve experiment şablonları güncellendi. | Alternatifler: Tüm benchmark/experiment çıktısını ignore etmek.
 * 2026-06-07 — Karar: Resmi `.docx`/`.pdf` şablonları şimdilik kök dizinde kalacak. | Gerekçe: Kullanıcı bu dosyaları kök dizindeki adlarıyla referanslıyor; taşıma şu aşamada yol karışıklığı yaratabilir. | Etki: `reports/_official_templates/README.md` ileride taşıma notu olarak eklendi. | Alternatifler: Dosyaları hemen `reports/_official_templates/` altına taşımak.
 * 2026-06-08 — Karar: Context-gated model routing kullanılacak. | Gerekçe: Hava/ışık/görüş/yol bağlamı model güveni, QoD adaylığı ve uzman model seçimini etkilemeli; normal mod tüm araçları hafif takip ederken ağır uzman modeller yalnız riskli/hedef araçta çalışmalı. | Etki: `docs/04_yapay_zeka/11_context_gated_model_routing.md`, AI omurgası, risk orkestrasyonu, mimari flow ve contract schema dosyaları güncellendi. | Alternatifler: Ortam analizini detection öncesi bloklayıcı aşama yapmak veya tüm araçlarda sürekli uzman model çalıştırmak.
+* 2026-06-08 — Karar: GitHub repo private görünürlüğe alındı. | Gerekçe: Kullanıcı repoyu private almak istedi; kişisel veri, API key, model ve evidence riskleri nedeniyle sınırlı erişim daha uygun. | Etki: Repo görünürlüğü `PRIVATE`; güvenlik kuralı yine secret/veri/model/evidence dosyalarının Git’e eklenmemesi olarak korunur. | Alternatifler: Public repo olarak devam etmek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -85,6 +86,7 @@
 * 2026-06-07 — Milestone: PDF ana akışı repo dokümantasyonuna işlendi. | Sonuç: Number Verification, ortam analizi, riskli araçta QoD ve yol/araç dışı kullanıcı durumu README, mimari, AI ve event şemasına eklendi.
 * 2026-06-07 — Milestone: Repo hygiene ve contract scaffold eklendi. | Sonuç: Status/roadmap/security, contract schema, section map, data/model/test/governance şablonları ve project requirements/risks/decisions dosyaları oluşturuldu.
 * 2026-06-08 — Milestone: Context-gated routing policy eklendi. | Sonuç: Ortam bağlamına göre QoD/uzman model çağırma politikası ve normal/kritik mod kaynak ayrımı netleştirildi.
+* 2026-06-08 — Milestone: Repo private yapıldı. | Sonuç: GitHub visibility `PRIVATE` olarak doğrulandı.
 
 ## 8) Yapılanlar
 
@@ -99,8 +101,9 @@
 * [x] Login/Number Verification, ortam analizi, riskli araçta QoD ve araç dışı kullanıcı/yol durumu dokümanlaştırıldı.
 * [x] Ana auth-normal mode-QoD akışı `architecture/flows/auth_normal_qod_flow.md` dosyasına Mermaid diyagramı olarak eklendi.
 * [x] GPT feedback içinden geçerli repo hijyeni, security, contract, section map ve şablon önerileri işlendi.
-* [x] Public repo için `.gitignore` güvenliği sıkılaştırıldı; benchmark/experiment küçük kanıt dosyaları takip edilebilir hale getirildi.
+* [x] Repo güvenliği için `.gitignore` sıkılaştırıldı; benchmark/experiment küçük kanıt dosyaları takip edilebilir hale getirildi.
 * [x] Context-gated model routing dokümanı ve contract alanları eklendi.
+* [x] GitHub repo private görünürlüğe alındı.
 
 ## 9) Yapılacaklar (Next)
 
@@ -112,7 +115,7 @@
 * [x] Model geliştirme ilk odağı belirlendi.
 * [ ] Araç tespiti için Colab deney planı oluştur.
 * [ ] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.
-* [x] Public GitHub repo oluştur ve ilk commit’i pushla.
+* [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
 
@@ -121,7 +124,7 @@
 * Maskeleme yapılmayacağı için veri lisansı ve kişisel veri riski daha yüksek.
 * Araç tespiti için model ailesi henüz seçilmedi; araştırma sonrası karar verilecek.
 * Colab deney dosyaları henüz oluşturulmadı.
-* Public repo olduğu için ileride veri/checkpoint/API key yanlışlıkla commit edilmemeli.
+* Repo private olsa bile veri/checkpoint/API key/evidence dosyaları yanlışlıkla commit edilmemeli.
 * `architecture/diagrams/*.drawio` dosyaları şu an placeholder; gerçek diyagram içeriği çizilmeli.
 * Backend ve Android uygulama skeleton kodu henüz yok; repo hâlâ dokümantasyon/contract aşamasında.
 

@@ -1,4 +1,4 @@
-# Public Repo Safety Checklist
+# Repository Safety Checklist
 
 Commit öncesi kontrol:
 

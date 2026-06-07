@@ -1,8 +1,8 @@
 # Evidence Storage Policy
 
-## Public Repo Boundary
+## Repository Boundary
 
-Evidence package yapısı Git içinde dokümante edilebilir; gerçek evidence görüntüleri, crop dosyaları ve videolar Git içinde tutulmaz.
+Evidence package yapısı Git içinde dokümante edilebilir; gerçek evidence görüntüleri, crop dosyaları ve videolar Git içinde tutulmaz. Repo private olsa bile bu sınır korunur.
 
 ## Stored Metadata
 

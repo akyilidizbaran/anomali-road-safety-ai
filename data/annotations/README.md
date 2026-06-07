@@ -1,3 +1,3 @@
 # Annotations
 
-Etiket dosyaları veri lisansı ve kişisel veri riski kontrol edilmeden public repoya eklenmez.
+Etiket dosyaları veri lisansı ve kişisel veri riski kontrol edilmeden repoya eklenmez.
