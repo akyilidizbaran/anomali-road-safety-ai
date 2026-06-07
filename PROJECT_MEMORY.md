@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? Kullanıcı adı/şifre sonrası Number Verification, normal modda ortam analizi, riskli araçta QoD aday/request akışı ve genel yol/araç dışı kullanıcı durumu proje dokümanlarına ve `architecture/flows/auth_normal_qod_flow.md` akışına eklendi.
-* Bir sonraki net adım ne? Araç tespiti için araştırma karşılaştırma tablosu ve Colab deney planı hazırlamak.
+* Son değişiklik neydi? GPT feedback içinden geçerli bulunan repo hijyeni önerileri işlendi: `STATUS.md`, `ROADMAP.md`, `SECURITY.md`, contract schema dosyaları, final rapor section map, veri/model/test şablonları, governance policy dosyaları ve requirements/risk/decision kayıtları eklendi.
+* Bir sonraki net adım ne? Araç tespiti için model aday araştırması ve Colab baseline deney planı hazırlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -35,7 +35,7 @@
 ## 4) Konvansiyonlar ve Standartlar
 
 * Kod stili / lint / format: Henüz kod projesi kurulmadı; bu aşama dokümantasyon ve planlama aşamasıdır.
-* Branch/commit yaklaşımı: Public GitHub repo `akyilidizbaran/anomali-road-safety-ai` üzerinde `main` branch kullanılıyor; kararlar `PROJECT_MEMORY.md` ve `project/decisions/README.md` üzerinden takip edilecek.
+* Branch/commit yaklaşımı: Public GitHub repo `akyilidizbaran/anomali-road-safety-ai` üzerinde `main` branch kullanılıyor. Araştırma/dokümantasyon değişiklikleri ayrı commitlerle yapılmalı; büyük mimari kararlar `project/decisions/` altında tarihli Markdown dosyalarıyla, riskler `project/risks/` altında takip edilmeli.
 * İsimlendirme/klasör düzeni: Resmi raporlar `PDR_OTR` ve `PCR_FTR` adlarıyla tutulur; PDR=ÖTR, PCR=FTR karşılığı olarak not edilmiştir.
 
 ## 5) Kurulum & Çalıştırma
@@ -71,6 +71,10 @@
 * 2026-06-07 — Karar: Normal modda ilk erken bağlam sinyali ortam/sahne analizi olacak. | Gerekçe: Hava, ışık, görüş ve yol koşulu detection, OCR, hız ve QoD kararlarını etkiler. | Etki: Sistem mimarisi ve normal/kritik mod dokümanları ortam analizi önceliğiyle güncellendi. | Alternatifler: Önce detection, sonra sahne analizi.
 * 2026-06-07 — Karar: Riskli araç tespitinde QoD tetikleme aday/request akışı başlatılacak, ancak her riskte otomatik aktif olmayacak. | Gerekçe: PDF kapsamındaki QoD yaklaşımı seçici kullanım gerektiriyor; kullanıcı riskli araçta QoD tetikleneceğini belirtti. | Etki: QoD dokümanı “trigger/candidate/request/active” ayrımıyla hizalandı. | Alternatifler: Her riskte sürekli QoD aktif etmek.
 * 2026-06-07 — Karar: Genel yol durumu ve araç dışı kullanıcı/yaya durumu ayrı bağlam modülü olarak eklendi. | Gerekçe: Kullanıcı genel yol ve araç dışı kullanıcı durumunun sistem içinde belirtilmesini istedi. | Etki: Model yol haritası, event JSON ve mimari dokümanları yeni modülü kapsıyor. | Alternatifler: Bu bilgileri yalnız sahne analizi altında yan alan olarak tutmak.
+* 2026-06-07 — Karar: Repo durumu açıkça planning/documentation/research scaffolding olarak işaretlenecek. | Gerekçe: Public repoya bakan kişi çalışan sistem ile dokümantasyon/contract aşamasını ayırt edebilmeli. | Etki: `STATUS.md`, `ROADMAP.md` ve root README Current Status bölümü eklendi. | Alternatifler: README’de yalnız proje vizyonu bırakmak.
+* 2026-06-07 — Karar: Event JSON, mobile overlay response, backend API ve QoD enum contractları `architecture/contracts/` altında tek kaynak olarak tutulacak. | Gerekçe: Docs, backend, mobile ve evidence tarafında schema farklılaşmasını önlemek. | Etki: Contract dosyaları eklendi; docs API/event dosyaları bu kaynaklara referans verecek şekilde güncellendi. | Alternatifler: Contractları yalnız docs altında örnek JSON olarak tutmak.
+* 2026-06-07 — Karar: Benchmark/experiment klasörlerinde küçük CSV/JSON/Markdown sonuçlar takip edilecek, ağır artifactler ignore edilecek. | Gerekçe: Final rapor metrik kanıtları Git’te kalmalı; model ağırlıkları ve büyük run çıktıları public repoya girmemeli. | Etki: `.gitignore`, model benchmark ve experiment şablonları güncellendi. | Alternatifler: Tüm benchmark/experiment çıktısını ignore etmek.
+* 2026-06-07 — Karar: Resmi `.docx`/`.pdf` şablonları şimdilik kök dizinde kalacak. | Gerekçe: Kullanıcı bu dosyaları kök dizindeki adlarıyla referanslıyor; taşıma şu aşamada yol karışıklığı yaratabilir. | Etki: `reports/_official_templates/README.md` ileride taşıma notu olarak eklendi. | Alternatifler: Dosyaları hemen `reports/_official_templates/` altına taşımak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -78,6 +82,7 @@
 * 2026-06-07 — Milestone: Resmi rapor başlıkları çıkarıldı. | Sonuç: ÖTR/PDR ve FTR/PCR `.docx` şablon başlıkları Markdown dosyalarına ayrıldı.
 * 2026-06-07 — Milestone: Kapsamlı proje klasör yapısı kuruldu. | Sonuç: Rapor, mimari, araştırma, veri, model, mobil, backend, test ve governance alanları oluşturuldu.
 * 2026-06-07 — Milestone: PDF ana akışı repo dokümantasyonuna işlendi. | Sonuç: Number Verification, ortam analizi, riskli araçta QoD ve yol/araç dışı kullanıcı durumu README, mimari, AI ve event şemasına eklendi.
+* 2026-06-07 — Milestone: Repo hygiene ve contract scaffold eklendi. | Sonuç: Status/roadmap/security, contract schema, section map, data/model/test/governance şablonları ve project requirements/risks/decisions dosyaları oluşturuldu.
 
 ## 8) Yapılanlar
 
@@ -91,13 +96,15 @@
 * [x] `leD24n5kb...pdf` içindeki ana akış mevcut repo kapsamıyla karşılaştırıldı.
 * [x] Login/Number Verification, ortam analizi, riskli araçta QoD ve araç dışı kullanıcı/yol durumu dokümanlaştırıldı.
 * [x] Ana auth-normal mode-QoD akışı `architecture/flows/auth_normal_qod_flow.md` dosyasına Mermaid diyagramı olarak eklendi.
+* [x] GPT feedback içinden geçerli repo hijyeni, security, contract, section map ve şablon önerileri işlendi.
+* [x] Public repo için `.gitignore` güvenliği sıkılaştırıldı; benchmark/experiment küçük kanıt dosyaları takip edilebilir hale getirildi.
 
 ## 9) Yapılacaklar (Next)
 
 * [x] `docs/15_acik_sorular/00_acik_sorular.md` içindeki ilk soru seti kullanıcıyla netleştirildi.
 * [ ] `reports/PDR_OTR` altında resmi Ön Tasarım Raporu taslağını yaz.
-* [ ] Rapor için ilk sistem diyagramını `architecture/diagrams` altında üret.
-* [ ] Event JSON contractını `architecture/contracts` altında ayrı dosyaya taşı.
+* [ ] Rapor için ilk sistem diyagramını `architecture/diagrams` altında gerçek içerikle üret.
+* [x] Event JSON contractını `architecture/contracts` altında ayrı dosyaya taşı.
 * [ ] Veri seti kaynaklarını lisanslarıyla doğrula.
 * [x] Model geliştirme ilk odağı belirlendi.
 * [ ] Araç tespiti için Colab deney planı oluştur.
@@ -112,6 +119,8 @@
 * Araç tespiti için model ailesi henüz seçilmedi; araştırma sonrası karar verilecek.
 * Colab deney dosyaları henüz oluşturulmadı.
 * Public repo olduğu için ileride veri/checkpoint/API key yanlışlıkla commit edilmemeli.
+* `architecture/diagrams/*.drawio` dosyaları şu an placeholder; gerçek diyagram içeriği çizilmeli.
+* Backend ve Android uygulama skeleton kodu henüz yok; repo hâlâ dokümantasyon/contract aşamasında.
 
 ## 11) Notlar ve Tuzaklar (Pitfalls)
 

@@ -53,6 +53,9 @@ Proje hiçbir belgede kesin ceza kesen veya hukuki hüküm veren bir sistem olar
 * `docs/03_sistem_mimarisi/05_auth_normal_mode_flow.md`: Login, Number Verification, normal mod, riskli araç ve QoD tetikleme sırası.
 * `docs/06_mobil_uygulama/04_login_number_verification.md`: Kullanıcı adı/şifre ve Number Verification giriş kapısı.
 * `docs/04_yapay_zeka/10_yol_ve_arac_disi_kullanici_durumu.md`: Genel yol, yaya/bisikletli/motosikletli ve araç dışı kullanıcı bağlamı.
+* `docs/00_baslangic/02_glossary.md`: Teknik terimler sözlüğü.
+* `reports/PCR_FTR/section_map.md`: Final rapor bölümleri ile kaynak doküman eşlemesi.
+* `architecture/contracts/`: Backend, event JSON, overlay response ve QoD status teknik contract dosyaları.
 
 ## Model Geliştirme Notu
 

@@ -29,3 +29,9 @@ Kabul Kriteri:
 Bağımlılıklar:
 Açık Sorular:
 ```
+
+## Dosyalar
+
+* `00_functional_requirements.md`
+* `01_nonfunctional_requirements.md`
+* `02_acceptance_criteria.md`

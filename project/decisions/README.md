@@ -25,3 +25,10 @@ Durum:
 * Genel yol ve araç dışı kullanıcı/yaya durumunun risk bağlamına eklenmesi.
 * Riskli araçta QoD aday/request akışı; QoD’nin seçici kullanımı.
 * LLM’in yalnız açıklama katmanı olması.
+
+## Tarihli Karar Dosyaları
+
+* `2026-06-07-single-target-first.md`
+* `2026-06-07-edge-first-balanced-mobile.md`
+* `2026-06-07-llm-explanation-only.md`
+* `2026-06-07-qod-selective-policy.md`

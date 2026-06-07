@@ -2,6 +2,13 @@
 
 Bu dosya, mobil uygulama ile edge/backend arasında planlanan temel arayüzleri özetler.
 
+Teknik contract için ana kaynaklar:
+
+* `architecture/contracts/backend_api.md`
+* `architecture/contracts/mobile_overlay_response.schema.json`
+* `architecture/contracts/event.schema.json`
+* `architecture/contracts/qod_status_enum.md`
+
 ## WebSocket
 
 ### `WS /stream`

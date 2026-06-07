@@ -11,6 +11,11 @@ Bu klasör edge/backend geliştirme planı ve ileride kodları için ayrılmış
 ## İlk MVP
 
 * `WS /stream`.
+* `POST /auth/login`.
 * `GET /events/recent`.
 * `GET /events/{event_id}`.
 * `GET /system/status`.
+
+## Contract Kaynağı
+
+Backend endpoint ve response şemalarının ana kaynağı `architecture/contracts/` klasörüdür.

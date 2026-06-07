@@ -2,13 +2,12 @@
 
 Burada mobil/backend/model/evidence arası sözleşmeler tutulur.
 
-## Önerilen Contractlar
+## Mevcut Contractlar
 
-* `stream_contract.md`
-* `event_json_schema.md`
-* `system_status_schema.md`
-* `qod_request_schema.md`
-* `model_output_schema.md`
+* `backend_api.md`: REST/WebSocket endpoint özeti.
+* `event.schema.json`: Evidence event JSON tek kaynak şeması.
+* `mobile_overlay_response.schema.json`: Mobil canlı overlay response şeması.
+* `qod_status_enum.md`: QoD status enum tanımı.
 
 ## Kural
 

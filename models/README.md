@@ -21,3 +21,10 @@ scene_resnet18_v1
 ```
 
 Model versiyonu event JSON içinde görünmelidir.
+
+## Template ve Benchmark Dosyaları
+
+* `MODEL_CARD_TEMPLATE.md`
+* `EXPERIMENT_TEMPLATE.md`
+* `benchmarks/vehicle_detection_comparison.csv`
+* `experiments/vehicle_detection_yolo_baseline.md`

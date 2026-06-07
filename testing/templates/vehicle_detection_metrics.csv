@@ -1,0 +1,2 @@
+experiment_id,model,variant,dataset,split,img_size,map50,precision,recall,f1,fps,latency_ms,model_size_mb,notes
+TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD

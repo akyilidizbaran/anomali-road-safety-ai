@@ -10,6 +10,9 @@ Bir Android telefon yol kenarında sabit bir açıyla konumlandırılır. Kullan
 * Kamera sabitlenecek.
 * Ana gösterim canlı kamera olacak.
 * Kontrollü video yalnız risk azaltma veya ek doğrulama materyali olarak kullanılabilir.
+* MVP ve ana yarışma demosunda sistem single-target mode ile çalışır.
+* Sistem görüntüdeki en önemli/hedef aracı seçer ve ağır uzman modelleri öncelikle bu hedef araç üzerinde çalıştırır.
+* Multi-target mode, settings üzerinden açılabilen deneysel genişletme modudur.
 
 ## Normal Olay Akışı
 

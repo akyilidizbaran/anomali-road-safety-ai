@@ -1,0 +1,2 @@
+test_id,mode,resolution,input_fps,pipeline_fps,median_latency_ms,p95_latency_ms,frame_drop_rate,qod_status,notes
+TBD,normal,TBD,TBD,TBD,TBD,TBD,TBD,NOT_NEEDED,TBD

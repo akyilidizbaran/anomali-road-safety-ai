@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/anomali/mobile_overlay_response.schema.json",
+  "title": "MobileOverlayResponse",
+  "type": "object",
+  "required": ["frame_id", "mode", "latency_ms", "detections", "risk", "qod"],
+  "properties": {
+    "frame_id": { "type": "string" },
+    "mode": { "type": "string", "enum": ["normal", "critical"] },
+    "latency_ms": { "type": "number", "minimum": 0 },
+    "scene": {
+      "type": "object",
+      "properties": {
+        "weather": { "type": "string" },
+        "lighting": { "type": "string" },
+        "visibility": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "road_context": {
+      "type": "object",
+      "properties": {
+        "surface_condition": { "type": "string" },
+        "lane_marking_visibility": { "type": "string" },
+        "roadside_activity": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "detections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["track_id", "class_name", "bbox", "confidence"],
+        "properties": {
+          "track_id": { "type": ["integer", "string"] },
+          "class_name": { "type": "string" },
+          "bbox": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "external_users": { "type": "array" },
+    "target_vehicle": { "type": ["object", "null"] },
+    "risk": {
+      "type": "object",
+      "required": ["risk_score", "risk_level"],
+      "properties": {
+        "risk_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "risk_level": { "type": "string", "enum": ["low", "medium", "high", "critical"] }
+      },
+      "additionalProperties": true
+    },
+    "qod": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["NOT_AVAILABLE", "MOCK_READY", "NOT_NEEDED", "CANDIDATE", "REQUESTED", "ACTIVE", "EXPIRED", "FAILED"]
+        },
+        "reason": { "type": "string" },
+        "session_seconds": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -34,7 +34,8 @@ Bu formül başlangıç için rule-based olabilir. Daha sonra öğrenilebilir he
 
 Settings ekranında multi-target mode opsiyonel olarak açılabilir. Bu modda sistem birden fazla araç için hafif analiz yapar, ancak ağır uzman modeller yine seçici çalışır.
 
-## Sorulacak Noktalar
+## Mevcut Karar
 
-* MVP kesin single-target mı?
-* Multi-target final sunumda gösterilecek mi?
+* MVP ve ana yarışma demosu single-target mode ile tasarlanır.
+* Multi-target mode deneysel genişletme olarak tutulur.
+* Final sunumda multi-target gösterimi zorunlu değildir; gösterilirse sistem kapasite genişletmesi olarak anlatılmalıdır.

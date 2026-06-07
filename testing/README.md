@@ -15,3 +15,10 @@ Bu klasör test senaryoları ve metrik raporları için ayrılmıştır.
 * Event-level doğruluk.
 * Evidence bütünlüğü.
 * Mobil akış testi.
+
+## Template Dosyaları
+
+* `templates/vehicle_detection_metrics.csv`
+* `templates/ocr_metrics.csv`
+* `templates/system_latency_fps.csv`
+* `templates/event_evidence_tests.csv`

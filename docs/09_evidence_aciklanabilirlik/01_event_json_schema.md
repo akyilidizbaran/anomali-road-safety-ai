@@ -1,5 +1,7 @@
 # Event JSON Şeması
 
+Ana teknik schema kaynağı `architecture/contracts/event.schema.json` dosyasıdır. Bu dosya rapor ve ekip içi açıklama için okunabilir örnek event yapısını gösterir.
+
 Önerilen event yapısı:
 
 ```json

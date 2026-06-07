@@ -1,0 +1,2 @@
+experiment_id,model,dataset,split,plate_detection_precision,plate_detection_recall,ocr_exact_match,character_accuracy,latency_ms,notes
+TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD

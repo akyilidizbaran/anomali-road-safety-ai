@@ -14,3 +14,9 @@ Bu klasör veri seti çalışmalarının yeridir.
 ## Kural
 
 Kişisel veri içeren ham dosyalar izin ve güvenlik politikası olmadan kalıcı saklanmamalıdır.
+
+## Policy ve Template Dosyaları
+
+* `DATA_POLICY.md`
+* `DATASET_CARD_TEMPLATE.md`
+* `README_assets/dataset_inventory_template.csv`

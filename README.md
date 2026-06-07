@@ -4,6 +4,30 @@
 
 Bu repo, resmi PDR/ÖTR ve PCR/FTR rapor şablonları ile proje kapsam metnine göre sıfırdan kurulmuştur. Önceki demo/prototip çalışmaları bu kapsamın ana çıktısı değildir.
 
+## Current Status
+
+Bu repo şu anda **planning, documentation, research scaffolding ve technical contract definition** aşamasındadır.
+
+Hazır olanlar:
+
+* Proje kapsamı ve sınırları.
+* Sistem mimarisi dokümantasyonu.
+* AI modül yol haritası.
+* Number Verification, normal mod, QoD ve evidence akışı.
+* Veri/model/test strateji taslakları.
+* Contract, rapor ve metrik şablonları.
+
+Henüz uygulanmayanlar:
+
+* Android canlı kamera uygulaması.
+* Backend inference server.
+* Gerçek zamanlı streaming pipeline.
+* Fine-tuned model ağırlıkları.
+* Evidence storage servisi.
+* Gerçek 5G/QoD ve Number Verification API entegrasyonu.
+
+Detaylı durum için `STATUS.md`, geliştirme sırası için `ROADMAP.md` dosyasına bakılmalıdır.
+
 ## Proje Konumu
 
 Anomali Road Safety AI; kullanıcı adı/şifre ve Number Verification doğrulaması sonrası telefon kamerasından alınan canlı yol görüntüsünü edge destekli yapay zeka çıkarım hattında analiz ederek araç, plaka, hız, şerit, sahne/görüş, genel yol durumu, araç dışı kullanıcı/yaya durumu ve koşullu cabin risk sinyallerini değerlendiren bir karar destek sistemi olarak tasarlanır.
@@ -23,6 +47,20 @@ Planlanan yaklaşım:
 5. Test verisinin gerçekleştirildiği ortam izole tutulur.
 
 İlk odak **araç tespiti** olacak. Sonraki modüller araç tespiti çıktısı üzerine sırayla eklenecek.
+
+## MVP Hedefi
+
+İlk çalışan MVP şu kapsama odaklanır:
+
+1. Android canlı kamera preview.
+2. Edge frame streaming.
+3. Araç tespiti.
+4. Hedef araç takibi.
+5. Plaka tespiti/OCR.
+6. Evidence card generation.
+7. Temel system health ekranı.
+
+Şerit, hız, sahne/hava, araç dışı kullanıcı, cabin risk ve gerçek QoD entegrasyonu kademeli olarak eklenecektir.
 
 ## Tasarlanan Modül Sırası
 

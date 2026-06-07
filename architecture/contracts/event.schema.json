@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/anomali/event.schema.json",
+  "title": "AnomaliEvidenceEvent",
+  "type": "object",
+  "required": ["event_id", "timestamp_utc", "source", "system", "target_vehicle", "risk", "models", "evidence"],
+  "properties": {
+    "event_id": { "type": "string" },
+    "timestamp_utc": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "required": ["device_id", "camera_mode", "resolution", "fps"],
+      "properties": {
+        "device_id": { "type": "string" },
+        "camera_mode": { "type": "string" },
+        "resolution": { "type": "string" },
+        "fps": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "system": {
+      "type": "object",
+      "required": ["mode", "qod_status", "number_verification_status"],
+      "properties": {
+        "mode": { "type": "string", "enum": ["normal", "critical"] },
+        "qod_status": { "type": "string" },
+        "number_verification_status": { "type": "string" },
+        "latency_ms": { "type": "number", "minimum": 0 },
+        "pipeline_fps": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "target_vehicle": {
+      "type": "object",
+      "required": ["track_id", "vehicle_type", "bbox", "confidence"],
+      "properties": {
+        "track_id": { "type": ["integer", "string"] },
+        "vehicle_type": { "type": "string" },
+        "bbox": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "plate": { "type": "object" },
+    "speed": { "type": "object" },
+    "lane": { "type": "object" },
+    "driver_cabin": { "type": "object" },
+    "scene": { "type": "object" },
+    "road_context": { "type": "object" },
+    "external_users": { "type": "array" },
+    "risk": {
+      "type": "object",
+      "required": ["risk_score", "risk_level", "reasons"],
+      "properties": {
+        "risk_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "risk_level": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "models": {
+      "type": "object",
+      "description": "Model version identifiers used for this event.",
+      "additionalProperties": { "type": "string" }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["json_uri"],
+      "properties": {
+        "image_uri": { "type": "string" },
+        "crop_uri": { "type": "string" },
+        "overlay_uri": { "type": "string" },
+        "json_uri": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "decision_reason": { "type": "string" }
+  },
+  "additionalProperties": true
+}

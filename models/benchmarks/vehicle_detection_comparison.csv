@@ -1,0 +1,2 @@
+model,variant,dataset,img_size,map50,precision,recall,f1,fps_edge,latency_ms,model_size_mb,onnx_export,tflite_export,notes
+YOLO,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD

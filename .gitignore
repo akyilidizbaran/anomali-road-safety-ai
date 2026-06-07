@@ -18,6 +18,7 @@ tmp/
 temp/
 outputs/
 runs/
+!models/experiments/runs/
 
 # Data and generated assets
 data/raw/*
@@ -27,14 +28,23 @@ data/annotations/*
 data/splits/*
 !data/**/README.md
 !data/README.md
+!data/README_assets/*.csv
+!data/README_assets/*.md
 
 # Model artifacts
 models/checkpoints/*
 models/exports/*
-models/experiments/*
-models/benchmarks/*
+models/experiments/runs/*
+models/benchmarks/artifacts/*
+!models/experiments/runs/README.md
+!models/benchmarks/artifacts/README.md
 !models/**/README.md
 !models/README.md
+!models/**/*.md
+!models/**/*.yaml
+!models/**/*.yml
+!models/**/*.json
+!models/benchmarks/**/*.csv
 
 # Evidence / private test material
 evidence/
@@ -46,3 +56,45 @@ local_test_data/
 *.pem
 secrets.*
 credentials.*
+
+# Android / mobile secrets
+local.properties
+keystore.properties
+*.jks
+*.keystore
+google-services.json
+
+# Cloud / API credentials
+service-account*.json
+client_secret*.json
+firebase*.json
+*.p12
+*.p8
+
+# Model binary artifacts
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.engine
+*.torchscript
+*.mlmodel
+
+# Video / image evidence
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.jpg
+*.jpeg
+*.png
+*.heic
+
+# Allow safe documentation/report assets
+!docs/**/assets/*.png
+!docs/**/assets/*.jpg
+!reports/final_assets/*.png
+!reports/final_assets/*.jpg
+!mobile/wireframes/*.png
+!architecture/diagrams/*.png
