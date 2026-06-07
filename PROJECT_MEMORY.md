@@ -4,7 +4,7 @@
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR ve PCR/FTR şablonlarına dayalı, sıfırdan kurulmuş kapsamlı Markdown proje dokümantasyon ve klasör yapısı hazırlandı.
 * Son değişiklik neydi? Public/pretrained model + fine-tune/adaptation yaklaşımı dokümanlara eklendi; kök `README.md` ve `.gitignore` oluşturuldu.
-* Bir sonraki net adım ne? Public GitHub reposuna ilk commit/push yapmak; ardından araç tespiti için araştırma karşılaştırma tablosu ve Colab deney planı hazırlamak.
+* Bir sonraki net adım ne? Araç tespiti için araştırma karşılaştırma tablosu ve Colab deney planı hazırlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -44,6 +44,7 @@
 * Komutlar: Yok.
 * Ortam değişkenleri (sadece İSİMLER): Yok.
 * Lokal geliştirme notları: Kod geliştirme başladığında mobil/backend için ayrı kurulum dosyaları eklenmelidir.
+* Public repo: `https://github.com/akyilidizbaran/anomali-road-safety-ai`
 
 ## 6) Decision Log (append-only)
 
@@ -65,6 +66,7 @@
 * 2026-06-07 — Karar: Test ortamı izole olacak. | Gerekçe: Maskeleme yapılmayacağı için veri erişim ve paylaşım riski azaltılmalı. | Etki: Test verisi eğitimden ayrılacak, kontrollü saklanacak ve dışa paylaşım sınırlandırılacak. | Alternatifler: Açık/karma test ortamı.
 * 2026-06-07 — Karar: Model geliştirme public/pretrained model araştırması + fine-tune/adaptation şeklinde yürütülecek. | Gerekçe: Proje çok görevli; sıfırdan model eğitmek veri/donanım/süre açısından ana hedef değil. | Etki: Colab deneyleri, veri işleme, post-processing, model seçimi ve dengeli benchmark öncelik kazanır. | Alternatifler: Sıfırdan model eğitimi.
 * 2026-06-07 — Karar: Repo public olarak oluşturulacak. | Gerekçe: Kullanıcı public repo istedi ve gerekirse sonradan private alacağını belirtti. | Etki: Büyük veri, checkpoint, secrets ve kişisel veri içeren materyaller `.gitignore` ile dışarıda tutulmalı. | Alternatifler: Private repo.
+* 2026-06-07 — Karar: Public GitHub repo `akyilidizbaran/anomali-road-safety-ai` olarak oluşturuldu. | Gerekçe: Kullanıcı gerekli düzenlemeleri GitHub üzerinden yapmak istedi. | Etki: İlk dokümantasyon commit’i `main` branch’e pushlandı. | Alternatifler: Repo oluşturmadan lokal kalmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -92,7 +94,7 @@
 * [x] Model geliştirme ilk odağı belirlendi.
 * [ ] Araç tespiti için Colab deney planı oluştur.
 * [ ] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.
-* [ ] Public GitHub repo oluştur ve ilk commit’i pushla.
+* [x] Public GitHub repo oluştur ve ilk commit’i pushla.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
 
