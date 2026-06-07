@@ -1,0 +1,48 @@
+.DS_Store
+Thumbs.db
+
+# Python / notebooks
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Environments
+.env
+.env.*
+venv/
+.venv/
+
+# Local runtime outputs
+logs/
+tmp/
+temp/
+outputs/
+runs/
+
+# Data and generated assets
+data/raw/*
+data/processed/*
+data/synthetic/*
+data/annotations/*
+data/splits/*
+!data/**/README.md
+!data/README.md
+
+# Model artifacts
+models/checkpoints/*
+models/exports/*
+models/experiments/*
+models/benchmarks/*
+!models/**/README.md
+!models/README.md
+
+# Evidence / private test material
+evidence/
+private_data/
+local_test_data/
+
+# Secrets
+*.key
+*.pem
+secrets.*
+credentials.*
