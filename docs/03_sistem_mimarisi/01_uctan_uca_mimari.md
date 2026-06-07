@@ -23,7 +23,7 @@ flowchart TD
   A --> B["Frame/Stream Transport"]
   B --> C["Edge Preprocess"]
   C --> D0["Normal Mode: Environment / Scene Analysis"]
-  D0 --> D["Vehicle Detection + Tracking"]
+  D0 --> D["Multi-Vehicle Lightweight Detection + Tracking"]
   D --> R["Road Context + External User Status"]
   R --> E["Target Vehicle Selection"]
   E --> F["Risk Pre-Decision"]
@@ -42,7 +42,8 @@ flowchart TD
 
 * Login sonrası Number Verification doğrulanmadan canlı analiz ekranı açılmaz.
 * Ortam/sahne analizi normal modun erken bağlam sinyalidir.
-* Araç tespiti ve tracking normal modda önceliklidir.
+* Araç tespiti ve tracking normal modda tüm araçlar için hafif çalışır.
+* Ağır uzman modeller yalnız riskli/hedef araç veya olay penceresinde çalışır.
 * Genel yol ve araç dışı kullanıcı/yaya durumu risk skoruna bağlamsal katkı sağlar.
 * OCR ve cabin risk her frame’de çalışmaz.
 * Scene analysis düşük frekanslı olabilir.

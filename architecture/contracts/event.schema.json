@@ -71,6 +71,22 @@
       "description": "Model version identifiers used for this event.",
       "additionalProperties": { "type": "string" }
     },
+    "routing_decision": {
+      "type": "object",
+      "description": "Context-gated expert selection decision for this event.",
+      "properties": {
+        "experts_called": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "routing_reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "qod_reason": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
     "evidence": {
       "type": "object",
       "required": ["json_uri"],

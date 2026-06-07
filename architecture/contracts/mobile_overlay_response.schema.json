@@ -70,6 +70,21 @@
         "session_seconds": { "type": "number", "minimum": 0 }
       },
       "additionalProperties": false
+    },
+    "routing_decision": {
+      "type": "object",
+      "properties": {
+        "experts_to_call": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "target_track_id": { "type": ["integer", "string", "null"] }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

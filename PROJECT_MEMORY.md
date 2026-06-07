@@ -3,7 +3,7 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? GPT feedback içinden geçerli bulunan repo hijyeni önerileri işlendi: `STATUS.md`, `ROADMAP.md`, `SECURITY.md`, contract schema dosyaları, final rapor section map, veri/model/test şablonları, governance policy dosyaları ve requirements/risk/decision kayıtları eklendi.
+* Son değişiklik neydi? Context-gated model routing kararı netleştirildi: ortam/sahne bağlamı model güveni, QoD adaylığı ve uzman model seçimini etkiler; normal mod tüm araçları hafif takip eder; ağır uzman modeller yalnız riskli/hedef araçta çalışır.
 * Bir sonraki net adım ne? Araç tespiti için model aday araştırması ve Colab baseline deney planı hazırlamak.
 
 ## 1) Proje Amacı ve Kapsam
@@ -29,7 +29,7 @@
 ## 3) Mimari Özet
 
 * Bileşenler: Login/Auth client, Number Verification adapter, Android mobil istemci, video aktarım katmanı, edge/backend inference server, normal mode pipeline, critical mode expert selector, QoD/5G adapter, event fusion, evidence store, explanation layer.
-* Veri akışı: Kullanıcı adı/şifre girilir -> Number Verification API kullanıcı/cihaz/oturum eşleşmesini doğrular -> CameraX frame üretir -> edge/backend alır -> preprocess -> normal mod ortam/sahne analizi -> araç tespiti/takip -> genel yol ve araç dışı kullanıcı durumu -> risk pre-score -> riskli araçta QoD aday/request akışı -> kritik mod gerekiyorsa uzman modeller -> event JSON -> evidence store -> mobil overlay/evidence ekranı.
+* Veri akışı: Kullanıcı adı/şifre girilir -> Number Verification API kullanıcı/cihaz/oturum eşleşmesini doğrular -> CameraX frame üretir -> edge/backend alır -> preprocess -> normal mod ortam/sahne analizi -> tüm araçlar için hafif detection/tracking -> genel yol ve araç dışı kullanıcı durumu -> target/risky vehicle selection -> context-gated routing -> riskli araçta QoD aday/request akışı -> kritik mod gerekiyorsa uzman modeller -> event JSON -> evidence store -> mobil overlay/evidence ekranı.
 * Önemli dizinler/modüller: `docs/` rapor ve teknik açıklamalar; `research/` derin araştırma başlıkları; `reports/` resmi rapor çalışma alanı; `architecture/` diyagram ve contract; `project/` karar/risk/gereksinim; `mobile/`, `backend/`, `data/`, `models/`, `testing/`, `governance/` geliştirme alanları.
 
 ## 4) Konvansiyonlar ve Standartlar
@@ -75,6 +75,7 @@
 * 2026-06-07 — Karar: Event JSON, mobile overlay response, backend API ve QoD enum contractları `architecture/contracts/` altında tek kaynak olarak tutulacak. | Gerekçe: Docs, backend, mobile ve evidence tarafında schema farklılaşmasını önlemek. | Etki: Contract dosyaları eklendi; docs API/event dosyaları bu kaynaklara referans verecek şekilde güncellendi. | Alternatifler: Contractları yalnız docs altında örnek JSON olarak tutmak.
 * 2026-06-07 — Karar: Benchmark/experiment klasörlerinde küçük CSV/JSON/Markdown sonuçlar takip edilecek, ağır artifactler ignore edilecek. | Gerekçe: Final rapor metrik kanıtları Git’te kalmalı; model ağırlıkları ve büyük run çıktıları public repoya girmemeli. | Etki: `.gitignore`, model benchmark ve experiment şablonları güncellendi. | Alternatifler: Tüm benchmark/experiment çıktısını ignore etmek.
 * 2026-06-07 — Karar: Resmi `.docx`/`.pdf` şablonları şimdilik kök dizinde kalacak. | Gerekçe: Kullanıcı bu dosyaları kök dizindeki adlarıyla referanslıyor; taşıma şu aşamada yol karışıklığı yaratabilir. | Etki: `reports/_official_templates/README.md` ileride taşıma notu olarak eklendi. | Alternatifler: Dosyaları hemen `reports/_official_templates/` altına taşımak.
+* 2026-06-08 — Karar: Context-gated model routing kullanılacak. | Gerekçe: Hava/ışık/görüş/yol bağlamı model güveni, QoD adaylığı ve uzman model seçimini etkilemeli; normal mod tüm araçları hafif takip ederken ağır uzman modeller yalnız riskli/hedef araçta çalışmalı. | Etki: `docs/04_yapay_zeka/11_context_gated_model_routing.md`, AI omurgası, risk orkestrasyonu, mimari flow ve contract schema dosyaları güncellendi. | Alternatifler: Ortam analizini detection öncesi bloklayıcı aşama yapmak veya tüm araçlarda sürekli uzman model çalıştırmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -83,6 +84,7 @@
 * 2026-06-07 — Milestone: Kapsamlı proje klasör yapısı kuruldu. | Sonuç: Rapor, mimari, araştırma, veri, model, mobil, backend, test ve governance alanları oluşturuldu.
 * 2026-06-07 — Milestone: PDF ana akışı repo dokümantasyonuna işlendi. | Sonuç: Number Verification, ortam analizi, riskli araçta QoD ve yol/araç dışı kullanıcı durumu README, mimari, AI ve event şemasına eklendi.
 * 2026-06-07 — Milestone: Repo hygiene ve contract scaffold eklendi. | Sonuç: Status/roadmap/security, contract schema, section map, data/model/test/governance şablonları ve project requirements/risks/decisions dosyaları oluşturuldu.
+* 2026-06-08 — Milestone: Context-gated routing policy eklendi. | Sonuç: Ortam bağlamına göre QoD/uzman model çağırma politikası ve normal/kritik mod kaynak ayrımı netleştirildi.
 
 ## 8) Yapılanlar
 
@@ -98,6 +100,7 @@
 * [x] Ana auth-normal mode-QoD akışı `architecture/flows/auth_normal_qod_flow.md` dosyasına Mermaid diyagramı olarak eklendi.
 * [x] GPT feedback içinden geçerli repo hijyeni, security, contract, section map ve şablon önerileri işlendi.
 * [x] Public repo için `.gitignore` güvenliği sıkılaştırıldı; benchmark/experiment küçük kanıt dosyaları takip edilebilir hale getirildi.
+* [x] Context-gated model routing dokümanı ve contract alanları eklendi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -132,4 +135,4 @@
 
 ### Güncelleme Kaydı
 
-* Son güncelleme: 2026-06-07
+* Son güncelleme: 2026-06-08

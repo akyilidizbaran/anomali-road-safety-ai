@@ -48,6 +48,8 @@ Bu dosya, proje için sorulan karar noktalarını ve verilen cevapları merkezi 
 * Kullanıcı/cihaz/oturum eşleşirse canlı analiz ekranlarına erişim verilecek.
 * Normal modda ilk bağlam katmanı ortam/sahne analizi olacak; hava, ışık, görüş ve yol koşulu detection/tracking yorumunu etkileyecek.
 * Normal detection ve tracking ortam analizinden sonra veya onunla paralel çalışacak.
+* Ortam analizi detection/tracking hattını bloklamayacak; düşük frekansta bağlam sinyali üreten context-gated routing katmanı olarak çalışacak.
+* Normal modda tüm araçlar hafif takip edilecek, ağır uzman modeller yalnız riskli/hedef araç üzerinde çalışacak.
 
 ## Cevaplandı - Genel Yol ve Araç Dışı Kullanıcı
 

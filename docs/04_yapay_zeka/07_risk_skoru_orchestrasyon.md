@@ -15,13 +15,16 @@ Model çıktılarından tek bir olay risk skoru üretmek ve hangi uzman modeller
 
 ## Risk Sinyalleri
 
+* Ortam/sahne bağlamı.
+* Hava, ışık ve görüş kalitesi.
 * Araç tespit güveni.
 * Track stability.
 * Plaka okunabilirliği.
 * Şerit ihlali olasılığı.
 * Hız aykırılığı.
 * Cabin risk skoru.
-* Görüş koşulu.
+* Genel yol durumu.
+* Araç dışı kullanıcı/yaya yakınlığı.
 * Model belirsizliği.
 * Olay sürekliliği.
 
@@ -31,12 +34,21 @@ Rule-based skor sistemi kullanılabilir. Daha sonra öğrenilebilir risk modeli 
 
 ## Uzman Model Seçimi
 
-Örnek:
+Uzman model seçimi context-gated routing politikasına göre yapılmalıdır. Ortam/sahne analizi doğrudan alarm üretmez; model güveni, QoD adaylığı ve hangi uzmanların çağrılacağını etkileyen bağlam sinyalidir.
+
+Detaylı politika: `docs/04_yapay_zeka/11_context_gated_model_routing.md`
+
+Örnekler:
 
 * OCR güveni düşük ama plaka kritik: Plate OCR + QoD candidate.
 * Şerit yakınlığı: Lane expert + tracking window.
 * Hız şüphesi: Speed estimation + calibration check.
 * Düşük görüş: Scene model + QoD candidate.
+* Yaya/bisikletli yakınlığı: External user risk analysis + critical window.
+
+## Normal ve Kritik Mod Ayrımı
+
+Normal modda tüm araçlar hafif detection/tracking hattıyla izlenir. Kritik modda yalnız riskli/hedef araç üzerinde ağır uzman modeller çağrılır. Bu ayrım latency ve kaynak kullanımını kontrol eder.
 
 ## Sorulacak Noktalar
 

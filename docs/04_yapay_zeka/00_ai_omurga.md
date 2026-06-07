@@ -14,15 +14,18 @@ Eğitimin ana yükü sıfırdan model eğitmek değildir. İnternet üzerinden e
 
 ## Pipeline
 
-1. Vehicle detection.
-2. Tracking.
-3. Target vehicle selection.
-4. Scene/visibility analysis.
+1. Context-gated scene/visibility/road analysis.
+2. Vehicle detection.
+3. Multi-vehicle lightweight tracking.
+4. Target/risky vehicle selection.
 5. Risk pre-score.
-6. Expert model selection.
-7. Expert inference.
-8. Event fusion.
-9. Evidence package.
+6. QoD candidate/request decision.
+7. Expert model selection.
+8. Expert inference on target vehicle ROI.
+9. Event fusion.
+10. Evidence package.
+
+Detaylı routing politikası için `docs/04_yapay_zeka/11_context_gated_model_routing.md` kullanılmalıdır.
 
 ## Neden Rule-Based Başlangıç Kabul Edilebilir?
 
@@ -42,6 +45,7 @@ Daha sonra öğrenilebilir risk modeli geliştirilebilir.
 | Kamera preview | 30 FPS hedef |
 | Vehicle detection | 15-30 FPS |
 | Tracking | Her frame veya yüksek frekans |
+| Context/scene routing | 1-2 Hz veya olay penceresi |
 | OCR | Her 5-10 frame veya plaka netleşince |
 | Scene analysis | 1-2 Hz |
 | Lane | 10-15 FPS veya risk penceresi |

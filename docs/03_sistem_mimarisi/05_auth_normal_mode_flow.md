@@ -10,7 +10,7 @@ Bu dosya, PDF’teki ana istekle uyumlu nihai çalışma sırasını netleştiri
 4. Kamera canlı görüntü üretir.
 5. Normal mod başlar.
 6. Normal modda ilk erken sinyal olarak ortam/sahne analizi çalışır.
-7. Ardından normal detection ve takip hattı çalışır.
+7. Ardından tüm araçlar için hafif normal detection ve takip hattı çalışır.
 8. Riskli araç veya riskli yol olayı sinyali oluşursa kritik mod adayı üretilir.
 9. QoD karar/tetikleme akışı başlar.
 10. QoD aktif olduğunda riskli araç özelinde video kalitesi artırılır.
@@ -30,6 +30,8 @@ Ortam analizi çıktıları:
 * Yol yüzeyi ve genel yol durumu için erken sinyal.
 
 Bu çıktı detection, OCR, lane, hız ve QoD kararlarının yorumlanmasına bağlamsal sinyal sağlar.
+
+Ortam analizi detection/tracking hattını bloklamamalıdır. İlk frame penceresinde bağlam sinyali üretir, sonrasında düşük frekansta güncellenir. Araç detection ve tracking hattı normal modda sürekli devam eder.
 
 ## Riskli Araç Tespitinde QoD
 

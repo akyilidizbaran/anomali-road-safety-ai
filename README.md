@@ -101,6 +101,7 @@ Planlanan yaklaşım:
 * `docs/04_yapay_zeka/08_model_gelistirme_yol_haritasi.md`
 * `docs/04_yapay_zeka/09_pretrained_finetune_stratejisi.md`
 * `docs/04_yapay_zeka/10_yol_ve_arac_disi_kullanici_durumu.md`
+* `docs/04_yapay_zeka/11_context_gated_model_routing.md`
 * `docs/06_mobil_uygulama/04_login_number_verification.md`
 * `docs/10_test_metrikler/01_dengeli_basari_metrikleri.md`
 * `docs/15_acik_sorular/00_acik_sorular.md`

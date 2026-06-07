@@ -23,6 +23,8 @@ Sürekli çalışan hafif analiz hattıdır.
 
 Normal modda ilk bağlam sinyali ortam analizidir. Hava, ışık, görüş ve yol koşulu detection/tracking çıktılarının nasıl yorumlanacağını belirler. Normal modun amacı tüm detayları çıkarmak değil, hangi aracın veya yol olayının kritikleşebileceğini anlamaktır.
 
+Normal modda görüntüdeki tüm araçlar hafif detection/tracking hattıyla izlenir. Ağır uzman modeller tüm araçlarda sürekli çalışmaz; riskli/hedef araç oluştuğunda kritik mod penceresinde seçici çağrılır.
+
 ## Kritik Mod
 
 Risk sinyali oluştuğunda devreye girer.
