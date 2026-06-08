@@ -1,0 +1,77 @@
+{
+  "experiment_id": "VD-EXP-001",
+  "model": "yolo11n.pt",
+  "condition_profile": "dark",
+  "device": "mps",
+  "imgsz": 640,
+  "conf": 0.25,
+  "classes": {
+    "2": "car",
+    "3": "motorcycle",
+    "5": "bus",
+    "7": "truck"
+  },
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "frames_processed": 423,
+      "frames_with_detection": 369,
+      "detection_frame_ratio": 0.8723,
+      "total_detections": 440,
+      "class_counts": {
+        "car": 329,
+        "motorcycle": 111
+      },
+      "min_confidence": 0.2506,
+      "max_confidence": 0.944,
+      "mean_preprocess_ms": 4.832,
+      "mean_inference_ms": 24.125,
+      "p95_inference_ms": 42.451,
+      "mean_postprocess_ms": 19.596,
+      "wall_time_s": 44.699,
+      "processed_fps_wall": 9.463,
+      "output_dir": "runs/detect/runs/detect/VD-EXP-001-yolo11n-dark/video_1"
+    },
+    {
+      "video": "video_2.mp4",
+      "frames_processed": 457,
+      "frames_with_detection": 457,
+      "detection_frame_ratio": 1.0,
+      "total_detections": 590,
+      "class_counts": {
+        "car": 341,
+        "motorcycle": 249
+      },
+      "min_confidence": 0.2694,
+      "max_confidence": 0.9426,
+      "mean_preprocess_ms": 6.305,
+      "mean_inference_ms": 29.795,
+      "p95_inference_ms": 51.024,
+      "mean_postprocess_ms": 20.491,
+      "wall_time_s": 61.77,
+      "processed_fps_wall": 7.398,
+      "output_dir": "runs/detect/runs/detect/VD-EXP-001-yolo11n-dark/video_2"
+    },
+    {
+      "video": "video_3.mp4",
+      "frames_processed": 383,
+      "frames_with_detection": 298,
+      "detection_frame_ratio": 0.7781,
+      "total_detections": 378,
+      "class_counts": {
+        "motorcycle": 80,
+        "car": 288,
+        "truck": 10
+      },
+      "min_confidence": 0.251,
+      "max_confidence": 0.9499,
+      "mean_preprocess_ms": 9.172,
+      "mean_inference_ms": 41.756,
+      "p95_inference_ms": 81.446,
+      "mean_postprocess_ms": 25.328,
+      "wall_time_s": 64.514,
+      "processed_fps_wall": 5.937,
+      "output_dir": "runs/detect/runs/detect/VD-EXP-001-yolo11n-dark/video_3"
+    }
+  ]
+}

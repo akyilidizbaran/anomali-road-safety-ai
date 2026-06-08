@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? `video_1.mp4`, `video_2.mp4`, `video_3.mp4` dark/low-light manuel test videoları `Test/` altına taşındı ve Git dışında bırakıldı; condition-specific detector routing kararı eklendi; dark/rain/fog/night detector profile yaklaşımı, manuel benchmark şablonu ve routing contract alanları dokümante edildi.
-* Bir sonraki net adım ne? VD-EXP-001 için YOLO11n pretrained zero-fine-tune baseline deneyi `Test/video_1-3.mp4` dark manual set üzerinde çalıştırmak; manuel review skorlarını kaydetmek; BDD100K/UA-DETRAC lisans ve erişim doğrulamasını tamamlamak.
+* Son değişiklik neydi? VD-EXP-001 YOLO11n pretrained zero-fine-tune detection koşusu `Test/video_1-3.mp4` dark manual set üzerinde MPS ile çalıştırıldı; 1263 frame işlendi, 1124 frame'de vehicle detection üretildi, toplam 1408 detection alındı; manual accuracy henüz ölçülmedi.
+* Bir sonraki net adım ne? VD-EXP-001 çıktılarını manuel review ile kontrol edip `testing/templates/manual_video_benchmark_review.csv` formatında accuracy/failure-case notlarını kaydetmek; BDD100K/UA-DETRAC lisans ve erişim doğrulamasını tamamlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -109,6 +109,7 @@
 * 2026-06-08 — Milestone: Model araştırma ve demo runtime kararları netleştirildi. | Sonuç: Colab/MacBook ayrımı, 720p input, kamera açısı, açık veri/lisans yaklaşımı, hız final scope, lane sonrası faz ve QoD gerçek adapter hedefi dokümante edildi.
 * 2026-06-08 — Milestone: Araç tespiti research paketi aksiyon dosyalarına bölündü. | Sonuç: Deep research raporu taşındı, kaynak listesi eklendi, model/dataset/benchmark/fine-tune/decision dosyaları oluşturuldu ve VehicleDetectionOutput contractı genişletildi.
 * 2026-06-08 — Milestone: Dark manual test set ve condition-specific detector routing eklendi. | Sonuç: 3 dark video `Test/` altına taşındı, video dosyaları Git dışında bırakıldı, manual review CSV şablonu ve condition profile routing planı oluşturuldu.
+* 2026-06-08 — Milestone: VD-EXP-001 YOLO11n pretrained dark detection koşusu çalıştırıldı. | Sonuç: `Test/video_1-3.mp4` üzerinde 1263 frame işlendi; detection outputs/labels local `runs/` altında, özet JSON `models/benchmarks/artifacts/VD-EXP-001-yolo11n-dark-summary.json` altında üretildi; manual accuracy pending.
 
 ## 8) Yapılanlar
 
@@ -134,6 +135,7 @@
 * [x] 3 dark/low-light manuel test videosu `Test/` altına taşındı ve Git dışında bırakıldı.
 * [x] Condition-specific detector routing planı oluşturuldu.
 * [x] Manual video benchmark review şablonu eklendi.
+* [x] VD-EXP-001 YOLO11n pretrained zero-fine-tune dark detection koşusu çalıştırıldı.
 
 ## 9) Yapılacaklar (Next)
 
@@ -147,7 +149,7 @@
 * [x] Araç tespiti için Colab deney planı oluştur.
 * [x] Araç tespiti için MacBook runtime benchmark planı oluştur.
 * [x] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.
-* [ ] VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline deneyini çalıştır.
+* [x] VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline deneyini çalıştır.
 * [ ] `Test/video_1-3.mp4` için dark manual review sonuçlarını kaydet.
 * [ ] BDD100K ve UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
