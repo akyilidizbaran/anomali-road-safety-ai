@@ -34,6 +34,8 @@ Doğru çalışma:
 
 Deep research sonucu, ilk aşamada `dark` profilinin ayrı detector olarak açılmamasını önerir. `dark`, `tunnel_or_parking_dark` ve benzeri alt koşullar önce condition profile katmanında izlenir; detector seçimi gerekiyorsa `night_low_light` uzmanına veya `general` fallback'e route edilir.
 
+`general` detector yalnız normal/gündüz koşul modeli değildir. İlk fine-tune aşamasında night/rain/fog gibi koşullar general modelin eğitim ve validation breakdown'ı içinde korunur. Specialist detector'lar, bu general model belirli bir condition kırılımında anlamlı zayıf kaldığında açılır.
+
 Koşul uzmanları `best_general` checkpoint'ten türetilmelidir. `best_general` seçilmeden ayrı specialist detector eğitilmez.
 
 ## Router Output Contract

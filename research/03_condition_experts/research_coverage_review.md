@@ -51,5 +51,6 @@ Deep research raporu strateji kararı için yeterli. Bundan sonra araştırmayı
 1. Kaynak/lisans checklist'i tamamla.
 2. Mevcut dark video çıktılarının manuel review'ını yap.
 3. General detector dataset ve Colab fine-tune pipeline'ını kur.
-4. `best_general` oluşmadan condition-specific detector eğitme.
-5. İlk specialist olarak `night_low_light` aç.
+4. İlk fine-tune aşamasında condition-aware general detector eğit.
+5. `best_general` oluşmadan condition-specific detector eğitme.
+6. General modelin condition breakdown sonucu zayıfsa ilk specialist olarak `night_low_light` aç.

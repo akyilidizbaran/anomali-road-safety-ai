@@ -21,7 +21,8 @@ Girdiler:
 
 Yapılacaklar:
 
-* [ ] Her video için missed detection, false positive, wrong class ve bbox adequacy notlarını doldur.
+* [x] Qualitative review ile genel araç yakalamanın kullanılabilir olduğu doğrulandı.
+* [ ] Her video için missed detection, false positive, wrong class ve bbox adequacy sayısal notlarını doldur.
 * [ ] `testing/templates/manual_video_benchmark_review.csv` formatını kullan.
 * [ ] Özellikle low-light kaynaklı hata örüntülerini çıkar.
 * [ ] Bu üç videoyu training data olarak kullanma.
@@ -53,6 +54,10 @@ Yapılacaklar:
 
 Amaç: Condition expert'lerin dallanacağı güçlü bir temel checkpoint üretmek.
 
+Bu faz doğrudan araç detection fine-tune fazıdır. Condition profile modeli veya specialist detector bu faz için blocker değildir.
+
+`general` burada "yalnız gündüz/normal model" anlamına gelmez. General detector, night/rain/fog örneklerini condition metadata ile gören ve tüm koşullarda çalışması beklenen ana detektördür.
+
 Model adayları:
 
 1. `YOLO11n`
@@ -63,6 +68,7 @@ Veri:
 
 * BDD100K road object subset
 * UA-DETRAC fixed-camera subset
+* Condition metadata korunmuş night/rain/fog/day splitleri
 
 Sınıflar:
 
@@ -75,9 +81,11 @@ Yapılacaklar:
 
 * [ ] COCO/BDD/UA-DETRAC sınıf mapping dosyası oluştur.
 * [ ] Video-level train/val/test split yap.
+* [ ] Condition-balanced train/val/test dağılımını kontrol et.
 * [ ] YOLO formatına dönüşüm scriptini hazırla.
 * [ ] Colab notebook ile `general_yolo11n` fine-tune koş.
 * [ ] Aynı split ile `general_yolov10n` ve `general_yolo11s` benchmark al.
+* [ ] Overall metriklerle birlikte `night_low_light`, `rain`, `fog_low_visibility` kırılımlarını raporla.
 * [ ] MacBook runtime benchmark ile p50/p95 latency ve FPS ölç.
 
 Çıkış:
@@ -199,6 +207,6 @@ Yapılacaklar:
 
 1. Manual review sonuçlarını doldur.
 2. BDD100K ve UA-DETRAC kaynak/lisans kartlarını tamamla.
-3. General detector Colab notebook skeleton'ını oluştur.
-4. Dataset conversion planını yaz.
+3. Condition-aware general detector Colab notebook skeleton'ını oluştur.
+4. Dataset conversion ve condition split planını yaz.
 5. `best_general` olmadan specialist training'e geçme.

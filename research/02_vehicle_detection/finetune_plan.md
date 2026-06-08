@@ -12,16 +12,32 @@ Araç tespiti için Colab üzerinde tekrar üretilebilir fine-tune deneyi tasarl
 * Her deney aynı split ve aynı metrik protokolüyle karşılaştırılacak.
 * MacBook runtime benchmark, Colab validation sonucundan ayrı tutulacak.
 * Dark/rain/fog gibi koşula özel detector profilleri, yeterli condition-specific veri oluşmadan ayrı model olarak eğitilmeyecek.
+* `general` detector yalnız normal/gündüz model anlamına gelmez; night/rain/fog gibi koşullar general training ve validation breakdown içinde korunur.
 * Mevcut 3 dark video yalnız manuel benchmark ve failure-case analizi içindir.
+
+## General Detector ve Condition Kapsamı
+
+İlk fine-tune doğrudan araç detection üzerinde yapılacaktır. Bu aşamada ayrı condition detector veya ayrı condition-specific vehicle detector eğitimi beklenmeyecektir.
+
+Bu karar `night_low_light`, `rain` ve `fog_low_visibility` kapsamlarının dışarıda bırakıldığı anlamına gelmez. Doğru yorum:
+
+* General detector tüm koşulları gören tek ana araç detektörüdür.
+* Dataset split ve validation sonuçları condition breakdown ile tutulur.
+* BDD100K gibi veri setlerindeki `timeofday`, `weather`, `scene` metadata korunur.
+* Eğitim setinde clear/day örnekleriyle birlikte night/rain/fog örnekleri de dengeli biçimde bulunur.
+* Validation raporu yalnız overall mAP değil, `day_clear`, `night_low_light`, `rain`, `fog_low_visibility` gibi alt kırılımlarla verilir.
+* Bir condition kırılımında general model anlamlı zayıf kalırsa specialist branch için gerekçe oluşur.
+
+Bu nedenle ilk aşamada "condition detect + fine-tune" yerine "condition-aware general vehicle detection fine-tune" yapılır.
 
 ## İlk Deney Sırası
 
 | Deney | Model | Veri | Img size | Amaç |
 |---|---|---|---:|---|
 | VD-EXP-001 | YOLO11n pretrained | `Test/video_1-3.mp4` dark manual set | 640 | Zero fine-tune baseline, dark routing smoke test ve JSON output |
-| VD-EXP-002 | YOLO11n fine-tune | BDD100K 4-class | 640 | İlk road-domain baseline |
-| VD-EXP-003 | YOLO11s fine-tune | BDD100K 4-class | 640 | Quality gain ölçümü |
-| VD-EXP-004 | YOLOv10n fine-tune | BDD100K 4-class | 640 | NMS-free latency kıyası |
+| VD-EXP-002 | YOLO11n fine-tune | BDD100K 4-class, condition-aware split | 640 | İlk condition-aware road-domain baseline |
+| VD-EXP-003 | YOLO11s fine-tune | BDD100K 4-class, same split | 640 | Quality gain ölçümü |
+| VD-EXP-004 | YOLOv10n fine-tune | BDD100K 4-class, same split | 640 | NMS-free latency kıyası |
 | VD-EXP-005 | YOLOv10s fine-tune | BDD100K + selected UA-DETRAC | 640 | Low-latency challenger |
 | VD-EXP-006 | YOLOv8n fine-tune | BDD100K 4-class | 640 | Stable fallback |
 | VD-EXP-007 | RT-DETR-L pilot | BDD100K small pilot | 640 | Transformer challenger |
@@ -36,7 +52,17 @@ Koşul profilleri:
 * `fog_low_visibility`
 * `night_low_light`
 
-İlk aşamada yalnız `general` detector eğitilir/ölçülür. Router, dark videolarda `dark` profile çağırsa bile ayrı dark model yoksa `general` detector fallback çalışır.
+İlk aşamada yalnız `general` detector eğitilir/ölçülür. Router, dark videolarda `dark` veya `night_low_light` profile çağırsa bile ayrı specialist model yoksa `general` detector fallback çalışır.
+
+General modelin condition kapsamı:
+
+| Condition | General Fine-Tune'daki Rol | Specialist'e Geçiş Şartı |
+|---|---|---|
+| `day_clear` | Ana normal koşul | Specialist yok |
+| `night_low_light` | General training/validation içinde korunur | General düşük ışıkta zayıf kalırsa ilk specialist |
+| `rain` | General training/validation içinde korunur | Night specialist fayda sağladıktan ve rain split yeterli olduktan sonra |
+| `fog_low_visibility` | Mümkünse validation/external test içinde korunur | Fog subset ve benchmark yeterliyse |
+| `dark` | Ayrı detector değil, low-light alt etiketi | Başlangıçta `night_low_light` veya general fallback |
 
 Dark/rain/fog specialist detector eğitimine geçiş için:
 
@@ -107,6 +133,6 @@ Sonraki hedefler:
 
 * Model 4 sınıf output üretmeli.
 * Output contract ile uyumlu JSON'a çevrilebilmeli.
-* BDD100K validation sonucu kayıt altına alınmalı.
+* BDD100K validation sonucu overall ve condition breakdown olarak kayıt altına alınmalı.
 * MacBook runtime benchmark'a taşınabilecek export üretmeli.
 * Failure cases görsel/metadata olarak repo dışında saklanmalı, repo içinde yalnız özetlenmeli.
