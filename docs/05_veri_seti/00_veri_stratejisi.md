@@ -7,6 +7,8 @@ Her görev için ayrı veri seti, ayrı etiket yapısı, ayrı model ve ayrı me
 ## Mevcut Veri Kararı
 
 * Kullanılacak veri setleri araştırma ve uygulanmış çalışmalar incelenerek saptanacak.
+* Test ve model karşılaştırmaları öncelikle internet üzerindeki açık veri setleri, makale ekleri, benchmark çalışmaları ve açık kaynak proje verileriyle yapılacak.
+* Veri seti lisansları ilgili makale, proje sayfası, dataset card veya açık kaynak lisans metni üzerinden doğrulanacak.
 * Yerel veri mümkünse toplanmayacak.
 * Maskeleme yapılmayacak.
 * Bu karar nedeniyle veri seti lisansı, kullanım izni, kişisel veri riski ve raporda etik açıklama daha önemli hale gelir.
@@ -30,6 +32,8 @@ Her görev için ayrı veri seti, ayrı etiket yapısı, ayrı model ve ayrı me
 * Video-level split zorunlu.
 
 ## Veri Toplama
+
+Yerel veri ana kaynak olarak planlanmaz. Zorunlu demo veya kontrollü doğrulama görüntüsü alınırsa bu veri repo dışında, erişimi sınırlı ortamda tutulmalıdır.
 
 * Normal sahnelerde 0.5 saniyede bir frame.
 * Kritik olaylarda 0.1-0.2 saniyede bir frame.

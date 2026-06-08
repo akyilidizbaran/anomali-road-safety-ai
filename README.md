@@ -44,7 +44,8 @@ Planlanan yaklaşım:
 2. Aday modeller doğruluk, hız, latency, model boyutu ve export kolaylığına göre karşılaştırılır.
 3. Seçilen modeller proje amacına uygun veri işleme, fine-tune ve post-processing ile uyarlanır.
 4. Deneyler Google Colab üzerinde yürütülür.
-5. Test verisinin gerçekleştirildiği ortam izole tutulur.
+5. Canlı demo çıkarımı MacBook üzerinde local edge/backend olarak çalıştırılır.
+6. Test verisinin gerçekleştirildiği ortam izole tutulur.
 
 İlk odak **araç tespiti** olacak. Sonraki modüller araç tespiti çıktısı üzerine sırayla eklenecek.
 
@@ -57,10 +58,13 @@ Planlanan yaklaşım:
 3. Araç tespiti.
 4. Hedef araç takibi.
 5. Plaka tespiti/OCR.
-6. Evidence card generation.
-7. Temel system health ekranı.
+6. Hafif frame quality / ortam bağlamı.
+7. Evidence card generation.
+8. Temel system health ekranı.
 
-Şerit, hız, sahne/hava, araç dışı kullanıcı, cabin risk ve gerçek QoD entegrasyonu kademeli olarak eklenecektir.
+Şerit, hız kalibrasyonu, tam sahne/hava modeli, araç dışı kullanıcı, cabin risk ve gerçek QoD entegrasyonu kademeli olarak eklenecektir.
+
+Canlı frame hedefi 720p seviyesinde alınacak, model input boyutu preprocessing aşamasında seçilen modele göre resize edilecektir.
 
 ## Tasarlanan Modül Sırası
 
@@ -70,13 +74,14 @@ Planlanan yaklaşım:
 4. Evidence package sistemi
 5. Sahne, hava, ışık ve görüş koşulu analizi
 6. Genel yol ve araç dışı kullanıcı/yaya durumu
-7. Şerit / road marking analizi
-8. Hız kestirimi
-9. Sürücü/yolcu ve araç içi risk analizi
-10. Risk skoru, kritik mod ve uzman model orkestrasyonu
-11. 5G QoD ve Number Verification adapterları
-12. LLM açıklama katmanı
-13. Test, metrik ve rapor kanıt sistemi
+7. Context-gated model routing ve uzman model seçimi
+8. Şerit / road marking analizi
+9. Hız kestirimi
+10. Sürücü/yolcu ve araç içi risk analizi
+11. Risk skoru, kritik mod ve uzman model orkestrasyonu
+12. 5G QoD ve Number Verification adapterları
+13. LLM açıklama katmanı
+14. Test, metrik ve rapor kanıt sistemi
 
 ## Klasörler
 

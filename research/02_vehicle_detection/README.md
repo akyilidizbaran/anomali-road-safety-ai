@@ -18,6 +18,8 @@ Projenin ilk yapay zeka çekirdeği olan araç tespitini ve hedef araç seçimin
 * mAP, precision, recall, F1.
 * Model boyutu, FPS, latency.
 * YOLO formatı, COCO formatı, veri dönüşümü.
+* 720p source frame -> model input resize politikası.
+* Colab fine-tune metrikleri ile MacBook runtime metriklerinin ayrı tutulması.
 
 ## Çıktı
 

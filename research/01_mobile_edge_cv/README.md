@@ -16,7 +16,9 @@ Telefon kamerasından alınan canlı görüntünün edge bilgisayara nasıl akta
 * Public domain/backend üzerinden demo.
 * FastAPI + WebSocket mimarisi.
 * Edge bilgisayarda Python inference server.
+* MacBook üzerinde local edge/backend runtime.
 * Mobil overlay için anlık JSON response.
+* 720p source frame/stream ve model input resize maliyeti.
 * FPS/latency ölçümü.
 * 1 saniye altı uçtan uca gecikme hedefi.
 * 30 FPS preview, düşük frekanslı uzman model yaklaşımı.

@@ -24,7 +24,7 @@ Zorunlu metadata:
 * `timestamp_utc`: UTC zaman damgası.
 * `device_id`: mobil cihaz kimliği.
 * `camera_mode`: `live`, `controlled_video`, `offline_replay`.
-* `resolution`: ör. `1280x720`.
+* `resolution`: ör. `1280x720`; demo hedefi 720p source frame.
 * `fps`: kamera veya stream FPS bilgisi.
 * `orientation`: portrait/landscape veya rotation.
 
@@ -50,6 +50,8 @@ Adımlar:
 7. Quality analysis için temel görüntü metrikleri.
 
 Preprocessing çıktısı her frame için izlenebilir olmalıdır. Bir model output'u daha sonra event JSON'a girdiğinde hangi frame'den üretildiği açık kalmalıdır.
+
+İlk demo varsayımı: Android cihaz 720p seviyesinde canlı frame/stream üretir; MacBook üzerinde çalışan local edge/backend bu input'u seçilen modelin beklediği input boyutuna resize eder. Colab eğitim/fine-tune ortamıdır, canlı demo runtime ortamı değildir.
 
 ## Frame Quality Analysis
 
@@ -250,6 +252,8 @@ Lane expert, hedef aracın şerit/road marking ilişkisini değerlendirir.
 ## Speed Estimation Expert
 
 Speed estimation iki modlu tasarlanmalıdır.
+
+MVP aşamasında bu uzman mutlak km/s üretmek zorunda değildir. Kalibrasyon denemesi final scope'ta tutulur; MVP'de relative speed veya motion anomaly çıktısı kullanılabilir.
 
 ### Mode A: Calibrated Homography-Based km/h
 

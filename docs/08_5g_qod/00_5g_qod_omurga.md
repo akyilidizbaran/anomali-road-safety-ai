@@ -35,6 +35,7 @@ QoD sistemin çalışması için zorunlu değil, kaliteyi artırabilecek seçici
 * QoD sağlandığında gerçek video kalitesi artırılacak.
 * Riskli araç tespit edildiğinde QoD aday/request akışı tetiklenecek.
 * QoD buna rağmen her riskte otomatik açılmayacak; karar güveni veya kanıt kalitesini artıracağı durumlarda kısa süreli devreye alınacak.
+* Hedef gerçek QoD API/adapter entegrasyonudur; API erişimi gecikirse mock/status-policy fallback kullanılacak ve bu durum raporda açıkça ayrılacaktır.
 
 ## Sorulacak Noktalar
 

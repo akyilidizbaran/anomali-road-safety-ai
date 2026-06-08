@@ -25,7 +25,21 @@ Mobil cihazdan gelen frame veya stream’i alıp AI çıkarımını çalıştır
 * JSON metadata.
 * Local file evidence store.
 
+## Çalışma Ortamı Kararı
+
+İlk demo ve model çıkarım ortamı **MacBook tabanlı local edge runtime** olacaktır. Android telefon kamera ve UI istemcisi olarak canlı frame veya stream gönderir; ağır model çıkarımı MacBook üzerinde çalışan backend/inference server tarafında yapılır.
+
+Bu ayrım şu nedenle önemlidir:
+
+* Eğitim/fine-tune işi Google Colab GPU üzerinde yürütülür.
+* Demo sırasında model ağırlıkları ve inference runtime MacBook üzerinde çalışır.
+* Android cihazın ilk aşamada ağır inference yükü taşıması beklenmez.
+* Gerçek 5G/QoD entegrasyonu geldiğinde backend adapter katmanı değişebilir; model pipeline sözleşmesi aynı kalır.
+
+## Frame Boyutu
+
+Canlı input hedefi 720p frame seviyesidir. Backend preprocessing katmanı bu frame'i seçilen modelin input boyutuna resize eder. Model karşılaştırmalarında benchmark çözünürlüğü ve resize politikası ayrıca kaydedilmelidir.
+
 ## Sorulacak Noktalar
 
-* İlk backend local ağda mı çalışacak?
-* Deployment için cloud mı edge laptop mı?
+* MacBook ile telefon aynı local ağda mı, doğrudan kablolu/tethered bağlantıda mı çalışacak?

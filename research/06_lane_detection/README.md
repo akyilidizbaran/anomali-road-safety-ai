@@ -4,6 +4,8 @@
 
 Hedef aracın şerit konumunu anlamak ve lane departure/lane violation risk sinyali üretmek.
 
+Bu modül araç tespiti, tracking, plaka/OCR ve evidence hattı kurulduktan sonra ele alınacaktır.
+
 ## Alt Başlıklar
 
 * YOLO ile road marking tespiti.
@@ -22,4 +24,4 @@ Hedef aracın şerit konumunu anlamak ve lane departure/lane violation risk siny
 
 ## Çıktı
 
-MVP lane yöntemi ve final lane modeli kararı.
+Plate/evidence sonrası ilk lane yöntemi ve final lane modeli kararı.

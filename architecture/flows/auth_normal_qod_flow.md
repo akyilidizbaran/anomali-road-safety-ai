@@ -34,3 +34,4 @@ flowchart TD
 * QoD tetikleme, her riskte otomatik aktiflik anlamına gelmez.
 * Ortam analizi detection kararını tek başına değiştirmez; risk skoruna ve model güven yorumuna bağlam sağlar.
 * Araç dışı kullanıcı/yaya durumu ilk aşamada public/pretrained detection sınıflarıyla temsil edilebilir.
+* İlk demo varsayımı: Android cihaz canlı 720p frame/stream üretir, MacBook local edge/backend inference ortamı olarak çalışır.

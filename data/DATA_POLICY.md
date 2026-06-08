@@ -24,3 +24,7 @@ Raw video, evidence image, plate image, face image, cabin image and license-rest
 ## Storage Assumption
 
 Sensitive data is stored in local/private backend storage during testing. Public documentation may reference local IDs, but not expose private media.
+
+## Source Assumption
+
+Primary data sources are public datasets, research datasets, paper/project releases and open-source benchmark material whose licenses can be verified. Local data collection is not the default source. If controlled demo footage is captured, it must stay outside Git and be handled as restricted test material.

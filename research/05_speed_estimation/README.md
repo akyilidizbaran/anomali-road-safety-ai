@@ -18,12 +18,11 @@ Gerçek km/s tahmini yapılabilecek koşulları ve kalibrasyon yoksa göreli hı
 * Optical flow tabanlı yöntemler.
 * BrnoCompSpeed, AI City Challenge.
 * MAE/RMSE km/s metrikleri.
-* Kontrollü hız videosu çekimi.
+* MVP için göreli hız / motion anomaly metriği.
+* Final scope için kalibrasyon ve kontrollü hız videosu denemesi.
 
 ## Çıktı
 
-Kalibrasyon protokolü ve hız metriği planı.
+MVP çıktısı: kalibrasyonsuz göreli hareket/risk metriği planı.
 
-## Sorulacak Nokta
-
-Demo alanında referans mesafe ölçülebilecek mi?
+Final scope çıktısı: homografi/kalibrasyon protokolü, referans mesafe yöntemi ve km/s hata metriği planı.

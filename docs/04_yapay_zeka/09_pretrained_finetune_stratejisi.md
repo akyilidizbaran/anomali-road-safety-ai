@@ -50,6 +50,17 @@ Her Colab deneyi şu bilgileri kaydetmelidir:
 * Model export durumu.
 * Notlar ve hata kayıtları.
 
+## Colab ve MacBook Ayrımı
+
+Colab, eğitim/fine-tune ve araştırma ortamıdır. Canlı demo çıkarımı MacBook üzerinde çalışan local edge/backend runtime ile yapılacaktır.
+
+Bu nedenle deney kayıtları iki ayrı performans bilgisini karıştırmamalıdır:
+
+* **Colab sonuçları:** eğitim süresi, validation/test metrikleri, model seçimi ve fine-tune davranışı.
+* **MacBook runtime sonuçları:** canlı inference latency, pipeline FPS, CPU/GPU/RAM kullanımı, stream ve evidence üretim süresi.
+
+Model final adayına yaklaşırken aynı export edilmiş model MacBook üzerinde de benchmark edilmelidir.
+
 ## İlk Odak: Araç Tespiti
 
 Araç tespiti sistemi şu nedenle ilk modüldür:

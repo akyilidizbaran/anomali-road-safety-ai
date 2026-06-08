@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? Runtime AI pipeline, model output contract, partial event schema, expert routing policy, frequency/latency budget, MVP/final/future scope, evidence UI logic ve AI risk register dokümanları eklendi.
-* Bir sonraki net adım ne? Araç tespiti için model aday araştırması ve Colab baseline deney planı hazırlamak; `docs/04_yapay_zeka/research_required.md` içindeki araştırma gereksinimlerini doldurmak.
+* Son değişiklik neydi? Model araştırma ve demo çalışma varsayımları netleşti: eğitim/fine-tune Colab GPU, canlı inference MacBook local edge runtime, 720p source frame, göğüs yüksekliği kamera açısı, internet/açık veri tabanlı test, hız kalibrasyonu final scope ve lane modülü plate/evidence sonrası.
+* Bir sonraki net adım ne? Araç tespiti için model aday araştırması, Colab baseline deney planı ve MacBook runtime benchmark planı hazırlamak; `docs/04_yapay_zeka/research_required.md` içindeki araştırma gereksinimlerini kaynak/link/lisans bilgileriyle doldurmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -25,11 +25,15 @@
 * Model geliştirme araç tespitiyle başlamalı; diğer modüller sırayla eklenmeli.
 * Başarı tek metrikle değil, doğruluk + hız + latency + model boyutu + sistem/evidence katkısı dengesine göre değerlendirilmeli.
 * Eğitimin ana yükü sıfırdan model eğitmek değildir; public/pretrained modeller araştırılıp Colab üzerinde fine-tune, veri işleme, post-processing ve output uyarlaması yapılacaktır.
+* Canlı demo/inference ortamı MacBook local edge runtime olacak; Colab canlı demo ortamı değil, eğitim/fine-tune ortamıdır.
+* Canlı kaynak frame hedefi 720p olacak; seçilen modelin input boyutuna preprocessing aşamasında resize edilecektir.
+* Hız kalibrasyon denemesi final scope'ta tutulacak; MVP'de göreli hız / motion anomaly sinyali yeterli kabul edilebilir.
+* Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınmalıdır.
 
 ## 3) Mimari Özet
 
 * Bileşenler: Login/Auth client, Number Verification adapter, Android mobil istemci, video aktarım katmanı, edge/backend inference server, normal mode pipeline, critical mode expert selector, QoD/5G adapter, event fusion, evidence store, explanation layer.
-* Veri akışı: Kullanıcı adı/şifre girilir -> Number Verification API kullanıcı/cihaz/oturum eşleşmesini doğrular -> CameraX frame üretir -> edge/backend alır -> frame preprocessing/quality analysis -> normal mod ortam/sahne analizi -> araç detection root model -> tüm araçlar için hafif tracking -> target/risky vehicle selection -> target ROI generation -> context-gated expert routing -> riskli araçta QoD aday/request akışı -> kritik mod gerekiyorsa seçili uzman modeller -> event fusion -> event JSON -> evidence package -> mobil overlay/evidence ekranı.
+* Veri akışı: Kullanıcı adı/şifre girilir -> Number Verification API kullanıcı/cihaz/oturum eşleşmesini doğrular -> CameraX 720p frame/stream üretir -> MacBook local edge/backend alır -> frame preprocessing/quality analysis ve model input resize -> normal mod ortam/sahne analizi -> araç detection root model -> tüm araçlar için hafif tracking -> target/risky vehicle selection -> target ROI generation -> context-gated expert routing -> riskli araçta QoD aday/request akışı -> kritik mod gerekiyorsa seçili uzman modeller -> event fusion -> event JSON -> evidence package -> mobil overlay/evidence ekranı.
 * Önemli dizinler/modüller: `docs/` rapor ve teknik açıklamalar; `research/` derin araştırma başlıkları; `reports/` resmi rapor çalışma alanı; `architecture/` diyagram ve contract; `project/` karar/risk/gereksinim; `mobile/`, `backend/`, `data/`, `models/`, `testing/`, `governance/` geliştirme alanları.
 
 ## 4) Konvansiyonlar ve Standartlar
@@ -78,6 +82,14 @@
 * 2026-06-08 — Karar: Context-gated model routing kullanılacak. | Gerekçe: Hava/ışık/görüş/yol bağlamı model güveni, QoD adaylığı ve uzman model seçimini etkilemeli; normal mod tüm araçları hafif takip ederken ağır uzman modeller yalnız riskli/hedef araçta çalışmalı. | Etki: `docs/04_yapay_zeka/11_context_gated_model_routing.md`, AI omurgası, risk orkestrasyonu, mimari flow ve contract schema dosyaları güncellendi. | Alternatifler: Ortam analizini detection öncesi bloklayıcı aşama yapmak veya tüm araçlarda sürekli uzman model çalıştırmak.
 * 2026-06-08 — Karar: GitHub repo private görünürlüğe alındı. | Gerekçe: Kullanıcı repoyu private almak istedi; kişisel veri, API key, model ve evidence riskleri nedeniyle sınırlı erişim daha uygun. | Etki: Repo görünürlüğü `PRIVATE`; güvenlik kuralı yine secret/veri/model/evidence dosyalarının Git’e eklenmemesi olarak korunur. | Alternatifler: Public repo olarak devam etmek.
 * 2026-06-08 — Karar: Runtime AI architecture report-ready ve implementation-ready contract setiyle tanımlanacak. | Gerekçe: Mimari kapsam geniş ama MVP dar tutulmalı; frame inputtan event/evidence çıktısına kadar model pipeline net olmalı. | Etki: `docs/04_yapay_zeka/10_runtime_ai_pipeline_mimarisi.md`, `architecture/contracts/model_output_contract.md`, `architecture/contracts/expert_routing_policy.example.json`, güncellenmiş `event.schema.json`, frequency/scope/evidence/risk dokümanları eklendi. | Alternatifler: Modül dokümanlarını dağınık bırakmak.
+* 2026-06-08 — Karar: Eğitim/fine-tune Colab GPU, canlı inference MacBook local edge/backend üzerinde yürütülecek. | Gerekçe: Colab araştırma için, MacBook saha demosunda edge runtime için daha gerçekçi. | Etki: README, roadmap, backend, AI pipeline, research ve memory dosyaları güncellendi. | Alternatifler: Android on-device inference veya cloud-only inference.
+* 2026-06-08 — Karar: Canlı input 720p source frame/stream olarak planlanacak ve model input boyutuna resize edilecek. | Gerekçe: Kamera kaynağı ile model benchmark inputu ayrıştırılmalı. | Etki: Runtime pipeline, demo ve vehicle detection araştırması güncellendi. | Alternatifler: Tek sabit model inputunu source resolution gibi anlatmak.
+* 2026-06-08 — Karar: Demo kamera açısı göğüs yüksekliğine yakın, dışarı/yol yönüne bakan sabit kamera olarak tanımlandı. | Gerekçe: Kullanıcı demo kamera kurulumunu netleştirdi. | Etki: Demo senaryosu ve açık sorular güncellendi. | Alternatifler: Araç içi dashcam veya yüksek direk kamerası.
+* 2026-06-08 — Karar: Testler internet üzerindeki açık veri setleri, makale/proje ekleri ve açık kaynak benchmark materyalleriyle yürütülecek; lisanslar kaynaklarından doğrulanacak. | Gerekçe: Yerel veri mümkünse toplanmayacak ve maskeleme yapılmayacak. | Etki: Veri stratejisi, data policy ve açık sorular güncellendi. | Alternatifler: Yerel veri toplama.
+* 2026-06-08 — Karar: Türk plaka OCR post-processing için başlangıç yaklaşımı regex + il kodu kontrolü + temporal voting olacak. | Gerekçe: Kullanıcı bu kararı internet/literatür çalışmalarına göre bırakmak istedi; ilk uygulanabilir ve açıklanabilir yaklaşım kural tabanlı doğrulamadır. | Etki: Plate OCR research ve research_required güncellendi. | Alternatifler: Format kontrolsüz OCR veya tamamen learned correction.
+* 2026-06-08 — Karar: Hız kalibrasyon denemesi final scope'ta tutulacak; MVP'de göreli hız / motion anomaly sinyali yeterli olacak. | Gerekçe: Mutlak km/s için kamera/yol kalibrasyonu gerekir ve ilk MVP'yi riske atar. | Etki: Hız dokümanları, test stratejisi, scope ve research dosyaları güncellendi. | Alternatifler: Kalibrasyonu MVP şartı yapmak.
+* 2026-06-08 — Karar: Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınacak. | Gerekçe: Önce detection->tracking->plate->evidence uçtan uca akışı kurulmalı. | Etki: Lane docs ve roadmap dili güncellendi. | Alternatifler: Lane modelini plaka/evidence öncesinde geliştirmek.
+* 2026-06-08 — Karar: QoD için hedef gerçek API/adapter entegrasyonu olacak, mock/status-policy fallback korunacak. | Gerekçe: Gerçek API erişimi gecikebilir; pipeline adapter bağımlılığına kırılgan olmamalı. | Etki: QoD dokümanı ve QoD API delay riski güncellendi. | Alternatifler: Yalnız mock QoD göstergesi veya API gelene kadar beklemek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -89,6 +101,7 @@
 * 2026-06-08 — Milestone: Context-gated routing policy eklendi. | Sonuç: Ortam bağlamına göre QoD/uzman model çağırma politikası ve normal/kritik mod kaynak ayrımı netleştirildi.
 * 2026-06-08 — Milestone: Repo private yapıldı. | Sonuç: GitHub visibility `PRIVATE` olarak doğrulandı.
 * 2026-06-08 — Milestone: Runtime AI architecture contract paketi eklendi. | Sonuç: Frame inputtan final event/evidence çıktısına kadar pipeline, output contractları, routing policy, latency planı, scope ayrımı ve evidence UI logic dokümante edildi.
+* 2026-06-08 — Milestone: Model araştırma ve demo runtime kararları netleştirildi. | Sonuç: Colab/MacBook ayrımı, 720p input, kamera açısı, açık veri/lisans yaklaşımı, hız final scope, lane sonrası faz ve QoD gerçek adapter hedefi dokümante edildi.
 
 ## 8) Yapılanlar
 
@@ -107,6 +120,7 @@
 * [x] Context-gated model routing dokümanı ve contract alanları eklendi.
 * [x] GitHub repo private görünürlüğe alındı.
 * [x] Runtime AI pipeline, model output contract, expert routing policy, event schema, latency/frequency, scope, evidence UI logic ve AI risk register eklendi.
+* [x] Model araştırma ve demo runtime varsayımları dokümante edildi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -118,16 +132,18 @@
 * [ ] `docs/04_yapay_zeka/research_required.md` içindeki araştırma gereksinimlerini kaynak/link/lisans bilgileriyle doldur.
 * [x] Model geliştirme ilk odağı belirlendi.
 * [ ] Araç tespiti için Colab deney planı oluştur.
+* [ ] Araç tespiti için MacBook runtime benchmark planı oluştur.
 * [ ] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
 
-* Hız için referans mesafe/kalibrasyon yöntemi halen teknik tasarım kararı gerektiriyor.
+* Hız için referans mesafe/kalibrasyon yöntemi final scope teknik tasarım kararı olarak duruyor; MVP için engelleyici değil.
 * Ground truth hız için literatür/çalışma kaynakları henüz doğrulanmadı.
 * Maskeleme yapılmayacağı için veri lisansı ve kişisel veri riski daha yüksek.
 * Araç tespiti için model ailesi henüz seçilmedi; araştırma sonrası karar verilecek.
 * Colab deney dosyaları henüz oluşturulmadı.
+* MacBook runtime benchmark scripti veya planı henüz oluşturulmadı.
 * Repo private olsa bile veri/checkpoint/API key/evidence dosyaları yanlışlıkla commit edilmemeli.
 * `architecture/diagrams/*.drawio` dosyaları şu an placeholder; gerçek diyagram içeriği çizilmeli.
 * Backend ve Android uygulama skeleton kodu henüz yok; repo hâlâ dokümantasyon/contract aşamasında.

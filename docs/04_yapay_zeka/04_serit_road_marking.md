@@ -12,7 +12,9 @@ Yol çizgilerini veya şerit sınırlarını tespit ederek hedef aracın şerit 
 
 ## MVP Yaklaşımı
 
-MVP için basit segmentation veya YOLO tabanlı road marking gösterimi yapılabilir. Daha sonra lane-specific modellere geçilebilir.
+Şerit/road marking modülü, araç tespiti + tracking + plaka/OCR + evidence hattından sonra ele alınacaktır.
+
+MVP'de lane sonucu zorunlu event alanı değildir. İlk uçtan uca sistem event/evidence üretir hale geldikten sonra basit segmentation, YOLO tabanlı road marking gösterimi veya lane-specific modeller karşılaştırılabilir.
 
 ## Risk Sinyalleri
 
@@ -30,4 +32,4 @@ MVP için basit segmentation veya YOLO tabanlı road marking gösterimi yapılab
 
 ## Sorulacak Noktalar
 
-* MVP’de gerçek lane model mi, görsel road marking detector mı?
+* Plate/evidence hattı tamamlandıktan sonra ilk lane yaklaşımı segmentation mı, lane-specific model mi olacak?

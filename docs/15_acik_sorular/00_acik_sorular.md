@@ -12,6 +12,8 @@ Bu dosya, proje için sorulan karar noktalarını ve verilen cevapları merkezi 
 * Demo alanı gerçek yol kenarı olacak.
 * Kamera sabitlenecek.
 * Demo canlı kamera üzerinden yapılacak.
+* Kamera açısı normal bir insanın göğüs yüksekliğine yakın seviyeden dışarı/yol yönüne bakacak şekilde tasarlanacak.
+* Ağır model çıkarımı için edge çalışma ortamı MacBook olacak; telefon kamera/istemci rolünde kalacak.
 * Kontrollü video yalnız risk azaltma veya offline doğrulama alternatifi olarak kalabilir.
 
 ## Cevaplandı - Hız
@@ -20,6 +22,8 @@ Bu dosya, proje için sorulan karar noktalarını ve verilen cevapları merkezi 
 * Bu başarılamazsa göreli hız/risk sınıflandırmasına düşülecek.
 * Ground truth hız için doğrudan yerel ölçüm yerine literatürdeki/internette yayımlanmış çalışmalardan yöntem ve değerlendirme fikri türetilecek.
 * Referans mesafe için tam otomatik tek kamera ölçümü güvenilir kabul edilmeyecek. Tasarım yönü: yarı otomatik kalibrasyon, sahaya konulan referans marker/mesafe, kullanıcı tarafından seçilen referans noktaları veya yol/lane genişliği gibi bilinen ölçek varsayımları.
+* Hız kalibrasyonu MVP değil, final scope denemesi olarak tutulacak.
+* MVP aşamasında hız çıktısı mutlak km/s iddiası yerine relative speed / motion anomaly sinyali olarak kalabilir.
 
 ## Cevaplandı - Cabin Risk
 
@@ -40,6 +44,7 @@ Bu dosya, proje için sorulan karar noktalarını ve verilen cevapları merkezi 
 * QoD sağlandığında gerçek video kalitesi artırılacak.
 * Riskli araç tespit edildiğinde QoD aday/request akışı tetiklenecek.
 * QoD yine her riskte otomatik açılmayacak; kalite/güven artışı beklenen durumda seçici kullanılacak.
+* QoD için hedef gerçek API/adapter entegrasyonudur; API erişimi gelene kadar mock/status-policy fallback korunur.
 
 ## Cevaplandı - Auth ve Normal Mod Akışı
 
@@ -61,20 +66,26 @@ Bu dosya, proje için sorulan karar noktalarını ve verilen cevapları merkezi 
 ## Cevaplandı - Veri
 
 * Kullanılacak veri setleri yapılacak literatür/uygulama çalışmalarından saptanacak.
+* Testler öncelikle internet üzerindeki açık veri setleri, makale ekleri veya açık kaynak çalışma verileri üzerinden yürütülecek.
+* Veri seti lisansları ilgili makale, proje sayfası veya açık kaynak veri seti kartından doğrulanacak.
 * Yerel veri mümkünse toplanmayacak.
 * Maskeleme yapılmayacak.
 * KVKK/etik riskleri raporda açıkça tartışılmalı; maskeleme yapılmayacaksa veri kaynağı ve kullanım izni daha kritik hale gelir.
 
-## Yeni Sorular - Model Geliştirme İçin Netleştirilmeli
+## Cevaplandı - Model Geliştirme ve Çalışma Ortamı
 
 * İlk model geliştirme odağı: Araç tespiti.
 * Sıralama: Araç tespiti tamamlandıktan sonra diğer modüller faz sırasıyla eklenecek.
-* Eğitim/deney ortamı: Google Colab.
+* Eğitim/fine-tune/deney ortamı: Google Colab GPU.
+* Çalışan demo/inference ortamı: MacBook edge runtime.
+* Giriş frame hedefi: 720p frame alınır, model input boyutuna resize edilir.
 * Başlangıç model ailesi: Araştırma sonrası seçilecek.
 * Başarı metriği: Tek bir metrik değil; doğruluk, hız, gecikme, model boyutu ve event/evidence katkısını birlikte değerlendiren dengeli metrik paketi.
 * Test ortamı: Test verisinin gerçekleştirildiği ortam izole olacak.
 * Yerel veri: Mümkünse toplanmayacak.
 * Maskeleme: Yapılmayacak; bu nedenle izole test ortamı, veri erişim sınırları ve kaynak/lisans doğrulaması kritik kalır.
+* Türk plaka format doğrulaması için başlangıç yaklaşımı: açık kaynak/literatür çalışmalarına uygun regex, il kodu kontrolü, OCR post-processing ve temporal voting birleşimi.
+* Şerit/road marking modülü plate/evidence hattından sonra ele alınacak.
 
 ## Bu Aşamada Kalan Engelleyici Soru
 

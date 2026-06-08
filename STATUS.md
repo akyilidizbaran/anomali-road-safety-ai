@@ -20,6 +20,7 @@ Planning, documentation, research scaffolding and technical contract definition.
 * Backend/mobile API contracts.
 * Event JSON schema definition.
 * Report traceability map.
+* Colab research plan and MacBook runtime benchmark assumptions.
 
 ## Not Implemented Yet
 

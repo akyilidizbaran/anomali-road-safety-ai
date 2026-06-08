@@ -15,6 +15,7 @@ Must include:
    * Timestamp.
    * Source metadata.
    * Resolution/FPS metadata.
+   * 720p source frame and model-input resize metadata.
 
 2. **Vehicle detection**
    * Araç bbox.
@@ -32,19 +33,25 @@ Must include:
    * Selection score.
    * Selection reasons.
 
-5. **Plate detection/OCR**
+5. **Lightweight scene/frame quality context**
+   * Işık/görüş/blur gibi düşük maliyetli bağlam sinyali.
+   * Model confidence ve evidence quality yorumuna destek.
+   * Full scene/weather model benchmarkı final scope'ta kalabilir.
+
+6. **Plate detection/OCR**
    * Target vehicle ROI.
    * Plate bbox.
    * OCR text.
    * OCR confidence.
    * Unknown/low confidence states.
+   * Türk plaka formatı için ilk yaklaşım: regex, il kodu kontrolü, OCR post-processing ve temporal voting.
 
-6. **Event JSON**
+7. **Event JSON**
    * `architecture/contracts/event.schema.json`.
    * Partial output support.
    * Model version tracking.
 
-7. **Evidence screenshot and metadata**
+8. **Evidence screenshot and metadata**
    * Original frame reference.
    * Overlay screenshot reference.
    * Target crop reference.
@@ -67,7 +74,8 @@ May include:
    * Lane risk.
 
 3. **Speed estimation**
-   * Calibrated homography-based km/h if calibration exists.
+   * MVP'de relative speed / motion anomaly fallback.
+   * Final scope'ta calibrated homography-based km/h denemesi.
    * Relative speed / motion anomaly fallback if calibration does not exist.
 
 4. **Risk scoring**
@@ -77,6 +85,7 @@ May include:
 5. **QoD decision**
    * Riskli araçta candidate/request akışı.
    * Aktiflik yalnız karar güveni veya evidence kalitesi artacaksa.
+   * Gerçek API/adapter entegrasyonu hedeflenir; API erişimi yoksa mock/status-policy fallback kullanılır.
 
 6. **Expanded evidence package**
    * Expert outputs.

@@ -6,13 +6,15 @@ Model geliştirme sıfırdan tüm modülleri aynı anda hedeflemeyecek. İlk oda
 
 Eğitimin ana yükü sıfırdan model eğitmek olmayacak. İnternet üzerinde erişilebilir public/pretrained modeller araştırılacak; uygun modeller Colab üzerinde fine-tune, veri işleme, post-processing ve event JSON entegrasyonu ile proje amacına uyarlanacak.
 
+Runtime akışında ortam/hava/ışık/görüş bağlamı erken üretilir; ancak model geliştirme yükü açısından ilk ana araştırma ve deney başlığı araç tespitidir. Bu ayrım raporda açık tutulmalıdır.
+
 ## Geliştirme Sırası
 
 1. Araç tespiti.
 2. Araç takibi ve hedef araç seçimi.
 3. Plaka tespiti ve OCR.
 4. Evidence sistemi.
-5. Sahne/hava/görüş koşulu analizi.
+5. Hafif sahne/hava/görüş koşulu bağlamı.
 6. Genel yol ve araç dışı kullanıcı/yaya durumu.
 7. Context-gated model routing ve uzman model seçimi.
 8. Şerit/road marking analizi.
@@ -29,6 +31,12 @@ Colab kullanımının gerekçeleri:
 * Model denemeleri hızlı başlatılabilir.
 * Notebook tabanlı deney kayıtları rapora aktarılabilir.
 * Farklı model aileleri aynı ortamda karşılaştırılabilir.
+
+Demo/inference çalışma ortamı ise Colab değil, MacBook üzerinde çalışan local edge runtime olacaktır. Colab model araştırması ve fine-tune içindir; canlı demo pipeline'ı MacBook backend üzerinden çalışmalıdır.
+
+## Input ve Resize Kararı
+
+Canlı demo input'u 720p frame seviyesinde planlanır. Modeller bu frame'i doğrudan 720p olarak çalıştırmak zorunda değildir; preprocessing aşaması seçilen modelin beklediği input boyutuna resize eder. Benchmark kayıtlarında hem kaynak çözünürlük hem model input boyutu yazılmalıdır.
 
 ## Model Ailesi Seçimi
 
@@ -60,7 +68,7 @@ Araç tespitinden sonra tasarlanan modüller sırasıyla:
 5. **Genel yol ve araç dışı kullanıcı/yaya durumu:** Yol bağlamı, yaya/bisikletli/motosikletli ve riskli araca yakınlık sinyali üretilir.
 6. **Context-gated model routing:** Ortam, görünürlük, yol bağlamı, track stability ve risk ön skoru hangi uzman modelin çağrılacağını belirler.
 7. **Şerit / road marking analizi:** Hedef aracın şerit içindeki konumu ve ihlal şüphesi çıkarılır.
-8. **Hız kestirimi:** Kalibre edilmiş modda km/s, başarısız durumda göreli hız/risk sınıfı üretilir.
+8. **Hız kestirimi:** MVP'de göreli hareket/risk sinyali; final scope'ta kalibrasyon denemesiyle km/s yaklaşımı.
 9. **Sürücü/yolcu ve cabin risk:** Kontrollü video ve görünürlük yeterliyse final genişletme olarak çalışır.
 10. **Risk skoru ve kritik mod orkestrasyonu:** Modül çıktıları tek risk skoruna ve uzman çağırma politikasına bağlanır.
 11. **5G/QoD adapter:** Riskli araçta QoD aday/request akışı başlatılır; aktif olursa gerçek video kalite artırımı seçici şekilde bağlanır.

@@ -14,7 +14,8 @@
 * Araç: mAP, precision, recall, F1.
 * Tracking: IDF1, MOTA, ID switch.
 * OCR: plate accuracy, character accuracy, edit distance.
-* Hız: MAE, RMSE.
+* Hız MVP: relative motion consistency, motion anomaly event accuracy.
+* Hız final scope: MAE, RMSE, km/s hata aralığı.
 * Şerit: IoU, F1.
 * Sahne: macro F1.
 * Cabin: F1, confusion matrix.

@@ -10,6 +10,8 @@ Demo gerçek yol kenarında ve sabit kamera ile yapılacak. Projenin hedefi mutl
 
 Ground truth hız yaklaşımı, yerel sahada zorunlu doğrudan ölçüm yapmak yerine literatürdeki/internette yayımlanmış hız kestirimi çalışmalarından yöntem ve değerlendirme fikri türetmek olarak belirlenmiştir. Final raporda bu yaklaşım kaynaklandırılmalıdır.
 
+Kalibrasyon denemesi **final scope** olarak tutulacaktır. MVP aşamasında hız modülü mutlak km/s iddiası kurmak yerine track tabanlı göreli hareket, ani hızlanma/yavaşlama ve motion anomaly sinyali üretebilir.
+
 ## Referans Mesafe Otomatik Ölçülebilir mi?
 
 Tek kameradan, sahnede hiçbir bilinen ölçek yokken güvenilir gerçek mesafe otomatik çıkarılamaz. Monoküler görüntüde ölçek belirsizliği vardır; yani sistem piksel hareketini görür ama bu hareketin kaç metreye karşılık geldiğini bilmek için bir referansa ihtiyaç duyar.
@@ -22,7 +24,9 @@ Pratik seçenekler:
 4. **Harita/GPS/IMU desteği:** Kamera konumu ve yol geometrisi biliniyorsa destekleyici ölçek sağlanabilir; MVP için karmaşıktır.
 5. **Fallback:** Referans güvenilir değilse mutlak km/s yerine göreli hız sınıflandırması yapılır.
 
-Önerilen tasarım: Kullanıcıya demo başlangıcında kısa bir kalibrasyon adımı sunmak. Kullanıcı iki veya dört referans noktası seçer; sistem homografi matrisini hesaplar ve hız kestirimini confidence ile birlikte verir.
+Final scope için önerilen tasarım: Kullanıcıya demo başlangıcında kısa bir kalibrasyon adımı sunmak. Kullanıcı iki veya dört referans noktası seçer; sistem homografi matrisini hesaplar ve hız kestirimini confidence ile birlikte verir.
+
+MVP için önerilen tasarım: Kalibrasyon UI veya marker zorunlu tutulmaz. Track history üzerinden göreli hareket skoru ve risk etiketi üretilir; raporda bunun km/s tahmini olmadığı açıkça yazılır.
 
 ## Kalibre Edilmiş Mod
 
@@ -46,12 +50,16 @@ Pratik seçenekler:
 
 ## Metrikler
 
+MVP:
+
+* Relative motion consistency.
+* Motion anomaly event accuracy.
+* Track continuity.
+* Risk sınıfı doğruluğu.
+
+Final scope:
+
 * MAE.
 * RMSE.
 * km/s hata aralığı.
-* Risk sınıfı doğruluğu.
-
-## Sorulacak Noktalar
-
-* Kalibrasyon UI mobil uygulamada mı, backend debug panelinde mi yapılacak?
-* Referans noktaları sahada marker ile mi, görüntü üzerinde kullanıcı seçimiyle mi belirlenecek?
+* Calibration confidence.

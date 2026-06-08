@@ -6,14 +6,18 @@ Bu dosya kaynak veya literatür doğrulaması yapılmadan final model kararı ve
 
 Araç tespiti için YOLO/RT-DETR veya alternatif modeller araştırılmalıdır.
 
+İlk çalışma düzeni: Colab üzerinde araştırma/fine-tune, MacBook üzerinde runtime benchmark.
+
 Gerekli çıktı:
 
 * Aday model listesi.
 * Lisans durumu.
 * Pretrained weight erişimi.
 * Colab uyumu.
+* MacBook runtime uyumu.
 * ONNX/TFLite export durumu.
 * Benchmark planı.
+* 720p source frame -> model input resize politikası.
 
 ## Tracking
 
@@ -29,6 +33,8 @@ Gerekli çıktı:
 
 Türk plaka formatı ve public OCR modelleri araştırılmalıdır.
 
+Başlangıç yaklaşımı kural tabanlı format validation, il kodu kontrolü, OCR post-processing ve temporal voting birleşimidir. Bu yaklaşım literatür/açık kaynak çalışma araştırmasıyla doğrulanmalıdır.
+
 Gerekli çıktı:
 
 * Plate detector adayları.
@@ -40,6 +46,8 @@ Gerekli çıktı:
 
 Tek kamera hız kestirimi için homography/kalibrasyon gereksinimleri araştırılmalıdır.
 
+Kalibrasyon denemesi final scope'tadır. MVP için göreli hız / motion anomaly fallback metriği tanımlanmalıdır.
+
 Gerekli çıktı:
 
 * Kalibrasyon yöntemleri.
@@ -49,6 +57,8 @@ Gerekli çıktı:
 ## Lane / Road Marking
 
 Lane/road marking modelleri ve düşük görüş fallback stratejileri araştırılmalıdır.
+
+Bu modül plate/OCR ve evidence hattından sonra ele alınacaktır.
 
 ## Scene / Weather / Visibility
 

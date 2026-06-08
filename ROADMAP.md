@@ -9,10 +9,13 @@ The first working MVP will focus on:
 3. Vehicle detection.
 4. Target vehicle tracking.
 5. Plate detection/OCR.
-6. Evidence card generation.
-7. Basic system health screen.
+6. Lightweight frame-quality / environment context metadata.
+7. Evidence card generation.
+8. Basic system health screen.
 
-Lane analysis, speed estimation, scene/weather context, external road users, cabin risk and real QoD integration will be added progressively.
+Lane analysis, calibrated speed estimation, full scene/weather modeling, external road users, cabin risk and real QoD integration will be added progressively.
+
+Runtime assumption: Android captures live 720p frames/stream, MacBook runs the local edge/backend inference server, and Colab is used for model research/fine-tune.
 
 ## Near-Term Technical Order
 

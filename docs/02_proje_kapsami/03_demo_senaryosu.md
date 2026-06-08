@@ -4,11 +4,15 @@
 
 Bir Android telefon yol kenarında sabit bir açıyla konumlandırılır. Kullanıcı kullanıcı adı/şifreyle giriş yapar, Number Verification eşleşmesi başarılıysa Camera ekranında canlı görüntü açılır. Görüntü edge/backend sistemine aktarılır. Edge sistemi önce ortam/sahne koşullarını değerlendirir, ardından araçları tespit eder, hedef aracı seçer, track ID üretir ve mobil ekrana overlay sonucu döndürür.
 
+Demo çıkarım ortamı MacBook üzerinde çalışan local edge/backend olarak planlanır. Telefon canlı kamera ve kullanıcı arayüzü rolündedir; ağır model çıkarımı MacBook tarafında çalışır. Eğitim/fine-tune çalışmaları ise demo makinesinde değil, Google Colab GPU ortamında yürütülür.
+
 ## Mevcut Demo Kararı
 
 * Demo gerçek yol kenarında yapılacak.
 * Kamera sabitlenecek.
+* Kamera normal bir insanın göğüs yüksekliğine yakın seviyeden dışarı/yol yönüne bakacak.
 * Ana gösterim canlı kamera olacak.
+* Canlı frame hedefi 720p seviyesinde alınacak ve model input boyutuna resize edilecek.
 * Kontrollü video yalnız risk azaltma veya ek doğrulama materyali olarak kullanılabilir.
 * MVP ve ana yarışma demosunda sistem single-target mode ile çalışır.
 * Sistem görüntüdeki en önemli/hedef aracı seçer ve ağır uzman modelleri öncelikle bu hedef araç üzerinde çalıştırır.
@@ -45,5 +49,4 @@ Canlı demo teknik olarak riskliyse kontrollü video dosyasıyla aynı pipeline 
 
 ## Sorulacak Noktalar
 
-* Sabitleme için tripod, araç içi/kenarı aparat veya başka bir düzenek mi kullanılacak?
 * Canlı yol kenarı demosunda güvenlik ve izin süreci nasıl yönetilecek?
