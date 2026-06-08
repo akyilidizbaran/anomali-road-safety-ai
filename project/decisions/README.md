@@ -35,3 +35,4 @@ Durum:
 * `2026-06-08-repository-private.md`
 * `2026-06-08-model-research-demo-runtime-scope.md`
 * `2026-06-08-vehicle-detector-baseline-yolo11n.md`
+* `2026-06-08-condition-specific-detector-routing.md`

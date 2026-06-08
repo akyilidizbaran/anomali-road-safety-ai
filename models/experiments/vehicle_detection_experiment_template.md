@@ -8,6 +8,7 @@
 * Repo commit SHA:
 * Module: Vehicle Detection
 * Goal:
+* Condition profile: general / dark / rain / fog_low_visibility / night_low_light
 
 ## Runtime
 
@@ -22,6 +23,8 @@
 
 * Model family:
 * Variant:
+* Selected detector profile:
+* Fallback detector:
 * Pretrained weight:
 * License note:
 * Source URL:
@@ -86,6 +89,23 @@
 | Target selection input usable | TBD |
 | ONNX export | TBD |
 | Quantization attempt | TBD |
+
+## Manual Video Review
+
+Kullan:
+
+* `testing/templates/manual_video_benchmark_review.csv`
+
+| Metric | Value |
+|---|---:|
+| Visible vehicle count | TBD |
+| Correct detection count | TBD |
+| Missed vehicle count | TBD |
+| False positive count | TBD |
+| Correct class count | TBD |
+| Bbox usable count | TBD |
+| Evidence crop usable count | TBD |
+| Manual accuracy | TBD |
 
 ## Failure Cases
 

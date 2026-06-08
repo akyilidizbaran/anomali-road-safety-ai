@@ -37,5 +37,6 @@ Başlangıç araç detektörü, sınıf listesi, hedef araç skoru ve benchmark 
 * `dataset_candidates.md`: veri seti adayları, kullanım rolü ve sınıf mapping.
 * `benchmark_plan.md`: public skor, Colab benchmark ve MacBook runtime benchmark planı.
 * `finetune_plan.md`: Colab deney sırası ve kayıt standardı.
+* `condition_specific_detector_routing.md`: dark/rain/fog gibi koşullara göre detector profile seçimi.
 * `decision_vehicle_detector_v1.md`: ilk baseline kararı ve yeniden karar koşulları.
 * `deep_research/`: derin araştırma raporu ve kaynak listesi.

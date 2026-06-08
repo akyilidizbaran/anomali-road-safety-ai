@@ -51,6 +51,8 @@ Planlanan yaklaşım:
 
 Araç tespiti için ilk ölçülebilir baseline **YOLO11n** olarak kaydedilmiştir. Bu final model kararı değildir; final seçim Colab fine-tune sonuçları, MacBook runtime benchmark, output contract uyumu, tracking/evidence katkısı, export ve lisans değerlendirmesi sonrası yapılacaktır.
 
+İlk yerel manuel test seti `Test/video_1-3.mp4` dark/low-light videolarıdır. Bu videolar eğitim verisi değildir ve Git'e eklenmez; yalnız VD-EXP-001 smoke/manual benchmark için kullanılır.
+
 ## MVP Hedefi
 
 İlk çalışan MVP şu kapsama odaklanır:

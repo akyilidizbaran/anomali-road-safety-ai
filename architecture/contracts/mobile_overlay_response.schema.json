@@ -94,7 +94,11 @@
           "type": "array",
           "items": { "type": "string" }
         },
-        "target_track_id": { "type": ["integer", "string", "null"] }
+        "target_track_id": { "type": ["integer", "string", "null"] },
+        "condition_profile": { "type": ["string", "null"] },
+        "selected_detector": { "type": ["string", "null"] },
+        "fallback_detector": { "type": ["string", "null"] },
+        "routing_mode": { "type": ["string", "null"] }
       },
       "additionalProperties": false
     }

@@ -50,6 +50,8 @@ models/benchmarks/artifacts/*
 evidence/
 private_data/
 local_test_data/
+/Test/*
+!/Test/README.md
 
 # Secrets
 *.key

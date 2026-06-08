@@ -14,10 +14,13 @@ Planning, documentation, research scaffolding and technical contract definition.
 * Research topic map.
 * Data, model and test strategy drafts.
 * Vehicle detection deep research package and YOLO11n initial baseline decision.
+* Local dark manual test videos placed under ignored `Test/` folder.
+* Condition-specific vehicle detector routing plan.
 
 ## In Progress
 
 * Vehicle detection first baseline preparation.
+* Dark manual benchmark review preparation.
 * Backend/mobile API contracts.
 * Event JSON schema definition.
 * Report traceability map.

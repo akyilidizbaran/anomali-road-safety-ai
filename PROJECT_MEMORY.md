@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? Araç tespiti deep research raporu `research/02_vehicle_detection/deep_research/` altına taşındı; rapor aksiyon dosyalarına bölündü; ilk ölçülebilir vehicle detector baseline YOLO11n olarak kaydedildi; VehicleDetectionOutput contractı bbox/evidence/tracking uyumlu şekilde genişletildi.
-* Bir sonraki net adım ne? VD-EXP-001 için YOLO11n pretrained zero-fine-tune baseline deneyi ve MacBook runtime benchmark script/planını uygulamaya başlamak; BDD100K/UA-DETRAC lisans ve erişim doğrulamasını tamamlamak.
+* Son değişiklik neydi? `video_1.mp4`, `video_2.mp4`, `video_3.mp4` dark/low-light manuel test videoları `Test/` altına taşındı ve Git dışında bırakıldı; condition-specific detector routing kararı eklendi; dark/rain/fog/night detector profile yaklaşımı, manuel benchmark şablonu ve routing contract alanları dokümante edildi.
+* Bir sonraki net adım ne? VD-EXP-001 için YOLO11n pretrained zero-fine-tune baseline deneyi `Test/video_1-3.mp4` dark manual set üzerinde çalıştırmak; manuel review skorlarını kaydetmek; BDD100K/UA-DETRAC lisans ve erişim doğrulamasını tamamlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -30,6 +30,8 @@
 * Hız kalibrasyon denemesi final scope'ta tutulacak; MVP'de göreli hız / motion anomaly sinyali yeterli kabul edilebilir.
 * Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınmalıdır.
 * Araç tespiti için ilk ölçülebilir baseline YOLO11n'dir; final model kararı Colab fine-tune + MacBook runtime benchmark + lisans/export/evidence/tracking katkısı sonrası verilecektir.
+* Condition-specific detector routing kullanılacak: `general`, `dark`, `rain`, `fog_low_visibility`, `night_low_light`. Her frame için model eğitilmez; sahne/koşul profili seçilir ve önceden eğitilmiş/fine-tune edilmiş detector çağrılır.
+* Mevcut 3 dark video training set değildir; yalnız manuel benchmark/smoke-test materyalidir ve benchmark sonrası silinebilir.
 
 ## 3) Mimari Özet
 
@@ -92,6 +94,7 @@
 * 2026-06-08 — Karar: Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınacak. | Gerekçe: Önce detection->tracking->plate->evidence uçtan uca akışı kurulmalı. | Etki: Lane docs ve roadmap dili güncellendi. | Alternatifler: Lane modelini plaka/evidence öncesinde geliştirmek.
 * 2026-06-08 — Karar: QoD için hedef gerçek API/adapter entegrasyonu olacak, mock/status-policy fallback korunacak. | Gerekçe: Gerçek API erişimi gecikebilir; pipeline adapter bağımlılığına kırılgan olmamalı. | Etki: QoD dokümanı ve QoD API delay riski güncellendi. | Alternatifler: Yalnız mock QoD göstergesi veya API gelene kadar beklemek.
 * 2026-06-08 — Karar: Araç tespiti için ilk ölçülebilir baseline YOLO11n olacak. | Gerekçe: Hızlı Colab iterasyonu, küçük model boyutu, güçlü train/val/predict/export akışı ve MacBook runtime benchmark için pratik başlangıç. | Etki: `research/02_vehicle_detection/`, `models/benchmarks/vehicle_detection_comparison.csv`, `models/experiments/vehicle_detection_experiment_template.md`, `architecture/contracts/model_output_contract.md`, `architecture/contracts/event.schema.json`, `architecture/contracts/mobile_overlay_response.schema.json`, `docs/04_yapay_zeka/01_arac_tespiti_takip.md` güncellendi. | Alternatifler: YOLO11s, YOLOv10n/s, YOLOv8n, RT-DETR-L.
+* 2026-06-08 — Karar: Araç tespiti condition-specific detector routing destekleyecek. | Gerekçe: Karanlık, yağmur, sis ve düşük görüş koşulları detection hata profilini değiştirir; ancak 3 dark video specialist model eğitimi için yeterli değildir. | Etki: `Test/`, `.gitignore`, `research/02_vehicle_detection/condition_specific_detector_routing.md`, benchmark/fine-tune planları, manual review şablonu ve contract routing alanları güncellendi. | Alternatifler: Tek general detector veya 3 video ile hemen dark model eğitmek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -105,6 +108,7 @@
 * 2026-06-08 — Milestone: Runtime AI architecture contract paketi eklendi. | Sonuç: Frame inputtan final event/evidence çıktısına kadar pipeline, output contractları, routing policy, latency planı, scope ayrımı ve evidence UI logic dokümante edildi.
 * 2026-06-08 — Milestone: Model araştırma ve demo runtime kararları netleştirildi. | Sonuç: Colab/MacBook ayrımı, 720p input, kamera açısı, açık veri/lisans yaklaşımı, hız final scope, lane sonrası faz ve QoD gerçek adapter hedefi dokümante edildi.
 * 2026-06-08 — Milestone: Araç tespiti research paketi aksiyon dosyalarına bölündü. | Sonuç: Deep research raporu taşındı, kaynak listesi eklendi, model/dataset/benchmark/fine-tune/decision dosyaları oluşturuldu ve VehicleDetectionOutput contractı genişletildi.
+* 2026-06-08 — Milestone: Dark manual test set ve condition-specific detector routing eklendi. | Sonuç: 3 dark video `Test/` altına taşındı, video dosyaları Git dışında bırakıldı, manual review CSV şablonu ve condition profile routing planı oluşturuldu.
 
 ## 8) Yapılanlar
 
@@ -127,6 +131,9 @@
 * [x] Araç tespiti deep research raporu taşındı ve aksiyon dosyalarına bölündü.
 * [x] YOLO11n ilk ölçülebilir vehicle detector baseline olarak kaydedildi.
 * [x] VehicleDetectionOutput contractı bbox/evidence/tracking uyumlu olacak şekilde genişletildi.
+* [x] 3 dark/low-light manuel test videosu `Test/` altına taşındı ve Git dışında bırakıldı.
+* [x] Condition-specific detector routing planı oluşturuldu.
+* [x] Manual video benchmark review şablonu eklendi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -141,6 +148,7 @@
 * [x] Araç tespiti için MacBook runtime benchmark planı oluştur.
 * [x] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.
 * [ ] VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline deneyini çalıştır.
+* [ ] `Test/video_1-3.mp4` için dark manual review sonuçlarını kaydet.
 * [ ] BDD100K ve UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
@@ -150,6 +158,7 @@
 * Ground truth hız için literatür/çalışma kaynakları henüz doğrulanmadı.
 * Maskeleme yapılmayacağı için veri lisansı ve kişisel veri riski daha yüksek.
 * Araç tespiti için ilk baseline YOLO11n seçildi; final model henüz seçilmedi ve benchmark sonrası belirlenecek.
+* 3 dark video dark-specific model eğitimi için yeterli değildir; bu videolarla eğitim yapmak overfit ve savunulamaz sonuç riski taşır.
 * Colab deney dosyaları henüz oluşturulmadı.
 * MacBook runtime benchmark planı oluşturuldu; script/uygulama henüz yok.
 * Deep research raporundan kaynaklanan model/dataset URL'leri `research/02_vehicle_detection/deep_research/sources.md` içinde tutuluyor; final rapor öncesi kaynaklar tekrar doğrulanmalı.

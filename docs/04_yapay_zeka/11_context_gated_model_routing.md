@@ -12,6 +12,24 @@ Ortam bağlamı -> hafif normal takip -> riskli hedef araç -> QoD kararı -> uz
 
 Bu yaklaşım tek büyük model yerine bağlama duyarlı, seçici ve açıklanabilir bir model orkestrasyonu sağlar.
 
+## Condition-Specific Detector Kararı
+
+Araç tespiti için tek bir genel detector yanında koşula özel detector profilleri tasarlanacaktır.
+
+Örnek profiller:
+
+* `general`
+* `dark`
+* `rain`
+* `fog_low_visibility`
+* `night_low_light`
+
+Bu, her frame için modeli yeniden eğitmek anlamına gelmez. Sistem önce sahne/koşul profilini çıkarır, sonra önceden eğitilmiş veya fine-tune edilmiş uygun detector profilini çağırır. Yeterli veri yoksa ilgili condition profile başlangıçta general detector fallback ile çalışır ve failure case toplanır.
+
+Detaylı araç tespiti planı:
+
+* `research/02_vehicle_detection/condition_specific_detector_routing.md`
+
 ## Temel Tasarım Kararı
 
 Ortam analizi **pipeline gate** gibi çalışır; ancak detection/tracking hattını bloklayan ağır bir ön koşul olmamalıdır.
@@ -67,9 +85,9 @@ Evetse kısa süreli kalite artırımı yapılır. Hayırsa uzman modeller mevcu
 
 | Bağlam / Sinyal | Etkilediği Karar | Çağrılabilecek Uzman | QoD Etkisi | Evidence Notu |
 |---|---|---|---|---|
-| Düşük ışık | OCR ve detection güveni daha temkinli yorumlanır | Plate OCR, scene model | QoD adaylığı artar | Karar gerekçesine düşük ışık eklenir |
-| Sis / düşük görüş | Model belirsizliği artar | Scene/visibility model | QoD adaylığı artar | Görüş kalitesi confidence ile kaydedilir |
-| Yağmur / ıslak yol | Yol koşulu risk bağlamı güçlenir | Road context, lane | Koşullu | Yol yüzeyi event JSON’a eklenir |
+| Düşük ışık | Dark/night detector profile seçimi, OCR ve detection güveni daha temkinli yorumlanır | Dark vehicle detector, Plate OCR, scene model | QoD adaylığı artar | Karar gerekçesine düşük ışık eklenir |
+| Sis / düşük görüş | Fog/low-visibility detector profile seçimi, model belirsizliği artar | Fog/visibility detector, scene/visibility model | QoD adaylığı artar | Görüş kalitesi confidence ile kaydedilir |
+| Yağmur / ıslak yol | Rain detector profile seçimi, yol koşulu risk bağlamı güçlenir | Rain vehicle detector, road context, lane | Koşullu | Yol yüzeyi event JSON’a eklenir |
 | Şerit görünürlüğü düşük | Lane sonucu düşük güvenle raporlanır | Lane/road marking | Koşullu | Lane güveni ayrıca belirtilir |
 | Plaka bulanık | OCR güveni düşük olabilir | Plate detector, OCR | QoD güçlü aday | Plate crop ve OCR confidence saklanır |
 | Ani yanal hareket | Track penceresi kritikleşir | Tracking window, lane | Koşullu | Track continuity ve hareket gerekçesi saklanır |

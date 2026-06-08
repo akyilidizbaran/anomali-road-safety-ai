@@ -18,6 +18,34 @@ Public skorlar tek başına final karar değildir; sadece aday seçimi ve öncel
 
 ## Benchmark Aşamaları
 
+### Stage 0A - Local Dark Manual Smoke Test
+
+Amaç: Mevcut 3 dark video üzerinde hazır YOLO11n modelinin pipeline içinde çalışıp çalışmadığını görmek.
+
+Veri:
+
+* `Test/video_1.mp4`
+* `Test/video_2.mp4`
+* `Test/video_3.mp4`
+
+Koşul:
+
+* Video dosyaları Git'e eklenmez.
+* Bu set training verisi değildir.
+* İlk condition profile `dark` olarak etiketlenir.
+* Router başlangıçta `dark` modunu çağırabilir, fakat ayrı dark model henüz yoksa `general` YOLO11n detector fallback çalışır.
+* Her benchmark sonrası video çıktısı manuel kontrol edilir.
+* Accuracy ve failure case notları model/deney kaydıyla yazılır.
+* Disk/memory yükü için video dosyaları benchmark turu sonrası silinebilir.
+
+Çıktı:
+
+* Manuel detection accuracy notu.
+* False positive / false negative örnekleri.
+* Dark profile için threshold/preprocessing ihtiyacı.
+* Evidence crop usable / not usable kararı.
+* Tracking başlatılabilir / başlatılamaz kararı.
+
 ### Stage 0 - Pretrained Zero Fine-Tune Baseline
 
 Amaç: COCO-pretrained modelin proje domaininde fine-tune olmadan ne kadar çalıştığını görmek.
@@ -114,6 +142,22 @@ Sayısal eşikler ilk benchmark turundan sonra sabitlenir. İlk kriterler:
 * Single-target senaryoda tracker başlatılabilir olmalı.
 * MacBook p95 detection latency canlı pipeline bütçesini bozmamalı.
 * Model seçiminde yalnız mAP değil, tracking/evidence katkısı da dikkate alınmalı.
+
+## Manual Review Accuracy
+
+İlk dark video setinde ground truth annotation olmadığı için otomatik mAP üretmek doğru değildir.
+
+Bu aşamada manuel review ile şu oranlar tutulur:
+
+* görünür araç sayısı,
+* doğru tespit edilen araç sayısı,
+* kaçırılan araç sayısı,
+* yanlış pozitif sayısı,
+* doğru sınıf oranı,
+* bbox kullanılabilirlik oranı,
+* evidence crop kullanılabilirlik oranı.
+
+Bu metrikler raporda "manual review score" olarak adlandırılmalı; public benchmark mAP gibi sunulmamalıdır.
 
 ## Benchmark CSV
 
