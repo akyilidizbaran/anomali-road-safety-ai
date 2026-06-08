@@ -4,7 +4,7 @@
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
 * Son değişiklik neydi? VD-EXP-001 qualitative manual review kaydedildi: genel araç yakalama kullanılabilir, bazı false negative'ler ve 2-3 frame seviyesinde car->motorcycle class flicker var; fine-tune yönü condition-aware general vehicle detector olarak netleştirildi.
-* Bir sonraki net adım ne? `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` içinde BDD100K download modunu seçip aynı notebook üzerinden Drive placement, YOLO dönüşümü, pretrained baseline validation, YOLO11n fine-tune, baseline-delta ve condition breakdown testlerini çalıştırmak.
+* Bir sonraki net adım ne? `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` içinde BDD100K download modunu seçip Kaggle credential'larını Colab Secrets veya runtime prompt ile vererek Drive placement, YOLO dönüşümü, pretrained baseline validation, YOLO11n fine-tune, baseline-delta ve condition breakdown testlerini çalıştırmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -103,6 +103,7 @@
 * 2026-06-08 — Karar: BDD100K Colab fine-tune hattı VD-EXP-002 olarak kurulacak. | Gerekçe: BDD100K road object labels ve weather/timeofday/scene metadata'sı condition-aware general detector için en uygun ilk public veri kaynağıdır. | Etki: `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`, BDD100K dataset card/mapping ve benchmark planı eklendi. | Alternatifler: UA-DETRAC ile başlamak veya önce condition classifier eğitmek.
 * 2026-06-08 — Karar: BDD100K için opsiyonel otomatik Colab indirme desteklenecek. | Gerekçe: Repo public paylaşılmayacak ve lisanslı/private kullanım planlanıyor; yine de ham veri Git'e eklenmemeli, credential/URL/token bilgilerinin repo dışında kalması gerekir. | Etki: `scripts/colab/download_bdd100k.py`, `scripts/colab/README.md`, notebook ve dataset card güncellendi. | Alternatifler: Sadece manuel Drive upload ile ilerlemek.
 * 2026-06-08 — Karar: VD-EXP-002 tek notebook uçtan uca pipeline olacak. | Gerekçe: Kullanıcı BDD100K indirme, Drive yerleşimi, fine-tune model eğitimi, test ve baseline farklarının tek Colab notebook içinde yürütülmesini istedi. | Etki: `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`, experiment planı, fine-tune planı ve action roadmap güncellendi. | Alternatifler: Ayrı download notebook/script ve ayrı training notebook tutmak.
+* 2026-06-08 — Karar: Kaggle API key notebook/repo içine düz metin olarak yazılmayacak. | Gerekçe: Kullanıcı key paylaşmış olsa bile secret'lar Git geçmişine veya notebook hücresine gömülmemeli; Colab Secrets/env/prompt aynı pratikliği sağlar. | Etki: Notebook'a güvenli Kaggle credential setup hücresi eklendi. | Alternatifler: Key'i notebook config hücresine yazmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -123,6 +124,7 @@
 * 2026-06-08 — Milestone: VD-EXP-002 BDD100K Colab skeleton eklendi. | Sonuç: BDD100K -> YOLO dönüşümü, condition metadata koruma, YOLO11n fine-tune, overall validation, condition breakdown validation ve export adımlarını içeren notebook oluşturuldu.
 * 2026-06-08 — Milestone: BDD100K opsiyonel downloader helper eklendi. | Sonuç: Kaggle/direct/gdown modlarıyla Drive altına veri indirebilen helper script oluşturuldu; credential ve URL bilgileri repo dışında tutulacak.
 * 2026-06-08 — Milestone: VD-EXP-002 notebook tek dosya pipeline'a çevrildi. | Sonuç: Notebook artık BDD100K indirme/yerleşim, conversion, pretrained baseline, fine-tune, optional challenger, baseline-delta ve condition breakdown adımlarını aynı dosyada yürütür.
+* 2026-06-08 — Milestone: VD-EXP-002 Kaggle credential setup eklendi. | Sonuç: Notebook Colab Secrets, env veya gizli runtime prompt üzerinden Kaggle credential okuyabilir; API key repoya yazılmaz.
 
 ## 8) Yapılanlar
 
@@ -156,6 +158,7 @@
 * [x] BDD100K dataset card, class/condition mapping ve VD-EXP-002 Colab notebook skeleton eklendi.
 * [x] BDD100K için opsiyonel Colab downloader helper eklendi.
 * [x] VD-EXP-002 notebook tek dosyada download + placement + training + test + baseline-delta pipeline'a çevrildi.
+* [x] Kaggle credential setup notebook içine güvenli şekilde eklendi.
 
 ## 9) Yapılacaklar (Next)
 

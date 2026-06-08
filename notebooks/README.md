@@ -48,6 +48,24 @@ BDD100K indirme otomasyonu notebook içine gömülüdür. Config hücresinde şu
 
 `scripts/colab/download_bdd100k.py` aynı indirme mantığını notebook dışında çalıştırmak için opsiyonel helper olarak kalır.
 
+## Kaggle Credential Kullanımı
+
+Kaggle API key notebook veya Git dosyasına düz metin olarak yazılmaz.
+
+Notebook şu sırayla credential okur:
+
+1. Colab Secrets:
+   * `KAGGLE_USERNAME`
+   * `KAGGLE_KEY`
+2. Ortam değişkenleri:
+   * `KAGGLE_USERNAME`
+   * `KAGGLE_KEY`
+3. Runtime prompt:
+   * username normal input,
+   * API key `getpass` ile gizli input.
+
+Bu sayede notebook tek dosyada otomatik indirme yapabilir; key repoya yazılmaz.
+
 ## Tek Notebook Akışı
 
 `VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` şu çıktıları üretir:
