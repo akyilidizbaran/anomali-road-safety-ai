@@ -40,3 +40,11 @@ Başlangıç araç detektörü, sınıf listesi, hedef araç skoru ve benchmark 
 * `condition_specific_detector_routing.md`: dark/rain/fog gibi koşullara göre detector profile seçimi.
 * `decision_vehicle_detector_v1.md`: ilk baseline kararı ve yeniden karar koşulları.
 * `deep_research/`: derin araştırma raporu ve kaynak listesi.
+
+## İlgili Araştırma Alanı
+
+Koşula özel detector uzmanları için ayrı aksiyon alanı:
+
+* `../03_condition_experts/`
+
+Bu alan, `general -> night_low_light -> rain -> fog_low_visibility` model geliştirme sırasını, deep research kapsam denetimini, dataset kaynak/lisans checklist'ini ve condition expert yol haritasını tutar.

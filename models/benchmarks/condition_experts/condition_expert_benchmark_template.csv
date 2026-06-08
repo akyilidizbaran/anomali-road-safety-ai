@@ -1,0 +1,2 @@
+experiment_id,condition_tag,model_family,model_variant,start_checkpoint,dataset_train,dataset_val,dataset_test,license_status,map_50_95,ap_50,precision,recall,fp_per_min,missed_detection_rate,bbox_adequacy_score,confidence_stability_score,track_continuity_score,macbook_p50_latency_ms,macbook_p95_latency_ms,macbook_fps,uplift_vs_general,proven_better,enabled_for_routing,notes
+CE-EXP-001,night_low_light,YOLO11,yolo11n,best_general,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,false,false,TBD

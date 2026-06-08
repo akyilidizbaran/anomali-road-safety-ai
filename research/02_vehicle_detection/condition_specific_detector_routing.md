@@ -27,12 +27,14 @@ Doğru çalışma:
 | Profile | Status | Model Kaynağı | Kullanım |
 |---|---|---|---|
 | `general` | MVP baseline | COCO-pretrained YOLO11n, sonra road-domain fine-tune | Varsayılan detector |
-| `dark` | İlk test profile | Başlangıçta YOLO11n general; ileride low-light/dark fine-tune | Mevcut `Test/video_1-3.mp4` ile manuel benchmark |
-| `rain` | Future profile | BDD100K rainy subset / ilgili açık veri | Yağmurlu koşul |
-| `fog_low_visibility` | Future profile | fog/low visibility subset | Sis/düşük görüş |
-| `night_low_light` | Future profile | BDD100K night + dark test expansion | Gece/düşük ışık |
+| `night_low_light` | İlk specialist adayı | `best_general` checkpoint -> night/low-light fine-tune | Mevcut `Test/video_1-3.mp4` ile smoke/manual benchmark |
+| `rain` | İkinci specialist adayı | BDD100K rainy + ACDC/DAWN rainy subset | Yağmurlu koşul |
+| `fog_low_visibility` | Üçüncü specialist adayı | ACDC fog + Foggy Cityscapes/Foggy Driving + DAWN fog | Sis/düşük görüş |
+| `dark` | Ayrı detector değil | Başlangıçta `night_low_light` routing etiketi | Parking/tunnel/dark gibi alt koşulların izlenmesi |
 
-İlk aşamada `dark` profili ayrı eğitilmiş model olmak zorunda değildir. Router dark modunu çağırdığında başlangıçta general YOLO11n çalıştırılır ve dark-condition performansı ölçülür. Yeterli veri oluşunca dark-specific fine-tune yapılır.
+Deep research sonucu, ilk aşamada `dark` profilinin ayrı detector olarak açılmamasını önerir. `dark`, `tunnel_or_parking_dark` ve benzeri alt koşullar önce condition profile katmanında izlenir; detector seçimi gerekiyorsa `night_low_light` uzmanına veya `general` fallback'e route edilir.
+
+Koşul uzmanları `best_general` checkpoint'ten türetilmelidir. `best_general` seçilmeden ayrı specialist detector eğitilmez.
 
 ## Router Output Contract
 
@@ -41,11 +43,11 @@ Doğru çalışma:
 ```json
 {
   "frame_id": "frame_000123",
-  "condition_profile": "dark",
+  "condition_profile": "night_low_light",
   "condition_confidence": 0.86,
   "selected_detector": "vehicle_detector_yolo11n_general_v1",
   "fallback_detector": "vehicle_detector_yolo11n_general_v1",
-  "routing_mode": "single_profile",
+  "routing_mode": "manual_review",
   "routing_reason": "low_brightness_and_limited_visibility"
 }
 ```
@@ -76,9 +78,9 @@ Bu videolar:
 
 ## Fine-Tune İçin Veri Eşiği
 
-Dark-specific detector eğitimi için 3 video yeterli kabul edilmez.
+Night/low-light specialist eğitimi için 3 video yeterli kabul edilmez.
 
-Dark profile fine-tune'a geçmek için önerilen minimumlar:
+Night/low-light specialist fine-tune'a geçmek için önerilen minimumlar:
 
 * farklı kamera açılarından video,
 * farklı karanlık seviyeleri,
@@ -89,10 +91,24 @@ Dark profile fine-tune'a geçmek için önerilen minimumlar:
 
 Yeterli veri yoksa yapılacak doğru iş:
 
-* general detector'ı dark videolarda ölçmek,
+* general detector'ı dark/night videolarda ölçmek,
 * failure case notlarını çıkarmak,
 * threshold / confidence / preprocessing ayarı denemek,
-* ileride dark fine-tune için veri gereksinimini netleştirmek.
+* ileride `night_low_light` fine-tune için veri gereksinimini netleştirmek.
+
+## Promotion Kuralı
+
+Bir specialist detector routing'e aktif eklenmeden önce general modelle aynı condition validation setinde karşılaştırılır.
+
+Minimum kabul önerisi:
+
+* `mAP@0.5:0.95` en az +2.0 puan veya `AP@0.5` en az +3 puan,
+* ya da recall/missed detection tarafında proje açısından anlamlı iyileşme,
+* FP/min artışı kontrol altında,
+* MacBook p95 latency bütçesi aşılmamış,
+* yanlış route olabilecek mixed-condition sette general'e göre ciddi bozulma yok.
+
+Bu koşullar sağlanmazsa specialist model eğitilmiş olsa bile `enabled=false` kalır ve general fallback kullanılır.
 
 ## Benchmark Kararı
 
