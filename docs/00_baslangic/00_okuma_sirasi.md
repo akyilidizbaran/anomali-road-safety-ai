@@ -10,13 +10,16 @@ Projeye yeni başlayan biri için önerilen okuma sırası:
 6. `docs/03_sistem_mimarisi/01_uctan_uca_mimari.md`
 7. `docs/03_sistem_mimarisi/02_normal_kritik_mod.md`
 8. `docs/04_yapay_zeka/00_ai_omurga.md`
-9. `docs/05_veri_seti/00_veri_stratejisi.md`
-10. `docs/09_evidence_aciklanabilirlik/00_evidence_omurga.md`
-11. `docs/10_test_metrikler/00_test_stratejisi.md`
-12. `reports/PCR_FTR/section_map.md`
-13. `docs/01_resmi_raporlar/PDR_OTR/README.md`
-14. `docs/01_resmi_raporlar/PCR_FTR/README.md`
-15. `docs/15_acik_sorular/00_acik_sorular.md`
+9. `docs/04_yapay_zeka/10_runtime_ai_pipeline_mimarisi.md`
+10. `docs/04_yapay_zeka/12_mvp_final_future_scope.md`
+11. `docs/05_veri_seti/00_veri_stratejisi.md`
+12. `docs/09_evidence_aciklanabilirlik/00_evidence_omurga.md`
+13. `docs/09_evidence_aciklanabilirlik/02_evidence_ui_logic.md`
+14. `docs/10_test_metrikler/00_test_stratejisi.md`
+15. `reports/PCR_FTR/section_map.md`
+16. `docs/01_resmi_raporlar/PDR_OTR/README.md`
+17. `docs/01_resmi_raporlar/PCR_FTR/README.md`
+18. `docs/15_acik_sorular/00_acik_sorular.md`
 
 ## Neden Bu Sıra?
 

@@ -1,0 +1,143 @@
+{
+  "policy_name": "anomali_context_gated_expert_routing_v1",
+  "description": "Example routing policy for selective expert activation in the Anomali Road Safety AI runtime pipeline. This is not final benchmarked logic; thresholds must be validated during experiments.",
+  "global_rules": {
+    "normal_mode": [
+      "run_frame_preprocess",
+      "run_frame_quality_analysis",
+      "run_scene_visibility_low_frequency",
+      "run_vehicle_detection",
+      "run_multi_vehicle_tracking",
+      "run_target_vehicle_selection"
+    ],
+    "critical_mode": [
+      "run_selected_experts_only",
+      "run_event_fusion",
+      "generate_evidence_package"
+    ],
+    "do_not_run_every_frame": [
+      "plate_ocr",
+      "speed_estimation",
+      "lane_expert",
+      "cabin_risk",
+      "evidence_generation"
+    ]
+  },
+  "thresholds": {
+    "risk_score_event_threshold": 0.6,
+    "critical_risk_score_threshold": 0.8,
+    "target_track_stability_min": 0.65,
+    "plate_visibility_min": 0.55,
+    "lane_visibility_min": 0.5,
+    "speed_track_history_min_frames": 20,
+    "cabin_visibility_min": "limited",
+    "qod_image_quality_min": 0.55
+  },
+  "rules": [
+    {
+      "id": "plate_ocr_on_stable_target",
+      "expert": "plate_ocr",
+      "when_all": [
+        "target_vehicle.status == selected",
+        "target_vehicle.track_stability >= target_track_stability_min",
+        "plate.visibility_score >= plate_visibility_min"
+      ],
+      "action": "run_plate_detection_and_ocr",
+      "fallback": "plate_status_not_run_or_low_confidence",
+      "evidence_reason": "stable_target_vehicle_with_sufficient_plate_visibility"
+    },
+    {
+      "id": "lane_on_visibility_or_lane_risk",
+      "expert": "lane_road_marking",
+      "when_any": [
+        "scene.lane_visibility_score >= lane_visibility_min",
+        "risk.reasons contains lane_boundary_proximity",
+        "tracking.lateral_motion_anomaly == true"
+      ],
+      "action": "run_lane_expert_on_target_region",
+      "fallback": "lane_marking_not_visible",
+      "evidence_reason": "lane_visibility_or_lane_risk_suspected"
+    },
+    {
+      "id": "speed_on_sufficient_track_history",
+      "expert": "speed_estimation",
+      "when_all": [
+        "target_vehicle.status == selected",
+        "tracking.history_frames >= speed_track_history_min_frames"
+      ],
+      "action": "run_speed_estimation",
+      "fallback": "insufficient_track_history",
+      "evidence_reason": "track_history_sufficient_for_motion_estimation"
+    },
+    {
+      "id": "calibrated_speed_only_with_calibration",
+      "expert": "speed_estimation",
+      "when_all": [
+        "speed_estimation_requested == true",
+        "source.calibration_profile_id != null"
+      ],
+      "action": "use_homography_kmh_mode",
+      "fallback": "use_relative_motion_mode",
+      "evidence_reason": "calibration_available_for_kmh_estimation"
+    },
+    {
+      "id": "cabin_visibility_gate",
+      "expert": "cabin_risk",
+      "when_all": [
+        "target_vehicle.status == selected",
+        "cabin.visibility in [good, limited]"
+      ],
+      "action": "run_cabin_risk_expert",
+      "fallback": "driver_cabin.status = not_visible",
+      "evidence_reason": "cabin_visibility_sufficient"
+    },
+    {
+      "id": "external_user_near_target",
+      "expert": "external_user_risk",
+      "when_any": [
+        "external_users contains pedestrian near target_vehicle",
+        "external_users contains bicycle near target_vehicle",
+        "external_users contains motorcycle near target_vehicle"
+      ],
+      "action": "raise_external_user_context_risk",
+      "fallback": "external_users.status = none_detected",
+      "evidence_reason": "external_road_user_near_target_vehicle"
+    },
+    {
+      "id": "qod_candidate_for_low_quality_high_risk",
+      "expert": "qod_decision",
+      "when_all": [
+        "risk.risk_score >= risk_score_event_threshold",
+        "frame_quality.overall_quality_score < qod_image_quality_min"
+      ],
+      "when_any": [
+        "plate.status in [blurred, low_confidence]",
+        "scene.visibility in [limited, poor]",
+        "evidence.evidence_quality_score < qod_image_quality_min"
+      ],
+      "action": "qod_status = candidate",
+      "fallback": "qod_status = not_needed",
+      "evidence_reason": "qod_may_improve_decision_or_evidence_quality"
+    },
+    {
+      "id": "evidence_generation_on_meaningful_event",
+      "expert": "evidence_generation",
+      "when_any": [
+        "risk.risk_score >= risk_score_event_threshold",
+        "plate.ocr_status == read",
+        "lane.lane_risk in [medium, high, critical]",
+        "speed.motion_anomaly != null",
+        "driver_cabin.status == ok",
+        "external_users risk_relation == near_target_vehicle"
+      ],
+      "action": "generate_event_json_and_evidence_package",
+      "fallback": "no_event_generated",
+      "evidence_reason": "meaningful_ai_event_or_risk_threshold_crossed"
+    }
+  ],
+  "notes": [
+    "Thresholds are placeholders and must be validated during model experiments.",
+    "This policy must not be described as final field performance.",
+    "LLM explanation is not part of routing decision; it only explains structured outputs."
+  ]
+}

@@ -61,7 +61,7 @@ QoD aktiflik sorusu:
 
 > QoD bu olayda karar güvenini veya kanıt kalitesini anlamlı şekilde artırır mı?
 
-Evetse kısa süreli kalite artırımı yapılır. Hayırsa uzman modeller mevcut görüntü kalitesiyle çalışır ve QoD status `NOT_NEEDED` veya `CANDIDATE` seviyesinde kalabilir.
+Evetse kısa süreli kalite artırımı yapılır. Hayırsa uzman modeller mevcut görüntü kalitesiyle çalışır ve QoD status `not_needed` veya `candidate` seviyesinde kalabilir.
 
 ## Routing Politika Tablosu
 
@@ -129,7 +129,7 @@ Daha sonra yeterli event verisi oluşursa öğrenilebilir bir risk/routing model
   },
   "routing_decision": {
     "mode": "critical",
-    "qod_status": "CANDIDATE",
+    "qod_status": "candidate",
     "qod_reason": "low_visibility_and_plate_blur_may_reduce_evidence_quality",
     "experts_to_call": [
       "Plate OCR",

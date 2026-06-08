@@ -28,6 +28,8 @@ Kaynaklar:
 * `docs/03_sistem_mimarisi/02_normal_kritik_mod.md`
 * `docs/03_sistem_mimarisi/05_auth_normal_mode_flow.md`
 * `docs/04_yapay_zeka/`
+* `docs/04_yapay_zeka/10_runtime_ai_pipeline_mimarisi.md`
+* `docs/04_yapay_zeka/12_mvp_final_future_scope.md`
 * `architecture/contracts/`
 * `architecture/flows/auth_normal_qod_flow.md`
 
@@ -53,6 +55,8 @@ Kaynaklar:
 
 * `docs/01_resmi_raporlar/PCR_FTR/03_3_cozum_detaylari.md`
 * `docs/04_yapay_zeka/08_model_gelistirme_yol_haritasi.md`
+* `docs/04_yapay_zeka/11_model_frekans_latency_budget.md`
+* `docs/04_yapay_zeka/13_ai_module_risk_register.md`
 * `models/`
 * `testing/templates/`
 
@@ -64,6 +68,7 @@ Kaynaklar:
 * `docs/10_test_metrikler/01_dengeli_basari_metrikleri.md`
 * `testing/templates/`
 * `models/benchmarks/`
+* `docs/09_evidence_aciklanabilirlik/02_evidence_ui_logic.md`
 
 ## 5. Kaynakça
 

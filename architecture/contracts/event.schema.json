@@ -2,19 +2,28 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/anomali/event.schema.json",
   "title": "AnomaliEvidenceEvent",
+  "description": "Final event object produced by the runtime AI pipeline. Expert outputs are optional because normal mode and partial evidence events may not run every expert module.",
   "type": "object",
-  "required": ["event_id", "timestamp_utc", "source", "system", "target_vehicle", "risk", "models", "evidence"],
+  "required": ["event_id", "timestamp_utc", "frame_id", "source", "system", "risk", "models", "evidence"],
   "properties": {
     "event_id": { "type": "string" },
     "timestamp_utc": { "type": "string", "format": "date-time" },
+    "frame_id": { "type": "string" },
     "source": {
       "type": "object",
-      "required": ["device_id", "camera_mode", "resolution", "fps"],
+      "required": ["device_id", "camera_mode"],
       "properties": {
         "device_id": { "type": "string" },
-        "camera_mode": { "type": "string" },
+        "session_id": { "type": "string" },
+        "camera_mode": {
+          "type": "string",
+          "enum": ["live", "controlled_video", "offline_replay", "unknown"]
+        },
         "resolution": { "type": "string" },
-        "fps": { "type": "number", "minimum": 0 }
+        "fps": { "type": "number", "minimum": 0 },
+        "orientation": { "type": "string" },
+        "network_type": { "type": "string" },
+        "calibration_profile_id": { "type": ["string", "null"] }
       },
       "additionalProperties": true
     },
@@ -22,47 +31,183 @@
       "type": "object",
       "required": ["mode", "qod_status", "number_verification_status"],
       "properties": {
-        "mode": { "type": "string", "enum": ["normal", "critical"] },
-        "qod_status": { "type": "string" },
-        "number_verification_status": { "type": "string" },
-        "latency_ms": { "type": "number", "minimum": 0 },
-        "pipeline_fps": { "type": "number", "minimum": 0 }
+        "mode": { "type": "string", "enum": ["normal", "critical", "unknown"] },
+        "qod_status": {
+          "type": "string",
+          "enum": ["not_available", "mock_ready", "not_needed", "candidate", "requested", "active", "failed"]
+        },
+        "number_verification_status": {
+          "type": "string",
+          "enum": ["verified", "mock_verified", "pending", "failed", "not_available", "unknown"]
+        },
+        "latency_ms": { "type": ["number", "null"], "minimum": 0 },
+        "pipeline_fps": { "type": ["number", "null"], "minimum": 0 },
+        "runtime_profile": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "frame_quality": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["ok", "low_quality", "unknown", "not_run"] },
+        "blur_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "brightness_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "contrast_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "quality_flags": { "type": "array", "items": { "type": "string" } }
       },
       "additionalProperties": true
     },
     "target_vehicle": {
       "type": "object",
-      "required": ["track_id", "vehicle_type", "bbox", "confidence"],
       "properties": {
-        "track_id": { "type": ["integer", "string"] },
-        "vehicle_type": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["selected", "no_target", "ambiguous", "not_run", "unknown"]
+        },
+        "track_id": { "type": ["integer", "string", "null"] },
+        "vehicle_type": { "type": ["string", "null"] },
         "bbox": {
-          "type": "array",
+          "type": ["array", "null"],
           "items": { "type": "number" },
           "minItems": 4,
           "maxItems": 4
         },
-        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "track_stability": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "selection_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "selection_reasons": { "type": "array", "items": { "type": "string" } }
       },
       "additionalProperties": true
     },
-    "plate": { "type": "object" },
-    "speed": { "type": "object" },
-    "lane": { "type": "object" },
-    "driver_cabin": { "type": "object" },
-    "scene": { "type": "object" },
-    "road_context": { "type": "object" },
-    "external_users": { "type": "array" },
+    "scene": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["ok", "unknown", "not_run", "low_confidence"] },
+        "weather": { "type": "string" },
+        "lighting": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["good", "limited", "poor", "unknown"] },
+        "road_surface": { "type": "string" },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "plate": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["detected", "not_detected", "not_run", "not_visible", "blurred", "low_confidence", "unknown"]
+        },
+        "detected": { "type": ["boolean", "null"] },
+        "bbox": {
+          "type": ["array", "null"],
+          "items": { "type": "number" },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "ocr_status": {
+          "type": "string",
+          "enum": ["read", "not_read", "not_run", "low_confidence", "unknown"]
+        },
+        "ocr_text": { "type": ["string", "null"] },
+        "format_valid": { "type": ["boolean", "null"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "failure_reason": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "speed": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["ok", "not_run", "not_available", "insufficient_track_history", "calibration_missing", "low_confidence", "unknown"]
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["homography_kmh", "relative_motion", "not_available"]
+        },
+        "estimated_kmh": { "type": ["number", "null"], "minimum": 0 },
+        "relative_motion_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "motion_anomaly": { "type": ["string", "null"] },
+        "calibration_profile_id": { "type": ["string", "null"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "lane": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["ok", "not_run", "marking_not_visible", "low_visibility", "unknown"]
+        },
+        "lane_status": { "type": ["string", "null"] },
+        "lane_visibility": { "type": ["string", "null"] },
+        "lane_risk": { "type": ["string", "null"], "enum": ["low", "medium", "high", "critical", "unknown", null] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "driver_cabin": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["ok", "not_run", "not_visible", "visibility_poor", "unknown"]
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["good", "limited", "poor", "not_visible"]
+        },
+        "driver_detected": { "type": ["boolean", "null"] },
+        "passenger_count": { "type": ["integer", "null"], "minimum": 0 },
+        "phone_risk": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "seatbelt_status": { "type": ["string", "null"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "failure_reason": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "external_users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["ok", "not_run", "none_detected", "low_confidence", "unknown"] },
+          "type": { "type": ["string", "null"] },
+          "bbox": {
+            "type": ["array", "null"],
+            "items": { "type": "number" },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "relative_position": { "type": ["string", "null"] },
+          "risk_relation": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
     "risk": {
       "type": "object",
       "required": ["risk_score", "risk_level", "reasons"],
       "properties": {
         "risk_score": { "type": "number", "minimum": 0, "maximum": 1 },
-        "risk_level": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
-        "reasons": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
+        "risk_level": { "type": "string", "enum": ["low", "medium", "high", "critical", "unknown"] },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "fusion_confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "thresholds": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "routing_decision": {
+      "type": "object",
+      "properties": {
+        "experts_called": { "type": "array", "items": { "type": "string" } },
+        "routing_reasons": { "type": "array", "items": { "type": "string" } },
+        "qod_reason": { "type": ["string", "null"] },
+        "fallbacks_used": { "type": "array", "items": { "type": "string" } }
       },
       "additionalProperties": true
     },
@@ -71,34 +216,33 @@
       "description": "Model version identifiers used for this event.",
       "additionalProperties": { "type": "string" }
     },
-    "routing_decision": {
-      "type": "object",
-      "description": "Context-gated expert selection decision for this event.",
-      "properties": {
-        "experts_called": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "routing_reasons": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "qod_reason": { "type": "string" }
-      },
-      "additionalProperties": true
-    },
     "evidence": {
       "type": "object",
-      "required": ["json_uri"],
+      "required": ["status", "json_uri"],
       "properties": {
-        "image_uri": { "type": "string" },
-        "crop_uri": { "type": "string" },
-        "overlay_uri": { "type": "string" },
-        "json_uri": { "type": "string" }
+        "status": { "type": "string", "enum": ["created", "partial", "not_created", "storage_failed", "media_unavailable"] },
+        "original_frame_uri": { "type": ["string", "null"] },
+        "overlay_image_uri": { "type": ["string", "null"] },
+        "target_vehicle_crop_uri": { "type": ["string", "null"] },
+        "plate_crop_uri": { "type": ["string", "null"] },
+        "json_uri": { "type": "string" },
+        "evidence_quality_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "metadata_completeness_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
       },
       "additionalProperties": true
     },
-    "decision_reason": { "type": "string" }
+    "explanation": {
+      "type": "object",
+      "properties": {
+        "user_level_summary": { "type": ["string", "null"] },
+        "technical_summary": { "type": ["string", "null"] },
+        "llm_used": { "type": ["boolean", "null"] },
+        "llm_provider": { "type": ["string", "null"] },
+        "template_fallback_used": { "type": ["boolean", "null"] },
+        "source": { "type": "string", "enum": ["structured_outputs", "template", "local_llm", "api_llm", "not_generated"] }
+      },
+      "additionalProperties": true
+    }
   },
   "additionalProperties": true
 }

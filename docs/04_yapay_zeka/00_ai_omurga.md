@@ -4,6 +4,8 @@
 
 Proje tek bir modelle değil, görev bazlı uzman modellerle ilerlemelidir. Çünkü araç tespiti, plaka OCR, şerit, hız, hava/görüş ve cabin risk birbirinden farklı veri, model ve metrik ister.
 
+Runtime hattın detaylı uçtan uca açıklaması için `docs/04_yapay_zeka/10_runtime_ai_pipeline_mimarisi.md` ana referans kabul edilir.
+
 ## Model Geliştirme Önceliği
 
 İlk model geliştirme odağı araç tespitidir. Araç tespiti tamamlandıktan sonra araç takibi, hedef araç seçimi, plaka/OCR, evidence, sahne/görüş, şerit, hız ve cabin risk modülleri sırayla eklenecektir.
@@ -26,6 +28,8 @@ Eğitimin ana yükü sıfırdan model eğitmek değildir. İnternet üzerinden e
 10. Evidence package.
 
 Detaylı routing politikası için `docs/04_yapay_zeka/11_context_gated_model_routing.md` kullanılmalıdır.
+
+Model output contractları için `architecture/contracts/model_output_contract.md` kullanılmalıdır.
 
 ## Neden Rule-Based Başlangıç Kabul Edilebilir?
 

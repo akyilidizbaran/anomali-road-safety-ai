@@ -53,7 +53,12 @@ Proje hiçbir belgede kesin ceza kesen veya hukuki hüküm veren bir sistem olar
 * `docs/03_sistem_mimarisi/05_auth_normal_mode_flow.md`: Login, Number Verification, normal mod, riskli araç ve QoD tetikleme sırası.
 * `docs/06_mobil_uygulama/04_login_number_verification.md`: Kullanıcı adı/şifre ve Number Verification giriş kapısı.
 * `docs/04_yapay_zeka/10_yol_ve_arac_disi_kullanici_durumu.md`: Genel yol, yaya/bisikletli/motosikletli ve araç dışı kullanıcı bağlamı.
+* `docs/04_yapay_zeka/10_runtime_ai_pipeline_mimarisi.md`: Canlı frame’den event/evidence çıktısına runtime AI pipeline.
 * `docs/04_yapay_zeka/11_context_gated_model_routing.md`: Ortam bağlamına göre QoD ve uzman model çağırma politikası.
+* `docs/04_yapay_zeka/11_model_frekans_latency_budget.md`: Model çalışma frekansı ve latency budget.
+* `docs/04_yapay_zeka/12_mvp_final_future_scope.md`: MVP, final architecture ve future/research kapsam ayrımı.
+* `docs/04_yapay_zeka/13_ai_module_risk_register.md`: AI modül riskleri ve azaltma stratejileri.
+* `docs/09_evidence_aciklanabilirlik/02_evidence_ui_logic.md`: Evidence card, LLM açıklama ve teknik kanıt view mantığı.
 * `docs/00_baslangic/02_glossary.md`: Teknik terimler sözlüğü.
 * `reports/PCR_FTR/section_map.md`: Final rapor bölümleri ile kaynak doküman eşlemesi.
 * `architecture/contracts/`: Backend, event JSON, overlay response ve QoD status teknik contract dosyaları.

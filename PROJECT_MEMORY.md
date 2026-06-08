@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? GitHub repo `PRIVATE` görünürlüğe alındı; README ve güvenlik/veri notları private repo durumuna göre güncelleniyor.
-* Bir sonraki net adım ne? Araç tespiti için model aday araştırması ve Colab baseline deney planı hazırlamak.
+* Son değişiklik neydi? Runtime AI pipeline, model output contract, partial event schema, expert routing policy, frequency/latency budget, MVP/final/future scope, evidence UI logic ve AI risk register dokümanları eklendi.
+* Bir sonraki net adım ne? Araç tespiti için model aday araştırması ve Colab baseline deney planı hazırlamak; `docs/04_yapay_zeka/research_required.md` içindeki araştırma gereksinimlerini doldurmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -29,7 +29,7 @@
 ## 3) Mimari Özet
 
 * Bileşenler: Login/Auth client, Number Verification adapter, Android mobil istemci, video aktarım katmanı, edge/backend inference server, normal mode pipeline, critical mode expert selector, QoD/5G adapter, event fusion, evidence store, explanation layer.
-* Veri akışı: Kullanıcı adı/şifre girilir -> Number Verification API kullanıcı/cihaz/oturum eşleşmesini doğrular -> CameraX frame üretir -> edge/backend alır -> preprocess -> normal mod ortam/sahne analizi -> tüm araçlar için hafif detection/tracking -> genel yol ve araç dışı kullanıcı durumu -> target/risky vehicle selection -> context-gated routing -> riskli araçta QoD aday/request akışı -> kritik mod gerekiyorsa uzman modeller -> event JSON -> evidence store -> mobil overlay/evidence ekranı.
+* Veri akışı: Kullanıcı adı/şifre girilir -> Number Verification API kullanıcı/cihaz/oturum eşleşmesini doğrular -> CameraX frame üretir -> edge/backend alır -> frame preprocessing/quality analysis -> normal mod ortam/sahne analizi -> araç detection root model -> tüm araçlar için hafif tracking -> target/risky vehicle selection -> target ROI generation -> context-gated expert routing -> riskli araçta QoD aday/request akışı -> kritik mod gerekiyorsa seçili uzman modeller -> event fusion -> event JSON -> evidence package -> mobil overlay/evidence ekranı.
 * Önemli dizinler/modüller: `docs/` rapor ve teknik açıklamalar; `research/` derin araştırma başlıkları; `reports/` resmi rapor çalışma alanı; `architecture/` diyagram ve contract; `project/` karar/risk/gereksinim; `mobile/`, `backend/`, `data/`, `models/`, `testing/`, `governance/` geliştirme alanları.
 
 ## 4) Konvansiyonlar ve Standartlar
@@ -77,6 +77,7 @@
 * 2026-06-07 — Karar: Resmi `.docx`/`.pdf` şablonları şimdilik kök dizinde kalacak. | Gerekçe: Kullanıcı bu dosyaları kök dizindeki adlarıyla referanslıyor; taşıma şu aşamada yol karışıklığı yaratabilir. | Etki: `reports/_official_templates/README.md` ileride taşıma notu olarak eklendi. | Alternatifler: Dosyaları hemen `reports/_official_templates/` altına taşımak.
 * 2026-06-08 — Karar: Context-gated model routing kullanılacak. | Gerekçe: Hava/ışık/görüş/yol bağlamı model güveni, QoD adaylığı ve uzman model seçimini etkilemeli; normal mod tüm araçları hafif takip ederken ağır uzman modeller yalnız riskli/hedef araçta çalışmalı. | Etki: `docs/04_yapay_zeka/11_context_gated_model_routing.md`, AI omurgası, risk orkestrasyonu, mimari flow ve contract schema dosyaları güncellendi. | Alternatifler: Ortam analizini detection öncesi bloklayıcı aşama yapmak veya tüm araçlarda sürekli uzman model çalıştırmak.
 * 2026-06-08 — Karar: GitHub repo private görünürlüğe alındı. | Gerekçe: Kullanıcı repoyu private almak istedi; kişisel veri, API key, model ve evidence riskleri nedeniyle sınırlı erişim daha uygun. | Etki: Repo görünürlüğü `PRIVATE`; güvenlik kuralı yine secret/veri/model/evidence dosyalarının Git’e eklenmemesi olarak korunur. | Alternatifler: Public repo olarak devam etmek.
+* 2026-06-08 — Karar: Runtime AI architecture report-ready ve implementation-ready contract setiyle tanımlanacak. | Gerekçe: Mimari kapsam geniş ama MVP dar tutulmalı; frame inputtan event/evidence çıktısına kadar model pipeline net olmalı. | Etki: `docs/04_yapay_zeka/10_runtime_ai_pipeline_mimarisi.md`, `architecture/contracts/model_output_contract.md`, `architecture/contracts/expert_routing_policy.example.json`, güncellenmiş `event.schema.json`, frequency/scope/evidence/risk dokümanları eklendi. | Alternatifler: Modül dokümanlarını dağınık bırakmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -87,6 +88,7 @@
 * 2026-06-07 — Milestone: Repo hygiene ve contract scaffold eklendi. | Sonuç: Status/roadmap/security, contract schema, section map, data/model/test/governance şablonları ve project requirements/risks/decisions dosyaları oluşturuldu.
 * 2026-06-08 — Milestone: Context-gated routing policy eklendi. | Sonuç: Ortam bağlamına göre QoD/uzman model çağırma politikası ve normal/kritik mod kaynak ayrımı netleştirildi.
 * 2026-06-08 — Milestone: Repo private yapıldı. | Sonuç: GitHub visibility `PRIVATE` olarak doğrulandı.
+* 2026-06-08 — Milestone: Runtime AI architecture contract paketi eklendi. | Sonuç: Frame inputtan final event/evidence çıktısına kadar pipeline, output contractları, routing policy, latency planı, scope ayrımı ve evidence UI logic dokümante edildi.
 
 ## 8) Yapılanlar
 
@@ -104,6 +106,7 @@
 * [x] Repo güvenliği için `.gitignore` sıkılaştırıldı; benchmark/experiment küçük kanıt dosyaları takip edilebilir hale getirildi.
 * [x] Context-gated model routing dokümanı ve contract alanları eklendi.
 * [x] GitHub repo private görünürlüğe alındı.
+* [x] Runtime AI pipeline, model output contract, expert routing policy, event schema, latency/frequency, scope, evidence UI logic ve AI risk register eklendi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -112,6 +115,7 @@
 * [ ] Rapor için ilk sistem diyagramını `architecture/diagrams` altında gerçek içerikle üret.
 * [x] Event JSON contractını `architecture/contracts` altında ayrı dosyaya taşı.
 * [ ] Veri seti kaynaklarını lisanslarıyla doğrula.
+* [ ] `docs/04_yapay_zeka/research_required.md` içindeki araştırma gereksinimlerini kaynak/link/lisans bilgileriyle doldur.
 * [x] Model geliştirme ilk odağı belirlendi.
 * [ ] Araç tespiti için Colab deney planı oluştur.
 * [ ] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.

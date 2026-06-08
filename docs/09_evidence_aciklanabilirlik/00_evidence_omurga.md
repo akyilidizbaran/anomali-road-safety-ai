@@ -25,6 +25,8 @@ Sistem alarm üretmekle kalmaz. Her kritik olayı denetlenebilir kanıt paketine
 
 LLM karar vermez. Structured event JSON’u insan tarafından anlaşılır açıklamaya dönüştürür.
 
+Mobil evidence kartı, katlanabilir açıklama alanı ve teknik kanıt görünümü için `docs/09_evidence_aciklanabilirlik/02_evidence_ui_logic.md` ana referanstır.
+
 Mevcut karar:
 
 * LLM API ile bağlanabilir.

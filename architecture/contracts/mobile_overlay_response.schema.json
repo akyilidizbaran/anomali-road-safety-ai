@@ -64,7 +64,7 @@
       "properties": {
         "status": {
           "type": "string",
-          "enum": ["NOT_AVAILABLE", "MOCK_READY", "NOT_NEEDED", "CANDIDATE", "REQUESTED", "ACTIVE", "EXPIRED", "FAILED"]
+          "enum": ["not_available", "mock_ready", "not_needed", "candidate", "requested", "active", "expired", "failed"]
         },
         "reason": { "type": "string" },
         "session_seconds": { "type": "number", "minimum": 0 }
