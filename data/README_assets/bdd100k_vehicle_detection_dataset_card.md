@@ -7,7 +7,7 @@
 * Format reference: https://github.com/ucbdrive/bdd100k/blob/master/doc/format.md
 * License reference: https://github.com/ucbdrive/bdd100k/blob/master/LICENSE
 * Version/date accessed: 2026-06-08
-* License: BSD-3-Clause in GitHub repository; download portal terms must also be saved before training.
+* License: BSD-3-Clause in GitHub repository; project will keep code/data usage private/licensed. Download portal terms should still be archived for traceability.
 * Citation: BDD100K paper / official citation to be added from dataset source.
 
 ## Intended Use
@@ -46,7 +46,7 @@ See:
 
 ## Decision
 
-* Status: Candidate / primary first fine-tune dataset.
+* Status: Accepted candidate / primary first fine-tune dataset.
 * Reason: BDD100K provides road scene object annotations and condition metadata suitable for condition-aware validation.
 * Required preprocessing:
   * map vehicle categories to 4 MVP classes,
@@ -54,7 +54,7 @@ See:
   * convert BDD JSON boxes to YOLO label format,
   * create condition breakdown validation lists.
 * Risks:
-  * download portal terms must be archived,
+  * download portal terms should be archived for traceability,
   * class naming must be verified on the downloaded label version,
   * image-level split must avoid leakage where applicable,
   * metadata imbalance may require controlled sampling.

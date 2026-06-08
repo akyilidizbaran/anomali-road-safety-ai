@@ -36,3 +36,11 @@ Git'e yalnız şunlar eklenir:
 ```
 
 BDD100K ham veri dosyaları repoya eklenmemelidir.
+
+## Opsiyonel Otomatik İndirme
+
+BDD100K indirme otomasyonu gerekiyorsa:
+
+* `scripts/colab/download_bdd100k.py`
+
+Bu script Kaggle, direct URL veya Google Drive/gdown modlarını destekler. Kullanılacak URL, token veya API credential bilgileri Git'e yazılmaz; Colab secrets veya environment variable üzerinden verilir.
