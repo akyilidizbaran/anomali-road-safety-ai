@@ -4,7 +4,7 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 
 ## Aktif Notebooklar
 
-* `VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`: BDD100K üzerinden 4 sınıflı condition-aware general vehicle detector fine-tune hattı.
+* `VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`: BDD100K indirme, Drive yerleşimi, YOLO dönüşümü, pretrained baseline validation, fine-tune, challenger model testleri, condition breakdown ve baseline-delta karşılaştırmasını tek notebook içinde yürütür.
 
 ## Kural
 
@@ -37,10 +37,27 @@ Git'e yalnız şunlar eklenir:
 
 BDD100K ham veri dosyaları repoya eklenmemelidir.
 
-## Opsiyonel Otomatik İndirme
+## Notebook İçinden İndirme
 
-BDD100K indirme otomasyonu gerekiyorsa:
+BDD100K indirme otomasyonu notebook içine gömülüdür. Config hücresinde şu modlardan biri seçilir:
 
-* `scripts/colab/download_bdd100k.py`
+* `manual`
+* `kaggle`
+* `direct`
+* `gdown`
 
-Bu script Kaggle, direct URL veya Google Drive/gdown modlarını destekler. Kullanılacak URL, token veya API credential bilgileri Git'e yazılmaz; Colab secrets veya environment variable üzerinden verilir.
+`scripts/colab/download_bdd100k.py` aynı indirme mantığını notebook dışında çalıştırmak için opsiyonel helper olarak kalır.
+
+## Tek Notebook Akışı
+
+`VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` şu çıktıları üretir:
+
+* BDD100K raw veri doğrulama veya indirme.
+* BDD100K JSON -> YOLO label dönüşümü.
+* `data.yaml`.
+* Condition metadata CSV.
+* Pretrained baseline validation.
+* Fine-tuned validation.
+* Baseline vs fine-tuned delta tablosu.
+* Condition breakdown validation.
+* Optional ONNX export.

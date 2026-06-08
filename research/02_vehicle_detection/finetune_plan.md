@@ -55,14 +55,17 @@ Mapping ve dataset card:
 
 Notebook görevleri:
 
-1. BDD100K Drive path'lerini doğrular.
-2. BDD JSON detection label formatını YOLO label formatına çevirir.
-3. `car`, `bus`, `truck`, `motorcycle` sınıf mapping'ini uygular.
-4. `weather`, `timeofday`, `scene` metadata'sından condition profile üretir.
-5. `data.yaml`, train/val split listeleri ve condition validation listeleri oluşturur.
-6. `YOLO11n` fine-tune çalıştırır.
-7. Overall validation ve condition breakdown validation sonuçlarını üretir.
-8. `.pt` ve ONNX export çıktısını Drive altında saklar.
+1. BDD100K'i notebook içinden `manual`, `kaggle`, `direct` veya `gdown` moduyla Drive altına yerleştirir.
+2. BDD100K Drive path'lerini doğrular.
+3. BDD JSON detection label formatını YOLO label formatına çevirir.
+4. `car`, `bus`, `truck`, `motorcycle` sınıf mapping'ini uygular.
+5. `weather`, `timeofday`, `scene` metadata'sından condition profile üretir.
+6. `data.yaml`, train/val split listeleri ve condition validation listeleri oluşturur.
+7. Pretrained baseline validation çalıştırır.
+8. `YOLO11n` fine-tune çalıştırır.
+9. İsteğe bağlı `YOLO11s` ve `YOLOv10n` challenger fine-tune/test koşularını aynı split üzerinde çalıştırır.
+10. Overall validation, baseline vs fine-tuned delta ve condition breakdown validation sonuçlarını üretir.
+11. `.pt` ve ONNX export çıktısını Drive altında saklar.
 
 ## Condition-Specific Fine-Tune Planı
 

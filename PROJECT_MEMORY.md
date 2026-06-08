@@ -4,7 +4,7 @@
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
 * Son değişiklik neydi? VD-EXP-001 qualitative manual review kaydedildi: genel araç yakalama kullanılabilir, bazı false negative'ler ve 2-3 frame seviyesinde car->motorcycle class flicker var; fine-tune yönü condition-aware general vehicle detector olarak netleştirildi.
-* Bir sonraki net adım ne? BDD100K verisini Google Drive'a manuel veya `scripts/colab/download_bdd100k.py` ile indirip `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` üzerinden YOLO format dönüşümü ve `YOLO11n` condition-aware general detector fine-tune denemesini çalıştırmak.
+* Bir sonraki net adım ne? `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` içinde BDD100K download modunu seçip aynı notebook üzerinden Drive placement, YOLO dönüşümü, pretrained baseline validation, YOLO11n fine-tune, baseline-delta ve condition breakdown testlerini çalıştırmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -102,6 +102,7 @@
 * 2026-06-08 — Karar: İlk fine-tune condition-aware general vehicle detector olacak. | Gerekçe: VD-EXP-001 manual review genel araç yakalamanın iyi olduğunu, hataların daha çok kısa süreli class flicker ve bazı false negative'ler olduğunu gösterdi; bu aşamada condition classifier veya ayrı specialist detector beklemek gereksiz gecikme yaratır. | Etki: `research/02_vehicle_detection/finetune_plan.md`, `research/03_condition_experts/action_roadmap.md`, benchmark notları ve manual review summary güncellendi. | Alternatifler: Önce condition profile modeli eğitmek veya doğrudan night_low_light specialist açmak.
 * 2026-06-08 — Karar: BDD100K Colab fine-tune hattı VD-EXP-002 olarak kurulacak. | Gerekçe: BDD100K road object labels ve weather/timeofday/scene metadata'sı condition-aware general detector için en uygun ilk public veri kaynağıdır. | Etki: `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`, BDD100K dataset card/mapping ve benchmark planı eklendi. | Alternatifler: UA-DETRAC ile başlamak veya önce condition classifier eğitmek.
 * 2026-06-08 — Karar: BDD100K için opsiyonel otomatik Colab indirme desteklenecek. | Gerekçe: Repo public paylaşılmayacak ve lisanslı/private kullanım planlanıyor; yine de ham veri Git'e eklenmemeli, credential/URL/token bilgilerinin repo dışında kalması gerekir. | Etki: `scripts/colab/download_bdd100k.py`, `scripts/colab/README.md`, notebook ve dataset card güncellendi. | Alternatifler: Sadece manuel Drive upload ile ilerlemek.
+* 2026-06-08 — Karar: VD-EXP-002 tek notebook uçtan uca pipeline olacak. | Gerekçe: Kullanıcı BDD100K indirme, Drive yerleşimi, fine-tune model eğitimi, test ve baseline farklarının tek Colab notebook içinde yürütülmesini istedi. | Etki: `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`, experiment planı, fine-tune planı ve action roadmap güncellendi. | Alternatifler: Ayrı download notebook/script ve ayrı training notebook tutmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -121,6 +122,7 @@
 * 2026-06-08 — Milestone: VD-EXP-001 qualitative manual review kaydedildi. | Sonuç: Genel araç detection davranışı kullanılabilir bulundu; false negative'ler ve kısa class flicker not edildi; sayısal manual accuracy counts pending.
 * 2026-06-08 — Milestone: VD-EXP-002 BDD100K Colab skeleton eklendi. | Sonuç: BDD100K -> YOLO dönüşümü, condition metadata koruma, YOLO11n fine-tune, overall validation, condition breakdown validation ve export adımlarını içeren notebook oluşturuldu.
 * 2026-06-08 — Milestone: BDD100K opsiyonel downloader helper eklendi. | Sonuç: Kaggle/direct/gdown modlarıyla Drive altına veri indirebilen helper script oluşturuldu; credential ve URL bilgileri repo dışında tutulacak.
+* 2026-06-08 — Milestone: VD-EXP-002 notebook tek dosya pipeline'a çevrildi. | Sonuç: Notebook artık BDD100K indirme/yerleşim, conversion, pretrained baseline, fine-tune, optional challenger, baseline-delta ve condition breakdown adımlarını aynı dosyada yürütür.
 
 ## 8) Yapılanlar
 
@@ -153,6 +155,7 @@
 * [x] İlk fine-tune yönü condition-aware general vehicle detector olarak netleştirildi.
 * [x] BDD100K dataset card, class/condition mapping ve VD-EXP-002 Colab notebook skeleton eklendi.
 * [x] BDD100K için opsiyonel Colab downloader helper eklendi.
+* [x] VD-EXP-002 notebook tek dosyada download + placement + training + test + baseline-delta pipeline'a çevrildi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -169,7 +172,7 @@
 * [x] VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline deneyini çalıştır.
 * [x] `Test/video_1-3.mp4` için qualitative dark manual review sonucunu kaydet.
 * [ ] `Test/video_1-3.mp4` için sayısal manual review counts kaydet.
-* [ ] BDD100K download yöntemini seç: manual Drive upload / Kaggle / direct URL / gdown.
+* [ ] VD-EXP-002 notebook içinde BDD100K download yöntemini seç: manual Drive upload / Kaggle / direct URL / gdown.
 * [ ] UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [ ] Condition expert dataset kaynak/lisans checklist'ini tamamla.
 * [x] Condition-aware general road-domain detector Colab fine-tune notebook skeleton'ını oluştur.

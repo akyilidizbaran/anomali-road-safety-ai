@@ -218,3 +218,13 @@ Yapılacaklar:
 * `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`
 
 Bu notebook specialist eğitmez. BDD100K metadata'sını koruyarak `vehicle_detector_general` fine-tune eder ve condition breakdown metriklerini üretir. Specialist kararı bu çıktılardan sonra verilir.
+
+Notebook artık tek dosyada şunları yürütür:
+
+* BDD100K download/Drive placement,
+* BDD100K -> YOLO dönüşümü,
+* pretrained baseline validation,
+* fine-tune training,
+* optional challenger runs,
+* baseline-delta comparison,
+* condition breakdown validation.
