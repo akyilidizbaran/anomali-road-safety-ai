@@ -72,6 +72,18 @@
           "minItems": 4,
           "maxItems": 4
         },
+        "bbox_xyxy": {
+          "type": ["array", "null"],
+          "items": { "type": "number" },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "bbox_xywh": {
+          "type": ["array", "null"],
+          "items": { "type": "number" },
+          "minItems": 4,
+          "maxItems": 4
+        },
         "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
         "track_stability": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
         "selection_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },

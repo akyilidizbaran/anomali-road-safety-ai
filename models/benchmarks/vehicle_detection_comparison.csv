@@ -1,2 +1,8 @@
-model,variant,dataset,img_size,map50,precision,recall,f1,fps_edge,latency_ms,model_size_mb,onnx_export,tflite_export,notes
-YOLO,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD
+experiment_id,model_family,variant,stage,dataset,split_id,source_resolution,model_input_size,map50,map5095,precision,recall,f1,car_ap,bus_ap,truck_ap,motorcycle_ap,mean_latency_ms,p95_latency_ms,fps_macbook,model_size_mb,onnx_export,tflite_export,ncnn_export,output_contract_valid,evidence_crop_usable,tracking_init_usable,license_status,total_score,decision,notes
+VD-EXP-001,YOLO11,yolo11n,pretrained_zero_finetune,TBD,TBD,1280x720,640,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,AGPL-3.0_review_required,TBD,TBD,Initial baseline row; do not add fake metrics
+VD-EXP-002,YOLO11,yolo11n,colab_finetune,TBD,TBD,1280x720,640,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,AGPL-3.0_review_required,TBD,TBD,BDD100K 4-class candidate
+VD-EXP-003,YOLO11,yolo11s,colab_finetune,TBD,TBD,1280x720,640,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,AGPL-3.0_review_required,TBD,TBD,Quality challenger
+VD-EXP-004,YOLOv10,yolov10n,colab_finetune,TBD,TBD,1280x720,640,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,AGPL-3.0_review_required,TBD,TBD,NMS-free low-latency candidate
+VD-EXP-005,YOLOv10,yolov10s,colab_finetune,TBD,TBD,1280x720,640,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,AGPL-3.0_review_required,TBD,TBD,NMS-free quality/latency challenger
+VD-EXP-006,YOLOv8,yolov8n,colab_finetune,TBD,TBD,1280x720,640,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,AGPL-3.0_review_required,TBD,TBD,Stable fallback
+VD-EXP-007,RT-DETR,rtdetr-l,pilot,TBD,TBD,1280x720,640,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,license_review_required,TBD,TBD,Transformer challenger

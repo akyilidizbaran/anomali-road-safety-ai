@@ -13,10 +13,11 @@ Planning, documentation, research scaffolding and technical contract definition.
 * Number Verification, normal mode, QoD and evidence flow documentation.
 * Research topic map.
 * Data, model and test strategy drafts.
+* Vehicle detection deep research package and YOLO11n initial baseline decision.
 
 ## In Progress
 
-* Vehicle detection model research.
+* Vehicle detection first baseline preparation.
 * Backend/mobile API contracts.
 * Event JSON schema definition.
 * Report traceability map.

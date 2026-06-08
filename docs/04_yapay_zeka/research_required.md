@@ -8,6 +8,8 @@ Araç tespiti için YOLO/RT-DETR veya alternatif modeller araştırılmalıdır.
 
 İlk çalışma düzeni: Colab üzerinde araştırma/fine-tune, MacBook üzerinde runtime benchmark.
 
+İlk ölçülebilir baseline: YOLO11n. Final karar benchmark sonrası verilecektir.
+
 Gerekli çıktı:
 
 * Aday model listesi.
@@ -18,6 +20,7 @@ Gerekli çıktı:
 * ONNX/TFLite export durumu.
 * Benchmark planı.
 * 720p source frame -> model input resize politikası.
+* Lisans ve ürünleşme riski notu.
 
 ## Tracking
 

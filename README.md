@@ -49,6 +49,8 @@ Planlanan yaklaşım:
 
 İlk odak **araç tespiti** olacak. Sonraki modüller araç tespiti çıktısı üzerine sırayla eklenecek.
 
+Araç tespiti için ilk ölçülebilir baseline **YOLO11n** olarak kaydedilmiştir. Bu final model kararı değildir; final seçim Colab fine-tune sonuçları, MacBook runtime benchmark, output contract uyumu, tracking/evidence katkısı, export ve lisans değerlendirmesi sonrası yapılacaktır.
+
 ## MVP Hedefi
 
 İlk çalışan MVP şu kapsama odaklanır:

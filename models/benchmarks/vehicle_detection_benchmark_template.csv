@@ -1,0 +1,1 @@
+experiment_id,model_family,variant,stage,dataset,split_id,source_resolution,model_input_size,map50,map5095,precision,recall,f1,car_ap,bus_ap,truck_ap,motorcycle_ap,mean_latency_ms,p95_latency_ms,fps_macbook,model_size_mb,onnx_export,tflite_export,ncnn_export,output_contract_valid,evidence_crop_usable,tracking_init_usable,license_status,total_score,decision,notes

@@ -20,8 +20,8 @@ Runtime assumption: Android captures live 720p frames/stream, MacBook runs the l
 ## Near-Term Technical Order
 
 1. Finalize `architecture/contracts`.
-2. Prepare vehicle detection research comparison table.
-3. Create Colab baseline experiment notebook plan.
+2. Run VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline.
+3. Prepare VD-EXP-002 YOLO11n BDD100K Colab fine-tune.
 4. Add backend stub with health, stream and recent events endpoints.
 5. Connect mobile camera screen to backend stub.
 

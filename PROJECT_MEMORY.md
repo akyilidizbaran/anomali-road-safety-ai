@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? Model araştırma ve demo çalışma varsayımları netleşti: eğitim/fine-tune Colab GPU, canlı inference MacBook local edge runtime, 720p source frame, göğüs yüksekliği kamera açısı, internet/açık veri tabanlı test, hız kalibrasyonu final scope ve lane modülü plate/evidence sonrası.
-* Bir sonraki net adım ne? Araç tespiti için model aday araştırması, Colab baseline deney planı ve MacBook runtime benchmark planı hazırlamak; `docs/04_yapay_zeka/research_required.md` içindeki araştırma gereksinimlerini kaynak/link/lisans bilgileriyle doldurmak.
+* Son değişiklik neydi? Araç tespiti deep research raporu `research/02_vehicle_detection/deep_research/` altına taşındı; rapor aksiyon dosyalarına bölündü; ilk ölçülebilir vehicle detector baseline YOLO11n olarak kaydedildi; VehicleDetectionOutput contractı bbox/evidence/tracking uyumlu şekilde genişletildi.
+* Bir sonraki net adım ne? VD-EXP-001 için YOLO11n pretrained zero-fine-tune baseline deneyi ve MacBook runtime benchmark script/planını uygulamaya başlamak; BDD100K/UA-DETRAC lisans ve erişim doğrulamasını tamamlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -29,6 +29,7 @@
 * Canlı kaynak frame hedefi 720p olacak; seçilen modelin input boyutuna preprocessing aşamasında resize edilecektir.
 * Hız kalibrasyon denemesi final scope'ta tutulacak; MVP'de göreli hız / motion anomaly sinyali yeterli kabul edilebilir.
 * Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınmalıdır.
+* Araç tespiti için ilk ölçülebilir baseline YOLO11n'dir; final model kararı Colab fine-tune + MacBook runtime benchmark + lisans/export/evidence/tracking katkısı sonrası verilecektir.
 
 ## 3) Mimari Özet
 
@@ -90,6 +91,7 @@
 * 2026-06-08 — Karar: Hız kalibrasyon denemesi final scope'ta tutulacak; MVP'de göreli hız / motion anomaly sinyali yeterli olacak. | Gerekçe: Mutlak km/s için kamera/yol kalibrasyonu gerekir ve ilk MVP'yi riske atar. | Etki: Hız dokümanları, test stratejisi, scope ve research dosyaları güncellendi. | Alternatifler: Kalibrasyonu MVP şartı yapmak.
 * 2026-06-08 — Karar: Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınacak. | Gerekçe: Önce detection->tracking->plate->evidence uçtan uca akışı kurulmalı. | Etki: Lane docs ve roadmap dili güncellendi. | Alternatifler: Lane modelini plaka/evidence öncesinde geliştirmek.
 * 2026-06-08 — Karar: QoD için hedef gerçek API/adapter entegrasyonu olacak, mock/status-policy fallback korunacak. | Gerekçe: Gerçek API erişimi gecikebilir; pipeline adapter bağımlılığına kırılgan olmamalı. | Etki: QoD dokümanı ve QoD API delay riski güncellendi. | Alternatifler: Yalnız mock QoD göstergesi veya API gelene kadar beklemek.
+* 2026-06-08 — Karar: Araç tespiti için ilk ölçülebilir baseline YOLO11n olacak. | Gerekçe: Hızlı Colab iterasyonu, küçük model boyutu, güçlü train/val/predict/export akışı ve MacBook runtime benchmark için pratik başlangıç. | Etki: `research/02_vehicle_detection/`, `models/benchmarks/vehicle_detection_comparison.csv`, `models/experiments/vehicle_detection_experiment_template.md`, `architecture/contracts/model_output_contract.md`, `architecture/contracts/event.schema.json`, `architecture/contracts/mobile_overlay_response.schema.json`, `docs/04_yapay_zeka/01_arac_tespiti_takip.md` güncellendi. | Alternatifler: YOLO11s, YOLOv10n/s, YOLOv8n, RT-DETR-L.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -102,6 +104,7 @@
 * 2026-06-08 — Milestone: Repo private yapıldı. | Sonuç: GitHub visibility `PRIVATE` olarak doğrulandı.
 * 2026-06-08 — Milestone: Runtime AI architecture contract paketi eklendi. | Sonuç: Frame inputtan final event/evidence çıktısına kadar pipeline, output contractları, routing policy, latency planı, scope ayrımı ve evidence UI logic dokümante edildi.
 * 2026-06-08 — Milestone: Model araştırma ve demo runtime kararları netleştirildi. | Sonuç: Colab/MacBook ayrımı, 720p input, kamera açısı, açık veri/lisans yaklaşımı, hız final scope, lane sonrası faz ve QoD gerçek adapter hedefi dokümante edildi.
+* 2026-06-08 — Milestone: Araç tespiti research paketi aksiyon dosyalarına bölündü. | Sonuç: Deep research raporu taşındı, kaynak listesi eklendi, model/dataset/benchmark/fine-tune/decision dosyaları oluşturuldu ve VehicleDetectionOutput contractı genişletildi.
 
 ## 8) Yapılanlar
 
@@ -121,6 +124,9 @@
 * [x] GitHub repo private görünürlüğe alındı.
 * [x] Runtime AI pipeline, model output contract, expert routing policy, event schema, latency/frequency, scope, evidence UI logic ve AI risk register eklendi.
 * [x] Model araştırma ve demo runtime varsayımları dokümante edildi.
+* [x] Araç tespiti deep research raporu taşındı ve aksiyon dosyalarına bölündü.
+* [x] YOLO11n ilk ölçülebilir vehicle detector baseline olarak kaydedildi.
+* [x] VehicleDetectionOutput contractı bbox/evidence/tracking uyumlu olacak şekilde genişletildi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -131,9 +137,11 @@
 * [ ] Veri seti kaynaklarını lisanslarıyla doğrula.
 * [ ] `docs/04_yapay_zeka/research_required.md` içindeki araştırma gereksinimlerini kaynak/link/lisans bilgileriyle doldur.
 * [x] Model geliştirme ilk odağı belirlendi.
-* [ ] Araç tespiti için Colab deney planı oluştur.
-* [ ] Araç tespiti için MacBook runtime benchmark planı oluştur.
-* [ ] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.
+* [x] Araç tespiti için Colab deney planı oluştur.
+* [x] Araç tespiti için MacBook runtime benchmark planı oluştur.
+* [x] YOLO/RT-DETR adayları için araştırma karşılaştırma tablosu oluştur.
+* [ ] VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline deneyini çalıştır.
+* [ ] BDD100K ve UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
@@ -141,9 +149,10 @@
 * Hız için referans mesafe/kalibrasyon yöntemi final scope teknik tasarım kararı olarak duruyor; MVP için engelleyici değil.
 * Ground truth hız için literatür/çalışma kaynakları henüz doğrulanmadı.
 * Maskeleme yapılmayacağı için veri lisansı ve kişisel veri riski daha yüksek.
-* Araç tespiti için model ailesi henüz seçilmedi; araştırma sonrası karar verilecek.
+* Araç tespiti için ilk baseline YOLO11n seçildi; final model henüz seçilmedi ve benchmark sonrası belirlenecek.
 * Colab deney dosyaları henüz oluşturulmadı.
-* MacBook runtime benchmark scripti veya planı henüz oluşturulmadı.
+* MacBook runtime benchmark planı oluşturuldu; script/uygulama henüz yok.
+* Deep research raporundan kaynaklanan model/dataset URL'leri `research/02_vehicle_detection/deep_research/sources.md` içinde tutuluyor; final rapor öncesi kaynaklar tekrar doğrulanmalı.
 * Repo private olsa bile veri/checkpoint/API key/evidence dosyaları yanlışlıkla commit edilmemeli.
 * `architecture/diagrams/*.drawio` dosyaları şu an placeholder; gerçek diyagram içeriği çizilmeli.
 * Backend ve Android uygulama skeleton kodu henüz yok; repo hâlâ dokümantasyon/contract aşamasında.

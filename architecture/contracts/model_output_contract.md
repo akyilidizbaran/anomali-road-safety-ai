@@ -125,14 +125,52 @@ Frame içindeki araçları bulur. Pipeline’ın kök model çıktısıdır.
 
 ### Optional Fields
 
+* `timestamp_utc`
+* `source_resolution`
+* `processed_resolution`
 * `input_size`
+* `source_frame_ref`
+* `confidence_threshold`
 * `inference_latency_ms`
+* `postprocess_latency_ms`
 * `nms_threshold`
+* `iou_threshold`
 * `class_filter`
 
 ### Confidence Fields
 
-Her detection içinde `confidence` bulunmalıdır.
+Her detection içinde:
+
+* `confidence`
+* `detection_quality_score`
+
+bulunmalıdır. `confidence` tek başına risk kararı veya hedef araç kararı için yeterli değildir; tracking stability, scene/visibility context ve evidence quality ile birlikte yorumlanmalıdır.
+
+### Detection Object Fields
+
+Her detection objesi aşağıdaki alanları taşımalıdır:
+
+* `detection_id`
+* `class_name`
+* `class_id`
+* `bbox_xyxy`
+* `bbox_xywh`
+* `area_px`
+* `confidence`
+* `detection_quality_score`
+
+Opsiyonel detection alanları:
+
+* `center_xy`
+* `source_crop_ref`
+* `is_target_candidate`
+* `quality_flags`
+
+### Bounding Box Convention
+
+* `bbox_xyxy`: `[x1, y1, x2, y2]`. Evidence crop ve overlay üretimi için ana koordinattır.
+* `bbox_xywh`: `[center_x, center_y, width, height]`. Tracking, hız/motion anomaly ve hedef araç seçimi için yardımcı koordinattır.
+* Koordinatlar source frame koordinat sisteminde tutulmalıdır. Model input resize sonrası üretilen bbox tekrar source frame'e ölçeklenmelidir.
 
 ### Failure / Unknown States
 
@@ -142,21 +180,53 @@ Her detection içinde `confidence` bulunmalıdır.
 * `low_quality_frame`
 * `model_error`
 
+`no_vehicle_detected` hata değildir. Bu durumda `detections: []` dönülür ve pipeline normal şekilde devam eder.
+
 ### Example
 
 ```json
 {
   "frame_id": "frame_000123",
+  "timestamp_utc": "2026-06-08T10:30:12Z",
   "status": "ok",
-  "model_version": "vehicle_yolo_v1",
+  "model_version": "vehicle_detector_yolo11n_v1",
+  "source_resolution": "1280x720",
+  "processed_resolution": "640x640",
+  "input_size": 640,
+  "confidence_threshold": 0.25,
+  "nms_threshold": 0.7,
+  "class_filter": ["car", "bus", "truck", "motorcycle"],
   "detections": [
     {
+      "detection_id": "det_000123_001",
       "class_name": "car",
-      "bbox": [320, 180, 760, 540],
-      "confidence": 0.93
+      "class_id": 0,
+      "bbox_xyxy": [320, 180, 760, 540],
+      "bbox_xywh": [540, 360, 440, 360],
+      "center_xy": [540, 360],
+      "area_px": 158400,
+      "confidence": 0.93,
+      "detection_quality_score": 0.9,
+      "is_target_candidate": true,
+      "quality_flags": []
     }
   ],
-  "inference_latency_ms": 31.2
+  "inference_latency_ms": 31.2,
+  "postprocess_latency_ms": 4.1
+}
+```
+
+### Empty Detection Example
+
+```json
+{
+  "frame_id": "frame_000124",
+  "status": "no_vehicle_detected",
+  "model_version": "vehicle_detector_yolo11n_v1",
+  "source_resolution": "1280x720",
+  "processed_resolution": "640x640",
+  "detections": [],
+  "inference_latency_ms": 29.8
 }
 ```
 

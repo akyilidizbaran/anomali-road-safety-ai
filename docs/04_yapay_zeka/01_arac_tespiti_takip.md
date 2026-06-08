@@ -8,8 +8,12 @@ Canlı görüntüde araçları tespit etmek, sınıflandırmak, takip ID’si ve
 
 Aday modeller:
 
-* YOLOv8/v9/v10/v11 nano/small.
-* RT-DETR edge uygunluğu araştırılabilir.
+* YOLO11n: ilk ölçülebilir baseline.
+* YOLO11s: dengeli kalite adayı.
+* YOLOv10n/s: düşük latency ve NMS-free challenger.
+* YOLOv8n: stabil fallback.
+* RT-DETR-L: transformer challenger.
+* NanoDet-Plus veya YOLOv6Lite: yalnız on-device fallback ihtimali güçlenirse.
 
 Sınıflar:
 
@@ -17,6 +21,27 @@ Sınıflar:
 * bus
 * truck
 * motorcycle
+
+## İlk Baseline Kararı
+
+İlk araç tespiti deneyi **YOLO11n** ile başlatılır. Bu final model seçimi değildir. Final karar:
+
+* Colab fine-tune sonuçları,
+* MacBook runtime benchmark,
+* output contract uyumu,
+* tracking/evidence katkısı,
+* export başarısı,
+* lisans değerlendirmesi
+
+sonrasında verilir.
+
+Araştırma ve karar dosyaları:
+
+* `research/02_vehicle_detection/model_candidates.md`
+* `research/02_vehicle_detection/dataset_candidates.md`
+* `research/02_vehicle_detection/benchmark_plan.md`
+* `research/02_vehicle_detection/finetune_plan.md`
+* `research/02_vehicle_detection/decision_vehicle_detector_v1.md`
 
 ## Takip
 
@@ -36,6 +61,12 @@ Araç tespiti:
 * Precision
 * Recall
 * F1
+* Class AP
+* Mean latency
+* P95 latency
+* Pipeline FPS
+* Evidence crop usability
+* Tracking initialization usability
 
 Takip:
 
@@ -46,5 +77,4 @@ Takip:
 
 ## Açık Sorular
 
-* Başlangıç modeli hangi YOLO sürümü olacak?
 * Takip için ByteTrack mi BoT-SORT mu seçilecek?
