@@ -1,0 +1,70 @@
+dataset: BDD100K
+task: vehicle_detection
+target_profile: condition_aware_general_detector
+source_references:
+  dataset: https://github.com/ucbdrive/bdd100k
+  format: https://github.com/ucbdrive/bdd100k/blob/master/doc/format.md
+  license: https://github.com/ucbdrive/bdd100k/blob/master/LICENSE
+
+target_classes:
+  0: car
+  1: bus
+  2: truck
+  3: motorcycle
+
+category_mapping:
+  car: car
+  bus: bus
+  truck: truck
+  motor: motorcycle
+  motorcycle: motorcycle
+  motorbike: motorcycle
+
+ignored_categories:
+  - person
+  - rider
+  - bike
+  - bicycle
+  - traffic light
+  - traffic sign
+  - train
+  - other vehicle
+  - trailer
+
+condition_mapping:
+  weather:
+    rainy: rain
+    rain: rain
+    foggy: fog_low_visibility
+    fog: fog_low_visibility
+    snowy: adverse_other
+    overcast: day_clear
+    clear: day_clear
+    partly cloudy: day_clear
+    undefined: unknown
+  timeofday:
+    night: night_low_light
+    dawn/dusk: low_light_transition
+    daytime: day_clear
+    day: day_clear
+    undefined: unknown
+  scene:
+    city street: urban_road
+    highway: highway
+    residential: residential_road
+    tunnel: tunnel_or_parking_dark
+    parking lot: tunnel_or_parking_dark
+
+condition_priority:
+  - fog_low_visibility
+  - rain
+  - night_low_light
+  - low_light_transition
+  - adverse_other
+  - day_clear
+  - unknown
+
+notes:
+  - General detector training uses all accepted vehicle boxes.
+  - Condition fields are metadata for balancing, validation breakdown, and future specialist decisions.
+  - Condition fields are not object classes and must not replace bbox labels.

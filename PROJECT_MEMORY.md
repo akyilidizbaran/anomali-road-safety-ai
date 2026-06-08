@@ -4,7 +4,7 @@
 
 * Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
 * Son değişiklik neydi? VD-EXP-001 qualitative manual review kaydedildi: genel araç yakalama kullanılabilir, bazı false negative'ler ve 2-3 frame seviyesinde car->motorcycle class flicker var; fine-tune yönü condition-aware general vehicle detector olarak netleştirildi.
-* Bir sonraki net adım ne? BDD100K/UA-DETRAC kaynak-lisans doğrulamasını tamamlamak; ardından condition metadata korunan general road-domain detector Colab fine-tune hattını kurmak.
+* Bir sonraki net adım ne? BDD100K verisini Google Drive'a yerleştirip `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` ile YOLO format dönüşümü ve `YOLO11n` condition-aware general detector fine-tune denemesini çalıştırmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -100,6 +100,7 @@
 * 2026-06-08 — Karar: Araç tespiti condition-specific detector routing destekleyecek. | Gerekçe: Karanlık, yağmur, sis ve düşük görüş koşulları detection hata profilini değiştirir; ancak 3 dark video specialist model eğitimi için yeterli değildir. | Etki: `Test/`, `.gitignore`, `research/02_vehicle_detection/condition_specific_detector_routing.md`, benchmark/fine-tune planları, manual review şablonu ve contract routing alanları güncellendi. | Alternatifler: Tek general detector veya 3 video ile hemen dark model eğitmek.
 * 2026-06-08 — Karar: Condition expert geliştirme için Strateji 1 seçildi. | Gerekçe: Deep research, doğrudan her koşul için ayrı detector eğitmenin veri parçalanması, yanlış routing ve bakım riskini büyüttüğünü; önce general road-domain detector, sonra kanıtlanmış specialist dalları yaklaşımının daha savunulabilir olduğunu gösterdi. | Etki: `research/03_condition_experts/`, `research/02_vehicle_detection/condition_specific_detector_routing.md`, condition expert benchmark/experiment şablonları eklendi. | Alternatifler: Doğrudan her condition için specialist eğitmek veya tek all-weather detector + preprocessing ile kalmak.
 * 2026-06-08 — Karar: İlk fine-tune condition-aware general vehicle detector olacak. | Gerekçe: VD-EXP-001 manual review genel araç yakalamanın iyi olduğunu, hataların daha çok kısa süreli class flicker ve bazı false negative'ler olduğunu gösterdi; bu aşamada condition classifier veya ayrı specialist detector beklemek gereksiz gecikme yaratır. | Etki: `research/02_vehicle_detection/finetune_plan.md`, `research/03_condition_experts/action_roadmap.md`, benchmark notları ve manual review summary güncellendi. | Alternatifler: Önce condition profile modeli eğitmek veya doğrudan night_low_light specialist açmak.
+* 2026-06-08 — Karar: BDD100K Colab fine-tune hattı VD-EXP-002 olarak kurulacak. | Gerekçe: BDD100K road object labels ve weather/timeofday/scene metadata'sı condition-aware general detector için en uygun ilk public veri kaynağıdır. | Etki: `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`, BDD100K dataset card/mapping ve benchmark planı eklendi. | Alternatifler: UA-DETRAC ile başlamak veya önce condition classifier eğitmek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -117,6 +118,7 @@
 * 2026-06-08 — Milestone: VD-EXP-001 YOLO11n pretrained dark detection koşusu çalıştırıldı. | Sonuç: `Test/video_1-3.mp4` üzerinde 1263 frame işlendi; detection outputs/labels local `runs/` altında, özet JSON `models/benchmarks/artifacts/VD-EXP-001-yolo11n-dark-summary.json` altında üretildi; manual accuracy pending.
 * 2026-06-08 — Milestone: Condition experts deep research aksiyonlaştırıldı. | Sonuç: Rapor ilgili araştırma klasörüne taşındı; soru kapsam denetimi, dataset kaynak/lisans checklist'i, aksiyon yol haritası ve condition expert benchmark/experiment şablonları oluşturuldu.
 * 2026-06-08 — Milestone: VD-EXP-001 qualitative manual review kaydedildi. | Sonuç: Genel araç detection davranışı kullanılabilir bulundu; false negative'ler ve kısa class flicker not edildi; sayısal manual accuracy counts pending.
+* 2026-06-08 — Milestone: VD-EXP-002 BDD100K Colab skeleton eklendi. | Sonuç: BDD100K -> YOLO dönüşümü, condition metadata koruma, YOLO11n fine-tune, overall validation, condition breakdown validation ve export adımlarını içeren notebook oluşturuldu.
 
 ## 8) Yapılanlar
 
@@ -147,6 +149,7 @@
 * [x] Condition expert stratejisi Strateji 1 olarak netleştirildi.
 * [x] VD-EXP-001 qualitative manual review summary kaydedildi.
 * [x] İlk fine-tune yönü condition-aware general vehicle detector olarak netleştirildi.
+* [x] BDD100K dataset card, class/condition mapping ve VD-EXP-002 Colab notebook skeleton eklendi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -163,9 +166,11 @@
 * [x] VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline deneyini çalıştır.
 * [x] `Test/video_1-3.mp4` için qualitative dark manual review sonucunu kaydet.
 * [ ] `Test/video_1-3.mp4` için sayısal manual review counts kaydet.
-* [ ] BDD100K ve UA-DETRAC erişim/lisans doğrulamasını tamamla.
+* [ ] BDD100K download portal terms kaydını tamamla.
+* [ ] UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [ ] Condition expert dataset kaynak/lisans checklist'ini tamamla.
-* [ ] Condition-aware general road-domain detector Colab fine-tune notebook skeleton'ını oluştur.
+* [x] Condition-aware general road-domain detector Colab fine-tune notebook skeleton'ını oluştur.
+* [ ] VD-EXP-002 BDD100K Colab dönüşüm ve fine-tune koşusunu çalıştır.
 * [ ] `best_general` seçildikten sonra `night_low_light` specialist deneyini başlat.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 

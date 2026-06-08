@@ -210,3 +210,11 @@ Yapılacaklar:
 3. Condition-aware general detector Colab notebook skeleton'ını oluştur.
 4. Dataset conversion ve condition split planını yaz.
 5. `best_general` olmadan specialist training'e geçme.
+
+## Güncel Colab Başlangıcı
+
+İlk Colab hattı hazırlandı:
+
+* `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`
+
+Bu notebook specialist eğitmez. BDD100K metadata'sını koruyarak `vehicle_detector_general` fine-tune eder ve condition breakdown metriklerini üretir. Specialist kararı bu çıktılardan sonra verilir.

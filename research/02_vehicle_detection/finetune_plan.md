@@ -42,6 +42,28 @@ Bu nedenle ilk aşamada "condition detect + fine-tune" yerine "condition-aware g
 | VD-EXP-006 | YOLOv8n fine-tune | BDD100K 4-class | 640 | Stable fallback |
 | VD-EXP-007 | RT-DETR-L pilot | BDD100K small pilot | 640 | Transformer challenger |
 
+## VD-EXP-002 Colab Hattı
+
+Notebook:
+
+* `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`
+
+Mapping ve dataset card:
+
+* `data/README_assets/bdd100k_vehicle_detection_mapping.yaml`
+* `data/README_assets/bdd100k_vehicle_detection_dataset_card.md`
+
+Notebook görevleri:
+
+1. BDD100K Drive path'lerini doğrular.
+2. BDD JSON detection label formatını YOLO label formatına çevirir.
+3. `car`, `bus`, `truck`, `motorcycle` sınıf mapping'ini uygular.
+4. `weather`, `timeofday`, `scene` metadata'sından condition profile üretir.
+5. `data.yaml`, train/val split listeleri ve condition validation listeleri oluşturur.
+6. `YOLO11n` fine-tune çalıştırır.
+7. Overall validation ve condition breakdown validation sonuçlarını üretir.
+8. `.pt` ve ONNX export çıktısını Drive altında saklar.
+
 ## Condition-Specific Fine-Tune Planı
 
 Koşul profilleri:

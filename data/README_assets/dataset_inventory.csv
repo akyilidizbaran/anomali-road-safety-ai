@@ -1,0 +1,2 @@
+dataset,module,source_url,license,citation_required,contains_plate,contains_face,contains_cabin,redistribution_allowed,status,notes
+BDD100K,vehicle_detection,https://github.com/ucbdrive/bdd100k,BSD-3-Clause plus download portal terms to archive,yes,possible,possible,possible,verify_from_portal,accepted_candidate,Primary condition-aware general vehicle detector dataset; preserve weather/timeofday/scene metadata
