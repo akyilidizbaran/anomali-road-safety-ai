@@ -35,6 +35,7 @@ Karar gerekçesi: Mevcut ihtiyaç, vehicle detector çıktısını hızlı şeki
 * `deep_research/deep_research_report.md`: kaynaklı tracking deep research raporu.
 * `benchmark_plan.md`: ByteTrack / BoT-SORT benchmark planı.
 * `decision_tracking_baseline_v1.md`: ilk tracking baseline kararı.
+* `next_phase_track_to_event_plan.md`: ByteTrack çıktısını target/event/evidence hattına bağlama planı.
 * `../../models/benchmarks/tracking/tracking_baseline_comparison.csv`: tracking deney kayıt tablosu.
 * `../../testing/templates/manual_tracking_review.csv`: ground truth olmayan videolar için manuel review şablonu.
 

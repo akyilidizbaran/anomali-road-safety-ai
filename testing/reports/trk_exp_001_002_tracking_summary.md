@@ -84,3 +84,13 @@ Gerekçe:
 * BoT-SORT'un class switch avantajı bu otomatik koşuda çok küçüktür.
 
 BoT-SORT ReID-off ikinci alternatif olarak kalır. ReID açık mod (`TRK-EXP-003`) yalnız manuel review sonucunda ID switch / occlusion problemi kanıtlanırsa çalıştırılmalıdır.
+
+## Manuel Geri Bildirim
+
+Kullanıcı manuel kontrolde ByteTrack'in gayet iyi çalıştığını belirtti.
+
+Bu geri bildirimle birlikte önerilen sonraki faz tracker aramaya devam etmek değil, ByteTrack çıktısını `TrackingOutput`, target vehicle selection ve event/evidence skeleton hattına bağlamaktır.
+
+İlgili plan:
+
+* `research/03_tracking/next_phase_track_to_event_plan.md`
