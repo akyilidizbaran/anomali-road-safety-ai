@@ -2,8 +2,8 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Plate Detection + OCR MVP'nin ilk uygulama aşamasında target vehicle ROI crop extraction tamamlandı.
-* Son değişiklik neydi? `extract_plate_ocr_target_rois.py` eklendi; 3 target event için raw videodan hedef araç ROI crop'u üretildi ve küçük JSON/rapor artifactleri kaydedildi.
+* Şu an ne yapıyoruz? Plate Detection + OCR MVP'nin ilk uygulama aşamasında target vehicle ROI crop extraction, sample frame extraction ve target ROI clip üretimi tamamlandı.
+* Son değişiklik neydi? `extract_plate_ocr_target_rois.py` tek best-frame crop ile sınırlı kalmayacak şekilde güncellendi; 3 target event için 3 best crop, 39 sample crop ve 3 target ROI video clip üretildi.
 * Bir sonraki net adım ne? `POCR-EXP-001` plate detector smoke test'i seçilen target ROI crop'ları üzerinde çalıştırmak.
 
 ## 1) Proje Amacı ve Kapsam
@@ -41,7 +41,8 @@
 * Hız estimation kullanıcı kararıyla sona bırakıldı; track-to-event sonrası aktif faz plate detection + OCR'dır.
 * Plate/OCR ilk MVP iki aşamalı kurulacak: target vehicle ROI içinde plate detection, plate crop üzerinde OCR, Türk plaka regex/il kodu post-processing, track-level temporal voting ve evidence JSON update.
 * Plate/OCR ilk baseline'da fine-tune yapılmayacak; önce pretrained/public detector + PaddleOCR/EasyOCR karşılaştırması ile pipeline usability kanıtlanacak.
-* `runs/plate_ocr/POCR-EXP-001-target-roi-crops/` altındaki crop görselleri Git'e eklenmeyecek; yalnız küçük JSON summary ve rapor takip edilecek.
+* `runs/plate_ocr/POCR-EXP-001-target-roi-crops/` altındaki crop görselleri ve ROI clip videoları Git'e eklenmeyecek; yalnız küçük JSON summary ve rapor takip edilecek.
+* Plate/OCR için tek `best_frame` yeterli değildir; vehicle detector confidence ile plate visibility aynı şey değildir. Manual review ve plate detector smoke test için track penceresinden sample crop ve ROI clip üretilmelidir.
 * Condition-specific detector routing kullanılacak: `general`, `dark`, `rain`, `fog_low_visibility`, `night_low_light`. Her frame için model eğitilmez; sahne/koşul profili seçilir ve önceden eğitilmiş/fine-tune edilmiş detector çağrılır.
 * Mevcut 3 dark video training set değildir; yalnız manuel benchmark/smoke-test materyalidir ve benchmark sonrası silinebilir.
 * Condition expert training sırası Strateji 1 olacak: önce `vehicle_detector_general`, sonra yalnız benchmark ile faydası kanıtlanan `night_low_light`, `rain`, `fog_low_visibility` uzmanları. `dark`, `tunnel_or_parking_dark`, `glare`, `low_contrast` başlangıçta ayrı detector değil condition label/routing sinyali olarak izlenecek.
@@ -124,7 +125,7 @@
 * 2026-06-11 — Karar: İlk track-to-event implementation heuristic post-processing olarak kurulacak. | Gerekçe: Ground-truth tracking/risk etiketi olmadan ölçülebilir ve tekrar üretilebilir ara contract gerekir; bu aşamada gerçek risk alarmı değil `target_vehicle_selected` skeleton yeterlidir. | Etki: `scripts/benchmarks/build_track_event_skeleton.py`, track post-process JSON, event skeleton JSON ve track-to-event raporu eklendi. | Alternatifler: Doğrudan speed/plate OCR model çağrılarına geçmek.
 * 2026-06-11 — Karar: Hız estimation sona bırakılıp sıradaki aktif AI fazı Plate Detection + OCR olacak. | Gerekçe: Hız tek kamera kalibrasyon/perspektif nedeniyle daha kırılgan; plate/OCR ByteTrack target skeleton üstüne daha doğrudan bağlanır. | Etki: `research/04_plate_ocr/` altında deep research, decision, benchmark planı ve lisans checklist'i eklendi. | Alternatifler: Relative speed baseline'a hemen geçmek.
 * 2026-06-11 — Karar: Plate/OCR ilk MVP iki aşamalı pipeline olacak. | Gerekçe: Evidence package, hata ayrıştırma, QoD sinyali, Türk plaka post-processing ve temporal voting açısından plate detection ile OCR'ın ayrı tutulması daha denetlenebilir. | Etki: İlk detector target ROI içinde çalışacak; ilk OCR baseline PaddleOCR, ikinci EasyOCR, debug fallback Tesseract olacak. | Alternatifler: End-to-end ALPR veya OCR-only ROI denemesi.
-* 2026-06-11 — Karar: Plate/OCR MVP ilk uygulama adımı target vehicle ROI crop extraction olacak. | Gerekçe: Plate detector/OCR koşmadan önce ByteTrack target eventlerinin raw videoda doğru araç crop'una bağlandığı doğrulanmalı. | Etki: `scripts/benchmarks/extract_plate_ocr_target_rois.py`, `POCR-EXP-001-target-roi-crops-summary.json` ve crop extraction raporu eklendi. | Alternatifler: Doğrudan plate detector çalıştırmak.
+* 2026-06-11 — Karar: Plate/OCR MVP ilk uygulama adımı target vehicle ROI crop extraction + sample frame extraction + target ROI clip üretimi olacak. | Gerekçe: Plate detector/OCR koşmadan önce ByteTrack target eventlerinin raw videoda doğru araç crop'una bağlandığı doğrulanmalı; tek best-frame crop plaka görünürlüğünü temsil etmeyebilir. | Etki: `scripts/benchmarks/extract_plate_ocr_target_rois.py`, `POCR-EXP-001-target-roi-crops-summary.json` ve crop extraction raporu eklendi/güncellendi. | Alternatifler: Doğrudan plate detector çalıştırmak veya yalnız tek best-frame crop üretmek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -153,7 +154,7 @@
 * 2026-06-10 — Milestone: ByteTrack manuel geri bildirimi kaydedildi. | Sonuç: Kullanıcı ByteTrack'in gayet iyi çalıştığını belirtti; aktif yön target/evidence hattına bağlama olarak netleşti.
 * 2026-06-11 — Milestone: İlk track-to-event skeleton tamamlandı. | Sonuç: ByteTrack summary history sample ile yeniden üretildi; 3 video için hedef track seçildi ve `target_vehicle_selected` event skeletonları oluşturuldu.
 * 2026-06-11 — Milestone: Plate/OCR deep research tamamlandı. | Sonuç: İki aşamalı target ROI plate detector + PaddleOCR/EasyOCR OCR + Türk plaka post-processing + temporal voting MVP kararı kaydedildi.
-* 2026-06-11 — Milestone: POCR-EXP-001 target ROI crop extraction tamamlandı. | Sonuç: `Test/video_1-3.mp4` içindeki 3 target event için 3 ROI crop üretildi; başarısız crop yok.
+* 2026-06-11 — Milestone: POCR-EXP-001 target ROI crop/sample/clip extraction tamamlandı. | Sonuç: `Test/video_1-3.mp4` içindeki 3 target event için 3 best ROI crop, 39 sample ROI crop ve 3 target ROI clip üretildi; başarısız crop yok.
 
 ## 8) Yapılanlar
 
@@ -212,6 +213,7 @@
 * [x] Target ROI crop extraction script'i yazıldı.
 * [x] `POCR-EXP-001` target ROI crop extraction smoke test çalıştırıldı.
 * [x] 3 target event için 3 ROI crop üretildi.
+* [x] 3 target event için 39 sample ROI crop ve 3 target ROI clip üretildi.
 
 ## 9) Yapılacaklar (Next)
 

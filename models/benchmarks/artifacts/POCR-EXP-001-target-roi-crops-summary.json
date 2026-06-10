@@ -1,14 +1,18 @@
 {
   "experiment_id": "POCR-EXP-001",
   "stage": "target_vehicle_roi_crop_extraction",
-  "generated_at_utc": "2026-06-10T21:55:35Z",
+  "generated_at_utc": "2026-06-10T22:01:40Z",
   "input_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json",
   "videos_dir": "Test",
   "runs_dir": "runs/plate_ocr/POCR-EXP-001-target-roi-crops",
   "summary_json": "models/benchmarks/artifacts/POCR-EXP-001-target-roi-crops-summary.json",
   "padding_ratio": 0.08,
+  "sample_count": 12,
+  "clip_fps": 12.0,
   "event_count": 3,
   "created_crop_count": 3,
+  "created_sample_crop_count": 39,
+  "created_clip_count": 3,
   "failed_crop_count": 0,
   "crops": [
     {
@@ -36,6 +40,287 @@
         2160
       ],
       "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000276_target_roi.jpg",
+      "target_roi_clip_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/clips/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_target_roi_clip.mp4",
+      "clip_frame_count": 344,
+      "clip_fps": 12.0,
+      "clip_output_size": "960x540",
+      "sample_frame_count": 13,
+      "sample_crop_count": 13,
+      "sample_crops": [
+        {
+          "frame": 1,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1583.91,
+            562.35,
+            2678.96,
+            1394.1
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1496,
+            496,
+            2767,
+            1461
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000001_target_roi.jpg",
+          "crop_width": 1271,
+          "crop_height": 965,
+          "crop_area_px": 1226515
+        },
+        {
+          "frame": 32,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1538.37,
+            567.33,
+            2673.24,
+            1418.26
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1448,
+            499,
+            2764,
+            1486
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000032_target_roi.jpg",
+          "crop_width": 1316,
+          "crop_height": 987,
+          "crop_area_px": 1298892
+        },
+        {
+          "frame": 63,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1468.11,
+            570.67,
+            2648.7,
+            1449.0
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1374,
+            500,
+            2743,
+            1519
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000063_target_roi.jpg",
+          "crop_width": 1369,
+          "crop_height": 1019,
+          "crop_area_px": 1395011
+        },
+        {
+          "frame": 95,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1310.74,
+            583.54,
+            2612.86,
+            1543.42
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1207,
+            507,
+            2717,
+            1620
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000095_target_roi.jpg",
+          "crop_width": 1510,
+          "crop_height": 1113,
+          "crop_area_px": 1680630
+        },
+        {
+          "frame": 126,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1040.96,
+            592.53,
+            2534.64,
+            1679.3
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            921,
+            506,
+            2654,
+            1766
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000126_target_roi.jpg",
+          "crop_width": 1733,
+          "crop_height": 1260,
+          "crop_area_px": 2183580
+        },
+        {
+          "frame": 157,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            768.99,
+            617.5,
+            2466.93,
+            1840.26
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            633,
+            520,
+            2603,
+            1938
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000157_target_roi.jpg",
+          "crop_width": 1970,
+          "crop_height": 1418,
+          "crop_area_px": 2793460
+        },
+        {
+          "frame": 188,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            132.22,
+            650.95,
+            2293.14,
+            2127.75
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            533,
+            2466,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000188_target_roi.jpg",
+          "crop_width": 2466,
+          "crop_height": 1627,
+          "crop_area_px": 4012182
+        },
+        {
+          "frame": 219,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            688.72,
+            2208.29,
+            2138.42
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            573,
+            2385,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000219_target_roi.jpg",
+          "crop_width": 2385,
+          "crop_height": 1587,
+          "crop_area_px": 3784995
+        },
+        {
+          "frame": 250,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            13.92,
+            772.99,
+            1926.5,
+            2054.1
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            671,
+            2080,
+            2157
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000250_target_roi.jpg",
+          "crop_width": 2080,
+          "crop_height": 1486,
+          "crop_area_px": 3090880
+        },
+        {
+          "frame": 276,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            824.38,
+            1750.46,
+            2131.67
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            720,
+            1890,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000276_target_roi.jpg",
+          "crop_width": 1890,
+          "crop_height": 1440,
+          "crop_area_px": 2721600
+        },
+        {
+          "frame": 282,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            854.53,
+            1609.23,
+            2127.63
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            753,
+            1738,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000282_target_roi.jpg",
+          "crop_width": 1738,
+          "crop_height": 1407,
+          "crop_area_px": 2445366
+        },
+        {
+          "frame": 313,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            980.08,
+            1238.82,
+            2134.52
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            888,
+            1338,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000313_target_roi.jpg",
+          "crop_width": 1338,
+          "crop_height": 1272,
+          "crop_area_px": 1701936
+        },
+        {
+          "frame": 344,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            1558.15,
+            426.66,
+            2158.92
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            1510,
+            461,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000344_target_roi.jpg",
+          "crop_width": 461,
+          "crop_height": 650,
+          "crop_area_px": 299650
+        }
+      ],
       "crop_width": 1819,
       "crop_height": 1417,
       "crop_area_px": 2577523,
@@ -70,6 +355,287 @@
         2160
       ],
       "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000281_target_roi.jpg",
+      "target_roi_clip_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/clips/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_target_roi_clip.mp4",
+      "clip_frame_count": 344,
+      "clip_fps": 12.0,
+      "clip_output_size": "960x540",
+      "sample_frame_count": 13,
+      "sample_crop_count": 13,
+      "sample_crops": [
+        {
+          "frame": 1,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1700.81,
+            570.36,
+            2781.8,
+            1414.71
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1614,
+            503,
+            2868,
+            1482
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000001_target_roi.jpg",
+          "crop_width": 1254,
+          "crop_height": 979,
+          "crop_area_px": 1227666
+        },
+        {
+          "frame": 32,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1653.45,
+            573.1,
+            2758.92,
+            1439.62
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1565,
+            504,
+            2847,
+            1509
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000032_target_roi.jpg",
+          "crop_width": 1282,
+          "crop_height": 1005,
+          "crop_area_px": 1288410
+        },
+        {
+          "frame": 63,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1584.59,
+            577.34,
+            2739.48,
+            1481.56
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1492,
+            505,
+            2832,
+            1554
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000063_target_roi.jpg",
+          "crop_width": 1340,
+          "crop_height": 1049,
+          "crop_area_px": 1405660
+        },
+        {
+          "frame": 95,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1425.0,
+            592.7,
+            2696.44,
+            1581.65
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1323,
+            514,
+            2798,
+            1661
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000095_target_roi.jpg",
+          "crop_width": 1475,
+          "crop_height": 1147,
+          "crop_area_px": 1691825
+        },
+        {
+          "frame": 126,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1142.53,
+            608.3,
+            2645.47,
+            1761.16
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1022,
+            516,
+            2766,
+            1853
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000126_target_roi.jpg",
+          "crop_width": 1744,
+          "crop_height": 1337,
+          "crop_area_px": 2331728
+        },
+        {
+          "frame": 157,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            853.7,
+            627.08,
+            2585.65,
+            1945.63
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            715,
+            522,
+            2724,
+            2051
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000157_target_roi.jpg",
+          "crop_width": 2009,
+          "crop_height": 1529,
+          "crop_area_px": 3071761
+        },
+        {
+          "frame": 188,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            187.47,
+            668.68,
+            2374.66,
+            2141.81
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            12,
+            551,
+            2550,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000188_target_roi.jpg",
+          "crop_width": 2538,
+          "crop_height": 1609,
+          "crop_area_px": 4083642
+        },
+        {
+          "frame": 219,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            16.74,
+            703.97,
+            2338.43,
+            2122.49
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            590,
+            2524,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000219_target_roi.jpg",
+          "crop_width": 2524,
+          "crop_height": 1570,
+          "crop_area_px": 3962680
+        },
+        {
+          "frame": 250,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            770.77,
+            2143.76,
+            2132.7
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            662,
+            2315,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000250_target_roi.jpg",
+          "crop_width": 2315,
+          "crop_height": 1498,
+          "crop_area_px": 3467870
+        },
+        {
+          "frame": 281,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            910.12,
+            1800.99,
+            2137.63
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            812,
+            1945,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000281_target_roi.jpg",
+          "crop_width": 1945,
+          "crop_height": 1348,
+          "crop_area_px": 2621860
+        },
+        {
+          "frame": 282,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            910.12,
+            1800.99,
+            2137.63
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            812,
+            1945,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000282_target_roi.jpg",
+          "crop_width": 1945,
+          "crop_height": 1348,
+          "crop_area_px": 2621860
+        },
+        {
+          "frame": 313,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            992.55,
+            1454.36,
+            2134.95
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            901,
+            1571,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000313_target_roi.jpg",
+          "crop_width": 1571,
+          "crop_height": 1259,
+          "crop_area_px": 1977889
+        },
+        {
+          "frame": 344,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            4.81,
+            1739.54,
+            416.54,
+            2151.77
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            1707,
+            449,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000344_target_roi.jpg",
+          "crop_width": 449,
+          "crop_height": 453,
+          "crop_area_px": 203397
+        }
+      ],
       "crop_width": 1953,
       "crop_height": 1342,
       "crop_area_px": 2620926,
@@ -104,6 +670,287 @@
         2160
       ],
       "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000214_target_roi.jpg",
+      "target_roi_clip_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/clips/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_target_roi_clip.mp4",
+      "clip_frame_count": 287,
+      "clip_fps": 12.0,
+      "clip_output_size": "960x540",
+      "sample_frame_count": 13,
+      "sample_crop_count": 13,
+      "sample_crops": [
+        {
+          "frame": 1,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            2711.03,
+            484.71,
+            3085.15,
+            806.27
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            2681,
+            459,
+            3115,
+            832
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000001_target_roi.jpg",
+          "crop_width": 434,
+          "crop_height": 373,
+          "crop_area_px": 161882
+        },
+        {
+          "frame": 27,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            2741.59,
+            494.31,
+            3140.39,
+            806.85
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            2710,
+            469,
+            3172,
+            832
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000027_target_roi.jpg",
+          "crop_width": 462,
+          "crop_height": 363,
+          "crop_area_px": 167706
+        },
+        {
+          "frame": 53,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            2664.11,
+            497.61,
+            3118.84,
+            852.24
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            2628,
+            469,
+            3155,
+            881
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000053_target_roi.jpg",
+          "crop_width": 527,
+          "crop_height": 412,
+          "crop_area_px": 217124
+        },
+        {
+          "frame": 79,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            2538.92,
+            506.24,
+            3070.43,
+            915.25
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            2496,
+            474,
+            3113,
+            948
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000079_target_roi.jpg",
+          "crop_width": 617,
+          "crop_height": 474,
+          "crop_area_px": 292458
+        },
+        {
+          "frame": 105,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            2538.52,
+            533.14,
+            3139.34,
+            1050.65
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            2490,
+            492,
+            3187,
+            1092
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000105_target_roi.jpg",
+          "crop_width": 697,
+          "crop_height": 600,
+          "crop_area_px": 418200
+        },
+        {
+          "frame": 131,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            2478.57,
+            553.29,
+            3129.07,
+            1115.09
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            2427,
+            508,
+            3181,
+            1160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000131_target_roi.jpg",
+          "crop_width": 754,
+          "crop_height": 652,
+          "crop_area_px": 491608
+        },
+        {
+          "frame": 157,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1993.37,
+            562.47,
+            3025.02,
+            1350.02
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1911,
+            499,
+            3108,
+            1413
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000157_target_roi.jpg",
+          "crop_width": 1197,
+          "crop_height": 914,
+          "crop_area_px": 1094058
+        },
+        {
+          "frame": 183,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            1535.44,
+            595.04,
+            2887.99,
+            1551.42
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            1427,
+            519,
+            2996,
+            1628
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000183_target_roi.jpg",
+          "crop_width": 1569,
+          "crop_height": 1109,
+          "crop_area_px": 1740021
+        },
+        {
+          "frame": 209,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            615.5,
+            652.26,
+            2636.93,
+            2116.05
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            454,
+            535,
+            2799,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000209_target_roi.jpg",
+          "crop_width": 2345,
+          "crop_height": 1625,
+          "crop_area_px": 3810625
+        },
+        {
+          "frame": 214,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            262.46,
+            673.31,
+            2422.89,
+            2141.74
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            90,
+            556,
+            2596,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000214_target_roi.jpg",
+          "crop_width": 2506,
+          "crop_height": 1604,
+          "crop_area_px": 4019624
+        },
+        {
+          "frame": 235,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            13.72,
+            764.7,
+            2287.12,
+            2123.42
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            656,
+            2469,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000235_target_roi.jpg",
+          "crop_width": 2469,
+          "crop_height": 1504,
+          "crop_area_px": 3713376
+        },
+        {
+          "frame": 261,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            911.85,
+            1946.69,
+            2134.23
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            814,
+            2102,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000261_target_roi.jpg",
+          "crop_width": 2102,
+          "crop_height": 1346,
+          "crop_area_px": 2829292
+        },
+        {
+          "frame": 287,
+          "status": "created",
+          "failure_reason": null,
+          "vehicle_bbox_xyxy": [
+            0.0,
+            1369.22,
+            879.27,
+            2143.7
+          ],
+          "vehicle_bbox_xyxy_clamped": [
+            0,
+            1307,
+            950,
+            2160
+          ],
+          "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000287_target_roi.jpg",
+          "crop_width": 950,
+          "crop_height": 853,
+          "crop_area_px": 810350
+        }
+      ],
       "crop_width": 2432,
       "crop_height": 1609,
       "crop_area_px": 3913088,
@@ -117,7 +964,7 @@
   "manual_review_template": "testing/templates/manual_plate_ocr_review.csv",
   "notes": [
     "This is not plate detection or OCR.",
-    "Crop images are stored under ignored runs/ paths and must not be committed.",
+    "Crop images and ROI clips are stored under ignored runs/ paths and must not be committed.",
     "The output prepares target vehicle ROI inputs for the next plate detector smoke test."
   ]
 }

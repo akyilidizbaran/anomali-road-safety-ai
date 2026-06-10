@@ -22,19 +22,22 @@ Bu çalışma Plate Detection + OCR değildir. Amaç, ByteTrack ile seçilmiş `
 
 * Event sayısı: `3`
 * Üretilen crop sayısı: `3`
+* Üretilen sample crop sayısı: `39`
+* Üretilen target ROI clip sayısı: `3`
 * Başarısız crop sayısı: `0`
 
 ## Crop Listesi
 
-| Event ID | Video | Track | Best Frame | Status | Crop Size | Crop URI |
-|---|---|---|---:|---|---:|---|
-| EVT-TRK-EXP-001-video_1-TRK-001 | video_1.mp4 | TRK-001 | 276 | created | 1819x1417 | `runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000276_target_roi.jpg` |
-| EVT-TRK-EXP-001-video_2-TRK-001 | video_2.mp4 | TRK-001 | 281 | created | 1953x1342 | `runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000281_target_roi.jpg` |
-| EVT-TRK-EXP-001-video_3-TRK-002 | video_3.mp4 | TRK-002 | 214 | created | 2432x1609 | `runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000214_target_roi.jpg` |
+| Event ID | Video | Track | Best Frame | Status | Best Crop | Samples | Clip Frames | Clip URI |
+|---|---|---|---:|---|---:|---:|---:|---|
+| EVT-TRK-EXP-001-video_1-TRK-001 | video_1.mp4 | TRK-001 | 276 | created | 1819x1417 | 13 | 344 | `runs/plate_ocr/POCR-EXP-001-target-roi-crops/clips/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_target_roi_clip.mp4` |
+| EVT-TRK-EXP-001-video_2-TRK-001 | video_2.mp4 | TRK-001 | 281 | created | 1953x1342 | 13 | 344 | `runs/plate_ocr/POCR-EXP-001-target-roi-crops/clips/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_target_roi_clip.mp4` |
+| EVT-TRK-EXP-001-video_3-TRK-002 | video_3.mp4 | TRK-002 | 214 | created | 2432x1609 | 13 | 287 | `runs/plate_ocr/POCR-EXP-001-target-roi-crops/clips/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_target_roi_clip.mp4` |
 
 ## Notlar
 
 * Crop görselleri `runs/` altında kaldığı için Git'e eklenmez.
+* Target ROI clip videoları `runs/` altında kaldığı için Git'e eklenmez.
 * Bu aşama final plaka okuma doğruluğu iddiası kurmaz.
 * Plate visibility ve OCR başarısı bu script tarafından değerlendirilmez; bunlar manual review ve sonraki plate detector/OCR koşularında işaretlenecektir.
 * Sonraki adım `POCR-EXP-001` plate detector smoke test'idir.
