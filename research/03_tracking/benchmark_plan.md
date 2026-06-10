@@ -17,8 +17,8 @@ Vehicle detection sonrası araçları kararlı `track_id` ile takip etmek ve tra
 
 | Experiment | Tracker | Detector | Source | Status | Amaç |
 |---|---|---|---|---|---|
-| `TRK-EXP-001` | ByteTrack | selected pretrained detector | `Test/video_1-3.mp4` | Planned | İlk tracking baseline |
-| `TRK-EXP-002` | BoT-SORT ReID off | selected pretrained detector | `Test/video_1-3.mp4` | Planned | ByteTrack alternatif kıyası |
+| `TRK-EXP-001` | ByteTrack | `yolo11n.pt` interim pretrained detector | `Test/video_1-3.mp4` | Completed | İlk tracking baseline |
+| `TRK-EXP-002` | BoT-SORT ReID off | `yolo11n.pt` interim pretrained detector | `Test/video_1-3.mp4` | Completed | ByteTrack alternatif kıyası |
 | `TRK-EXP-003` | BoT-SORT ReID on | selected pretrained detector | `Test/video_1-3.mp4` | Optional | ID switch problemi varsa |
 | `TRK-EXP-004` | OC-SORT | selected pretrained detector | `Test/video_1-3.mp4` | Optional | Üçüncü aday |
 | `TRK-EXP-005` | Kalman + IoU | selected pretrained detector | `Test/video_1-3.mp4` | Optional | Debug fallback |
@@ -39,8 +39,8 @@ Vehicle detection sonrası araçları kararlı `track_id` ile takip etmek ve tra
 * new track count
 * lost track count
 * recovered track count
-* mean tracker latency ms
-* p95 tracker latency ms
+* mean pipeline latency ms
+* p95 pipeline latency ms
 * pipeline FPS
 * average track age
 * average missing frame count
@@ -91,3 +91,18 @@ Ground truth olmadığı için ilk eşikler manual review tabanlıdır:
 * `TrackingOutput` contract alanları kesinleştirilecek,
 * target vehicle selection modülüne geçilecek,
 * speed baseline ve plate OCR temporal voting için track history kullanılacak.
+
+## İlk Koşu Sonucu
+
+2026-06-10 koşusunda `TRK-EXP-001` ve `TRK-EXP-002`, mevcut `yolo11n.pt` interim detector ile tamamlandı.
+
+Özet:
+
+* ByteTrack: 1263 frame, 15 unique track, 17.665 ms mean pipeline latency, 25.284 ms p95, 31.742 wall FPS.
+* BoT-SORT ReID-off: 1263 frame, 15 unique track, 28.470 ms mean pipeline latency, 34.986 ms p95, 23.771 wall FPS.
+
+Geçici karar: Manuel review tamamlanana kadar ByteTrack aktif baseline olarak korunur.
+
+Detay rapor:
+
+* `testing/reports/trk_exp_001_002_tracking_summary.md`

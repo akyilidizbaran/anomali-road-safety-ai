@@ -1,0 +1,456 @@
+{
+  "experiment_id": "TRK-EXP-002",
+  "tracker": "BoT-SORT",
+  "tracker_config": "botsort.yaml_reid_off",
+  "ultralytics_tracker": "botsort.yaml",
+  "model": "yolo11n.pt",
+  "condition_profile": "dark",
+  "device": "mps",
+  "imgsz": 640,
+  "conf": 0.25,
+  "classes": {
+    "2": "car",
+    "3": "motorcycle",
+    "5": "bus",
+    "7": "truck"
+  },
+  "decision": "completed_second_baseline",
+  "runs_dir": "runs/tracking/TRK-EXP-002-yolo11n-botsort",
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "input_frame_count_reported": 423,
+      "frames_processed": 423,
+      "fps_source": 50.0,
+      "resolution": "3840x2160",
+      "frames_with_tracks": 369,
+      "track_frame_ratio": 0.8723,
+      "total_track_observations": 426,
+      "active_track_count_mean": 1.007,
+      "active_track_count_max": 2,
+      "mean_pipeline_ms": 28.852,
+      "p95_pipeline_ms": 34.986,
+      "mean_preprocess_ms": 1.309,
+      "mean_inference_ms": 8.087,
+      "p95_inference_ms": 11.448,
+      "mean_postprocess_ms": 5.816,
+      "wall_time_s": 17.914,
+      "processed_fps_wall": 23.612,
+      "annotated_video": "runs/tracking/TRK-EXP-002-yolo11n-botsort/video_1_tracked.mp4",
+      "unique_track_count": 3,
+      "average_track_age_frames": 142.0,
+      "max_track_age_frames": 342,
+      "average_missing_frame_count": 7.0,
+      "class_switch_raw_count": 1,
+      "class_switch_suppressed_count": 15,
+      "tracks": [
+        {
+          "track_id": 1,
+          "track_age_frames": 342,
+          "first_frame": 1,
+          "last_frame": 344,
+          "stable_class": "car",
+          "class_votes": {
+            "car": 276.578,
+            "motorcycle": 6.928
+          },
+          "raw_class_switches": 1,
+          "missing_frame_count": 2,
+          "missing_gap_count": 2,
+          "mean_confidence": 0.829,
+          "best_frame_idx": 276,
+          "best_confidence": 0.944,
+          "best_bbox_xyxy": [
+            0.21,
+            845.54,
+            1646.3,
+            2131.75
+          ]
+        },
+        {
+          "track_id": 7,
+          "track_age_frames": 31,
+          "first_frame": 223,
+          "last_frame": 256,
+          "stable_class": "motorcycle",
+          "class_votes": {
+            "motorcycle": 13.796
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 3,
+          "missing_gap_count": 2,
+          "mean_confidence": 0.445,
+          "best_frame_idx": 236,
+          "best_confidence": 0.5693,
+          "best_bbox_xyxy": [
+            1890.21,
+            608.34,
+            2354.38,
+            880.36
+          ]
+        },
+        {
+          "track_id": 8,
+          "track_age_frames": 53,
+          "first_frame": 315,
+          "last_frame": 383,
+          "stable_class": "motorcycle",
+          "class_votes": {
+            "motorcycle": 23.288
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 16,
+          "missing_gap_count": 7,
+          "mean_confidence": 0.439,
+          "best_frame_idx": 345,
+          "best_confidence": 0.5029,
+          "best_bbox_xyxy": [
+            1895.47,
+            603.2,
+            2349.99,
+            884.02
+          ]
+        }
+      ]
+    },
+    {
+      "video": "video_2.mp4",
+      "input_frame_count_reported": 457,
+      "frames_processed": 457,
+      "fps_source": 50.0,
+      "resolution": "3840x2160",
+      "frames_with_tracks": 457,
+      "track_frame_ratio": 1.0,
+      "total_track_observations": 582,
+      "active_track_count_mean": 1.274,
+      "active_track_count_max": 3,
+      "mean_pipeline_ms": 28.828,
+      "p95_pipeline_ms": 34.709,
+      "mean_preprocess_ms": 1.252,
+      "mean_inference_ms": 8.117,
+      "p95_inference_ms": 11.138,
+      "mean_postprocess_ms": 6.042,
+      "wall_time_s": 19.259,
+      "processed_fps_wall": 23.729,
+      "annotated_video": "runs/tracking/TRK-EXP-002-yolo11n-botsort/video_2_tracked.mp4",
+      "unique_track_count": 4,
+      "average_track_age_frames": 145.5,
+      "max_track_age_frames": 343,
+      "average_missing_frame_count": 0.25,
+      "class_switch_raw_count": 6,
+      "class_switch_suppressed_count": 8,
+      "tracks": [
+        {
+          "track_id": 1,
+          "track_age_frames": 343,
+          "first_frame": 1,
+          "last_frame": 344,
+          "stable_class": "car",
+          "class_votes": {
+            "car": 275.327,
+            "motorcycle": 4.142
+          },
+          "raw_class_switches": 6,
+          "missing_frame_count": 1,
+          "missing_gap_count": 1,
+          "mean_confidence": 0.815,
+          "best_frame_idx": 281,
+          "best_confidence": 0.9426,
+          "best_bbox_xyxy": [
+            2.61,
+            915.84,
+            1781.7,
+            2136.77
+          ]
+        },
+        {
+          "track_id": 4,
+          "track_age_frames": 237,
+          "first_frame": 221,
+          "last_frame": 457,
+          "stable_class": "motorcycle",
+          "class_votes": {
+            "motorcycle": 125.16
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.528,
+          "best_frame_idx": 344,
+          "best_confidence": 0.6513,
+          "best_bbox_xyxy": [
+            1895.24,
+            602.48,
+            2364.17,
+            886.73
+          ]
+        },
+        {
+          "track_id": 7,
+          "track_age_frames": 1,
+          "first_frame": 324,
+          "last_frame": 324,
+          "stable_class": "car",
+          "class_votes": {
+            "car": 0.438
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.438,
+          "best_frame_idx": 324,
+          "best_confidence": 0.4382,
+          "best_bbox_xyxy": [
+            1.79,
+            1180.91,
+            1053.23,
+            2142.53
+          ]
+        },
+        {
+          "track_id": 8,
+          "track_age_frames": 1,
+          "first_frame": 327,
+          "last_frame": 327,
+          "stable_class": "car",
+          "class_votes": {
+            "car": 0.378
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.378,
+          "best_frame_idx": 327,
+          "best_confidence": 0.3783,
+          "best_bbox_xyxy": [
+            1.84,
+            1218.6,
+            978.19,
+            2139.43
+          ]
+        }
+      ]
+    },
+    {
+      "video": "video_3.mp4",
+      "input_frame_count_reported": 383,
+      "frames_processed": 383,
+      "fps_source": 50.0,
+      "resolution": "3840x2160",
+      "frames_with_tracks": 294,
+      "track_frame_ratio": 0.7676,
+      "total_track_observations": 365,
+      "active_track_count_mean": 0.953,
+      "active_track_count_max": 3,
+      "mean_pipeline_ms": 27.731,
+      "p95_pipeline_ms": 33.649,
+      "mean_preprocess_ms": 1.286,
+      "mean_inference_ms": 8.112,
+      "p95_inference_ms": 11.242,
+      "mean_postprocess_ms": 5.648,
+      "wall_time_s": 15.958,
+      "processed_fps_wall": 24.001,
+      "annotated_video": "runs/tracking/TRK-EXP-002-yolo11n-botsort/video_3_tracked.mp4",
+      "unique_track_count": 8,
+      "average_track_age_frames": 45.625,
+      "max_track_age_frames": 287,
+      "average_missing_frame_count": 3.0,
+      "class_switch_raw_count": 7,
+      "class_switch_suppressed_count": 15,
+      "tracks": [
+        {
+          "track_id": 1,
+          "track_age_frames": 17,
+          "first_frame": 1,
+          "last_frame": 20,
+          "stable_class": "motorcycle",
+          "class_votes": {
+            "motorcycle": 9.201
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 3,
+          "missing_gap_count": 1,
+          "mean_confidence": 0.541,
+          "best_frame_idx": 2,
+          "best_confidence": 0.7069,
+          "best_bbox_xyxy": [
+            1892.73,
+            587.0,
+            2353.84,
+            882.67
+          ]
+        },
+        {
+          "track_id": 2,
+          "track_age_frames": 6,
+          "first_frame": 1,
+          "last_frame": 6,
+          "stable_class": "car",
+          "class_votes": {
+            "car": 3.587
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.598,
+          "best_frame_idx": 6,
+          "best_confidence": 0.6115,
+          "best_bbox_xyxy": [
+            2710.45,
+            486.09,
+            3096.67,
+            814.85
+          ]
+        },
+        {
+          "track_id": 3,
+          "track_age_frames": 287,
+          "first_frame": 1,
+          "last_frame": 290,
+          "stable_class": "car",
+          "class_votes": {
+            "truck": 1.716,
+            "car": 222.671,
+            "motorcycle": 4.644
+          },
+          "raw_class_switches": 5,
+          "missing_frame_count": 3,
+          "missing_gap_count": 3,
+          "mean_confidence": 0.798,
+          "best_frame_idx": 214,
+          "best_confidence": 0.9499,
+          "best_bbox_xyxy": [
+            315.87,
+            667.9,
+            2566.87,
+            2147.06
+          ]
+        },
+        {
+          "track_id": 5,
+          "track_age_frames": 18,
+          "first_frame": 100,
+          "last_frame": 135,
+          "stable_class": "motorcycle",
+          "class_votes": {
+            "motorcycle": 7.678
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 18,
+          "missing_gap_count": 3,
+          "mean_confidence": 0.427,
+          "best_frame_idx": 131,
+          "best_confidence": 0.5073,
+          "best_bbox_xyxy": [
+            1889.15,
+            591.19,
+            2352.49,
+            882.49
+          ]
+        },
+        {
+          "track_id": 7,
+          "track_age_frames": 1,
+          "first_frame": 142,
+          "last_frame": 142,
+          "stable_class": "truck",
+          "class_votes": {
+            "truck": 0.365
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.365,
+          "best_frame_idx": 142,
+          "best_confidence": 0.365,
+          "best_bbox_xyxy": [
+            2277.93,
+            544.75,
+            3115.45,
+            1218.08
+          ]
+        },
+        {
+          "track_id": 8,
+          "track_age_frames": 22,
+          "first_frame": 234,
+          "last_frame": 255,
+          "stable_class": "motorcycle",
+          "class_votes": {
+            "motorcycle": 10.792
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.491,
+          "best_frame_idx": 241,
+          "best_confidence": 0.6453,
+          "best_bbox_xyxy": [
+            1889.95,
+            632.26,
+            2345.07,
+            879.26
+          ]
+        },
+        {
+          "track_id": 12,
+          "track_age_frames": 7,
+          "first_frame": 278,
+          "last_frame": 284,
+          "stable_class": "car",
+          "class_votes": {
+            "car": 3.192,
+            "motorcycle": 0.726
+          },
+          "raw_class_switches": 2,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.56,
+          "best_frame_idx": 279,
+          "best_confidence": 0.726,
+          "best_bbox_xyxy": [
+            4.58,
+            1150.02,
+            1218.92,
+            2136.44
+          ]
+        },
+        {
+          "track_id": 13,
+          "track_age_frames": 7,
+          "first_frame": 296,
+          "last_frame": 302,
+          "stable_class": "motorcycle",
+          "class_votes": {
+            "motorcycle": 3.291
+          },
+          "raw_class_switches": 0,
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "mean_confidence": 0.47,
+          "best_frame_idx": 296,
+          "best_confidence": 0.509,
+          "best_bbox_xyxy": [
+            1892.0,
+            591.04,
+            2353.9,
+            880.96
+          ]
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "frames_processed": 1263,
+    "total_track_observations": 1373,
+    "unique_track_count": 15,
+    "mean_pipeline_ms": 28.47,
+    "p95_pipeline_ms": 34.986,
+    "processed_fps_wall": 23.771,
+    "average_track_age_frames": 111.042,
+    "class_switch_raw_count": 14,
+    "class_switch_suppressed_count": 38
+  },
+  "manual_review_required": true,
+  "manual_review_template": "testing/templates/manual_tracking_review.csv"
+}

@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Vehicle detection sonrası tracking modülünü pretrained/algorithmic baseline olarak tasarlıyoruz.
-* Son değişiklik neydi? Tracking deep research raporu eklendi; ilk baseline ByteTrack, ikinci alternatif BoT-SORT ReID kapalı olarak kararlaştırıldı.
-* Bir sonraki net adım ne? Seçilen pretrained detector üstünde `TRK-EXP-001` ByteTrack ve `TRK-EXP-002` BoT-SORT ReID-off koşularını yapıp track ID sürekliliği, ID switch, class smoothing, speed trail ve evidence kullanılabilirliğini manuel/metrik olarak karşılaştırmak.
+* Şu an ne yapıyoruz? Vehicle detection sonrası tracking baseline koşularını ölçüyoruz.
+* Son değişiklik neydi? `TRK-EXP-001` ByteTrack ve `TRK-EXP-002` BoT-SORT ReID-off, mevcut `yolo11n.pt` interim detector ile `Test/video_1-3.mp4` üzerinde çalıştırıldı.
+* Bir sonraki net adım ne? Üretilen annotated tracking videolarını manuel inceleyip ID switch, fragmentation, speed trail usability, plate temporal voting usability ve evidence track usability alanlarını `testing/templates/manual_tracking_review.csv` formatına göre doldurmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -34,6 +34,7 @@
 * Pretrained baseline artık sistem geneli anlam taşır: her AI modülü önce dış kaynaklı pretrained model veya algoritmik baseline ile çalışır hale getirilecek, fine-tune yalnız bu omurga tamamlandıktan sonra faz bazlı açılacaktır.
 * Pretrained baseline kıyasları aynı test verisi, aynı input size, aynı confidence threshold, aynı class filter ve aynı kayıt formatıyla yapılmalıdır.
 * Vehicle tracking için ilk baseline ByteTrack'tir; ikinci alternatif BoT-SORT ReID kapalıdır. ReID yalnız ID switch/occlusion problemi kanıtlanırsa açılacaktır.
+* 2026-06-10 otomatik tracking koşusunda ByteTrack, BoT-SORT ReID-off'a göre daha düşük birleşik detector+tracker pipeline latency ve daha yüksek FPS verdi; manuel review tamamlanana kadar ByteTrack aktif baseline olarak korunur.
 * Tracking tek başına alarm üretmez; speed, plate OCR, risk fusion, QoD ve evidence için `track_id`, `stable_class`, `track_stability`, `bbox_history`, `center_history`, `best_frame_id` ve `best_crop_ref` üretir.
 * Condition-specific detector routing kullanılacak: `general`, `dark`, `rain`, `fog_low_visibility`, `night_low_light`. Her frame için model eğitilmez; sahne/koşul profili seçilir ve önceden eğitilmiş/fine-tune edilmiş detector çağrılır.
 * Mevcut 3 dark video training set değildir; yalnız manuel benchmark/smoke-test materyalidir ve benchmark sonrası silinebilir.
@@ -112,6 +113,7 @@
 * 2026-06-10 — Karar: Fine-tune kapsamı TODO/backlog'a alındı; aktif model fazı pretrained zero-fine-tune baseline benchmark olacak. | Gerekçe: YOLO11n pretrained smoke test kullanılabilir sonuç verdi; eğitim maliyetine geçmeden model aileleri, latency, bbox stabilitesi, output contract ve evidence/tracking uygunluğu ölçülmeli. | Etki: `project/decisions/2026-06-10-defer-finetune-pretrained-baselines.md`, `research/02_vehicle_detection/pretrained_baseline_plan.md`, benchmark/fine-tune planları ve comparison CSV güncellendi. | Alternatifler: Hemen BDD100K fine-tune'a başlamak veya önce condition profile modeli eğitmek.
 * 2026-06-10 — Karar: Pretrained baseline kapsamı sistem geneline genişletildi. | Gerekçe: Kullanıcı araç yakalama, hız, plaka, OCR, sürücü/yolcu/cabin gibi tüm modüllerin önce dış kaynaklı pretrained/algorithmic baseline ile kurulmasını ve fine-tune'un tüm baseline omurga tamamlandıktan sonra aşama bazlı yapılmasını istedi. | Etki: `research/00_pretrained_baseline/README.md` eklendi; ayrı model çağrısı gerektiren ve gerektirmeyen modüller ayrıldı. | Alternatifler: Sadece vehicle detector kıyası yapmak.
 * 2026-06-10 — Karar: Vehicle tracking ilk baseline ByteTrack, ikinci alternatif BoT-SORT ReID kapalı olacak. | Gerekçe: Mevcut ihtiyaç düşük latency ile detection çıktılarını kararlı `track_id` değerlerine bağlamak, kısa false negative/class flicker davranışını track-level smoothing ile yönetmek ve speed/plate/evidence hattına track history sağlamaktır. | Etki: `research/03_tracking/deep_research/deep_research_report.md`, `research/03_tracking/benchmark_plan.md`, `research/03_tracking/decision_tracking_baseline_v1.md`, tracking benchmark CSV, manual review template, `TrackingOutput` contract güncellendi. | Alternatifler: DeepSORT/StrongSORT ReID tabanlı tracker'lar, OC-SORT, Norfair, Kalman+IoU.
+* 2026-06-10 — Karar: Manuel review tamamlanana kadar ByteTrack aktif tracking baseline olarak korunacak. | Gerekçe: `TRK-EXP-001` ve `TRK-EXP-002` otomatik koşularında her iki tracker 15 unique track üretti; ByteTrack 17.665 ms mean / 25.284 ms p95 pipeline latency ve 31.742 FPS ile BoT-SORT ReID-off'tan daha hızlı çalıştı. | Etki: Tracking benchmark CSV ve summary raporu güncellendi; manuel ID switch/fragmentation incelemesi sıradaki iş olarak kaldı. | Alternatifler: BoT-SORT ReID-off'u latency pahasına seçmek veya ReID açık denemeye geçmek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -136,6 +138,7 @@
 * 2026-06-10 — Milestone: Fine-tune backlog'a alındı ve pretrained baseline fazı açıldı. | Sonuç: Pretrained YOLO11s, YOLOv10n, YOLOv8n ve opsiyonel RT-DETR deneyleri comparison CSV ve plan dosyalarına eklendi.
 * 2026-06-10 — Milestone: Sistem geneli pretrained baseline çağrı matrisi eklendi. | Sonuç: Condition, vehicle, tracking, speed, plate, OCR, traffic sign, lane/drivable area, cabin, risk fusion, QoD ve LLM explanation aşamaları ayrı model/policy/algorithm olarak sınıflandırıldı.
 * 2026-06-10 — Milestone: Vehicle tracking deep research tamamlandı. | Sonuç: ByteTrack ilk baseline, BoT-SORT ReID-off ikinci alternatif seçildi; DeepSORT/StrongSORT ertelendi; benchmark planı, karar dosyası, CSV ve manual review şablonu eklendi.
+* 2026-06-10 — Milestone: İlk tracking benchmark koşuları tamamlandı. | Sonuç: `TRK-EXP-001` ByteTrack ve `TRK-EXP-002` BoT-SORT ReID-off, 1263 frame üzerinde çalıştı; JSON özetleri ve lokal annotated videolar üretildi.
 
 ## 8) Yapılanlar
 
@@ -176,6 +179,9 @@
 * [x] Vehicle tracking deep research raporu yazıldı.
 * [x] ByteTrack / BoT-SORT tracking baseline kararı kaydedildi.
 * [x] Tracking benchmark planı ve manuel review şablonu oluşturuldu.
+* [x] `TRK-EXP-001` ByteTrack tracking koşusu çalıştırıldı.
+* [x] `TRK-EXP-002` BoT-SORT ReID-off tracking koşusu çalıştırıldı.
+* [x] Tracking otomatik sonuç özet raporu oluşturuldu.
 
 ## 9) Yapılacaklar (Next)
 
@@ -196,8 +202,6 @@
 * [ ] VD-EXP-009 YOLOv10n pretrained zero-fine-tune benchmark koşusunu çalıştır.
 * [ ] VD-EXP-010 YOLOv8n pretrained zero-fine-tune benchmark koşusunu çalıştır.
 * [ ] Pretrained benchmark sonuçlarını `models/benchmarks/vehicle_detection_comparison.csv` içine işleyip bir baseline seç.
-* [ ] Seçilen baseline üstünde `TRK-EXP-001` ByteTrack benchmark koşusunu çalıştır.
-* [ ] Aynı detector ve videolarla `TRK-EXP-002` BoT-SORT ReID-off benchmark koşusunu çalıştır.
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
 * [ ] Track-level class voting, confidence smoothing ve `track_stability` hesaplamasını implementation planına bağla.
 * [ ] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
