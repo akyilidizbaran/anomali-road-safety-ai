@@ -4,6 +4,18 @@
 
 Araç tespiti için Colab üzerinde tekrar üretilebilir fine-tune deneyi tasarlamak.
 
+## Güncel Durum
+
+Status: **Deferred / TODO**
+
+2026-06-10 kararıyla fine-tune kapsamı şimdilik backlog'a alındı. Aktif sıra, fine-tune edilmemiş pretrained modellerle benchmark ve pipeline değerlendirmesidir.
+
+Fine-tune planı korunur; `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` ileride kullanılacaktır.
+
+Aktif faz:
+
+* `pretrained_baseline_plan.md`
+
 ## Genel Yaklaşım
 
 * Büyük modeli sıfırdan eğitmek yok.

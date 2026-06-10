@@ -64,9 +64,17 @@ Modeller:
 * İlk JSON output uyumluluğu.
 * Domain gap gözlemi.
 
+Status: **Active next phase as of 2026-06-10.**
+
+Bu aşama tamamlanmadan fine-tune aktif çalışmaya alınmayacak. Amaç, fine-tune öncesinde hangi pretrained model ailesinin pipeline için en uygun olduğunu ölçmektir.
+
 ### Stage 1 - Colab Fine-Tune Baseline
 
 Amaç: Aynı veri/split üzerinde road-domain adaptation.
+
+Status: **Deferred / TODO as of 2026-06-10.**
+
+BDD100K Colab notebook ve mapping hazır tutulacak; ancak aktif sıra pretrained baseline benchmark ve tracking entegrasyonudur.
 
 Veri:
 

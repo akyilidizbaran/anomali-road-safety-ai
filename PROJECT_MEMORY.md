@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Anomali Road Safety AI için resmi PDR/ÖTR, PCR/FTR ve `leD24n5kb...pdf` içindeki ana akışla uyumlu dokümantasyon-first proje reposu geliştiriliyor.
-* Son değişiklik neydi? VD-EXP-001 qualitative manual review kaydedildi: genel araç yakalama kullanılabilir, bazı false negative'ler ve 2-3 frame seviyesinde car->motorcycle class flicker var; fine-tune yönü condition-aware general vehicle detector olarak netleştirildi.
-* Bir sonraki net adım ne? `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` içinde BDD100K download modunu seçip Kaggle credential'larını Colab Secrets veya runtime prompt ile vererek Drive placement, YOLO dönüşümü, pretrained baseline validation, YOLO11n fine-tune, baseline-delta ve condition breakdown testlerini çalıştırmak.
+* Şu an ne yapıyoruz? Anomali Road Safety AI için araç tespiti omurgasını fine-tune'suz pretrained modellerle ölçülebilir hale getiriyoruz.
+* Son değişiklik neydi? Fine-tune kapsamı TODO/backlog olarak ertelendi; aktif faz pretrained zero-fine-tune detector benchmark ve pipeline değerlendirmesi olarak kaydedildi.
+* Bir sonraki net adım ne? `VD-EXP-008` YOLO11s, `VD-EXP-009` YOLOv10n ve `VD-EXP-010` YOLOv8n pretrained modellerini aynı `Test/video_1-3.mp4` protokolüyle çalıştırıp latency, detection davranışı, class flicker, bbox/evidence kullanılabilirliği ve tracking başlangıç kalitesini karşılaştırmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -30,6 +30,8 @@
 * Hız kalibrasyon denemesi final scope'ta tutulacak; MVP'de göreli hız / motion anomaly sinyali yeterli kabul edilebilir.
 * Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınmalıdır.
 * Araç tespiti için ilk ölçülebilir baseline YOLO11n'dir; final model kararı Colab fine-tune + MacBook runtime benchmark + lisans/export/evidence/tracking katkısı sonrası verilecektir.
+* Fine-tune şimdilik aktif iş değildir; TODO/backlog'da tutulacak ve önce pretrained baseline + tracking/smoothing pipeline'ı olgunlaştırılacaktır.
+* Pretrained baseline kıyasları aynı test verisi, aynı input size, aynı confidence threshold, aynı class filter ve aynı kayıt formatıyla yapılmalıdır.
 * Condition-specific detector routing kullanılacak: `general`, `dark`, `rain`, `fog_low_visibility`, `night_low_light`. Her frame için model eğitilmez; sahne/koşul profili seçilir ve önceden eğitilmiş/fine-tune edilmiş detector çağrılır.
 * Mevcut 3 dark video training set değildir; yalnız manuel benchmark/smoke-test materyalidir ve benchmark sonrası silinebilir.
 * Condition expert training sırası Strateji 1 olacak: önce `vehicle_detector_general`, sonra yalnız benchmark ile faydası kanıtlanan `night_low_light`, `rain`, `fog_low_visibility` uzmanları. `dark`, `tunnel_or_parking_dark`, `glare`, `low_contrast` başlangıçta ayrı detector değil condition label/routing sinyali olarak izlenecek.
@@ -104,6 +106,7 @@
 * 2026-06-08 — Karar: BDD100K için opsiyonel otomatik Colab indirme desteklenecek. | Gerekçe: Repo public paylaşılmayacak ve lisanslı/private kullanım planlanıyor; yine de ham veri Git'e eklenmemeli, credential/URL/token bilgilerinin repo dışında kalması gerekir. | Etki: `scripts/colab/download_bdd100k.py`, `scripts/colab/README.md`, notebook ve dataset card güncellendi. | Alternatifler: Sadece manuel Drive upload ile ilerlemek.
 * 2026-06-08 — Karar: VD-EXP-002 tek notebook uçtan uca pipeline olacak. | Gerekçe: Kullanıcı BDD100K indirme, Drive yerleşimi, fine-tune model eğitimi, test ve baseline farklarının tek Colab notebook içinde yürütülmesini istedi. | Etki: `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`, experiment planı, fine-tune planı ve action roadmap güncellendi. | Alternatifler: Ayrı download notebook/script ve ayrı training notebook tutmak.
 * 2026-06-08 — Karar: Kaggle API key notebook/repo içine düz metin olarak yazılmayacak. | Gerekçe: Kullanıcı key paylaşmış olsa bile secret'lar Git geçmişine veya notebook hücresine gömülmemeli; Colab Secrets/env/prompt aynı pratikliği sağlar. | Etki: Notebook'a güvenli Kaggle credential setup hücresi eklendi. | Alternatifler: Key'i notebook config hücresine yazmak.
+* 2026-06-10 — Karar: Fine-tune kapsamı TODO/backlog'a alındı; aktif model fazı pretrained zero-fine-tune baseline benchmark olacak. | Gerekçe: YOLO11n pretrained smoke test kullanılabilir sonuç verdi; eğitim maliyetine geçmeden model aileleri, latency, bbox stabilitesi, output contract ve evidence/tracking uygunluğu ölçülmeli. | Etki: `project/decisions/2026-06-10-defer-finetune-pretrained-baselines.md`, `research/02_vehicle_detection/pretrained_baseline_plan.md`, benchmark/fine-tune planları ve comparison CSV güncellendi. | Alternatifler: Hemen BDD100K fine-tune'a başlamak veya önce condition profile modeli eğitmek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -125,6 +128,7 @@
 * 2026-06-08 — Milestone: BDD100K opsiyonel downloader helper eklendi. | Sonuç: Kaggle/direct/gdown modlarıyla Drive altına veri indirebilen helper script oluşturuldu; credential ve URL bilgileri repo dışında tutulacak.
 * 2026-06-08 — Milestone: VD-EXP-002 notebook tek dosya pipeline'a çevrildi. | Sonuç: Notebook artık BDD100K indirme/yerleşim, conversion, pretrained baseline, fine-tune, optional challenger, baseline-delta ve condition breakdown adımlarını aynı dosyada yürütür.
 * 2026-06-08 — Milestone: VD-EXP-002 Kaggle credential setup eklendi. | Sonuç: Notebook Colab Secrets, env veya gizli runtime prompt üzerinden Kaggle credential okuyabilir; API key repoya yazılmaz.
+* 2026-06-10 — Milestone: Fine-tune backlog'a alındı ve pretrained baseline fazı açıldı. | Sonuç: Pretrained YOLO11s, YOLOv10n, YOLOv8n ve opsiyonel RT-DETR deneyleri comparison CSV ve plan dosyalarına eklendi.
 
 ## 8) Yapılanlar
 
@@ -159,6 +163,8 @@
 * [x] BDD100K için opsiyonel Colab downloader helper eklendi.
 * [x] VD-EXP-002 notebook tek dosyada download + placement + training + test + baseline-delta pipeline'a çevrildi.
 * [x] Kaggle credential setup notebook içine güvenli şekilde eklendi.
+* [x] Fine-tune kapsamı TODO/backlog olarak kaydedildi.
+* [x] Pretrained zero-fine-tune vehicle detector baseline fazı planlandı.
 
 ## 9) Yapılacaklar (Next)
 
@@ -175,12 +181,17 @@
 * [x] VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline deneyini çalıştır.
 * [x] `Test/video_1-3.mp4` için qualitative dark manual review sonucunu kaydet.
 * [ ] `Test/video_1-3.mp4` için sayısal manual review counts kaydet.
-* [ ] VD-EXP-002 notebook içinde BDD100K download yöntemini seç: manual Drive upload / Kaggle / direct URL / gdown.
+* [ ] VD-EXP-008 YOLO11s pretrained zero-fine-tune benchmark koşusunu çalıştır.
+* [ ] VD-EXP-009 YOLOv10n pretrained zero-fine-tune benchmark koşusunu çalıştır.
+* [ ] VD-EXP-010 YOLOv8n pretrained zero-fine-tune benchmark koşusunu çalıştır.
+* [ ] Pretrained benchmark sonuçlarını `models/benchmarks/vehicle_detection_comparison.csv` içine işleyip bir baseline seç.
+* [ ] Seçilen baseline üstünde ByteTrack benzeri tracking, track-level class voting ve confidence smoothing entegrasyonunu başlat.
+* [ ] (Deferred) VD-EXP-002 notebook içinde BDD100K download yöntemini seç: manual Drive upload / Kaggle / direct URL / gdown.
 * [ ] UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [ ] Condition expert dataset kaynak/lisans checklist'ini tamamla.
 * [x] Condition-aware general road-domain detector Colab fine-tune notebook skeleton'ını oluştur.
-* [ ] VD-EXP-002 BDD100K Colab dönüşüm ve fine-tune koşusunu çalıştır.
-* [ ] `best_general` seçildikten sonra `night_low_light` specialist deneyini başlat.
+* [ ] (Deferred) VD-EXP-002 BDD100K Colab dönüşüm ve fine-tune koşusunu çalıştır.
+* [ ] (Deferred) `best_general` seçildikten sonra `night_low_light` specialist deneyini başlat.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
@@ -192,6 +203,8 @@
 * 3 dark video dark-specific model eğitimi için yeterli değildir; bu videolarla eğitim yapmak overfit ve savunulamaz sonuç riski taşır.
 * `dark` ayrı specialist olarak hemen açılmamalı; başlangıçta `night_low_light` routing etiketi veya general fallback altında izlenmelidir.
 * Mevcut false negative ve kısa class flicker gözlemleri frame-level detector kararından çok track-level smoothing, temporal voting ve condition-aware fine-tune ile ele alınmalıdır.
+* Pretrained baseline sonuçları ground-truth mAP değildir; başlangıçta manual review + runtime + pipeline kullanılabilirliği ölçümü olarak yorumlanmalıdır.
+* Fine-tune ertelendiği için domain gap tamamen çözülmüş sayılmaz; bu karar yalnız pipeline omurgasını hızlı ve ölçülebilir kurmak içindir.
 * Deep research raporundaki ChatGPT citation placeholder'ları final rapor kaynağı değildir; final kaynaklar `research/03_condition_experts/dataset_source_checklist.md` ve ilgili official URL'lerle doğrulanmalıdır.
 * Colab deney dosyaları henüz oluşturulmadı.
 * MacBook runtime benchmark planı oluşturuldu; script/uygulama henüz yok.
@@ -210,4 +223,4 @@
 
 ### Güncelleme Kaydı
 
-* Son güncelleme: 2026-06-08
+* Son güncelleme: 2026-06-10

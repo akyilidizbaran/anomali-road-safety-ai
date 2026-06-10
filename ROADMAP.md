@@ -15,15 +15,27 @@ The first working MVP will focus on:
 
 Lane analysis, calibrated speed estimation, full scene/weather modeling, external road users, cabin risk and real QoD integration will be added progressively.
 
-Runtime assumption: Android captures live 720p frames/stream, MacBook runs the local edge/backend inference server, and Colab is used for model research/fine-tune.
+Runtime assumption: Android captures live 720p frames/stream, MacBook runs the local edge/backend inference server, and Colab is used later for model research/fine-tune. The active model phase is pretrained zero-fine-tune benchmarking.
 
 ## Near-Term Technical Order
 
-1. Finalize `architecture/contracts`.
-2. Run VD-EXP-001 YOLO11n pretrained zero-fine-tune baseline on `Test/video_1-3.mp4`.
-3. Record dark manual review results with `testing/templates/manual_video_benchmark_review.csv`.
-4. Add backend stub with health, stream and recent events endpoints.
-5. Connect mobile camera screen to backend stub.
+1. Run pretrained zero-fine-tune challengers on `Test/video_1-3.mp4`: `VD-EXP-008` YOLO11s, `VD-EXP-009` YOLOv10n, `VD-EXP-010` YOLOv8n.
+2. Record manual review counts and qualitative notes for `VD-EXP-001`, `VD-EXP-008`, `VD-EXP-009` and `VD-EXP-010`.
+3. Select the first vehicle detector baseline using recall feel, bbox usability, class flicker, latency/FPS, evidence crop usability and license/export risk.
+4. Add ByteTrack-style tracking, track-level class voting and confidence smoothing on top of the selected pretrained baseline.
+5. Add single target / risk candidate selection and first event/evidence JSON generation.
+6. Add backend stub with health, stream and recent events endpoints.
+7. Connect mobile camera screen to backend stub.
+
+## Deferred Model Training Backlog
+
+Fine-tune is intentionally deferred until the pretrained baseline and tracking/evidence pipeline are measurable.
+
+1. Select BDD100K download mode in `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`.
+2. Run BDD100K -> YOLO conversion.
+3. Train condition-aware general vehicle detector.
+4. Compare baseline vs fine-tuned delta.
+5. Start `night_low_light` specialist only after the general baseline and tracking pipeline justify it.
 
 ## Report Order
 
