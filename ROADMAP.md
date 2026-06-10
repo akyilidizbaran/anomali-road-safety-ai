@@ -22,10 +22,11 @@ Runtime assumption: Android captures live 720p frames/stream, MacBook runs the l
 1. Run pretrained zero-fine-tune challengers on `Test/video_1-3.mp4`: `VD-EXP-008` YOLO11s, `VD-EXP-009` YOLOv10n, `VD-EXP-010` YOLOv8n.
 2. Record manual review counts and qualitative notes for `VD-EXP-001`, `VD-EXP-008`, `VD-EXP-009` and `VD-EXP-010`.
 3. Select the first vehicle detector baseline using recall feel, bbox usability, class flicker, latency/FPS, evidence crop usability and license/export risk.
-4. Add ByteTrack-style tracking, track-level class voting and confidence smoothing on top of the selected pretrained baseline.
-5. Add single target / risk candidate selection and first event/evidence JSON generation.
-6. Add backend stub with health, stream and recent events endpoints.
-7. Connect mobile camera screen to backend stub.
+4. Run `TRK-EXP-001` ByteTrack and `TRK-EXP-002` BoT-SORT ReID-off on top of the selected pretrained detector.
+5. Add track-level class voting, confidence smoothing and `track_stability`.
+6. Add single target / risk candidate selection and first event/evidence JSON generation.
+7. Add backend stub with health, stream and recent events endpoints.
+8. Connect mobile camera screen to backend stub.
 
 ## Deferred Model Training Backlog
 

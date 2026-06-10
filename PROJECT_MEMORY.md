@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Anomali Road Safety AI için araç tespitiyle sınırlı olmayan sistem geneli pretrained baseline omurgasını tanımlıyoruz.
-* Son değişiklik neydi? `research/00_pretrained_baseline/README.md` ile condition profile, vehicle detection, tracking, speed, plate detection/OCR, traffic sign, lane/drivable area, cabin risk, QoD ve LLM explanation için hangi aşamalarda ayrı model çağrısı yapılacağı netleştirildi.
-* Bir sonraki net adım ne? Önce vehicle detection + tracking omurgasını tamamlamak; ardından plate detection/OCR, speed baseline, condition routing, lane/sign ve cabin risk modüllerini sırayla pretrained/algorithmic baseline olarak eklemek.
+* Şu an ne yapıyoruz? Vehicle detection sonrası tracking modülünü pretrained/algorithmic baseline olarak tasarlıyoruz.
+* Son değişiklik neydi? Tracking deep research raporu eklendi; ilk baseline ByteTrack, ikinci alternatif BoT-SORT ReID kapalı olarak kararlaştırıldı.
+* Bir sonraki net adım ne? Seçilen pretrained detector üstünde `TRK-EXP-001` ByteTrack ve `TRK-EXP-002` BoT-SORT ReID-off koşularını yapıp track ID sürekliliği, ID switch, class smoothing, speed trail ve evidence kullanılabilirliğini manuel/metrik olarak karşılaştırmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -33,6 +33,8 @@
 * Fine-tune şimdilik aktif iş değildir; TODO/backlog'da tutulacak ve önce pretrained baseline + tracking/smoothing pipeline'ı olgunlaştırılacaktır.
 * Pretrained baseline artık sistem geneli anlam taşır: her AI modülü önce dış kaynaklı pretrained model veya algoritmik baseline ile çalışır hale getirilecek, fine-tune yalnız bu omurga tamamlandıktan sonra faz bazlı açılacaktır.
 * Pretrained baseline kıyasları aynı test verisi, aynı input size, aynı confidence threshold, aynı class filter ve aynı kayıt formatıyla yapılmalıdır.
+* Vehicle tracking için ilk baseline ByteTrack'tir; ikinci alternatif BoT-SORT ReID kapalıdır. ReID yalnız ID switch/occlusion problemi kanıtlanırsa açılacaktır.
+* Tracking tek başına alarm üretmez; speed, plate OCR, risk fusion, QoD ve evidence için `track_id`, `stable_class`, `track_stability`, `bbox_history`, `center_history`, `best_frame_id` ve `best_crop_ref` üretir.
 * Condition-specific detector routing kullanılacak: `general`, `dark`, `rain`, `fog_low_visibility`, `night_low_light`. Her frame için model eğitilmez; sahne/koşul profili seçilir ve önceden eğitilmiş/fine-tune edilmiş detector çağrılır.
 * Mevcut 3 dark video training set değildir; yalnız manuel benchmark/smoke-test materyalidir ve benchmark sonrası silinebilir.
 * Condition expert training sırası Strateji 1 olacak: önce `vehicle_detector_general`, sonra yalnız benchmark ile faydası kanıtlanan `night_low_light`, `rain`, `fog_low_visibility` uzmanları. `dark`, `tunnel_or_parking_dark`, `glare`, `low_contrast` başlangıçta ayrı detector değil condition label/routing sinyali olarak izlenecek.
@@ -109,6 +111,7 @@
 * 2026-06-08 — Karar: Kaggle API key notebook/repo içine düz metin olarak yazılmayacak. | Gerekçe: Kullanıcı key paylaşmış olsa bile secret'lar Git geçmişine veya notebook hücresine gömülmemeli; Colab Secrets/env/prompt aynı pratikliği sağlar. | Etki: Notebook'a güvenli Kaggle credential setup hücresi eklendi. | Alternatifler: Key'i notebook config hücresine yazmak.
 * 2026-06-10 — Karar: Fine-tune kapsamı TODO/backlog'a alındı; aktif model fazı pretrained zero-fine-tune baseline benchmark olacak. | Gerekçe: YOLO11n pretrained smoke test kullanılabilir sonuç verdi; eğitim maliyetine geçmeden model aileleri, latency, bbox stabilitesi, output contract ve evidence/tracking uygunluğu ölçülmeli. | Etki: `project/decisions/2026-06-10-defer-finetune-pretrained-baselines.md`, `research/02_vehicle_detection/pretrained_baseline_plan.md`, benchmark/fine-tune planları ve comparison CSV güncellendi. | Alternatifler: Hemen BDD100K fine-tune'a başlamak veya önce condition profile modeli eğitmek.
 * 2026-06-10 — Karar: Pretrained baseline kapsamı sistem geneline genişletildi. | Gerekçe: Kullanıcı araç yakalama, hız, plaka, OCR, sürücü/yolcu/cabin gibi tüm modüllerin önce dış kaynaklı pretrained/algorithmic baseline ile kurulmasını ve fine-tune'un tüm baseline omurga tamamlandıktan sonra aşama bazlı yapılmasını istedi. | Etki: `research/00_pretrained_baseline/README.md` eklendi; ayrı model çağrısı gerektiren ve gerektirmeyen modüller ayrıldı. | Alternatifler: Sadece vehicle detector kıyası yapmak.
+* 2026-06-10 — Karar: Vehicle tracking ilk baseline ByteTrack, ikinci alternatif BoT-SORT ReID kapalı olacak. | Gerekçe: Mevcut ihtiyaç düşük latency ile detection çıktılarını kararlı `track_id` değerlerine bağlamak, kısa false negative/class flicker davranışını track-level smoothing ile yönetmek ve speed/plate/evidence hattına track history sağlamaktır. | Etki: `research/03_tracking/deep_research/deep_research_report.md`, `research/03_tracking/benchmark_plan.md`, `research/03_tracking/decision_tracking_baseline_v1.md`, tracking benchmark CSV, manual review template, `TrackingOutput` contract güncellendi. | Alternatifler: DeepSORT/StrongSORT ReID tabanlı tracker'lar, OC-SORT, Norfair, Kalman+IoU.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -132,6 +135,7 @@
 * 2026-06-08 — Milestone: VD-EXP-002 Kaggle credential setup eklendi. | Sonuç: Notebook Colab Secrets, env veya gizli runtime prompt üzerinden Kaggle credential okuyabilir; API key repoya yazılmaz.
 * 2026-06-10 — Milestone: Fine-tune backlog'a alındı ve pretrained baseline fazı açıldı. | Sonuç: Pretrained YOLO11s, YOLOv10n, YOLOv8n ve opsiyonel RT-DETR deneyleri comparison CSV ve plan dosyalarına eklendi.
 * 2026-06-10 — Milestone: Sistem geneli pretrained baseline çağrı matrisi eklendi. | Sonuç: Condition, vehicle, tracking, speed, plate, OCR, traffic sign, lane/drivable area, cabin, risk fusion, QoD ve LLM explanation aşamaları ayrı model/policy/algorithm olarak sınıflandırıldı.
+* 2026-06-10 — Milestone: Vehicle tracking deep research tamamlandı. | Sonuç: ByteTrack ilk baseline, BoT-SORT ReID-off ikinci alternatif seçildi; DeepSORT/StrongSORT ertelendi; benchmark planı, karar dosyası, CSV ve manual review şablonu eklendi.
 
 ## 8) Yapılanlar
 
@@ -169,6 +173,9 @@
 * [x] Fine-tune kapsamı TODO/backlog olarak kaydedildi.
 * [x] Pretrained zero-fine-tune vehicle detector baseline fazı planlandı.
 * [x] Sistem geneli pretrained baseline model çağrı matrisi oluşturuldu.
+* [x] Vehicle tracking deep research raporu yazıldı.
+* [x] ByteTrack / BoT-SORT tracking baseline kararı kaydedildi.
+* [x] Tracking benchmark planı ve manuel review şablonu oluşturuldu.
 
 ## 9) Yapılacaklar (Next)
 
@@ -189,7 +196,10 @@
 * [ ] VD-EXP-009 YOLOv10n pretrained zero-fine-tune benchmark koşusunu çalıştır.
 * [ ] VD-EXP-010 YOLOv8n pretrained zero-fine-tune benchmark koşusunu çalıştır.
 * [ ] Pretrained benchmark sonuçlarını `models/benchmarks/vehicle_detection_comparison.csv` içine işleyip bir baseline seç.
-* [ ] Seçilen baseline üstünde ByteTrack benzeri tracking, track-level class voting ve confidence smoothing entegrasyonunu başlat.
+* [ ] Seçilen baseline üstünde `TRK-EXP-001` ByteTrack benchmark koşusunu çalıştır.
+* [ ] Aynı detector ve videolarla `TRK-EXP-002` BoT-SORT ReID-off benchmark koşusunu çalıştır.
+* [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
+* [ ] Track-level class voting, confidence smoothing ve `track_stability` hesaplamasını implementation planına bağla.
 * [ ] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
 * [ ] PaddleOCR / EasyOCR plate OCR baseline kıyasını planla.
 * [ ] Speed baseline için track displacement + relative speed hesaplama contractını yaz.
@@ -213,6 +223,9 @@
 * `dark` ayrı specialist olarak hemen açılmamalı; başlangıçta `night_low_light` routing etiketi veya general fallback altında izlenmelidir.
 * Mevcut false negative ve kısa class flicker gözlemleri frame-level detector kararından çok track-level smoothing, temporal voting ve condition-aware fine-tune ile ele alınmalıdır.
 * Pretrained baseline sonuçları ground-truth mAP değildir; başlangıçta manual review + runtime + pipeline kullanılabilirliği ölçümü olarak yorumlanmalıdır.
+* Tracking ground truth henüz yok; `Test/video_1-3.mp4` üstündeki ilk tracking metrikleri manual review ve proxy metrikler olacaktır.
+* ID switch evidence ve plate OCR temporal voting'i yanlış araca bağlayabilir; bu yüzden `id_switch_suspected`, `track_stability` ve best-frame audit alanları zorunlu tutulmalıdır.
+* ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
 * Fine-tune ertelendiği için domain gap tamamen çözülmüş sayılmaz; bu karar yalnız pipeline omurgasını hızlı ve ölçülebilir kurmak içindir.
 * Deep research raporundaki ChatGPT citation placeholder'ları final rapor kaynağı değildir; final kaynaklar `research/03_condition_experts/dataset_source_checklist.md` ve ilgili official URL'lerle doğrulanmalıdır.
 * Colab deney dosyaları henüz oluşturulmadı.

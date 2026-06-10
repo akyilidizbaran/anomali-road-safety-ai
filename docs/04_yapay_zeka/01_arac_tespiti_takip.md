@@ -52,6 +52,36 @@ Aday tracker:
 * DeepSORT.
 * OC-SORT.
 
+## Tracking Baseline Kararı
+
+İlk tracking baseline **ByteTrack** olacaktır. İkinci alternatif **BoT-SORT** olarak tutulur ve ilk karşılaştırmada ReID kapalı çalıştırılır.
+
+Gerekçe:
+
+* Mevcut ihtiyaç, araç detection çıktılarının kararlı `track_id` değerlerine bağlanmasıdır.
+* Kısa false negative ve 2-3 frame class flicker davranışları önce track-level class voting ve confidence smoothing ile ele alınmalıdır.
+* Sabit yol kenarı kamera demo senaryosunda ReID ilk MVP için zorunlu değildir.
+* ByteTrack düşük confidence detection'ları association sürecinde kullanması nedeniyle dark/low-light smoke test için pratik ilk adaydır.
+
+Tracking çıktıları:
+
+* `track_id`
+* `track_age_frames`
+* `bbox_history`
+* `center_history`
+* `stable_class`
+* `class_votes`
+* `track_stability`
+* `pixel_displacement`
+* `best_frame_id`
+* `best_crop_ref`
+
+Araştırma ve karar dosyaları:
+
+* `research/03_tracking/deep_research/deep_research_report.md`
+* `research/03_tracking/benchmark_plan.md`
+* `research/03_tracking/decision_tracking_baseline_v1.md`
+
 ## Metrikler
 
 Araç tespiti:
@@ -71,10 +101,14 @@ Araç tespiti:
 Takip:
 
 * IDF1
+* HOTA
 * MOTA
+* MOTP
 * ID switch
+* Track fragmentation
 * Track stability
 
 ## Açık Sorular
 
-* Takip için ByteTrack mi BoT-SORT mu seçilecek?
+* ByteTrack ve BoT-SORT dark test videolarında kaç ID switch üretecek?
+* BoT-SORT ReID kapalı mod ByteTrack'e göre anlamlı avantaj sağlayacak mı?

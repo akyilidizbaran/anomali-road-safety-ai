@@ -259,6 +259,10 @@ Araç detection çıktılarını zamansal track ID’lere bağlar.
 * `new_tracks`
 * `track_history_length`
 * `tracking_latency_ms`
+* `tracker_config`
+* `tracker_latency_ms`
+* `p95_tracker_latency_ms`
+* `id_switch_suspected`
 
 ### Confidence Fields
 
@@ -285,11 +289,24 @@ Araç detection çıktılarını zamansal track ID’lere bağlar.
       "track_id": "TRK-17",
       "bbox": [320, 180, 760, 540],
       "class_name": "car",
+      "stable_class": "car",
+      "class_votes": {
+        "car": 13.8,
+        "motorcycle": 1.7
+      },
       "track_confidence": 0.89,
       "track_stability": 0.91,
-      "history_frames": 42
+      "history_frames": 42,
+      "missed_frames": 1,
+      "center_history": [[520, 355], [530, 358], [540, 360]],
+      "pixel_displacement": 20.6,
+      "best_frame_id": "frame_000123",
+      "best_crop_ref": "evidence/TRK-17/best_frame_000123.jpg"
     }
-  ]
+  ],
+  "tracker_config": "bytetrack.yaml",
+  "tracking_latency_ms": 2.8,
+  "id_switch_suspected": false
 }
 ```
 
