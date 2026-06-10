@@ -1,0 +1,123 @@
+{
+  "experiment_id": "POCR-EXP-001",
+  "stage": "target_vehicle_roi_crop_extraction",
+  "generated_at_utc": "2026-06-10T21:55:35Z",
+  "input_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json",
+  "videos_dir": "Test",
+  "runs_dir": "runs/plate_ocr/POCR-EXP-001-target-roi-crops",
+  "summary_json": "models/benchmarks/artifacts/POCR-EXP-001-target-roi-crops-summary.json",
+  "padding_ratio": 0.08,
+  "event_count": 3,
+  "created_crop_count": 3,
+  "failed_crop_count": 0,
+  "crops": [
+    {
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "video": "video_1.mp4",
+      "track_id": "TRK-001",
+      "best_frame": 276,
+      "source_resolution": "3840x2160",
+      "vehicle_bbox_xyxy": [
+        0.0,
+        845.54,
+        1684.17,
+        2131.89
+      ],
+      "vehicle_bbox_xyxy_padded": [
+        -135,
+        743,
+        1819,
+        2235
+      ],
+      "vehicle_bbox_xyxy_clamped": [
+        0,
+        743,
+        1819,
+        2160
+      ],
+      "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000276_target_roi.jpg",
+      "crop_width": 1819,
+      "crop_height": 1417,
+      "crop_area_px": 2577523,
+      "track_stability": 0.964,
+      "selection_score": 0.905,
+      "condition_profile": "dark",
+      "status": "created",
+      "failure_reason": null
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "video": "video_2.mp4",
+      "track_id": "TRK-001",
+      "best_frame": 281,
+      "source_resolution": "3840x2160",
+      "vehicle_bbox_xyxy": [
+        0.0,
+        915.83,
+        1808.5,
+        2136.77
+      ],
+      "vehicle_bbox_xyxy_padded": [
+        -145,
+        818,
+        1953,
+        2234
+      ],
+      "vehicle_bbox_xyxy_clamped": [
+        0,
+        818,
+        1953,
+        2160
+      ],
+      "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000281_target_roi.jpg",
+      "crop_width": 1953,
+      "crop_height": 1342,
+      "crop_area_px": 2620926,
+      "track_stability": 0.949,
+      "selection_score": 0.898,
+      "condition_profile": "dark",
+      "status": "created",
+      "failure_reason": null
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "video": "video_3.mp4",
+      "track_id": "TRK-002",
+      "best_frame": 214,
+      "source_resolution": "3840x2160",
+      "vehicle_bbox_xyxy": [
+        398.44,
+        668.73,
+        2495.55,
+        2143.97
+      ],
+      "vehicle_bbox_xyxy_padded": [
+        231,
+        551,
+        2663,
+        2262
+      ],
+      "vehicle_bbox_xyxy_clamped": [
+        231,
+        551,
+        2663,
+        2160
+      ],
+      "vehicle_crop_uri": "runs/plate_ocr/POCR-EXP-001-target-roi-crops/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000214_target_roi.jpg",
+      "crop_width": 2432,
+      "crop_height": 1609,
+      "crop_area_px": 3913088,
+      "track_stability": 0.949,
+      "selection_score": 0.916,
+      "condition_profile": "dark",
+      "status": "created",
+      "failure_reason": null
+    }
+  ],
+  "manual_review_template": "testing/templates/manual_plate_ocr_review.csv",
+  "notes": [
+    "This is not plate detection or OCR.",
+    "Crop images are stored under ignored runs/ paths and must not be committed.",
+    "The output prepares target vehicle ROI inputs for the next plate detector smoke test."
+  ]
+}

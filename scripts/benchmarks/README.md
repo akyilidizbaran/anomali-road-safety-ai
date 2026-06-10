@@ -48,3 +48,26 @@ python3 scripts/benchmarks/build_track_event_skeleton.py
 * `testing/reports/trk_exp_001_track_to_event_summary.md`
 
 Bu script gerçek risk alarmı üretmez. `target_vehicle_selected` seviyesinde ara event skeleton'ı oluşturur ve sonraki speed, plate OCR, QoD ve evidence modülleri için aynı `track_id` üzerinden bağlanacak kayıtları hazırlar.
+
+## `extract_plate_ocr_target_rois.py`
+
+Plate Detection + OCR MVP için ilk giriş verisini üretir. `target_vehicle_selected` event skeleton dosyasını okuyup raw test videolarındaki `best_frame` karesinden hedef araç ROI crop'larını çıkarır.
+
+Varsayılan koşu:
+
+```bash
+.venv-yolo/bin/python scripts/benchmarks/extract_plate_ocr_target_rois.py
+```
+
+Varsayılan input:
+
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json`
+* `Test/video_1.mp4`, `Test/video_2.mp4`, `Test/video_3.mp4`
+
+Üretilen çıktılar:
+
+* Crop görselleri: `runs/plate_ocr/POCR-EXP-001-target-roi-crops/`
+* Summary JSON: `models/benchmarks/artifacts/POCR-EXP-001-target-roi-crops-summary.json`
+* Rapor: `testing/reports/pocr_exp_001_target_roi_crops_summary.md`
+
+Bu aşama plate detection veya OCR değildir. Yalnız plate detector/OCR için target vehicle ROI girişlerini hazırlar. Crop görselleri büyük/gizlilik duyarlı artifact sayıldığı için Git'e eklenmez.
