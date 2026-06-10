@@ -2,11 +2,34 @@
 
 Tarih: 2026-06-10
 
+Son uygulama güncellemesi: 2026-06-11
+
 ## Durum
 
 ByteTrack, mevcut dark test videolarında manuel gözlemle iyi çalışıyor. Otomatik benchmarkta da BoT-SORT ReID-off'a göre daha düşük pipeline latency ve daha yüksek FPS verdi.
 
 Bu nedenle sıradaki iş yeni tracker aramak değildir. Sıradaki iş, ByteTrack çıktısını sistemin karar ve evidence hattına bağlamaktır.
+
+## 2026-06-11 Uygulama Durumu
+
+İlk track-to-event implementation tamamlandı.
+
+Eklenen script:
+
+* `scripts/benchmarks/build_track_event_skeleton.py`
+
+Güncellenen tracking benchmark script'i:
+
+* `scripts/benchmarks/run_tracking_baseline.py`
+* Track summary artık `center_history_sample`, `bbox_history_sample` ve `history_sample_strategy` alanlarını üretir.
+
+Üretilen artifactler:
+
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-track-postprocess.json`
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json`
+* `testing/reports/trk_exp_001_track_to_event_summary.md`
+
+Bu implementation gerçek risk kararı üretmez. Amacı ByteTrack sonucunu `track_stability`, `target_selection_score`, `selected_target_track_id` ve `target_vehicle_selected` event skeleton'ına dönüştürmektir.
 
 ## Önerilen Sonraki Faz
 
@@ -33,6 +56,8 @@ Bu katman kurulmadan plate OCR veya speed çıktısı yanlış araca bağlanabil
 
 ### 1. Tracking Output Normalizer
 
+Durum: İlk implementation tamamlandı.
+
 Ultralytics tracking sonucu, proje contract'ına çevrilir.
 
 Girdi:
@@ -57,6 +82,8 @@ Girdi:
 
 ### 2. Track State Store
 
+Durum: İlk implementation tamamlandı.
+
 Her track için kısa süreli state tutulur.
 
 Tutulacak alanlar:
@@ -74,6 +101,8 @@ Tutulacak alanlar:
 
 ### 3. Class Voting ve Confidence Smoothing
 
+Durum: İlk implementation tamamlandı.
+
 Amaç:
 
 * 2-3 frame `car -> motorcycle` gibi flicker davranışını bastırmak.
@@ -87,6 +116,8 @@ Başlangıç kuralı:
 * Ani class değişimi en az 3-5 ardışık frame desteklenmedikçe kabul edilmez.
 
 ### 4. Track Stability Score
+
+Durum: İlk implementation tamamlandı.
 
 `track_stability`, uzman model çağırma ve event güveni için kullanılacak ana sinyaldir.
 
@@ -111,6 +142,8 @@ Başlangıç kuralı:
 
 ### 5. Target Vehicle Selection
 
+Durum: İlk implementation tamamlandı.
+
 Normal modda tüm araçlar izlenir; ağır uzmanlar yalnız hedef/riskli track için çağrılır.
 
 Başlangıç skor bileşenleri:
@@ -132,6 +165,8 @@ Başlangıç skor bileşenleri:
 * `target_roi`
 
 ### 6. First Event / Evidence Skeleton
+
+Durum: İlk implementation tamamlandı.
 
 Bu fazda gerçek risk modeli şart değildir. İlk amaç, track tabanlı event/evidence contract'ın çalışmasıdır.
 
@@ -159,12 +194,12 @@ Evidence alanları:
 
 Bu faz tamamlanmış sayılırsa:
 
-* ByteTrack output'u `TrackingOutput` contract'ına çevriliyor olmalı.
-* Track state store çalışıyor olmalı.
-* Class flicker `stable_class` ile bastırılıyor olmalı.
-* `track_stability` hesaplanıyor olmalı.
-* En az bir `target_track_id` seçiliyor olmalı.
-* İlk event/evidence JSON örneği üretilebiliyor olmalı.
+* [x] ByteTrack output'u `TrackingOutput` contract'ına çevriliyor olmalı.
+* [x] Track state store çalışıyor olmalı.
+* [x] Class flicker `stable_class` ile bastırılıyor olmalı.
+* [x] `track_stability` hesaplanıyor olmalı.
+* [x] En az bir `target_track_id` seçiliyor olmalı.
+* [x] İlk event/evidence JSON örneği üretilebiliyor olmalı.
 
 ## Sonraki Faz
 

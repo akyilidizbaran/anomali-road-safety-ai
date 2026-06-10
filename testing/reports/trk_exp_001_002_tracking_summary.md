@@ -2,6 +2,8 @@
 
 Tarih: 2026-06-10
 
+Güncelleme: 2026-06-11 tarihinde `TRK-EXP-001` ByteTrack koşusu history sample alanlarını üretmek için tekrar çalıştırıldı. Track sayıları aynı kaldı; pipeline latency ölçümü yeni koşu değerleriyle güncellendi.
+
 ## Amaç
 
 Vehicle detection sonrası ilk tracking baseline koşularını çalıştırmak ve ByteTrack ile BoT-SORT ReID-off davranışını aynı test videoları üzerinde karşılaştırmak.
@@ -25,7 +27,7 @@ Vehicle detection sonrası ilk tracking baseline koşularını çalıştırmak v
 
 | Deney | Tracker | Frame | Track gözlemi | Unique track | Ortalama pipeline ms | P95 pipeline ms | Wall FPS | Ortalama track yaşı | Raw class switch | Suppressed class switch |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| `TRK-EXP-001` | ByteTrack | 1263 | 1371 | 15 | 17.665 | 25.284 | 31.742 | 111.014 | 15 | 29 |
+| `TRK-EXP-001` | ByteTrack | 1263 | 1371 | 15 | 14.555 | 22.109 | 35.852 | 111.014 | 15 | 29 |
 | `TRK-EXP-002` | BoT-SORT ReID-off | 1263 | 1373 | 15 | 28.470 | 34.986 | 23.771 | 111.042 | 14 | 38 |
 
 Not: Pipeline latency, Ultralytics `model.track()` çağrısının detector + tracker birleşik süresidir. Saf tracker update latency değildir.
@@ -46,6 +48,12 @@ JSON özetleri:
 
 * `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-summary.json`
 * `models/benchmarks/artifacts/TRK-EXP-002-yolo11n-botsort-summary.json`
+
+Track-to-event çıktıları:
+
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-track-postprocess.json`
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json`
+* `testing/reports/trk_exp_001_track_to_event_summary.md`
 
 Lokal annotated videolar:
 
@@ -94,3 +102,9 @@ Bu geri bildirimle birlikte önerilen sonraki faz tracker aramaya devam etmek de
 İlgili plan:
 
 * `research/03_tracking/next_phase_track_to_event_plan.md`
+
+2026-06-11 itibarıyla bu ilk bağlantı tamamlandı. Her test videosu için bir `target_track_id` seçildi ve `target_vehicle_selected` skeleton event üretildi:
+
+* `video_1.mp4`: `TRK-001`, `track_stability=0.964`, `selection_score=0.905`
+* `video_2.mp4`: `TRK-001`, `track_stability=0.949`, `selection_score=0.898`
+* `video_3.mp4`: `TRK-002`, `track_stability=0.949`, `selection_score=0.916`

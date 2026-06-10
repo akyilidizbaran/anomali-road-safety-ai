@@ -1,70 +1,68 @@
 {
-  "experiment_id": "TRK-EXP-001",
-  "tracker": "ByteTrack",
-  "tracker_config": "bytetrack.yaml",
-  "ultralytics_tracker": "bytetrack.yaml",
-  "model": "yolo11n.pt",
+  "generated_at_utc": "2026-06-10T21:09:12Z",
+  "source_experiment_id": "TRK-EXP-001",
+  "source_tracker": "ByteTrack",
+  "source_model": "yolo11n.pt",
   "condition_profile": "dark",
-  "device": "mps",
-  "imgsz": 640,
-  "conf": 0.25,
-  "classes": {
-    "2": "car",
-    "3": "motorcycle",
-    "5": "bus",
-    "7": "truck"
-  },
-  "decision": "completed_first_baseline",
-  "runs_dir": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack",
+  "purpose": "tracking_output_normalization_target_selection",
   "videos": [
     {
       "video": "video_1.mp4",
-      "input_frame_count_reported": 423,
-      "frames_processed": 423,
-      "fps_source": 50.0,
       "resolution": "3840x2160",
-      "frames_with_tracks": 369,
-      "track_frame_ratio": 0.8723,
-      "total_track_observations": 428,
-      "active_track_count_mean": 1.012,
-      "active_track_count_max": 2,
-      "mean_pipeline_ms": 15.472,
-      "p95_pipeline_ms": 22.109,
-      "mean_preprocess_ms": 1.263,
-      "mean_inference_ms": 7.301,
-      "p95_inference_ms": 11.164,
-      "mean_postprocess_ms": 5.262,
-      "wall_time_s": 12.095,
-      "processed_fps_wall": 34.972,
-      "annotated_video": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_1_tracked.mp4",
-      "unique_track_count": 3,
-      "average_track_age_frames": 142.667,
-      "max_track_age_frames": 342,
-      "average_missing_frame_count": 7.0,
-      "class_switch_raw_count": 1,
-      "class_switch_suppressed_count": 15,
+      "fps_source": 50.0,
+      "frames_processed": 423,
+      "frame_size": {
+        "width": 3840,
+        "height": 2160
+      },
+      "track_count": 3,
       "tracks": [
         {
-          "track_id": 1,
-          "track_age_frames": 342,
-          "first_frame": 1,
-          "last_frame": 344,
+          "track_id": "TRK-001",
+          "raw_track_id": 1,
+          "video": "video_1.mp4",
+          "frame_window": {
+            "first_frame": 1,
+            "last_frame": 344,
+            "best_frame": 276,
+            "track_age_frames": 342
+          },
           "stable_class": "car",
           "class_votes": {
             "car": 276.578,
             "motorcycle": 6.928
           },
+          "class_purity": 0.976,
           "raw_class_switches": 1,
-          "missing_frame_count": 2,
-          "missing_gap_count": 2,
           "mean_confidence": 0.829,
-          "best_frame_idx": 276,
           "best_confidence": 0.944,
           "best_bbox_xyxy": [
             0.0,
             845.54,
             1684.17,
             2131.89
+          ],
+          "best_center_xy": [
+            842.09,
+            1488.71
+          ],
+          "missing_frame_count": 2,
+          "missing_gap_count": 2,
+          "track_stability": 0.964,
+          "track_stability_reasons": [
+            "long_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "high_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.905,
+          "target_selection_reasons": [
+            "track_stability_high",
+            "large_visible_bbox",
+            "detector_confidence_high",
+            "long_enough_for_temporal_modules",
+            "vehicle_class_prioritized_for_plate_speed"
           ],
           "center_history_sample": [
             [
@@ -370,28 +368,54 @@
               2158.92
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 5,
-          "track_age_frames": 33,
-          "first_frame": 221,
-          "last_frame": 256,
+          "track_id": "TRK-005",
+          "raw_track_id": 5,
+          "video": "video_1.mp4",
+          "frame_window": {
+            "first_frame": 221,
+            "last_frame": 256,
+            "best_frame": 236,
+            "track_age_frames": 33
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "motorcycle": 14.389
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 3,
-          "missing_gap_count": 2,
           "mean_confidence": 0.436,
-          "best_frame_idx": 236,
           "best_confidence": 0.5693,
           "best_bbox_xyxy": [
             1896.78,
             608.61,
             2346.13,
             880.65
+          ],
+          "best_center_xy": [
+            2121.45,
+            744.63
+          ],
+          "missing_frame_count": 3,
+          "missing_gap_count": 2,
+          "track_stability": 0.737,
+          "track_stability_reasons": [
+            "usable_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "low_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.538,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "near_frame_center"
           ],
           "center_history_sample": [
             [
@@ -697,28 +721,54 @@
               880.32
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 6,
-          "track_age_frames": 53,
-          "first_frame": 315,
-          "last_frame": 383,
+          "track_id": "TRK-006",
+          "raw_track_id": 6,
+          "video": "video_1.mp4",
+          "frame_window": {
+            "first_frame": 315,
+            "last_frame": 383,
+            "best_frame": 345,
+            "track_age_frames": 53
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "motorcycle": 23.288
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 16,
-          "missing_gap_count": 7,
           "mean_confidence": 0.439,
-          "best_frame_idx": 345,
           "best_confidence": 0.5029,
           "best_bbox_xyxy": [
             1890.11,
             603.2,
             2355.36,
             884.02
+          ],
+          "best_center_xy": [
+            2122.74,
+            743.61
+          ],
+          "missing_frame_count": 16,
+          "missing_gap_count": 7,
+          "track_stability": 0.817,
+          "track_stability_reasons": [
+            "long_track_age",
+            "class_vote_stable",
+            "low_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.602,
+          "target_selection_reasons": [
+            "track_stability_high",
+            "near_frame_center",
+            "long_enough_for_temporal_modules"
           ],
           "center_history_sample": [
             [
@@ -1024,58 +1074,74 @@
               883.3
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         }
-      ]
+      ],
+      "selected_target_track_id": "TRK-001",
+      "selected_target_score": 0.905
     },
     {
       "video": "video_2.mp4",
-      "input_frame_count_reported": 457,
-      "frames_processed": 457,
-      "fps_source": 50.0,
       "resolution": "3840x2160",
-      "frames_with_tracks": 457,
-      "track_frame_ratio": 1.0,
-      "total_track_observations": 580,
-      "active_track_count_mean": 1.269,
-      "active_track_count_max": 3,
-      "mean_pipeline_ms": 14.071,
-      "p95_pipeline_ms": 21.034,
-      "mean_preprocess_ms": 1.237,
-      "mean_inference_ms": 6.979,
-      "p95_inference_ms": 10.928,
-      "mean_postprocess_ms": 4.891,
-      "wall_time_s": 12.458,
-      "processed_fps_wall": 36.683,
-      "annotated_video": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_2_tracked.mp4",
-      "unique_track_count": 4,
-      "average_track_age_frames": 145.0,
-      "max_track_age_frames": 341,
-      "average_missing_frame_count": 0.75,
-      "class_switch_raw_count": 6,
-      "class_switch_suppressed_count": 8,
+      "fps_source": 50.0,
+      "frames_processed": 457,
+      "frame_size": {
+        "width": 3840,
+        "height": 2160
+      },
+      "track_count": 4,
       "tracks": [
         {
-          "track_id": 1,
-          "track_age_frames": 341,
-          "first_frame": 1,
-          "last_frame": 344,
+          "track_id": "TRK-001",
+          "raw_track_id": 1,
+          "video": "video_2.mp4",
+          "frame_window": {
+            "first_frame": 1,
+            "last_frame": 344,
+            "best_frame": 281,
+            "track_age_frames": 341
+          },
           "stable_class": "car",
           "class_votes": {
             "car": 274.028,
             "motorcycle": 4.142
           },
+          "class_purity": 0.985,
           "raw_class_switches": 6,
-          "missing_frame_count": 3,
-          "missing_gap_count": 3,
           "mean_confidence": 0.816,
-          "best_frame_idx": 281,
           "best_confidence": 0.9426,
           "best_bbox_xyxy": [
             0.0,
             915.83,
             1808.5,
             2136.77
+          ],
+          "best_center_xy": [
+            904.25,
+            1526.3
+          ],
+          "missing_frame_count": 3,
+          "missing_gap_count": 3,
+          "track_stability": 0.949,
+          "track_stability_reasons": [
+            "long_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "high_mean_confidence",
+            "id_or_class_switch_review_needed"
+          ],
+          "id_switch_suspected": true,
+          "target_selection_score": 0.898,
+          "target_selection_reasons": [
+            "track_stability_high",
+            "large_visible_bbox",
+            "detector_confidence_high",
+            "long_enough_for_temporal_modules",
+            "vehicle_class_prioritized_for_plate_speed"
           ],
           "center_history_sample": [
             [
@@ -1381,28 +1447,54 @@
               2151.77
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 4,
-          "track_age_frames": 237,
-          "first_frame": 221,
-          "last_frame": 457,
+          "track_id": "TRK-004",
+          "raw_track_id": 4,
+          "video": "video_2.mp4",
+          "frame_window": {
+            "first_frame": 221,
+            "last_frame": 457,
+            "best_frame": 344,
+            "track_age_frames": 237
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "motorcycle": 125.16
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.528,
-          "best_frame_idx": 344,
           "best_confidence": 0.6513,
           "best_bbox_xyxy": [
             1891.8,
             602.5,
             2367.61,
             886.75
+          ],
+          "best_center_xy": [
+            2129.7,
+            744.62
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.929,
+          "track_stability_reasons": [
+            "long_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.671,
+          "target_selection_reasons": [
+            "track_stability_high",
+            "near_frame_center",
+            "long_enough_for_temporal_modules"
           ],
           "center_history_sample": [
             [
@@ -1708,28 +1800,55 @@
               883.88
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 7,
-          "track_age_frames": 1,
-          "first_frame": 324,
-          "last_frame": 324,
+          "track_id": "TRK-007",
+          "raw_track_id": 7,
+          "video": "video_2.mp4",
+          "frame_window": {
+            "first_frame": 324,
+            "last_frame": 324,
+            "best_frame": 324,
+            "track_age_frames": 1
+          },
           "stable_class": "car",
           "class_votes": {
             "car": 0.438
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.438,
-          "best_frame_idx": 324,
           "best_confidence": 0.4382,
           "best_bbox_xyxy": [
             0.0,
             1180.91,
             1057.3,
             2142.51
+          ],
+          "best_center_xy": [
+            528.65,
+            1661.71
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.572,
+          "track_stability_reasons": [
+            "short_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "low_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.572,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "large_visible_bbox",
+            "vehicle_class_prioritized_for_plate_speed"
           ],
           "center_history_sample": [
             [
@@ -1745,28 +1864,55 @@
               2142.51
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 8,
-          "track_age_frames": 1,
-          "first_frame": 327,
-          "last_frame": 327,
+          "track_id": "TRK-008",
+          "raw_track_id": 8,
+          "video": "video_2.mp4",
+          "frame_window": {
+            "first_frame": 327,
+            "last_frame": 327,
+            "best_frame": 327,
+            "track_age_frames": 1
+          },
           "stable_class": "car",
           "class_votes": {
             "car": 0.378
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.378,
-          "best_frame_idx": 327,
           "best_confidence": 0.3783,
           "best_bbox_xyxy": [
             0.7,
             1218.6,
             979.32,
             2139.43
+          ],
+          "best_center_xy": [
+            490.01,
+            1679.01
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.563,
+          "track_stability_reasons": [
+            "short_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "low_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.532,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "large_visible_bbox",
+            "vehicle_class_prioritized_for_plate_speed"
           ],
           "center_history_sample": [
             [
@@ -1782,57 +1928,67 @@
               2139.43
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         }
-      ]
+      ],
+      "selected_target_track_id": "TRK-001",
+      "selected_target_score": 0.898
     },
     {
       "video": "video_3.mp4",
-      "input_frame_count_reported": 383,
-      "frames_processed": 383,
-      "fps_source": 50.0,
       "resolution": "3840x2160",
-      "frames_with_tracks": 292,
-      "track_frame_ratio": 0.7624,
-      "total_track_observations": 363,
-      "active_track_count_mean": 0.948,
-      "active_track_count_max": 3,
-      "mean_pipeline_ms": 14.121,
-      "p95_pipeline_ms": 21.18,
-      "mean_preprocess_ms": 1.246,
-      "mean_inference_ms": 7.153,
-      "p95_inference_ms": 11.098,
-      "mean_postprocess_ms": 4.823,
-      "wall_time_s": 10.675,
-      "processed_fps_wall": 35.877,
-      "annotated_video": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_3_tracked.mp4",
-      "unique_track_count": 8,
-      "average_track_age_frames": 45.375,
-      "max_track_age_frames": 285,
-      "average_missing_frame_count": 2.875,
-      "class_switch_raw_count": 8,
-      "class_switch_suppressed_count": 6,
+      "fps_source": 50.0,
+      "frames_processed": 383,
+      "frame_size": {
+        "width": 3840,
+        "height": 2160
+      },
+      "track_count": 8,
       "tracks": [
         {
-          "track_id": 1,
-          "track_age_frames": 17,
-          "first_frame": 1,
-          "last_frame": 20,
+          "track_id": "TRK-001",
+          "raw_track_id": 1,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 1,
+            "last_frame": 20,
+            "best_frame": 2,
+            "track_age_frames": 17
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "motorcycle": 9.201
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 3,
-          "missing_gap_count": 1,
           "mean_confidence": 0.541,
-          "best_frame_idx": 2,
           "best_confidence": 0.7069,
           "best_bbox_xyxy": [
             1892.26,
             587.02,
             2354.21,
             882.67
+          ],
+          "best_center_xy": [
+            2123.24,
+            734.85
+          ],
+          "missing_frame_count": 3,
+          "missing_gap_count": 1,
+          "track_stability": 0.643,
+          "track_stability_reasons": [
+            "short_track_age",
+            "class_vote_stable"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.502,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "near_frame_center"
           ],
           "center_history_sample": [
             [
@@ -2008,29 +2164,60 @@
               880.36
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 2,
-          "track_age_frames": 285,
-          "first_frame": 1,
-          "last_frame": 287,
+          "track_id": "TRK-002",
+          "raw_track_id": 2,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 1,
+            "last_frame": 287,
+            "best_frame": 214,
+            "track_age_frames": 285
+          },
           "stable_class": "car",
           "class_votes": {
             "car": 227.911,
             "motorcycle": 2.101
           },
+          "class_purity": 0.991,
           "raw_class_switches": 5,
-          "missing_frame_count": 2,
-          "missing_gap_count": 2,
           "mean_confidence": 0.807,
-          "best_frame_idx": 214,
           "best_confidence": 0.9499,
           "best_bbox_xyxy": [
             398.44,
             668.73,
             2495.55,
             2143.97
+          ],
+          "best_center_xy": [
+            1447.0,
+            1406.35
+          ],
+          "missing_frame_count": 2,
+          "missing_gap_count": 2,
+          "track_stability": 0.949,
+          "track_stability_reasons": [
+            "long_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "high_mean_confidence",
+            "id_or_class_switch_review_needed"
+          ],
+          "id_switch_suspected": true,
+          "target_selection_score": 0.916,
+          "target_selection_reasons": [
+            "track_stability_high",
+            "large_visible_bbox",
+            "near_frame_center",
+            "detector_confidence_high",
+            "long_enough_for_temporal_modules",
+            "vehicle_class_prioritized_for_plate_speed"
           ],
           "center_history_sample": [
             [
@@ -2336,28 +2523,54 @@
               2143.7
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 3,
-          "track_age_frames": 6,
-          "first_frame": 1,
-          "last_frame": 6,
+          "track_id": "TRK-003",
+          "raw_track_id": 3,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 1,
+            "last_frame": 6,
+            "best_frame": 5,
+            "track_age_frames": 6
+          },
           "stable_class": "truck",
           "class_votes": {
             "truck": 1.716
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.286,
-          "best_frame_idx": 5,
           "best_confidence": 0.3225,
           "best_bbox_xyxy": [
             2704.15,
             485.53,
             3092.27,
             818.76
+          ],
+          "best_center_xy": [
+            2898.21,
+            652.14
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.578,
+          "track_stability_reasons": [
+            "short_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "low_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.396,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "vehicle_class_prioritized_for_plate_speed"
           ],
           "center_history_sample": [
             [
@@ -2423,28 +2636,54 @@
               816.34
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 5,
-          "track_age_frames": 18,
-          "first_frame": 100,
-          "last_frame": 135,
+          "track_id": "TRK-005",
+          "raw_track_id": 5,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 100,
+            "last_frame": 135,
+            "best_frame": 131,
+            "track_age_frames": 18
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "motorcycle": 7.678
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 18,
-          "missing_gap_count": 3,
           "mean_confidence": 0.427,
-          "best_frame_idx": 131,
           "best_confidence": 0.5073,
           "best_bbox_xyxy": [
             1896.71,
             592.96,
             2349.73,
             883.05
+          ],
+          "best_center_xy": [
+            2123.22,
+            738.0
+          ],
+          "missing_frame_count": 18,
+          "missing_gap_count": 3,
+          "track_stability": 0.544,
+          "track_stability_reasons": [
+            "short_track_age",
+            "missing_frames_present",
+            "class_vote_stable",
+            "low_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.445,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "near_frame_center"
           ],
           "center_history_sample": [
             [
@@ -2630,28 +2869,56 @@
               879.57
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 7,
-          "track_age_frames": 1,
-          "first_frame": 142,
-          "last_frame": 142,
+          "track_id": "TRK-007",
+          "raw_track_id": 7,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 142,
+            "last_frame": 142,
+            "best_frame": 142,
+            "track_age_frames": 1
+          },
           "stable_class": "truck",
           "class_votes": {
             "truck": 0.365
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.365,
-          "best_frame_idx": 142,
           "best_confidence": 0.365,
           "best_bbox_xyxy": [
             2287.89,
             544.72,
             3105.72,
             1218.05
+          ],
+          "best_center_xy": [
+            2696.8,
+            881.38
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.561,
+          "track_stability_reasons": [
+            "short_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable",
+            "low_mean_confidence"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.493,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "large_visible_bbox",
+            "near_frame_center",
+            "vehicle_class_prioritized_for_plate_speed"
           ],
           "center_history_sample": [
             [
@@ -2667,28 +2934,53 @@
               1218.05
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 8,
-          "track_age_frames": 22,
-          "first_frame": 234,
-          "last_frame": 255,
+          "track_id": "TRK-008",
+          "raw_track_id": 8,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 234,
+            "last_frame": 255,
+            "best_frame": 241,
+            "track_age_frames": 22
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "motorcycle": 10.792
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.491,
-          "best_frame_idx": 241,
           "best_confidence": 0.6453,
           "best_bbox_xyxy": [
             1904.33,
             632.26,
             2330.84,
             879.25
+          ],
+          "best_center_xy": [
+            2117.59,
+            755.75
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.702,
+          "track_stability_reasons": [
+            "usable_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.516,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "near_frame_center"
           ],
           "center_history_sample": [
             [
@@ -2914,29 +3206,54 @@
               878.78
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 12,
-          "track_age_frames": 7,
-          "first_frame": 278,
-          "last_frame": 284,
+          "track_id": "TRK-012",
+          "raw_track_id": 12,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 278,
+            "last_frame": 284,
+            "best_frame": 279,
+            "track_age_frames": 7
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "car": 1.007,
             "motorcycle": 3.269
           },
+          "class_purity": 0.764,
           "raw_class_switches": 3,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.611,
-          "best_frame_idx": 279,
           "best_confidence": 0.726,
           "best_bbox_xyxy": [
             0.0,
             1150.04,
             1248.69,
             2136.45
+          ],
+          "best_center_xy": [
+            624.35,
+            1643.24
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.474,
+          "track_stability_reasons": [
+            "short_track_age",
+            "low_missing_frame_ratio",
+            "id_or_class_switch_review_needed"
+          ],
+          "id_switch_suspected": true,
+          "target_selection_score": 0.577,
+          "target_selection_reasons": [
+            "track_stability_low",
+            "large_visible_bbox"
           ],
           "center_history_sample": [
             [
@@ -3012,28 +3329,53 @@
               2138.26
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         },
         {
-          "track_id": 15,
-          "track_age_frames": 7,
-          "first_frame": 296,
-          "last_frame": 302,
+          "track_id": "TRK-015",
+          "raw_track_id": 15,
+          "video": "video_3.mp4",
+          "frame_window": {
+            "first_frame": 296,
+            "last_frame": 302,
+            "best_frame": 296,
+            "track_age_frames": 7
+          },
           "stable_class": "motorcycle",
           "class_votes": {
             "motorcycle": 3.291
           },
+          "class_purity": 1.0,
           "raw_class_switches": 0,
-          "missing_frame_count": 0,
-          "missing_gap_count": 0,
           "mean_confidence": 0.47,
-          "best_frame_idx": 296,
           "best_confidence": 0.509,
           "best_bbox_xyxy": [
             1892.31,
             591.03,
             2353.59,
             880.95
+          ],
+          "best_center_xy": [
+            2122.95,
+            735.99
+          ],
+          "missing_frame_count": 0,
+          "missing_gap_count": 0,
+          "track_stability": 0.611,
+          "track_stability_reasons": [
+            "short_track_age",
+            "low_missing_frame_ratio",
+            "class_vote_stable"
+          ],
+          "id_switch_suspected": false,
+          "target_selection_score": 0.459,
+          "target_selection_reasons": [
+            "track_stability_usable",
+            "near_frame_center"
           ],
           "center_history_sample": [
             [
@@ -3109,22 +3451,16 @@
               881.35
             ]
           ],
-          "history_sample_strategy": "evenly_spaced_max_30"
+          "history_sample_available": true,
+          "tracker_version": "ByteTrack",
+          "tracker_config": "bytetrack.yaml",
+          "detector_model": "yolo11n.pt",
+          "condition_profile": "dark"
         }
-      ]
+      ],
+      "selected_target_track_id": "TRK-002",
+      "selected_target_score": 0.916
     }
   ],
-  "totals": {
-    "frames_processed": 1263,
-    "total_track_observations": 1371,
-    "unique_track_count": 15,
-    "mean_pipeline_ms": 14.555,
-    "p95_pipeline_ms": 22.109,
-    "processed_fps_wall": 35.852,
-    "average_track_age_frames": 111.014,
-    "class_switch_raw_count": 15,
-    "class_switch_suppressed_count": 29
-  },
-  "manual_review_required": true,
-  "manual_review_template": "testing/templates/manual_tracking_review.csv"
+  "limitations": []
 }

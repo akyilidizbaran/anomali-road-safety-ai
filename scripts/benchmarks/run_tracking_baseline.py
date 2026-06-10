@@ -54,6 +54,7 @@ EXPERIMENTS = {
 class TrackState:
     seen_frames: list[int] = field(default_factory=list)
     centers: list[tuple[float, float]] = field(default_factory=list)
+    bboxes_xyxy: list[list[float]] = field(default_factory=list)
     class_votes: Counter[str] = field(default_factory=Counter)
     raw_classes: list[str] = field(default_factory=list)
     confs: list[float] = field(default_factory=list)
@@ -112,6 +113,7 @@ def update_track_state(
     state.last_frame = frame_idx
     state.seen_frames.append(frame_idx)
     state.centers.append(center)
+    state.bboxes_xyxy.append([round(float(v), 2) for v in bbox_xyxy])
     state.raw_classes.append(class_name)
     state.class_votes[class_name] += conf
     state.confs.append(conf)
@@ -132,6 +134,17 @@ def draw_trails(frame: Any, history: dict[int, list[tuple[int, int]]]) -> None:
         )
         for start, end in zip(points[-20:-1], points[-19:]):
             cv2.line(frame, start, end, color, 2)
+
+
+def sample_sequence(values: list[Any], max_items: int = 30) -> list[Any]:
+    """Return a compact, ordered sample without storing large per-frame artifacts."""
+    if len(values) <= max_items:
+        return values
+    if max_items <= 1:
+        return [values[-1]]
+    last = len(values) - 1
+    indexes = sorted({round(idx * last / (max_items - 1)) for idx in range(max_items)})
+    return [values[idx] for idx in indexes]
 
 
 def summarize_tracks(states: dict[int, TrackState]) -> dict[str, Any]:
@@ -165,6 +178,12 @@ def summarize_tracks(states: dict[int, TrackState]) -> dict[str, Any]:
                 "best_frame_idx": state.best_frame_idx,
                 "best_confidence": round(float(state.best_conf), 4),
                 "best_bbox_xyxy": state.best_bbox_xyxy,
+                "center_history_sample": [
+                    [round(float(x), 2), round(float(y), 2)]
+                    for x, y in sample_sequence(state.centers)
+                ],
+                "bbox_history_sample": sample_sequence(state.bboxes_xyxy),
+                "history_sample_strategy": "evenly_spaced_max_30",
             }
         )
 

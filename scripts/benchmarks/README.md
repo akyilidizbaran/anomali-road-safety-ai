@@ -22,3 +22,29 @@ Varsayılanlar:
 * `TRK-EXP-002`: BoT-SORT ReID kapalı
 
 Büyük annotated video çıktıları `runs/tracking/` altında kalır ve Git'e eklenmez. Küçük JSON özetleri `models/benchmarks/artifacts/` altında tutulur.
+
+2026-06-11 güncellemesiyle track summary içinde compact history alanları da üretilir:
+
+* `center_history_sample`
+* `bbox_history_sample`
+* `history_sample_strategy`
+
+Bu alanlar speed baseline, plate temporal voting, target selection ve evidence skeleton için kullanılır.
+
+## `build_track_event_skeleton.py`
+
+ByteTrack benchmark summary dosyasını okuyup track-level post-process ve ilk event/evidence skeleton çıktısını üretir.
+
+Varsayılan koşu:
+
+```bash
+python3 scripts/benchmarks/build_track_event_skeleton.py
+```
+
+Üretilen çıktılar:
+
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-track-postprocess.json`
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json`
+* `testing/reports/trk_exp_001_track_to_event_summary.md`
+
+Bu script gerçek risk alarmı üretmez. `target_vehicle_selected` seviyesinde ara event skeleton'ı oluşturur ve sonraki speed, plate OCR, QoD ve evidence modülleri için aynı `track_id` üzerinden bağlanacak kayıtları hazırlar.
