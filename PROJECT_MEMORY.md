@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Anomali Road Safety AI için araç tespiti omurgasını fine-tune'suz pretrained modellerle ölçülebilir hale getiriyoruz.
-* Son değişiklik neydi? Fine-tune kapsamı TODO/backlog olarak ertelendi; aktif faz pretrained zero-fine-tune detector benchmark ve pipeline değerlendirmesi olarak kaydedildi.
-* Bir sonraki net adım ne? `VD-EXP-008` YOLO11s, `VD-EXP-009` YOLOv10n ve `VD-EXP-010` YOLOv8n pretrained modellerini aynı `Test/video_1-3.mp4` protokolüyle çalıştırıp latency, detection davranışı, class flicker, bbox/evidence kullanılabilirliği ve tracking başlangıç kalitesini karşılaştırmak.
+* Şu an ne yapıyoruz? Anomali Road Safety AI için araç tespitiyle sınırlı olmayan sistem geneli pretrained baseline omurgasını tanımlıyoruz.
+* Son değişiklik neydi? `research/00_pretrained_baseline/README.md` ile condition profile, vehicle detection, tracking, speed, plate detection/OCR, traffic sign, lane/drivable area, cabin risk, QoD ve LLM explanation için hangi aşamalarda ayrı model çağrısı yapılacağı netleştirildi.
+* Bir sonraki net adım ne? Önce vehicle detection + tracking omurgasını tamamlamak; ardından plate detection/OCR, speed baseline, condition routing, lane/sign ve cabin risk modüllerini sırayla pretrained/algorithmic baseline olarak eklemek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -31,6 +31,7 @@
 * Şerit/road marking modülü plate/OCR ve evidence hattından sonra ele alınmalıdır.
 * Araç tespiti için ilk ölçülebilir baseline YOLO11n'dir; final model kararı Colab fine-tune + MacBook runtime benchmark + lisans/export/evidence/tracking katkısı sonrası verilecektir.
 * Fine-tune şimdilik aktif iş değildir; TODO/backlog'da tutulacak ve önce pretrained baseline + tracking/smoothing pipeline'ı olgunlaştırılacaktır.
+* Pretrained baseline artık sistem geneli anlam taşır: her AI modülü önce dış kaynaklı pretrained model veya algoritmik baseline ile çalışır hale getirilecek, fine-tune yalnız bu omurga tamamlandıktan sonra faz bazlı açılacaktır.
 * Pretrained baseline kıyasları aynı test verisi, aynı input size, aynı confidence threshold, aynı class filter ve aynı kayıt formatıyla yapılmalıdır.
 * Condition-specific detector routing kullanılacak: `general`, `dark`, `rain`, `fog_low_visibility`, `night_low_light`. Her frame için model eğitilmez; sahne/koşul profili seçilir ve önceden eğitilmiş/fine-tune edilmiş detector çağrılır.
 * Mevcut 3 dark video training set değildir; yalnız manuel benchmark/smoke-test materyalidir ve benchmark sonrası silinebilir.
@@ -107,6 +108,7 @@
 * 2026-06-08 — Karar: VD-EXP-002 tek notebook uçtan uca pipeline olacak. | Gerekçe: Kullanıcı BDD100K indirme, Drive yerleşimi, fine-tune model eğitimi, test ve baseline farklarının tek Colab notebook içinde yürütülmesini istedi. | Etki: `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`, experiment planı, fine-tune planı ve action roadmap güncellendi. | Alternatifler: Ayrı download notebook/script ve ayrı training notebook tutmak.
 * 2026-06-08 — Karar: Kaggle API key notebook/repo içine düz metin olarak yazılmayacak. | Gerekçe: Kullanıcı key paylaşmış olsa bile secret'lar Git geçmişine veya notebook hücresine gömülmemeli; Colab Secrets/env/prompt aynı pratikliği sağlar. | Etki: Notebook'a güvenli Kaggle credential setup hücresi eklendi. | Alternatifler: Key'i notebook config hücresine yazmak.
 * 2026-06-10 — Karar: Fine-tune kapsamı TODO/backlog'a alındı; aktif model fazı pretrained zero-fine-tune baseline benchmark olacak. | Gerekçe: YOLO11n pretrained smoke test kullanılabilir sonuç verdi; eğitim maliyetine geçmeden model aileleri, latency, bbox stabilitesi, output contract ve evidence/tracking uygunluğu ölçülmeli. | Etki: `project/decisions/2026-06-10-defer-finetune-pretrained-baselines.md`, `research/02_vehicle_detection/pretrained_baseline_plan.md`, benchmark/fine-tune planları ve comparison CSV güncellendi. | Alternatifler: Hemen BDD100K fine-tune'a başlamak veya önce condition profile modeli eğitmek.
+* 2026-06-10 — Karar: Pretrained baseline kapsamı sistem geneline genişletildi. | Gerekçe: Kullanıcı araç yakalama, hız, plaka, OCR, sürücü/yolcu/cabin gibi tüm modüllerin önce dış kaynaklı pretrained/algorithmic baseline ile kurulmasını ve fine-tune'un tüm baseline omurga tamamlandıktan sonra aşama bazlı yapılmasını istedi. | Etki: `research/00_pretrained_baseline/README.md` eklendi; ayrı model çağrısı gerektiren ve gerektirmeyen modüller ayrıldı. | Alternatifler: Sadece vehicle detector kıyası yapmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -129,6 +131,7 @@
 * 2026-06-08 — Milestone: VD-EXP-002 notebook tek dosya pipeline'a çevrildi. | Sonuç: Notebook artık BDD100K indirme/yerleşim, conversion, pretrained baseline, fine-tune, optional challenger, baseline-delta ve condition breakdown adımlarını aynı dosyada yürütür.
 * 2026-06-08 — Milestone: VD-EXP-002 Kaggle credential setup eklendi. | Sonuç: Notebook Colab Secrets, env veya gizli runtime prompt üzerinden Kaggle credential okuyabilir; API key repoya yazılmaz.
 * 2026-06-10 — Milestone: Fine-tune backlog'a alındı ve pretrained baseline fazı açıldı. | Sonuç: Pretrained YOLO11s, YOLOv10n, YOLOv8n ve opsiyonel RT-DETR deneyleri comparison CSV ve plan dosyalarına eklendi.
+* 2026-06-10 — Milestone: Sistem geneli pretrained baseline çağrı matrisi eklendi. | Sonuç: Condition, vehicle, tracking, speed, plate, OCR, traffic sign, lane/drivable area, cabin, risk fusion, QoD ve LLM explanation aşamaları ayrı model/policy/algorithm olarak sınıflandırıldı.
 
 ## 8) Yapılanlar
 
@@ -165,6 +168,7 @@
 * [x] Kaggle credential setup notebook içine güvenli şekilde eklendi.
 * [x] Fine-tune kapsamı TODO/backlog olarak kaydedildi.
 * [x] Pretrained zero-fine-tune vehicle detector baseline fazı planlandı.
+* [x] Sistem geneli pretrained baseline model çağrı matrisi oluşturuldu.
 
 ## 9) Yapılacaklar (Next)
 
@@ -186,6 +190,11 @@
 * [ ] VD-EXP-010 YOLOv8n pretrained zero-fine-tune benchmark koşusunu çalıştır.
 * [ ] Pretrained benchmark sonuçlarını `models/benchmarks/vehicle_detection_comparison.csv` içine işleyip bir baseline seç.
 * [ ] Seçilen baseline üstünde ByteTrack benzeri tracking, track-level class voting ve confidence smoothing entegrasyonunu başlat.
+* [ ] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
+* [ ] PaddleOCR / EasyOCR plate OCR baseline kıyasını planla.
+* [ ] Speed baseline için track displacement + relative speed hesaplama contractını yaz.
+* [ ] Condition profile için CLIP/image-classifier baseline test planını yaz.
+* [ ] "Plaka tabelası" ifadesinin trafik levhasını da kapsayıp kapsamadığını netleştir.
 * [ ] (Deferred) VD-EXP-002 notebook içinde BDD100K download yöntemini seç: manual Drive upload / Kaggle / direct URL / gdown.
 * [ ] UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [ ] Condition expert dataset kaynak/lisans checklist'ini tamamla.

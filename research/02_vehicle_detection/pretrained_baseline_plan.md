@@ -1,5 +1,7 @@
 # Pretrained Vehicle Detector Baseline Plan
 
+> Sistem geneli pretrained baseline kararı için bkz. `../00_pretrained_baseline/README.md`.
+
 ## Amaç
 
 Fine-tune'a geçmeden önce pretrained detector modellerinin proje pipeline'ı içindeki gerçek davranışını ölçmek.
