@@ -37,3 +37,24 @@ Regex ve veri seti kararı literatür/açık kaynak çalışma araştırması so
 ## Çıktı
 
 OCR pipeline kararı, format kontrol kuralı ve test metriği seti.
+
+## 2026-06-11 Araştırma Sonucu
+
+İlk plate/OCR MVP iki aşamalı kurulacaktır:
+
+1. Hedef araç ROI içinde plate detection.
+2. Plate crop üzerinde OCR.
+3. Türk plaka regex/il kodu post-processing.
+4. Track-level temporal voting.
+5. Evidence JSON update.
+
+İlgili dosyalar:
+
+* `deep_research/deep_research_report.md`
+* `decision_plate_ocr_baseline_v1.md`
+* `benchmark_plan.md`
+* `dataset_license_checklist.md`
+* `../../testing/templates/manual_plate_ocr_review.csv`
+* `../../models/benchmarks/plate_ocr/plate_ocr_baseline_comparison.csv`
+
+İlk OCR baseline PaddleOCR PP-OCRv5 Latin/mobile recognition olarak seçildi. EasyOCR ikinci aday, Tesseract debug/fallback adayıdır. Fine-tune ilk MVP'de açılmayacaktır.

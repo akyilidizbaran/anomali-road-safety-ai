@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? ByteTrack çıktısını target/evidence hattına bağlayan ilk track-to-event skeleton tamamlandı; sıradaki net faz relative speed baseline.
-* Son değişiklik neydi? `TrackingOutput` post-process, track state/history sample, `track_stability`, target selection ve `target_vehicle_selected` event skeleton üretimi eklendi.
-* Bir sonraki net adım ne? Seçilen `target_track_id` üzerinden center displacement tabanlı relative speed baseline ve motion candidate sinyali üretmek.
+* Şu an ne yapıyoruz? ByteTrack target/evidence skeleton sonrası aktif sıradaki faz Plate Detection + OCR baseline.
+* Son değişiklik neydi? Plate/OCR deep research, iki aşamalı MVP kararı, benchmark planı, dataset/lisans checklist'i ve manual review şablonu eklendi.
+* Bir sonraki net adım ne? Seçilen `target_track_id` üzerinden target ROI crop çıkarıp plate detector + PaddleOCR baseline smoke test çalıştırmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -38,6 +38,9 @@
 * Kullanıcı manuel kontrolde ByteTrack'in gayet iyi çalıştığını belirtti; bu nedenle sıradaki faz yeni tracker denemesi değil, ByteTrack çıktısını target/evidence hattına bağlamaktır.
 * Tracking tek başına alarm üretmez; speed, plate OCR, risk fusion, QoD ve evidence için `track_id`, `stable_class`, `track_stability`, `bbox_history`, `center_history`, `best_frame_id` ve `best_crop_ref` üretir.
 * Track-to-event skeleton gerçek risk/ihlal kararı değildir; yalnız hedef araç seçimi ve sonraki speed/plate/QoD/evidence modülleri için ara contract üretir.
+* Hız estimation kullanıcı kararıyla sona bırakıldı; track-to-event sonrası aktif faz plate detection + OCR'dır.
+* Plate/OCR ilk MVP iki aşamalı kurulacak: target vehicle ROI içinde plate detection, plate crop üzerinde OCR, Türk plaka regex/il kodu post-processing, track-level temporal voting ve evidence JSON update.
+* Plate/OCR ilk baseline'da fine-tune yapılmayacak; önce pretrained/public detector + PaddleOCR/EasyOCR karşılaştırması ile pipeline usability kanıtlanacak.
 * Condition-specific detector routing kullanılacak: `general`, `dark`, `rain`, `fog_low_visibility`, `night_low_light`. Her frame için model eğitilmez; sahne/koşul profili seçilir ve önceden eğitilmiş/fine-tune edilmiş detector çağrılır.
 * Mevcut 3 dark video training set değildir; yalnız manuel benchmark/smoke-test materyalidir ve benchmark sonrası silinebilir.
 * Condition expert training sırası Strateji 1 olacak: önce `vehicle_detector_general`, sonra yalnız benchmark ile faydası kanıtlanan `night_low_light`, `rain`, `fog_low_visibility` uzmanları. `dark`, `tunnel_or_parking_dark`, `glare`, `low_contrast` başlangıçta ayrı detector değil condition label/routing sinyali olarak izlenecek.
@@ -118,6 +121,8 @@
 * 2026-06-10 — Karar: Manuel review tamamlanana kadar ByteTrack aktif tracking baseline olarak korunacak. | Gerekçe: `TRK-EXP-001` ve `TRK-EXP-002` otomatik koşularında her iki tracker 15 unique track üretti; ByteTrack 17.665 ms mean / 25.284 ms p95 pipeline latency ve 31.742 FPS ile BoT-SORT ReID-off'tan daha hızlı çalıştı. | Etki: Tracking benchmark CSV ve summary raporu güncellendi; manuel ID switch/fragmentation incelemesi sıradaki iş olarak kaldı. | Alternatifler: BoT-SORT ReID-off'u latency pahasına seçmek veya ReID açık denemeye geçmek.
 * 2026-06-10 — Karar: ByteTrack iyi çalıştığı için sonraki faz Track Post-Processing + Target Vehicle Selection + First Event/Evidence Skeleton olacak. | Gerekçe: Speed, plate OCR, QoD ve risk decision modülleri güvenilir `track_id`, `stable_class`, `track_stability` ve `target_track_id` olmadan yanlış araca bağlanabilir. | Etki: `research/03_tracking/next_phase_track_to_event_plan.md` eklendi; tracking summary güncellendi. | Alternatifler: Hemen speed veya plate OCR modülüne geçmek.
 * 2026-06-11 — Karar: İlk track-to-event implementation heuristic post-processing olarak kurulacak. | Gerekçe: Ground-truth tracking/risk etiketi olmadan ölçülebilir ve tekrar üretilebilir ara contract gerekir; bu aşamada gerçek risk alarmı değil `target_vehicle_selected` skeleton yeterlidir. | Etki: `scripts/benchmarks/build_track_event_skeleton.py`, track post-process JSON, event skeleton JSON ve track-to-event raporu eklendi. | Alternatifler: Doğrudan speed/plate OCR model çağrılarına geçmek.
+* 2026-06-11 — Karar: Hız estimation sona bırakılıp sıradaki aktif AI fazı Plate Detection + OCR olacak. | Gerekçe: Hız tek kamera kalibrasyon/perspektif nedeniyle daha kırılgan; plate/OCR ByteTrack target skeleton üstüne daha doğrudan bağlanır. | Etki: `research/04_plate_ocr/` altında deep research, decision, benchmark planı ve lisans checklist'i eklendi. | Alternatifler: Relative speed baseline'a hemen geçmek.
+* 2026-06-11 — Karar: Plate/OCR ilk MVP iki aşamalı pipeline olacak. | Gerekçe: Evidence package, hata ayrıştırma, QoD sinyali, Türk plaka post-processing ve temporal voting açısından plate detection ile OCR'ın ayrı tutulması daha denetlenebilir. | Etki: İlk detector target ROI içinde çalışacak; ilk OCR baseline PaddleOCR, ikinci EasyOCR, debug fallback Tesseract olacak. | Alternatifler: End-to-end ALPR veya OCR-only ROI denemesi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -145,6 +150,7 @@
 * 2026-06-10 — Milestone: İlk tracking benchmark koşuları tamamlandı. | Sonuç: `TRK-EXP-001` ByteTrack ve `TRK-EXP-002` BoT-SORT ReID-off, 1263 frame üzerinde çalıştı; JSON özetleri ve lokal annotated videolar üretildi.
 * 2026-06-10 — Milestone: ByteTrack manuel geri bildirimi kaydedildi. | Sonuç: Kullanıcı ByteTrack'in gayet iyi çalıştığını belirtti; aktif yön target/evidence hattına bağlama olarak netleşti.
 * 2026-06-11 — Milestone: İlk track-to-event skeleton tamamlandı. | Sonuç: ByteTrack summary history sample ile yeniden üretildi; 3 video için hedef track seçildi ve `target_vehicle_selected` event skeletonları oluşturuldu.
+* 2026-06-11 — Milestone: Plate/OCR deep research tamamlandı. | Sonuç: İki aşamalı target ROI plate detector + PaddleOCR/EasyOCR OCR + Türk plaka post-processing + temporal voting MVP kararı kaydedildi.
 
 ## 8) Yapılanlar
 
@@ -195,6 +201,11 @@
 * [x] `track_stability` ve `target_selection_score` heuristic hesaplaması eklendi.
 * [x] Her dark test videosu için bir `target_track_id` seçildi.
 * [x] İlk `target_vehicle_selected` event/evidence skeleton JSON çıktıları üretildi.
+* [x] Plate/OCR deep research raporu yazıldı.
+* [x] Plate/OCR baseline kararı kaydedildi.
+* [x] Plate/OCR benchmark planı oluşturuldu.
+* [x] Plate/OCR dataset/lisans checklist'i oluşturuldu.
+* [x] Plate/OCR manual review CSV şablonu eklendi.
 
 ## 9) Yapılacaklar (Next)
 
@@ -220,10 +231,16 @@
 * [x] Track-level class voting, confidence smoothing ve `track_stability` hesaplamasını implementation planına bağla.
 * [x] Target vehicle selection skorlamasını uygulama planına bağla.
 * [x] İlk event/evidence JSON skeleton üretimini planla.
-* [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret.
+* [ ] Target ROI crop extraction script'ini yaz.
+* [ ] `POCR-EXP-001` için plate detector smoke test çalıştır.
+* [ ] `POCR-EXP-002` için PaddleOCR baseline çalıştır.
+* [ ] `POCR-EXP-003` için EasyOCR baseline comparison çalıştır.
+* [ ] Plate/OCR sonuçlarını event/evidence JSON skeleton içine işle.
+* [ ] Plate/OCR manual review sonuçlarını `testing/templates/manual_plate_ocr_review.csv` formatına göre kaydet.
+* [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Deferred)
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
-* [ ] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
-* [ ] PaddleOCR / EasyOCR plate OCR baseline kıyasını planla.
+* [x] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
+* [x] PaddleOCR / EasyOCR plate OCR baseline kıyasını planla.
 * [ ] Speed baseline için track displacement + relative speed hesaplama contractını yaz.
 * [ ] Condition profile için CLIP/image-classifier baseline test planını yaz.
 * [ ] "Plaka tabelası" ifadesinin trafik levhasını da kapsayıp kapsamadığını netleştir.
@@ -248,6 +265,9 @@
 * Tracking ground truth henüz yok; `Test/video_1-3.mp4` üstündeki ilk tracking metrikleri manual review ve proxy metrikler olacaktır.
 * ID switch evidence ve plate OCR temporal voting'i yanlış araca bağlayabilir; bu yüzden `id_switch_suspected`, `track_stability` ve best-frame audit alanları zorunlu tutulmalıdır.
 * Track-to-event scoring heuristic'tir; ground-truth olmadan mutlak doğruluk iddiası kurulamaz. Manuel review ile seçilen hedef aracın doğru olup olmadığı kontrol edilmelidir.
+* Plate/OCR ilk araştırma kararı kaynaklıdır ama henüz lokal model koşusu yapılmadı; lisans/model card bilgisi model indirmeden önce tekrar doğrulanmalıdır.
+* Ultralytics tabanlı plate detector modelleri AGPL-3.0/Enterprise etkisi taşıyabilir; private repo olmak lisans riskini otomatik çözmez.
+* Plaka metni kişisel veri gibi ele alınmalı; raw plate crop ve OCR çıktıları Git'e eklenmemeli, demo/raporda maskeleme opsiyonu korunmalıdır.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
 * Fine-tune ertelendiği için domain gap tamamen çözülmüş sayılmaz; bu karar yalnız pipeline omurgasını hızlı ve ölçülebilir kurmak içindir.
 * Deep research raporundaki ChatGPT citation placeholder'ları final rapor kaynağı değildir; final kaynaklar `research/03_condition_experts/dataset_source_checklist.md` ve ilgili official URL'lerle doğrulanmalıdır.
