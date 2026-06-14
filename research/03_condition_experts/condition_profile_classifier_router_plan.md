@@ -198,7 +198,7 @@ Kaçınılması gereken iddia:
 Önerilen yeni deney:
 
 * Experiment ID: `COND-EXP-001`
-* Notebook: `notebooks/COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab.ipynb`
+* Notebook: `notebooks/COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab.ipynb` (oluşturuldu)
 * Dataset output: `datasets/bdd100k_condition_classifier/`
 * Artifacts:
   * `models/benchmarks/artifacts/COND-EXP-001-condition-classifier-summary.json`

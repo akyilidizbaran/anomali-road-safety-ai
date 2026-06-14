@@ -29,3 +29,13 @@ kaniti olarak kullanilmalidir.
 * Bu smoke test 3 lokal dark video uzerinde gorsel kontrol icin uretilir.
 * Annotated videolar `runs/` altindadir ve Git'e eklenmez.
 * Manuel review tamamlanmadan accuracy, recall veya hukuki kanit iddiasi kurulmaz.
+
+## Motorcycle / Car Class Confusion Notu
+
+Kullanıcı manuel gözlemine göre `video_3` içinde normalde 1 araba + 1 motosiklet vardır. Otomatik özet ise `car:611`, `motorcycle:6` üretmiştir. Bu, motosikletin büyük ölçüde `car` olarak tahmin edildiğini gösteren bir class-level hata adayıdır.
+
+Bu konu condition classifier ile çözülmez; vehicle detector tarafında manual review ve gerekirse motorcycle-focused fine-tune gerektirir.
+
+Detay aksiyon dosyası:
+
+* `testing/reports/vd_exp_002_motorcycle_class_confusion_action.md`

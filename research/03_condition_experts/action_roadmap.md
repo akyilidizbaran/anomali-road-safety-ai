@@ -167,17 +167,17 @@ Amaç: BDD metadata'sına bağımlı kalmadan canlı frame'den kondisyon profili
 
 Model adayları:
 
-1. `MobileNetV3-Small`
-2. `MobileNetV3-Large`
-3. `ResNet18`
+1. `MobileNetV3-Small` - aktif ilk baseline
+2. `ResNet18` - opsiyonel challenger
+3. `MobileNetV3-Large` - gerekirse ikinci faz
 
 Yapılacaklar:
 
-* [ ] BDD100K metadata'dan classification CSV üret.
-* [ ] `day_clear`, `night_low_light`, `low_light_transition`, `rain`, `adverse_other`, `unknown` ilk label setini oluştur.
+* [x] BDD100K metadata'dan classification CSV üretecek Colab notebook hazırla.
+* [x] `day_clear`, `night_low_light`, `low_light_transition`, `rain`, `fog_low_visibility`, `adverse_other`, `unknown` ilk label setini oluştur.
 * [ ] Fog'u veri yeterliyse ayrı sınıf, değilse `adverse_other/unknown` altında tut.
 * [ ] MobileNetV3 baseline eğit.
-* [ ] ResNet18 challenger eğit.
+* [ ] ResNet18 challenger eğit, gerekirse.
 * [ ] Macro-F1, per-class recall, confusion matrix ve p95 latency raporla.
 * [ ] 3 dark video üzerinde frame sampling smoke test yap.
 
@@ -186,6 +186,7 @@ Yapılacaklar:
 * `condition_profile_classifier_v1`
 * `condition_profile`, `condition_confidence`, `profile_window_stability`, `routing_reason` alanları.
 * Detay plan: `condition_profile_classifier_router_plan.md`.
+* Notebook: `../../notebooks/COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab.ipynb`.
 
 ## Faz 5 - Runtime Routing ve Registry
 
