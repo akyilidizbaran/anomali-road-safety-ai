@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Arkadaşlar plate/OCR hattını ilerletirken ana çalışma tekrar Vehicle Detection fine-tune hazırlığına döndü. İlk resmi model omurgası `YOLO11n + BDD100K + Colab/Drive` olarak FTR formatına göre planlanıyor.
-* Son değişiklik neydi? `deep-research-report.md`, `research/02_vehicle_detection/deep_research/condition_experts_deep_research_report.md` konumuna taşındı; `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` general + opsiyonel night/rain/fog specialist fine-tune ve karşılaştırma notebook'u olarak yeniden yazıldı.
-* Bir sonraki net adım ne? Notebook, label/image overlap sıfır çıkarsa Archive.org `bdd100k_images.zip` paketini Drive'a indirip çıkaracak, image index cache'lerini yenileyecek ve YOLO dönüşümü eşleşen BDD100K image setiyle yeniden deneyecek. Sonra VD-EXP-002 conversion/fine-tune akışı Colab'da çalıştırılacak.
+* Şu an ne yapıyoruz? Vehicle Detection fine-tune hazırlığında `YOLO11n + BDD100K + Colab/Drive` omurgasını çalışır hale getiriyoruz.
+* Son değişiklik neydi? `VD_EXP_002_BDD100K_YOLO11n_Colab_outsaved.ipynb` çıktısında görüntü-label overlap'in düzeldiği (`500/500`) ancak label parser/cache yüzünden 0 araç box'ı üretildiği görüldü; ana notebook label cache validasyonu ve nested label/object parsing ile düzeltildi.
+* Bir sonraki net adım ne? Güncel `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` Colab'da yeniden açılıp runtime restart sonrası baştan çalıştırılacak; conversion hücresinde label diagnostic çıktısında nonzero `target_vehicle_boxes` ve ardından nonzero `processed_rows` beklenir.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -154,6 +154,7 @@
 * 2026-06-14 — Karar: VD-EXP-002 download URL sanitize ve combined archive inspect yapacak. | Gerekçe: Colab çıktısında URL'ler Markdown link formatı gibi görünebiliyor ve Drive'da mevcut `bdd100k_images.zip` train/val içerebilir veya yalnız test içerebilir. | Etki: Download helper `[https://...](https://...)` formatını düz URL'ye çevirir; official train/val indirmeden önce mevcut `bdd100k_images.zip` split sayıları incelenir ve train/val yeterliyse marker kaldırılıp tekrar extract edilir. | Alternatifler: Her durumda network download denemek veya manuel Drive yüklemesi istemek.
 * 2026-06-14 — Karar: VD-EXP-002 raw BDD100K image extraction Drive mount'a değil Colab local `/content` çalışma alanına yapılacak. | Gerekçe: 100.000 küçük JPEG'i Google Drive içine tek tek extract etmek saatlerce sürüyor ve dakikada yaklaşık 70-75 dosya hızına düşebiliyor. | Etki: Archive dosyaları Drive'da kalır; notebook arşivi local cache'e kopyalar, `BDD_ROOT` ve YOLO conversion output aktif runtime'da `/content/anomali-road-safety-ai-work` altında çalışır, training/checkpoint/summary Drive'a yazılır. | Alternatifler: Drive web/3rd-party zip extractor kullanmak veya Drive mount içinde extract'e devam etmek.
 * 2026-06-14 — Karar: VD-EXP-002 varsayılan Colab eğitim profili A100 için optimize edilecek. | Gerekçe: Kullanıcı A100 ile çalıştıracağını belirtti; batch/worker/cache ayarları T4/L4 varsayılanlarından daha agresif seçilebilir. | Etki: Notebook `HARDWARE_PROFILE='a100'`, `TRAIN_BATCH=0.85` auto-batch fraction, `VAL_BATCH=64`, `WORKERS=8`, `CACHE_MODE='disk'`, `AMP=True`, `SAVE_PERIOD=5` kullanır; daha küçük GPU gelirse `HARDWARE_PROFILE='auto'` yapılabilir. | Alternatifler: Her GPU için `batch=-1` genel auto-batch ile devam etmek.
+* 2026-06-14 — Karar: VD-EXP-002 label cache yalnız varlığına göre değil, örnek target vehicle box içerip içermediğine göre kullanılacak. | Gerekçe: Colab çıktısında image index 70.000 train image ve overlap `500/500` iken conversion 0 satır üretti; sorun görüntü değil eski/uyumsuz label cache ve nested `objects/annotations` parsing eksikliğiydi. | Etki: Notebook Drive/local label cache'i diagnostic ile doğrular, 0 target box içerirse cache'i yok sayar; `labels`, `objects`, `annotations` ve `frames[*]` altındaki object listelerini okuyarak `car/bus/truck/motorcycle` box'larını çıkarır. | Alternatifler: Her hatada cache'i manuel silmek veya yalnız tek BDD JSON formatını desteklemek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -203,6 +204,7 @@
 * 2026-06-14 — Milestone: VD-EXP-002 URL sanitize + combined archive inspect patch'i eklendi. | Sonuç: Colab Markdown URL formatı ve mevcut `bdd100k_images.zip` yeniden extract ihtimali otomatik ele alınır.
 * 2026-06-14 — Milestone: VD-EXP-002 local Colab workdir hızlandırma patch'i eklendi. | Sonuç: Notebook artık büyük BDD image archive'larını Drive'da saklayıp local archive cache'e kopyalar ve görüntü/label extract + YOLO conversion işlemini `/content/anomali-road-safety-ai-work` altında yapar; Drive'daki label cache varsa local workdir'e kopyalanır.
 * 2026-06-14 — Milestone: VD-EXP-002 A100 training preset'i eklendi. | Sonuç: Ultralytics train/val çağrıları `device`, `workers`, `cache`, `amp`, `save_period`, `seed` ve batch ayarlarını merkezi `yolo_runtime_kwargs` üzerinden kullanır.
+* 2026-06-14 — Milestone: VD-EXP-002 label parser/cache guard düzeltildi. | Sonuç: Outsaved Colab çıktısı incelendi; image/extract aşaması doğruyken `skipped_no_target=23193/10000` hatasının label object extraction/cache kaynaklı olduğu görüldü ve ana notebook buna göre güncellendi.
 
 ## 8) Yapılanlar
 
@@ -369,6 +371,7 @@
 * Colab download çıktısında URL `[https://...](https://...)` gibi görünürse helper bunu sanitize eder; yine de `dl.cv.ethz.ch` DNS hatası devam ederse bu Colab network/host erişim sorunudur. Notebook önce mevcut `bdd100k_images.zip` içeriğini inspect ederek network download ihtiyacını azaltır.
 * Drive mount içine 100.000 küçük BDD100K görseli extract etmek pratik değildir; hız dakikada onlarca dosyaya düşebilir. Güncel notebook'ta `USE_LOCAL_DATASET_WORKDIR=True`, `USE_LOCAL_YOLO_WORKDIR=True`, `USE_LOCAL_ARCHIVE_CACHE=True` kalmalı; Colab runtime kapanırsa local extract kaybolur ama Drive'daki zip/checkpoint/summary korunur.
 * A100 çalıştırmasında `TRAIN_BATCH=0.85` Ultralytics auto-batch fraction olarak tasarlandı; validation için float batch kullanılmamalı, `VAL_BATCH=64` gibi integer değer korunmalı. Out-of-memory görülürse ilk düşürülecek ayarlar `TRAIN_BATCH=0.70`, `VAL_BATCH=32`, sonra `CACHE_MODE=False` olmalıdır.
+* `Label/image overlap preflight ... matches=500/500` görünüp ardından `skipped_no_target` tüm entry sayısına eşitse sorun image extract değildir. Bu durumda label cache/parsing diagnostic'inde `target_vehicle_boxes` kontrol edilir; 0 ise notebook eski Drive cache'i yok saymalı ve local source label JSON'lardan yeniden cache üretmelidir.
 
 ### Güncelleme Kaydı
 
