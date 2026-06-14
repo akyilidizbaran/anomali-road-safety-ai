@@ -45,16 +45,18 @@ Raporun ana kararı:
 
 * `research_coverage_review.md`: deep research raporu, sorduğumuz soruları ne kadar cevaplamış kontrolü.
 * `dataset_source_checklist.md`: veri seti/link/lisans doğrulama listesi.
+* `dataset_candidates_for_condition_profile.md`: canlı frame condition classifier için veri seti adayları ve kaynakça.
+* `condition_profile_classifier_router_plan.md`: canlı frame'den kondisyon tahmini ve detector router planı.
 * `action_roadmap.md`: bundan sonraki model geliştirme yol haritası.
 * `deep_research/`: orijinal deep research raporu.
 
 ## Karar
 
-Bu aşamadaki uygulanabilir yol:
+2026-06-15 itibarıyla güncel uygulanabilir yol:
 
-1. Mevcut YOLO11n dark video smoke test sonuçlarını manuel kontrol et.
-2. Public veri seti kaynak ve lisanslarını doğrula.
-3. BDD100K + UA-DETRAC ile genel road-domain detector fine-tune hattını hazırla.
-4. Genel model benchmark edilmeden specialist detector açma.
-5. İlk specialist'i `night_low_light` olarak `best_general` checkpoint'inden başlat.
-6. Specialist ancak general'e göre ölçülebilir fayda sağlıyorsa runtime routing'e aktif ekle.
+1. `VD-EXP-002` çıktısındaki general fine-tuned YOLO11n aktif vehicle detector baseline olarak kullan.
+2. Night/rain specialist modellerini şimdilik candidate olarak tut; mAP50-95 avantajı kanıtlanmadığı için runtime'da aktifleme.
+3. Fog specialist'i veri yetersizliği nedeniyle ertele.
+4. Canlı frame'den `condition_profile` tahmini yapan hafif classifier/router kur.
+5. Router, specialist `proven_better=true` değilse general detector fallback kullansın.
+6. 3 dark video üzerinde general detector smoke test ve condition classifier smoke test sonuçlarını manuel review ile kaydet.

@@ -39,8 +39,8 @@ Ancak rapor tek başına final kaynak dosyası olarak kullanılmamalıdır. İç
 
 1. **Kaynak formatı eksik:** Deep research raporundaki citation placeholder'ları final rapor için kullanılamaz.
 2. **Lisans doğrulaması tamamlanmadı:** Özellikle UA-DETRAC, DAWN, NOD ve SHIFT için resmi lisans/erişim şartı ayrıca doğrulanmalı.
-3. **Condition profile model tasarımı henüz uygulanabilir seviyede değil:** Hangi hafif modelle `condition_profile` üretileceği, hangi etiket setiyle eğitileceği ve threshold'lar netleşmeli.
-4. **Genel detector fine-tune hattı henüz kurulmadı:** Şu an sadece YOLO11n zero-fine-tune smoke benchmark yapıldı.
+3. **Condition profile model tasarımı artık ayrı aksiyon dosyasına ayrıldı:** Hafif MobileNetV3/ResNet18 classifier, label taksonomisi, temporal smoothing ve fallback router kuralı `condition_profile_classifier_router_plan.md` içinde tanımlandı; henüz uygulanmadı.
+4. **Genel detector fine-tune hattı tamamlandı:** `VD-EXP-002` Colab koşusu general YOLO11n checkpoint'i ve condition breakdown metriklerini üretti. Night/rain specialist deneyleri candidate olarak kaldı; fog veri yetersizliği nedeniyle atlandı.
 5. **Manual review sonuçları yok:** `Test/video_1-3.mp4` çıktıları görsel olarak oluştu ama insan gözlemiyle accuracy/failure-case kayıtları girilmedi.
 6. **Model registry ve routing config henüz gerçek dosya değil:** Rapor öneriyor; uygulama fazında eklenmeli.
 
@@ -50,7 +50,7 @@ Deep research raporu strateji kararı için yeterli. Bundan sonra araştırmayı
 
 1. Kaynak/lisans checklist'i tamamla.
 2. Mevcut dark video çıktılarının manuel review'ını yap.
-3. General detector dataset ve Colab fine-tune pipeline'ını kur.
-4. İlk fine-tune aşamasında condition-aware general detector eğit.
-5. `best_general` oluşmadan condition-specific detector eğitme.
-6. General modelin condition breakdown sonucu zayıfsa ilk specialist olarak `night_low_light` aç.
+3. Fine-tuned general checkpoint'i lokal smoke test için indir.
+4. 3 dark video üzerinde general detector manual review yap.
+5. Canlı frame condition profile classifier/router kur.
+6. Specialist detector'ları yalnız general modelden ölçülebilir iyi oldukları durumda runtime'a al.

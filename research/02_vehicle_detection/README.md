@@ -6,7 +6,9 @@ Projenin ilk yapay zeka çekirdeği olan araç tespitini ve hedef araç seçimin
 
 ## Güncel Karar
 
-İlk ölçülebilir baseline **YOLO11n** olarak seçilmiştir. Bu final model seçimi değildir; final karar Colab fine-tune sonuçları, MacBook runtime benchmark, output contract uyumu, tracking/evidence katkısı ve lisans değerlendirmesi sonrası verilecektir.
+İlk ölçülebilir baseline **YOLO11n** olarak seçilmiştir. `VD-EXP-002` Colab/Drive koşusu sonucunda aktif vehicle detector baseline, BDD100K 4-class vehicle subset üzerinde fine-tune edilmiş **general YOLO11n** modelidir.
+
+Bu karar saha performansı iddiası değildir. MacBook local runtime benchmark, 3 dark video manual review, output contract uyumu, tracking/evidence katkısı ve lisans değerlendirmesi ayrıca tamamlanmalıdır.
 
 Deep research raporu `deep_research/deep_research_report.md` altında tutulur. Uygulama ve karar takibi aşağıdaki aksiyon dosyalarıyla yapılır.
 
@@ -38,9 +40,16 @@ Başlangıç araç detektörü, sınıf listesi, hedef araç skoru ve benchmark 
 * `benchmark_plan.md`: public skor, Colab benchmark ve MacBook runtime benchmark planı.
 * `pretrained_baseline_plan.md`: fine-tune öncesi pretrained model benchmark ve pipeline değerlendirme planı.
 * `finetune_plan.md`: Colab deney sırası ve kayıt standardı.
+* `ftr_vehicle_detection_finetune_plan.md`: FTR formatındaki veriseti, model, test ve kaynakça beklentilerine göre YOLO11n + BDD100K fine-tune planı.
 * `condition_specific_detector_routing.md`: dark/rain/fog gibi koşullara göre detector profile seçimi.
 * `decision_vehicle_detector_v1.md`: ilk baseline kararı ve yeniden karar koşulları.
 * `deep_research/`: derin araştırma raporu ve kaynak listesi.
+
+## Güncel Çıktılar
+
+* Fine-tuned general YOLO11n summary: `../../testing/reports/vd_exp_002_finetuned_general_detector_summary.md`
+* Dark video smoke test runbook: `../../testing/reports/vd_exp_002_dark_video_smoke_test_runbook.md`
+* Local smoke test script: `../../scripts/benchmarks/run_vehicle_detection_video_smoke.py`
 
 ## İlgili Araştırma Alanı
 

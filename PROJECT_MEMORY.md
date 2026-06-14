@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Vehicle Detection fine-tune hazırlığında `YOLO11n + BDD100K + Colab/Drive` omurgasını çalışır hale getiriyoruz.
-* Son değişiklik neydi? `VD_EXP_002_BDD100K_YOLO11n_Colab_outsaved.ipynb` çıktısında görüntü-label overlap'in düzeldiği (`500/500`) ancak label parser/cache yüzünden 0 araç box'ı üretildiği görüldü; ana notebook label cache validasyonu ve nested label/object parsing ile düzeltildi.
-* Bir sonraki net adım ne? Güncel `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` Colab'da yeniden açılıp runtime restart sonrası baştan çalıştırılacak; conversion hücresinde label diagnostic çıktısında nonzero `target_vehicle_boxes` ve ardından nonzero `processed_rows` beklenir.
+* Şu an ne yapıyoruz? Vehicle Detection fine-tune çıktıları repo raporlarına aktarıldı; `YOLO11n + BDD100K + Colab/Drive` omurgası çalıştı ve aktif baseline general fine-tuned YOLO11n olarak belirlendi.
+* Son değişiklik neydi? Canlı frame'den `condition_profile` tahmini yapan classifier/router planı, condition dataset adayları, fine-tuned detector özet raporu ve 3 dark video smoke test runbook/script'i eklendi.
+* Bir sonraki net adım ne? Drive'daki `best.pt` checkpoint'i lokal `models/checkpoints/vehicle_detection/` altına alınıp 3 dark video smoke test koşulmalı; ardından `COND-EXP-001` MobileNetV3/ResNet18 condition classifier notebook'u hazırlanmalı.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -155,6 +155,9 @@
 * 2026-06-14 — Karar: VD-EXP-002 raw BDD100K image extraction Drive mount'a değil Colab local `/content` çalışma alanına yapılacak. | Gerekçe: 100.000 küçük JPEG'i Google Drive içine tek tek extract etmek saatlerce sürüyor ve dakikada yaklaşık 70-75 dosya hızına düşebiliyor. | Etki: Archive dosyaları Drive'da kalır; notebook arşivi local cache'e kopyalar, `BDD_ROOT` ve YOLO conversion output aktif runtime'da `/content/anomali-road-safety-ai-work` altında çalışır, training/checkpoint/summary Drive'a yazılır. | Alternatifler: Drive web/3rd-party zip extractor kullanmak veya Drive mount içinde extract'e devam etmek.
 * 2026-06-14 — Karar: VD-EXP-002 varsayılan Colab eğitim profili A100 için optimize edilecek. | Gerekçe: Kullanıcı A100 ile çalıştıracağını belirtti; batch/worker/cache ayarları T4/L4 varsayılanlarından daha agresif seçilebilir. | Etki: Notebook `HARDWARE_PROFILE='a100'`, `TRAIN_BATCH=0.85` auto-batch fraction, `VAL_BATCH=64`, `WORKERS=8`, `CACHE_MODE='disk'`, `AMP=True`, `SAVE_PERIOD=5` kullanır; daha küçük GPU gelirse `HARDWARE_PROFILE='auto'` yapılabilir. | Alternatifler: Her GPU için `batch=-1` genel auto-batch ile devam etmek.
 * 2026-06-14 — Karar: VD-EXP-002 label cache yalnız varlığına göre değil, örnek target vehicle box içerip içermediğine göre kullanılacak. | Gerekçe: Colab çıktısında image index 70.000 train image ve overlap `500/500` iken conversion 0 satır üretti; sorun görüntü değil eski/uyumsuz label cache ve nested `objects/annotations` parsing eksikliğiydi. | Etki: Notebook Drive/local label cache'i diagnostic ile doğrular, 0 target box içerirse cache'i yok sayar; `labels`, `objects`, `annotations` ve `frames[*]` altındaki object listelerini okuyarak `car/bus/truck/motorcycle` box'larını çıkarır. | Alternatifler: Her hatada cache'i manuel silmek veya yalnız tek BDD JSON formatını desteklemek.
+* 2026-06-15 — Karar: VD-EXP-002 sonucunda aktif seçilecek detector şimdilik general fine-tuned YOLO11n olmalı; night/rain specialist modelleri raporda aday/deney olarak tutulmalı. | Gerekçe: General fine-tuned test mAP50-95 `0.3323`; night specialist test mAP50-95 `0.2996`, rain specialist test mAP50-95 `0.3152`. Specialist modeller recall'da küçük artış verse de mAP50-95 düşüyor; fog veri sayısı `28/3/11` olduğu için eğitim savunulamaz. | Etki: Condition-aware routing tasarımı korunur ama production/demo fallback general modeldir; specialist seçimi için daha fazla veri veya farklı eğitim stratejisi gerekir. | Alternatifler: Recall öncelikli specialist kullanmak veya specialist tune'a devam etmek.
+* 2026-06-15 — Karar: Canlı frame'den `condition_profile` tahmini yapan ayrı classifier/router çıkarılacak. | Gerekçe: VD-EXP-002 condition kırılımları BDD100K metadata'sından türetildi; canlı demo ve FTR için sistemin kameradan gelen frame üzerinde hava/ışık/görüş profili üretmesi gerekir. | Etki: `research/03_condition_experts/condition_profile_classifier_router_plan.md` ve dataset aday dosyası eklendi; ilk aday MobileNetV3, challenger ResNet18. | Alternatifler: Condition bilgisini yalnız dataset metadata'sı veya manuel etiket olarak tutmak.
+* 2026-06-15 — Karar: Fine-tuned general YOLO11n checkpoint Git'e eklenmeyecek; lokal smoke test için Drive'dan manuel/lokal path'e kopyalanacak. | Gerekçe: `.pt` dosyaları büyük binary artifact ve Git ignore kapsamındadır; Drive checkpoint doğrulandı ama lokal repo altında yok. | Etki: `run_vehicle_detection_video_smoke.py` script'i ve runbook eklendi; checkpoint lokal geldiğinde 3 dark video testi tekrar üretilebilir. | Alternatifler: Checkpoint'i repoya commit etmek veya smoke test'i sadece Colab'da bırakmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -205,6 +208,8 @@
 * 2026-06-14 — Milestone: VD-EXP-002 local Colab workdir hızlandırma patch'i eklendi. | Sonuç: Notebook artık büyük BDD image archive'larını Drive'da saklayıp local archive cache'e kopyalar ve görüntü/label extract + YOLO conversion işlemini `/content/anomali-road-safety-ai-work` altında yapar; Drive'daki label cache varsa local workdir'e kopyalanır.
 * 2026-06-14 — Milestone: VD-EXP-002 A100 training preset'i eklendi. | Sonuç: Ultralytics train/val çağrıları `device`, `workers`, `cache`, `amp`, `save_period`, `seed` ve batch ayarlarını merkezi `yolo_runtime_kwargs` üzerinden kullanır.
 * 2026-06-14 — Milestone: VD-EXP-002 label parser/cache guard düzeltildi. | Sonuç: Outsaved Colab çıktısı incelendi; image/extract aşaması doğruyken `skipped_no_target=23193/10000` hatasının label object extraction/cache kaynaklı olduğu görüldü ve ana notebook buna göre güncellendi.
+* 2026-06-15 — Milestone: VD-EXP-002 Colab koşusu tamamlandı. | Sonuç: 32.904 image ve 359.903 vehicle bbox içeren YOLO dataset metadata üretildi; general, night_low_light ve rain modelleri eğitildi; fog_low_visibility veri azlığı nedeniyle atlandı; summary CSV/MD raporları Drive altında üretildi.
+* 2026-06-15 — Milestone: Condition classifier/router planı ve fine-tuned detector raporları eklendi. | Sonuç: Canlı frame condition router planı, condition dataset adayları, VD-EXP-002 fine-tuned detector summary, dark video smoke test runbook ve lokal smoke test script'i repo içinde izlenebilir hale geldi.
 
 ## 8) Yapılanlar
 
@@ -307,17 +312,21 @@
 * [x] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
 * [x] PaddleOCR / EasyOCR plate OCR baseline kıyasını planla.
 * [ ] Speed baseline için track displacement + relative speed hesaplama contractını yaz.
-* [ ] Condition profile için CLIP/image-classifier baseline test planını yaz.
+* [x] Condition profile classifier/router baseline test planını yaz.
 * [ ] "Plaka tabelası" ifadesinin trafik levhasını da kapsayıp kapsamadığını netleştir.
 * [x] VD-EXP-002 ana fine-tune omurgasını seç: YOLO11n + BDD100K + Colab/Drive.
 * [x] VD-EXP-002 notebook config'ini `.pt` mandatory, ONNX optional olacak şekilde son kontrol et.
-* [ ] VD-EXP-002 notebook içinde BDD100K download yöntemini Colab/Drive pratikliğine göre çalıştır: Kaggle / manual Drive / direct URL / gdown.
+* [x] VD-EXP-002 notebook içinde BDD100K download/yükleme yöntemini Colab/Drive pratikliğine göre çalıştır.
 * [ ] UA-DETRAC erişim/lisans doğrulamasını tamamla.
 * [ ] Condition expert dataset kaynak/lisans checklist'ini tamamla.
 * [x] Condition-aware general road-domain detector Colab fine-tune notebook skeleton'ını oluştur.
-* [ ] VD-EXP-002 BDD100K Colab dönüşüm smoke test'ini küçük subset ile çalıştır.
-* [ ] VD-EXP-002 BDD100K Colab YOLO11n fine-tune koşusunu çalıştır.
-* [ ] (Deferred) `best_general` seçildikten sonra `night_low_light` specialist deneyini başlat.
+* [x] VD-EXP-002 BDD100K Colab dönüşümünü çalıştır ve metadata üret.
+* [x] VD-EXP-002 BDD100K Colab YOLO11n fine-tune koşusunu çalıştır.
+* [x] `night_low_light` ve `rain` specialist deneylerini başlat; aktif runtime modeline terfi ettirme.
+* [ ] Drive'daki `VD-EXP-002-GENERAL-YOLO11N/weights/best.pt` checkpoint'ini lokal `models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt` path'ine al.
+* [ ] Fine-tuned general detector ile `Test/video_1-3.mp4` smoke test'ini çalıştır.
+* [ ] Smoke test annotated videolarını manuel review ile değerlendir ve summary raporu commitlenebilir JSON/MD olarak kaydet.
+* [ ] `COND-EXP-001` MobileNetV3/ResNet18 condition profile classifier Colab notebook'unu oluştur.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
@@ -372,6 +381,8 @@
 * Drive mount içine 100.000 küçük BDD100K görseli extract etmek pratik değildir; hız dakikada onlarca dosyaya düşebilir. Güncel notebook'ta `USE_LOCAL_DATASET_WORKDIR=True`, `USE_LOCAL_YOLO_WORKDIR=True`, `USE_LOCAL_ARCHIVE_CACHE=True` kalmalı; Colab runtime kapanırsa local extract kaybolur ama Drive'daki zip/checkpoint/summary korunur.
 * A100 çalıştırmasında `TRAIN_BATCH=0.85` Ultralytics auto-batch fraction olarak tasarlandı; validation için float batch kullanılmamalı, `VAL_BATCH=64` gibi integer değer korunmalı. Out-of-memory görülürse ilk düşürülecek ayarlar `TRAIN_BATCH=0.70`, `VAL_BATCH=32`, sonra `CACHE_MODE=False` olmalıdır.
 * `Label/image overlap preflight ... matches=500/500` görünüp ardından `skipped_no_target` tüm entry sayısına eşitse sorun image extract değildir. Bu durumda label cache/parsing diagnostic'inde `target_vehicle_boxes` kontrol edilir; 0 ise notebook eski Drive cache'i yok saymalı ve local source label JSON'lardan yeniden cache üretmelidir.
+* `VD-EXP-002` içindeki `yolo11n.pt` pretrained baseline mAP'i final iddia olarak kullanılmamalı; COCO pretrained modelin class id düzeni ile BDD için üretilen 4 sınıflı label id düzeni birebir örtüşmediğinden bu baseline düşük ve yanıltıcı olabilir. Fine-tuned/general vs condition breakdown ve specialist-vs-general karşılaştırmaları daha güvenilir yorumlanmalıdır.
+* Mevcut VD-EXP-002 condition profile bilgisi BDD100K `weather/timeofday/scene` metadata'sından kural tabanlı çıkarılmıştır. Bu, raporda offline dataset profilleme ve routing tasarımı için yeterlidir; canlı demo için frame'den condition profile tahmin eden ayrı classifier/router henüz geliştirilmemiştir.
 
 ### Güncelleme Kaydı
 
