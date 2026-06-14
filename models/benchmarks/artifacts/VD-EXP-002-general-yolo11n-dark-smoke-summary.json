@@ -1,0 +1,80 @@
+{
+  "experiment_id": "VD-EXP-002-dark-video-smoke",
+  "weights": "models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt",
+  "device": "mps",
+  "imgsz": 640,
+  "conf": 0.25,
+  "classes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "runs_dir": "runs/vehicle_detection/VD-EXP-002-dark-smoke",
+  "videos": [
+    {
+      "video": "Test/video_1.mp4",
+      "frame_count_reported": 423,
+      "fps": 50.0,
+      "width": 3840,
+      "height": 2160,
+      "frames_processed": 423,
+      "frames_with_detections": 423,
+      "total_detections": 598,
+      "detections_by_class": {
+        "car": 598
+      },
+      "mean_confidence": 0.779,
+      "mean_pipeline_ms": 17.263,
+      "p95_pipeline_ms": 24.224,
+      "mean_inference_ms": 9.627,
+      "p95_inference_ms": 13.176,
+      "wall_seconds": 14.614,
+      "effective_fps": 28.945,
+      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_1/video_1.mp4"
+    },
+    {
+      "video": "Test/video_2.mp4",
+      "frame_count_reported": 457,
+      "fps": 50.0,
+      "width": 3840,
+      "height": 2160,
+      "frames_processed": 457,
+      "frames_with_detections": 457,
+      "total_detections": 645,
+      "detections_by_class": {
+        "car": 645
+      },
+      "mean_confidence": 0.735,
+      "mean_pipeline_ms": 16.276,
+      "p95_pipeline_ms": 21.998,
+      "mean_inference_ms": 9.573,
+      "p95_inference_ms": 13.451,
+      "wall_seconds": 14.922,
+      "effective_fps": 30.625,
+      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_2/video_2.mp4"
+    },
+    {
+      "video": "Test/video_3.mp4",
+      "frame_count_reported": 383,
+      "fps": 50.0,
+      "width": 3840,
+      "height": 2160,
+      "frames_processed": 383,
+      "frames_with_detections": 383,
+      "total_detections": 617,
+      "detections_by_class": {
+        "car": 611,
+        "motorcycle": 6
+      },
+      "mean_confidence": 0.732,
+      "mean_pipeline_ms": 16.983,
+      "p95_pipeline_ms": 25.073,
+      "mean_inference_ms": 9.972,
+      "p95_inference_ms": 14.208,
+      "wall_seconds": 13.464,
+      "effective_fps": 28.446,
+      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_3/video_3.mp4"
+    }
+  ]
+}
