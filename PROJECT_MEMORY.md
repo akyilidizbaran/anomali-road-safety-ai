@@ -162,6 +162,7 @@
 * 2026-06-15 — Karar: `COND-EXP-001` condition classifier için ilk backbone `MobileNetV3-Small`, opsiyonel challenger `ResNet18` olacak. | Gerekçe: MobileNetV3 mobil/edge kullanım için daha hafif; ResNet18 klasik ve sağlam bir karşılaştırma modeli. | Etki: Colab notebook default MobileNetV3-Small çalıştırır, `RUN_RESNET18=True` ile challenger koşulabilir. | Alternatifler: Direkt ResNet18 ile başlamak veya CLIP/ViT gibi daha ağır model kullanmak.
 * 2026-06-15 — Karar: Motorcycle/car karışıklığı condition classifier ile çözülmeyecek; vehicle detector tarafında ayrı manual review ve targeted fine-tune aksiyonu olarak takip edilecek. | Gerekçe: Condition classifier frame koşulu üretir, class confusion ise detector sınıf ayrımı problemidir. | Etki: `testing/reports/vd_exp_002_motorcycle_class_confusion_action.md` eklendi; `VD-EXP-006-MOTORCYCLE-FOCUS` önerildi. | Alternatifler: Condition router ile sınıf hatasını düzeltmeye çalışmak.
 * 2026-06-15 — Karar: COND-EXP-001 output-saved koşusu geçerli ilk baseline kanıtıdır ancak final FTR kanıtı için patch'li tekrar koşu gerekir. | Gerekçe: Drive'da checkpoint ve metrik dosyaları var; test accuracy `0.7455`, macro-F1 `0.6582`, `night_low_light` F1 `0.845`. Ancak metadata duplicate riski, boş dark-video smoke test ve `fog_low_visibility` support `10` sınırlılığı var. | Etki: Aktif notebook metadata dedup, `NUM_WORKERS=0` ve dark-video klasör adaylarıyla güncellendi; ağır ResNet18 run'dan önce MobileNetV3 tekrar koşulacak. | Alternatifler: Eski koşuyu final kabul etmek veya doğrudan ResNet18'e geçmek.
+* 2026-06-15 — Karar: COND-EXP-001 ağır comparison run MobileNetV3-Small ve ResNet18'i birlikte eğitecek, en iyi backbone'u `best_val_macro_f1` ile seçecek. | Gerekçe: Test seti model seçimi için kullanılmamalı; test metrikleri yalnız final raporlama için ayrılmalı. | Etki: Notebook default `RUN_RESNET18=True`; comparison CSV validation metric'e göre sıralanır, dark video smoke test seçilen checkpoint ile çalışır. | Alternatifler: Test macro-F1 ile seçim yapmak veya iki ayrı notebook koşmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -217,6 +218,7 @@
 * 2026-06-15 — Milestone: VD-EXP-002 local dark video smoke test tamamlandı. | Sonuç: 3 video / 1263 frame işlendi; tüm frame'lerde araç tespiti vardı. `video_1`: 423 frame, 598 car detection, mean confidence 0.779, 28.945 FPS. `video_2`: 457 frame, 645 car detection, mean confidence 0.735, 30.625 FPS. `video_3`: 383 frame, 611 car + 6 motorcycle detection, mean confidence 0.732, 28.446 FPS. Annotated videolar `runs/vehicle_detection/VD-EXP-002-dark-smoke/` altında, JSON/MD raporları benchmark/report klasörlerinde.
 * 2026-06-15 — Milestone: COND-EXP-001 Colab notebook oluşturuldu. | Sonuç: BDD100K condition metadata üretimi, MobileNetV3-Small training, opsiyonel ResNet18 challenger, Drive/local cache guard ve dark video condition smoke test hücreleri tek notebook içinde hazırlandı.
 * 2026-06-15 — Milestone: COND-EXP-001 output-saved koşusu incelendi. | Sonuç: Drive'da `best.pt`, `summary.json`, `history.csv`, `backbone_comparison.csv` ve Markdown özet doğrulandı; run review raporu yazıldı; output notebook `notebooks/Outputs Saved/` altına taşındı; aktif notebook patch'li tekrar koşuya hazırlandı.
+* 2026-06-15 — Milestone: COND-EXP-001 ağır comparison seçimi düzeltildi. | Sonuç: Notebook MobileNetV3-Small + ResNet18 birlikte koşacak; final seçimi test seti yerine validation macro-F1 ile yapacak.
 
 ## 8) Yapılanlar
 
@@ -335,7 +337,7 @@
 * [ ] Smoke test annotated videolarını manuel review ile değerlendir ve summary raporu commitlenebilir JSON/MD olarak kaydet.
 * [x] `COND-EXP-001` MobileNetV3/ResNet18 condition profile classifier Colab notebook'unu oluştur.
 * [x] `COND-EXP-001` notebook'u Colab'da çalıştır ve summary raporunu repo/Drive çıktılarıyla değerlendir.
-* [ ] Patch'li `COND-EXP-001` notebook'u tekrar çalıştır; metadata dedup sonrası metrikleri ve Drive `Test/video_1-3.mp4` dark-video smoke test sonucunu doğrula.
+* [ ] Patch'li `COND-EXP-001` ağır comparison notebook'unu tekrar çalıştır; MobileNetV3-Small + ResNet18 sonuçlarını, validation seçimini ve Drive `Test/video_1-3.mp4` dark-video smoke test sonucunu doğrula.
 * [ ] `video_3` için motorcycle/car class confusion manual review sayımını çıkar.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 

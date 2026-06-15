@@ -143,8 +143,26 @@ Notebook düzeltmeleri:
 * Metadata duplicate riskine karşı dedup guard eklendi.
 * Colab multiprocessing cleanup uyarılarını azaltmak için default `NUM_WORKERS=0` yapıldı.
 * Dark video smoke test klasör adayları ve boş video durumu daha açık raporlanacak şekilde güncellendi.
+* Ağır comparison run için `RUN_MOBILENETV3_SMALL=True` ve `RUN_RESNET18=True` default hale getirildi.
+* Backbone seçimi `test_macro_f1` yerine `best_val_macro_f1` ile yapılacak şekilde düzeltildi; test metrikleri yalnız final raporlama için kullanılacak.
 
 Karar: Bu koşu classifier'ın çalıştığını ve checkpoint ürettiğini kanıtlayan geçerli bir ilk baseline'dır; ancak final FTR kanıtı olarak kullanılmadan önce patch'li notebook tekrar koşulmalı ve 3 demo video üzerinde smoke test boş kalmamalıdır.
+
+## Ağır Run Seçim Mantığı
+
+Güncel notebook iki modeli aynı koşuda sırayla eğitir:
+
+1. `mobilenet_v3_small`
+2. `resnet18`
+
+Her backbone için ayrı klasör ve checkpoint oluşur:
+
+```text
+runs/condition_profile/COND-EXP-001/train/COND-EXP-001-mobilenet_v3_small/best.pt
+runs/condition_profile/COND-EXP-001/train/COND-EXP-001-resnet18/best.pt
+```
+
+Her model kendi içinde epoch bazında validation macro-F1'a göre en iyi checkpoint'i saklar. İki backbone arasındaki final seçim de `best_val_macro_f1` ile yapılır. `test_accuracy`, `test_macro_f1` ve `test_weighted_f1` değerleri karşılaştırma tablosuna yazılır; ancak model seçmek için kullanılmaz.
 
 ## İlişkili Notlar
 
