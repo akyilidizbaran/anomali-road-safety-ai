@@ -30,6 +30,20 @@ YOLOP/YOLOPv2 veya lane-specific modeller değerlendirilebilir. Hedef aracın al
 
 ResNet18 baseline veya MobileNetV3/EfficientNet-lite gibi hafif sınıflandırıcılar kullanılabilir. Çıktı QoD ve uzman model seçimini etkiler.
 
+COND-EXP-001 kapsamında ilk canlı-frame kondisyon profili yaklaşımı MobileNetV3-Small ile kurulmuştur. Model araç tespiti yapmaz; ham/video frame'den düşük frekansta hava, ışık ve görüş profili üretir. Router bu çıktıyı detector seçimi ve evidence/QoD bağlam sinyali olarak kullanır.
+
+Önerilen runtime davranışı:
+
+```text
+frame sample -> MobileNetV3 condition classifier
+             -> condition_profile + confidence
+             -> temporal smoothing
+             -> detector router
+             -> general detector fallback veya kanıtlanmış specialist detector
+```
+
+Router kuralı gereği `condition_profile=night_low_light` veya `rain` dönmesi tek başına specialist detector seçimi için yeterli değildir. Specialist detector yalnız ilgili condition benchmark'ında general detector'a göre kanıtlı üstünlük sağlarsa aktif edilir; aksi durumda general YOLO11n detector güvenli fallback olarak korunur.
+
 ### Cabin Risk
 
 Görünürlük yeterliyse araç cam/ön bölge ROI’sinde sürücü, yolcu, telefon, sigara, kemer ve dikkat dağınıklığı sinyalleri aranır.

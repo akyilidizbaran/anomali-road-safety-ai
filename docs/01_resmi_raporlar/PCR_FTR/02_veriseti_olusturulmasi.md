@@ -37,6 +37,33 @@ Model eğitimi ve testi için verilerin nasıl toplandığı, etiketlendiği, de
 * Perspective transform.
 * Random crop.
 
+## COND-EXP-001 Kondisyon Profili Veri Seti Notu
+
+Kondisyon profili sınıflandırıcısı için ilk deneyde BDD100K görüntü metadata alanları kullanılmıştır:
+
+* `weather`
+* `timeofday`
+* `scene`
+
+Bu alanlar aşağıdaki `condition_profile` sınıflarına dönüştürülür:
+
+| Condition profile | Anlam |
+|---|---|
+| `day_clear` | Gündüz / normal görüş |
+| `night_low_light` | Gece / düşük ışık |
+| `low_light_transition` | Şafak, alacakaranlık veya geçiş ışığı |
+| `rain` | Yağmur / ıslak görüş koşulu |
+| `fog_low_visibility` | Sis / düşük görüş |
+| `adverse_other` | Kar, fırtına, tünel/parking gibi karma kötü koşullar |
+| `unknown` | Belirsiz veya eksik metadata |
+
+İlk Colab koşusunda MobileNetV3-Small için dengeli örnekleme kullanılmıştır. `fog_low_visibility` sınıfı düşük örnek sayısı nedeniyle FTR'de güçlü performans iddiası için yeterli görülmemelidir; bu sınıf ACDC/DAWN gibi ek adverse-condition veri kaynaklarıyla desteklenmelidir.
+
+Kaynak koşu incelemesi:
+
+* `testing/reports/cond_exp_001_condition_classifier_run_review.md`
+* `models/experiments/COND_EXP_001_bdd100k_condition_classifier.md`
+
 ## Sorulacak Noktalar
 
 * Hangi veri setleri kesin kullanılacak?

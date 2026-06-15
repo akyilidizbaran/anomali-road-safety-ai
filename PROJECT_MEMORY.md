@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Fine-tuned general YOLO11n checkpoint lokal checkpoint klasörüne alındı ve `Test/video_1-3.mp4` üzerinde dark video smoke test tamamlandı.
-* Son değişiklik neydi? `VD-EXP-002-general-yolo11n-dark-smoke-summary.json` ve `vd_exp_002_dark_video_smoke_test_summary.md` üretildi; annotated videolar `runs/vehicle_detection/VD-EXP-002-dark-smoke/` altında kaldı.
-* Bir sonraki net adım ne? `COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab.ipynb` Colab'da koşulacak; smoke test videoları ayrıca manuel review ile motorcycle/car class confusion açısından kontrol edilecek.
+* Şu an ne yapıyoruz? `COND-EXP-001` MobileNetV3-Small condition classifier Colab çıktısı incelendi; Drive'da `best.pt`, summary ve metrik dosyaları doğrulandı.
+* Son değişiklik neydi? FTR uyumlu condition classifier run review raporu yazıldı, aktif notebook metadata dedup + `NUM_WORKERS=0` + dark-video smoke test açıklığıyla patch'lendi ve output-saved notebook `notebooks/Outputs Saved/` altına taşındı.
+* Bir sonraki net adım ne? Patch'li `COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab.ipynb` Colab'da tekrar koşulacak; Drive `Test/video_1-3.mp4` mevcutken dark video smoke test boş kalmamalı.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -161,6 +161,7 @@
 * 2026-06-15 — Karar: `best.pt` lokal `models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt` path'ine taşındı ve Git dışında tutulacak. | Gerekçe: Checkpoint gerekli runtime artifact, ancak `.pt` dosyaları Git'e eklenmemeli. | Etki: Local smoke test script'i bu path ile çalıştırıldı; repoyu pull eden kişi checkpoint'i Drive'dan ayrıca almalı. | Alternatifler: Kök dizinde bırakmak veya Git'e eklemek.
 * 2026-06-15 — Karar: `COND-EXP-001` condition classifier için ilk backbone `MobileNetV3-Small`, opsiyonel challenger `ResNet18` olacak. | Gerekçe: MobileNetV3 mobil/edge kullanım için daha hafif; ResNet18 klasik ve sağlam bir karşılaştırma modeli. | Etki: Colab notebook default MobileNetV3-Small çalıştırır, `RUN_RESNET18=True` ile challenger koşulabilir. | Alternatifler: Direkt ResNet18 ile başlamak veya CLIP/ViT gibi daha ağır model kullanmak.
 * 2026-06-15 — Karar: Motorcycle/car karışıklığı condition classifier ile çözülmeyecek; vehicle detector tarafında ayrı manual review ve targeted fine-tune aksiyonu olarak takip edilecek. | Gerekçe: Condition classifier frame koşulu üretir, class confusion ise detector sınıf ayrımı problemidir. | Etki: `testing/reports/vd_exp_002_motorcycle_class_confusion_action.md` eklendi; `VD-EXP-006-MOTORCYCLE-FOCUS` önerildi. | Alternatifler: Condition router ile sınıf hatasını düzeltmeye çalışmak.
+* 2026-06-15 — Karar: COND-EXP-001 output-saved koşusu geçerli ilk baseline kanıtıdır ancak final FTR kanıtı için patch'li tekrar koşu gerekir. | Gerekçe: Drive'da checkpoint ve metrik dosyaları var; test accuracy `0.7455`, macro-F1 `0.6582`, `night_low_light` F1 `0.845`. Ancak metadata duplicate riski, boş dark-video smoke test ve `fog_low_visibility` support `10` sınırlılığı var. | Etki: Aktif notebook metadata dedup, `NUM_WORKERS=0` ve dark-video klasör adaylarıyla güncellendi; ağır ResNet18 run'dan önce MobileNetV3 tekrar koşulacak. | Alternatifler: Eski koşuyu final kabul etmek veya doğrudan ResNet18'e geçmek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -215,6 +216,7 @@
 * 2026-06-15 — Milestone: Condition classifier/router planı ve fine-tuned detector raporları eklendi. | Sonuç: Canlı frame condition router planı, condition dataset adayları, VD-EXP-002 fine-tuned detector summary, dark video smoke test runbook ve lokal smoke test script'i repo içinde izlenebilir hale geldi.
 * 2026-06-15 — Milestone: VD-EXP-002 local dark video smoke test tamamlandı. | Sonuç: 3 video / 1263 frame işlendi; tüm frame'lerde araç tespiti vardı. `video_1`: 423 frame, 598 car detection, mean confidence 0.779, 28.945 FPS. `video_2`: 457 frame, 645 car detection, mean confidence 0.735, 30.625 FPS. `video_3`: 383 frame, 611 car + 6 motorcycle detection, mean confidence 0.732, 28.446 FPS. Annotated videolar `runs/vehicle_detection/VD-EXP-002-dark-smoke/` altında, JSON/MD raporları benchmark/report klasörlerinde.
 * 2026-06-15 — Milestone: COND-EXP-001 Colab notebook oluşturuldu. | Sonuç: BDD100K condition metadata üretimi, MobileNetV3-Small training, opsiyonel ResNet18 challenger, Drive/local cache guard ve dark video condition smoke test hücreleri tek notebook içinde hazırlandı.
+* 2026-06-15 — Milestone: COND-EXP-001 output-saved koşusu incelendi. | Sonuç: Drive'da `best.pt`, `summary.json`, `history.csv`, `backbone_comparison.csv` ve Markdown özet doğrulandı; run review raporu yazıldı; output notebook `notebooks/Outputs Saved/` altına taşındı; aktif notebook patch'li tekrar koşuya hazırlandı.
 
 ## 8) Yapılanlar
 
@@ -332,7 +334,8 @@
 * [x] Fine-tuned general detector ile `Test/video_1-3.mp4` smoke test'ini çalıştır.
 * [ ] Smoke test annotated videolarını manuel review ile değerlendir ve summary raporu commitlenebilir JSON/MD olarak kaydet.
 * [x] `COND-EXP-001` MobileNetV3/ResNet18 condition profile classifier Colab notebook'unu oluştur.
-* [ ] `COND-EXP-001` notebook'u Colab'da çalıştır ve summary raporunu repo/Drive çıktılarıyla değerlendir.
+* [x] `COND-EXP-001` notebook'u Colab'da çalıştır ve summary raporunu repo/Drive çıktılarıyla değerlendir.
+* [ ] Patch'li `COND-EXP-001` notebook'u tekrar çalıştır; metadata dedup sonrası metrikleri ve Drive `Test/video_1-3.mp4` dark-video smoke test sonucunu doğrula.
 * [ ] `video_3` için motorcycle/car class confusion manual review sayımını çıkar.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
@@ -390,7 +393,9 @@
 * `Label/image overlap preflight ... matches=500/500` görünüp ardından `skipped_no_target` tüm entry sayısına eşitse sorun image extract değildir. Bu durumda label cache/parsing diagnostic'inde `target_vehicle_boxes` kontrol edilir; 0 ise notebook eski Drive cache'i yok saymalı ve local source label JSON'lardan yeniden cache üretmelidir.
 * `VD-EXP-002` içindeki `yolo11n.pt` pretrained baseline mAP'i final iddia olarak kullanılmamalı; COCO pretrained modelin class id düzeni ile BDD için üretilen 4 sınıflı label id düzeni birebir örtüşmediğinden bu baseline düşük ve yanıltıcı olabilir. Fine-tuned/general vs condition breakdown ve specialist-vs-general karşılaştırmaları daha güvenilir yorumlanmalıdır.
 * Mevcut VD-EXP-002 condition profile bilgisi BDD100K `weather/timeofday/scene` metadata'sından kural tabanlı çıkarılmıştır. Bu, raporda offline dataset profilleme ve routing tasarımı için yeterlidir; canlı demo için frame'den condition profile tahmin eden ayrı classifier/router henüz geliştirilmemiştir.
+* COND-EXP-001 ilk output-saved koşusunda `dark_video_condition_smoke.json` boş listedir; Drive altında `Test/video_1.mp4` - `video_3.mp4` yoksa FTR'de demo video condition kanıtı olarak kullanılamaz.
+* COND-EXP-001 ilk koşusunda `condition_metadata.csv` `160000` satır üretmiştir; bu per-image/per-frame duplicate riskini gösterir. Aktif notebook dedup guard ile patch'lendi, final metrikler patch'li tekrar koşudan alınmalıdır.
 
 ### Güncelleme Kaydı
 
-* Son güncelleme: 2026-06-14
+* Son güncelleme: 2026-06-15

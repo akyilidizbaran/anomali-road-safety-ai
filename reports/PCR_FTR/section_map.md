@@ -19,6 +19,8 @@ Kaynaklar:
 * `docs/05_veri_seti/02_augmentation_split.md`
 * `docs/05_veri_seti/03_dataset_inventory.md`
 * `docs/05_veri_seti/04_dataset_license_checklist.md`
+* `models/experiments/COND_EXP_001_bdd100k_condition_classifier.md`
+* `testing/reports/cond_exp_001_condition_classifier_run_review.md`
 
 ## 3. Yapay Zeka Çözümü
 
@@ -59,6 +61,8 @@ Kaynaklar:
 * `docs/04_yapay_zeka/13_ai_module_risk_register.md`
 * `models/`
 * `testing/templates/`
+* `research/03_condition_experts/condition_profile_classifier_router_plan.md`
+* `models/experiments/COND_EXP_001_bdd100k_condition_classifier.md`
 
 ## 4. Çözümün Sınanması
 
@@ -69,6 +73,7 @@ Kaynaklar:
 * `testing/templates/`
 * `models/benchmarks/`
 * `docs/09_evidence_aciklanabilirlik/02_evidence_ui_logic.md`
+* `testing/reports/cond_exp_001_condition_classifier_run_review.md`
 
 ## 5. Kaynakça
 

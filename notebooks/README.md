@@ -7,6 +7,14 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`: BDD100K indirme, Drive yerleşimi, YOLO dönüşümü, pretrained baseline validation, fine-tune, challenger model testleri, condition breakdown ve baseline-delta karşılaştırmasını tek notebook içinde yürütür.
 * `COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab.ipynb`: BDD100K `weather/timeofday/scene` metadata'sından condition label üretir, MobileNetV3-Small condition classifier baseline'ını eğitir, opsiyonel ResNet18 challenger ve dark video condition smoke test'i destekler.
 
+## Output-Saved Notebooklar
+
+Colab çıktısı alınmış notebooklar `notebooks/Outputs Saved/` altında tutulur. Bu dosyalar geçmiş koşunun kanıtıdır; aktif geliştirme için kökteki outputsuz notebook kullanılmalıdır.
+
+Git'te takip edilen output-saved koşular:
+
+* `Outputs Saved/COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab_outputsaved.ipynb`
+
 ## Kural
 
 Notebooklar ham veri, model ağırlığı veya run çıktısı üretse bile bu artefactler Git'e eklenmez. Colab/Drive tarafında tutulur.

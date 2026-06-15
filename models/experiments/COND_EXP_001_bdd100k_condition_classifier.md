@@ -110,6 +110,42 @@ harici validation veya ikinci faz destek datası olarak açılır.
 * 3 dark video Drive altında mevcutsa condition smoke test üretilir; yoksa temiz şekilde skip eder.
 * Specialist detector router otomatik aktifleme yapmaz; `proven_better=false` ise general fallback kullanır.
 
+## Output-Saved Run Review - 2026-06-15
+
+`COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab_outputsaved.ipynb` çıktısı incelendi ve Drive artifactleri doğrulandı.
+
+Doğrulanan checkpoint:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/runs/condition_profile/COND-EXP-001/train/COND-EXP-001-mobilenet_v3_small/best.pt
+```
+
+Ana test sonuçları:
+
+| Metrik | Değer |
+|---|---:|
+| best epoch | 1 |
+| best validation macro-F1 | 0.6578 |
+| test accuracy | 0.7455 |
+| test macro-F1 | 0.6582 |
+| test weighted-F1 | 0.7444 |
+| mean confidence | 0.7540 |
+
+Sınıf bazlı önemli bulgular:
+
+* `night_low_light` F1: `0.845`; düşük ışık/dark demo senaryosu için ilk baseline olarak anlamlı.
+* `rain` F1: `0.770`; ilk baseline için kullanılabilir.
+* `fog_low_visibility` F1: `0.200`, test support `10`; bu sınıf için FTR'de güçlü iddia kurulamaz.
+* Dark video smoke test Drive `Test/` klasörü bulunmadığı için boş çıktı.
+
+Notebook düzeltmeleri:
+
+* Metadata duplicate riskine karşı dedup guard eklendi.
+* Colab multiprocessing cleanup uyarılarını azaltmak için default `NUM_WORKERS=0` yapıldı.
+* Dark video smoke test klasör adayları ve boş video durumu daha açık raporlanacak şekilde güncellendi.
+
+Karar: Bu koşu classifier'ın çalıştığını ve checkpoint ürettiğini kanıtlayan geçerli bir ilk baseline'dır; ancak final FTR kanıtı olarak kullanılmadan önce patch'li notebook tekrar koşulmalı ve 3 demo video üzerinde smoke test boş kalmamalıdır.
+
 ## İlişkili Notlar
 
 Motorcycle/car karışıklığı bu deneyin hedefi değildir. Bu konu vehicle detector tarafında ayrı aksiyon dosyasında takip edilir:
