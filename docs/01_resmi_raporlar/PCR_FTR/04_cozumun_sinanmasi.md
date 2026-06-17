@@ -73,6 +73,46 @@ Kaynak raporlar:
 * `models/experiments/POCR_EXP_005_plate_detector_report.md`
 * `testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
 
+## POCR-EXP-006/007 OCR Baseline İlk Sonuçları
+
+OCR karşılaştırması `POCR-EXP-005` plate detector tarafından üretilen 613 plate crop üzerinde yapılmıştır. Bu sonuçlar manual review öncesi local baseline ve stability testidir; etiketli OCR benchmark veya final plaka doğruluğu iddiası değildir.
+
+| OCR motoru | Crop | OCR read | Format valid | Province valid | Track vote | Mean latency | p95 latency |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| CCT-S | 613 | 606 | 591 | 591 | 3/3 | 9.258 ms | 10.378 ms |
+| CCT-XS | 613 | 604 | 591 | 590 | 3/3 | 1.672 ms | 2.145 ms |
+| PaddleOCR | 613 | 538 | 507 | 507 | 3/3 | 54.453 ms | 104.749 ms |
+| EasyOCR | 613 | 604 | 413 | 407 | 3/3 | 7.475 ms | 12.223 ms |
+
+Video bazlı CCT-XS sonucu:
+
+| Video | Crop | OCR read | Format valid | Temporal vote | Vote confidence | Mean latency |
+|---|---:|---:|---:|---|---:|---:|
+| `video_1.mp4` | 206 | 205 | 203 | `34TC8532` | 0.9903 | 1.699 ms |
+| `video_2.mp4` | 201 | 197 | 193 | `34TC8532` | 0.9733 | 1.720 ms |
+| `video_3.mp4` | 206 | 202 | 195 | `34TC8532` | 0.9052 | 1.599 ms |
+
+`video_3` stability analizi:
+
+| Config | Read / Crop | Vote | İlk beklenen | İlk stabil | Stabil metin | Mean latency |
+|---|---:|---|---:|---:|---|---:|
+| CCT-XS original | 202/206 | `34TC8532` | 19 | 25 | `34TC8532` | 1.642 ms |
+| CCT-XS 2x + CLAHE | 205/206 | `34TC8532` | 18 | 20 | `34TC8532` | 5.564 ms |
+| CCT-XS 3x + CLAHE | 205/206 | `34TC8532` | 18 | 17 | `34TC8512` | 5.182 ms |
+
+Karar:
+
+* Aktif OCR baseline CCT-XS olarak sabitlenmiştir.
+* CCT-XS fine-tune bu aşamada açılmayacaktır.
+* 2x/3x preprocessing varsayılan yapılmayacaktır.
+* Event/evidence tarafında tek-frame OCR sonucu değil, temporal stability gate sonrası final vote kullanılacaktır.
+
+Kaynak raporlar:
+
+* `models/experiments/POCR_EXP_006_007_cct_xs_ocr_baseline.md`
+* `testing/reports/pocr_exp_006_local_ocr_baseline_comparison.md`
+* `testing/reports/pocr_exp_007_cct_xs_stability.md`
+
 ## Çözümümüze Neden Güveniyoruz?
 
 Bu soru yalnız accuracy ile cevaplanmamalıdır. Cevap şu kanıtlarla kurulmalıdır:

@@ -52,6 +52,7 @@ OCR pipeline kararı, format kontrol kuralı ve test metriği seti.
 
 * `deep_research/deep_research_report.md`
 * `decision_plate_ocr_baseline_v1.md`
+* `decision_ocr_cct_xs_baseline_2026_06_17.md`
 * `plate_detection_literature_recommendation_2026_06_15.md`
 * `benchmark_plan.md`
 * `dataset_license_checklist.md`
@@ -61,7 +62,7 @@ OCR pipeline kararı, format kontrol kuralı ve test metriği seti.
 * `../../testing/templates/manual_plate_ocr_review.csv`
 * `../../models/benchmarks/plate_ocr/plate_ocr_baseline_comparison.csv`
 
-İlk OCR baseline PaddleOCR PP-OCRv5 Latin/mobile recognition olarak seçildi. EasyOCR ikinci aday, Tesseract debug/fallback adayıdır. Fine-tune ilk MVP'de açılmayacaktır.
+İlk araştırma aşamasında PaddleOCR güçlü OCR adayı olarak seçilmişti. `POCR-EXP-006/007` lokal karşılaştırması sonrası aktif OCR baseline `fast-plate-ocr cct-xs-v2-global-model` olarak güncellendi. PaddleOCR ikinci kontrol adayıdır; EasyOCR mevcut crop setinde önerilmez. Fine-tune ilk MVP'de açılmayacaktır.
 
 Calistirma script'leri:
 
@@ -81,3 +82,21 @@ YOLO11n tabanlı single-class `license_plate` detector fine-tune koşusu tamamla
 * UFPR dış benchmark koşmadı.
 * Yeni model, lokal `Test/video_1-3.mp4` target ROI smoke/manual review geçmeden runtime default olarak terfi ettirilmeyecek.
 * İndirilecek aday model: `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt`.
+
+## 2026-06-17 POCR-EXP-006/007 OCR Durumu
+
+`POCR-EXP-005` plate detector tarafından üretilen 613 crop üzerinde CCT-S, CCT-XS, PaddleOCR ve EasyOCR karşılaştırıldı.
+
+Aktif karar:
+
+* OCR baseline: `fast-plate-ocr cct-xs-v2-global-model`.
+* İkinci kontrol: `PaddleOCR 2.10 PP-OCRv4 en`.
+* Fine-tune: bu aşamada açılmayacak.
+* Stabilite kapısı: `stable_count>=3`, `window_size=7`, `min_confidence>=0.75`, format ve il kodu valid.
+
+Karar kaynakları:
+
+* `decision_ocr_cct_xs_baseline_2026_06_17.md`
+* `../../models/experiments/POCR_EXP_006_007_cct_xs_ocr_baseline.md`
+* `../../testing/reports/pocr_exp_006_local_ocr_baseline_comparison.md`
+* `../../testing/reports/pocr_exp_007_cct_xs_stability.md`

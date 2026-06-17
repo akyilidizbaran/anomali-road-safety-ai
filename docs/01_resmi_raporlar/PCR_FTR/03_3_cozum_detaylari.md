@@ -28,6 +28,28 @@ POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt
 
 Bu checkpoint OCR modeli değildir. OCR tarafında PaddleOCR/EasyOCR karşılaştırması, Türk plaka regex post-processing ve track-level temporal voting bir sonraki aşamada ele alınacaktır.
 
+POCR-EXP-006/007 kapsamında OCR tarafı da lokal baseline seviyesinde karşılaştırılmıştır. `fast-plate-ocr cct-xs-v2-global-model`, aktif OCR baseline olarak seçilmiştir. CCT-XS; CCT-S ve PaddleOCR ile aynı track-level temporal vote sonucuna ulaşırken daha düşük latency üretmiştir. EasyOCR mevcut crop setinde düşük güvenli ve farklı temporal vote'lara kaydığı için önerilmemiştir.
+
+Güncel OCR runtime kararı:
+
+```text
+plate crop -> CCT-XS OCR -> Turkish plate normalization
+           -> province/regex validation -> temporal stability gate
+           -> final OCR vote for evidence JSON
+```
+
+Final OCR değeri tek frame sonucundan yazılmaz. Track boyunca gelen OCR gözlemleri aşağıdaki kapıdan geçmelidir:
+
+| Parametre | Değer |
+|---|---:|
+| `stable_count` | 3 |
+| `window_size` | 7 |
+| `min_confidence` | 0.75 |
+| `format_valid` | true |
+| `province_code_valid` | true |
+
+Bu yaklaşım, uzak/karanlık erken frame'lerde oluşabilecek düşük güvenli veya yanlış plaka adaylarının evidence paketinde kesin sonuç gibi görünmesini engeller.
+
 ### Hız
 
 Sabit kamera ve referans mesafe varsa homografi + tracking ile km/s tahmini yapılır. Kalibrasyon yoksa mutlak hız iddiası yerine göreli hız/risk skoru verilir.
@@ -68,6 +90,8 @@ Görünürlük yeterliyse araç cam/ön bölge ROI’sinde sürücü, yolcu, tel
 * Model çalışma frekansı ayrıştırma.
 
 POCR-EXP-005 için ONNX export başarıyla üretilmiştir. MacBook/local edge runtime testinde önce `.pt`, ardından gerekirse ONNX Runtime karşılaştırması yapılacaktır.
+
+OCR tarafında CCT-XS CPU üzerinde ortalama `1.672 ms` latency verdiği için MVP runtime açısından yeterince hafiftir. Bu nedenle OCR için bu aşamada ONNX/export veya fine-tune yerine temporal stability gate entegrasyonu önceliklidir.
 
 ## Sorulacak Noktalar
 

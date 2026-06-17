@@ -434,6 +434,15 @@ Tespit edilen plaka crop’ından metin okur.
 * `format_valid`
 * `char_confidences`
 * `normalized_text`
+* `province_code_valid`
+* `temporal_vote_text`
+* `temporal_vote_confidence`
+* `temporal_vote_candidate_count`
+* `stability_gate`
+* `stable_count`
+* `window_size`
+* `plate_crop_uri`
+* `ocr_observations`
 * `failure_reason`
 
 ### Confidence Fields
@@ -449,6 +458,7 @@ Tespit edilen plaka crop’ından metin okur.
 * `low_confidence`
 * `blurred`
 * `not_visible`
+* `pending_stability`
 
 ### Example
 
@@ -457,13 +467,28 @@ Tespit edilen plaka crop’ından metin okur.
   "frame_id": "frame_000123",
   "track_id": "TRK-17",
   "status": "read",
-  "ocr_text": "34ABC123",
-  "normalized_text": "34ABC123",
+  "ocr_text": "34TC8532",
+  "normalized_text": "34TC8532",
   "format_valid": true,
-  "confidence": 0.87,
-  "model_version": "plate_ocr_v1"
+  "province_code_valid": true,
+  "confidence": 0.9903,
+  "temporal_vote_text": "34TC8532",
+  "temporal_vote_confidence": 0.9903,
+  "temporal_vote_candidate_count": 4,
+  "stability_gate": {
+    "status": "passed",
+    "stable_count": 3,
+    "window_size": 7,
+    "min_confidence": 0.75,
+    "requires_format_valid": true,
+    "requires_province_code_valid": true
+  },
+  "plate_crop_uri": "/evidence/evt_2026_000001_plate.jpg",
+  "model_version": "fast-plate-ocr/cct-xs-v2-global-model"
 }
 ```
+
+OCR çıktısı tek frame sonucuyla kesinleştirilmemelidir. Evidence paketindeki final plaka değeri, aynı track üzerindeki temporal vote ve stability gate sonucundan türetilmelidir. Stability gate geçmeden üretilen metinler `pending_stability` veya `low_confidence` olarak işaretlenebilir.
 
 ## LaneOutput
 

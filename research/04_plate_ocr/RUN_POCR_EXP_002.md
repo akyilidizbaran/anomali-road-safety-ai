@@ -6,6 +6,8 @@ Bu adim `POCR-EXP-001` sonrasinda uretilen plaka crop'lari ustunde OCR baseline'
 calistirir. Varsayilan detector kaynagi `POCR-EXP-001-plate-detection-yolo-summary.json`
 ve `runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/` altindaki crop'lardir.
 
+> 2026-06-17 notu: Ilk arastirma asamasinda PaddleOCR/EasyOCR karsilastirmasi one alinmisti. `POCR-EXP-006/007` lokal sonuclari sonrasi aktif OCR baseline `fast-plate-ocr cct-xs-v2-global-model` olarak sabitlendi. PaddleOCR ikinci kontrol adayidir; EasyOCR mevcut crop setinde onerilmez.
+
 ## 1) Ortami hazirla
 
 ```bash
@@ -14,6 +16,24 @@ source .venv-yolo/bin/activate
 ```
 
 ## 2) OCR bagimliliklarini kur
+
+### fast-plate-ocr CCT-XS (`POCR-EXP-006-XS`)
+
+```bash
+pip install fast-plate-ocr onnxruntime
+```
+
+Aktif aday:
+
+```bash
+python scripts/benchmarks/run_plate_ocr_baseline.py \
+  --detection-summary models/benchmarks/artifacts/plate_detection/POCR-EXP-005-local-video-smoke-yolo-summary.json \
+  --detector-key yolo \
+  --engines fastplate \
+  --fastplate-model cct-xs-v2-global-model \
+  --variants original \
+  --upscale 1.0
+```
 
 ### PaddleOCR (`POCR-EXP-002`)
 
@@ -37,9 +57,15 @@ pip install pytesseract
 brew install tesseract
 ```
 
-> Tesseract debug/fallback icindir; ilk tercih PaddleOCR ve EasyOCR karsilastirmasidir.
+> Tesseract debug/fallback icindir. Guncel aktif tercih CCT-XS, ikinci kontrol PaddleOCR'dir.
 
 ## 3) Hizli kosular
+
+Yalniz CCT-XS:
+
+```bash
+python scripts/benchmarks/run_plate_ocr_baseline.py --engines fastplate --fastplate-model cct-xs-v2-global-model
+```
 
 Yalniz PaddleOCR:
 
@@ -56,7 +82,7 @@ python scripts/benchmarks/run_plate_ocr_baseline.py --engines easyocr
 Iki engine'i ayni crop setinde karsilastir:
 
 ```bash
-python scripts/benchmarks/run_plate_ocr_baseline.py --engines paddle easyocr
+python scripts/benchmarks/run_plate_ocr_baseline.py --engines fastplate paddle easyocr --fastplate-model cct-xs-v2-global-model
 ```
 
 ## 4) Faydalı bayraklar
@@ -72,6 +98,7 @@ python scripts/benchmarks/run_plate_ocr_baseline.py --engines paddle easyocr
 ## 5) Uretilen ciktilar
 
 - Summary JSON:
+  - `models/benchmarks/artifacts/plate_ocr/POCR-EXP-006-local-ocr-baselines-cct-xs/POCR-EXP-006-fast-plate-ocr-summary.json`
   - `models/benchmarks/artifacts/POCR-EXP-002-paddleocr-summary.json`
   - `models/benchmarks/artifacts/POCR-EXP-003-easyocr-summary.json`
   - `models/benchmarks/artifacts/POCR-EXP-004-tesseract-summary.json`
@@ -97,4 +124,4 @@ Karar metrikleri:
 - `temporal_vote.plate_text`
 - `time_to_first_readable_plate_seconds`
 
-Secilen engine, bir sonraki adimda event/evidence JSON zenginlesmesine baglanacaktir.
+Secilen engine CCT-XS'tir. Bir sonraki adimda CCT-XS temporal vote ve stability gate sonucu event/evidence JSON zenginlesmesine baglanacaktir.

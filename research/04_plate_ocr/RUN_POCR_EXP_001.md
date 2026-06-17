@@ -102,5 +102,5 @@ Annotated videoları izleyip her model için değerlendir (beyaz kutu = hedef ar
 - Hangi model daha çok karede ve daha yüksek güvenle plaka yakalıyor?
 
 Notlarını `testing/templates/manual_plate_ocr_review.csv` şablonuna göre kaydet. Kararını
-söyle; seçilen model `POCR-EXP-002` (PaddleOCR) ve `POCR-EXP-003` (EasyOCR) OCR aşamalarına
-girdi olacak.
+söyle; seçilen plate detector artık `POCR-EXP-006-XS` (fast-plate-ocr CCT-XS) OCR aşamasına
+girdi olacak. PaddleOCR ikinci kontrol adayı olarak saklanır.

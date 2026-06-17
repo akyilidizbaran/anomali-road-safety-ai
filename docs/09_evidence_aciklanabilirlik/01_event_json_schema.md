@@ -39,9 +39,18 @@ Ana teknik schema kaynağı `architecture/contracts/event.schema.json` dosyasıd
     "detected": true,
     "bbox": [455, 410, 610, 455],
     "ocr_status": "read",
-    "ocr_text": "34ABC123",
+    "ocr_text": "34TC8532",
+    "ocr_text_source": "temporal_vote",
     "format_valid": true,
-    "confidence": 0.87
+    "province_code_valid": true,
+    "confidence": 0.9903,
+    "temporal_vote_confidence": 0.9903,
+    "stability_gate": {
+      "status": "passed",
+      "stable_count": 3,
+      "window_size": 7,
+      "min_confidence": 0.75
+    }
   },
   "speed": {
     "status": "ok",
@@ -115,7 +124,7 @@ Ana teknik schema kaynağı `architecture/contracts/event.schema.json` dosyasıd
     "vehicle_detector": "vehicle_yolo_v1",
     "tracker": "bytetrack_v1",
     "plate_detector": "plate_yolo_v1",
-    "ocr": "plate_ocr_v1",
+    "ocr": "fast-plate-ocr/cct-xs-v2-global-model",
     "lane": "lane_model_v1",
     "scene": "scene_resnet18_v1"
   },

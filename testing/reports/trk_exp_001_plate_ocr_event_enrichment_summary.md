@@ -4,7 +4,9 @@ Tarih: 2026-06-12T15:31:31Z
 
 ## Amaç
 
-Seçilen PaddleOCR baseline sonucunu tracking event skeleton kayıtlarına bağlamak.
+Eski PaddleOCR baseline sonucunu tracking event skeleton kayıtlarına bağlamak ve event/evidence enrichment formatını denemek.
+
+> Not: Bu rapor tarihsel/superseded bir enrichment denemesidir. 2026-06-17 itibarıyla aktif OCR baseline `fast-plate-ocr cct-xs-v2-global-model` olarak güncellenmiştir. Yeni event/evidence enrichment, CCT-XS temporal stability gate sonucuna göre yapılmalıdır.
 
 ## Kaynaklar
 
@@ -26,4 +28,4 @@ Seçilen PaddleOCR baseline sonucunu tracking event skeleton kayıtlarına bağl
 
 ## Sonraki Adım
 
-Plate/OCR baseline artık event/evidence hattına bağlı. Sonraki mantıklı faz speed estimation veya evidence package enrichment detaylandırmasıdır.
+Güncel sonraki adım, eski PaddleOCR enrichment yerine CCT-XS OCR çıktısını ve stability gate sonucunu event/evidence JSON skeleton içine bağlamaktır.

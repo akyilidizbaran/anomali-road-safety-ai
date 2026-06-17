@@ -81,6 +81,26 @@ Kaynak koşu incelemesi:
 * `models/experiments/POCR_EXP_005_plate_detector_report.md`
 * `testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
 
+## POCR-EXP-006/007 OCR Veri Notu
+
+OCR baseline seçimi, ayrı bir OCR eğitim veri setiyle değil, `POCR-EXP-005` plate detector'ın lokal demo videolarından çıkardığı plate crop'lar üzerinde yapılmıştır. Bu aşama model fine-tune değil, OCR motoru seçimi ve temporal voting kullanılabilirlik testidir.
+
+| Kapsam | Değer |
+|---|---:|
+| Kaynak video | 3 |
+| Target track | 3 |
+| Plate crop | 613 |
+| Ground-truth OCR etiketi | Yok |
+| Değerlendirme türü | Local baseline + manual review hazırlığı |
+
+OCR tarafında final doğruluk iddiası için daha sonra etiketli plate crop + metin ground truth veri seti gerekir. Bu aşamada kullanılan 613 crop, CCT-XS / CCT-S / PaddleOCR / EasyOCR karşılaştırması ve temporal stability gate tasarımı için yeterli bir smoke-test materyalidir; geniş genelleme iddiası kurmak için yeterli değildir.
+
+Kaynak koşu incelemesi:
+
+* `models/experiments/POCR_EXP_006_007_cct_xs_ocr_baseline.md`
+* `testing/reports/pocr_exp_006_local_ocr_baseline_comparison.md`
+* `testing/reports/pocr_exp_007_cct_xs_stability.md`
+
 ## Sorulacak Noktalar
 
 * Hangi veri setleri kesin kullanılacak?

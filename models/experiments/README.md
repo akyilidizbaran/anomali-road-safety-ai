@@ -9,3 +9,4 @@ Deney notları, configler ve küçük özet sonuçlar burada tutulabilir. Eğiti
 * `COND_EXP_001_bdd100k_condition_classifier.md`: BDD100K metadata tabanlı MobileNetV3-Small condition profile classifier ve opsiyonel ResNet18 challenger.
 * `POCR_EXP_001_plate_detector_baseline.md`: Mevcut lokal `license_plate_detector.pt` pretrained plate detector baseline kartı.
 * `POCR_EXP_005_plate_detector_report.md`: Colab koşusu sonrası Drive'da üretilecek YOLO11n plate detector fine-tune raporu.
+* `POCR_EXP_006_007_cct_xs_ocr_baseline.md`: CCT-XS OCR baseline seçimi, PaddleOCR/EasyOCR/CCT-S karşılaştırması ve stability gate kararı.

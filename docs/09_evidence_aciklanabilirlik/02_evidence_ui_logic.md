@@ -83,6 +83,7 @@ Technical evidence view şu alanları içermelidir:
 * Overlay screenshot reference.
 * Target vehicle crop reference.
 * Plate crop reference if available.
+* Plate OCR temporal vote and stability gate result.
 * Model outputs.
 * Confidence scores.
 * Risk score.
@@ -118,6 +119,9 @@ Raw model metadata, doğrudan son kullanıcıya gösterilmek zorunda değildir. 
 | Risk level | `risk.risk_level` |
 | Risk score | `risk.risk_score` |
 | Track ID | `target_vehicle.track_id` |
+| Plate OCR | `plate.ocr_text` |
+| OCR confidence | `plate.temporal_vote_confidence` |
+| OCR stability | `plate.stability_gate.status` |
 | QoD | `system.qod_status` |
 | Expert models | `routing_decision.experts_called` |
 | User explanation | `explanation.user_level_summary` |
@@ -147,6 +151,7 @@ Evidence şu durumlarda üretilebilir:
 
 * Evidence medyası Git reposuna commit edilmez.
 * Plaka/yüz/cabin görselleri private storage sınırında tutulur.
+* Plaka metni kullanıcı arayüzünde gerektiğinde maskelenebilir; teknik view içinde ham OCR ve temporal vote ayrı tutulmalıdır.
 * Teknik evidence view erişimi oturum doğrulamasına bağlı olmalıdır.
 * Rapor görselleri ayrıca izin ve güvenlik kontrolünden geçmelidir.
 

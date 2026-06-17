@@ -17,7 +17,8 @@ Bu benchmark final OCR accuracy iddiası kurmaz. İlk faz `manual qualitative re
 | `POCR-EXP-003` | EasyOCR OCR comparison | POCR-EXP-001 detector | EasyOCR | selected plate crops | script_ready: `scripts/benchmarks/run_plate_ocr_baseline.py --engines easyocr` |
 | `POCR-EXP-004` | Tesseract debug fallback | POCR-EXP-001 detector | Tesseract | selected plate crops | optional_script_ready: `scripts/benchmarks/run_plate_ocr_baseline.py --engines tesseract` |
 | `POCR-EXP-005` | YOLO11n plate detector fine-tune + baseline comparison | YOLO11n single-class plate detector | not_run | Turkish Number Plates + Roboflow LPR, optional UFPR external benchmark | completed_colab: `notebooks/POCR_EXP_005_YOLO11N_Plate_Detector_Colab_outsaved.ipynb`; local target-video smoke pending |
-| `POCR-EXP-006` | Temporal voting gain | best detector from POCR-EXP-005 | best OCR | per-track candidate crops | planned_after_plate_detector_review |
+| `POCR-EXP-006` | Local OCR baseline comparison | POCR-EXP-005 YOLO11n plate detector | CCT-S, CCT-XS, PaddleOCR, EasyOCR | 613 local plate crops | completed: CCT-XS selected |
+| `POCR-EXP-007` | CCT-XS early-read/stability analysis | POCR-EXP-005 YOLO11n plate detector | CCT-XS original vs 2x/3x preprocessing | `video_3` per-crop timeline | completed: original + stability gate selected |
 
 ## Input
 
@@ -73,7 +74,11 @@ Ground truth bbox yoksa precision/recall/mAP final metrik olarak yazılmayacak; 
 * `models/benchmarks/artifacts/POCR-EXP-003-easyocr-summary.json`
 * `models/benchmarks/artifacts/POCR-EXP-004-tesseract-summary.json`
 * `models/benchmarks/artifacts/plate_detection/POCR-EXP-005-YOLO11N-PLATE-DETECTOR-summary.json`
+* `models/benchmarks/artifacts/plate_ocr/POCR-EXP-007-cct-xs-stability/pocr_exp_007_cct_xs_stability_summary.json`
+* `models/benchmarks/artifacts/plate_ocr/POCR-EXP-007-cct-xs-stability/pocr_exp_007_cct_xs_stability_summary.csv`
 * `testing/reports/pocr_exp_002_004_plate_ocr_summary_<engine>.md`
+* `testing/reports/pocr_exp_006_local_ocr_baseline_comparison.md`
+* `testing/reports/pocr_exp_007_cct_xs_stability.md`
 * `testing/templates/manual_plate_ocr_review.csv`
 
 ## Başarı Kriteri
@@ -84,6 +89,7 @@ Ground truth bbox yoksa precision/recall/mAP final metrik olarak yazılmayacak; 
 * OCR sonucu raw ve normalized olarak event JSON'a yazılabilmeli.
 * Format validation ve province code validation çalışmalı.
 * Temporal voting candidate listesi üretilebilmeli.
+* Final OCR değeri stability gate geçmeden evidence alanına kesin değer olarak yazılmamalı.
 * Failure reason alanları boş bırakılmamalı.
 * Plaka okunamazsa sistem bunu açıkça `not_detected`, `not_read` veya `low_confidence` olarak işaretlemeli.
 
@@ -106,3 +112,28 @@ Kaynak dosyalar:
 * `models/benchmarks/artifacts/plate_detection/POCR-EXP-005-YOLO11N-PLATE-DETECTOR-summary.md`
 
 Sonraki adım: `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` yerel `models/checkpoints/plate/` altına alınacak ve `Test/video_1-3.mp4` target ROI akışında detector-only smoke/manual review çalıştırılacak.
+
+## 2026-06-17 POCR-EXP-006/007 Sonucu
+
+`POCR-EXP-005` plate detector ile üretilen 613 local plate crop üzerinde OCR karşılaştırması tamamlandı.
+
+| OCR | Crop | OCR read | Format valid | Province valid | Track vote | Mean latency | p95 latency |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| CCT-S | 613 | 606 | 591 | 591 | 3/3 | 9.258 ms | 10.378 ms |
+| CCT-XS | 613 | 604 | 591 | 590 | 3/3 | 1.672 ms | 2.145 ms |
+| PaddleOCR | 613 | 538 | 507 | 507 | 3/3 | 54.453 ms | 104.749 ms |
+| EasyOCR | 613 | 604 | 413 | 407 | 3/3 | 7.475 ms | 12.223 ms |
+
+Karar:
+
+* Aktif OCR baseline: `fast-plate-ocr cct-xs-v2-global-model`.
+* İkinci kontrol: `PaddleOCR 2.10 PP-OCRv4 en`.
+* CCT-XS fine-tune bu aşamada açılmayacak.
+* Final event/evidence OCR metni temporal stability gate sonrası yazılacak.
+
+Kaynak dosyalar:
+
+* `research/04_plate_ocr/decision_ocr_cct_xs_baseline_2026_06_17.md`
+* `models/experiments/POCR_EXP_006_007_cct_xs_ocr_baseline.md`
+* `testing/reports/pocr_exp_006_local_ocr_baseline_comparison.md`
+* `testing/reports/pocr_exp_007_cct_xs_stability.md`
