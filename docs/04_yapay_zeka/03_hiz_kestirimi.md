@@ -46,6 +46,29 @@ Sonraki iyileştirme için plate detector summary içine full-frame `plate_bbox_
 center ve mümkünse plate corner bilgisi yazılmalıdır. Böylece `X/Y/Z` konum serisi veya
 `solvePnP` tabanlı hız hesabı denenebilir.
 
+## Full-Frame Plate BBox / XYZ Denemesi
+
+`SPEED-EXP-002` kapsamında plate detector summary içine full-frame plaka bbox ve center
+alanları eklendi. Böylece hız hesabı yalnız `abs(dZ)` range-rate hesabı olmaktan çıkıp,
+full-frame plate center varsa yaklaşık `X/Y/Z` displacement moduna geçebilir:
+
+```text
+X = (u - cx) * Z / fx
+Y = (v - cy) * Z / fy
+speed_kmh = sqrt(dX^2 + dY^2 + dZ^2) / dt * 3.6
+```
+
+İlk `SPEED-EXP-002` sonuçları:
+
+* `video_1` geomean median hız adayı: `3.7806 km/h`
+* `video_2` geomean median hız adayı: `3.8768 km/h`
+* `video_3` geomean median hız adayı: `12.8163 km/h`
+
+Bu sonuçlar hâlâ düşük güvenlidir. Nedeni, median plaka bbox aspect ratio değerlerinin
+standart uzun Türkiye plaka oranından (`4.73`) belirgin sapmasıdır. Sonraki geliştirme,
+plaka bbox'ın gerçekten tüm plaka yüzeyini kapsayıp kapsamadığını manuel overlay ile
+incelemek ve mümkünse plaka köşesi/perspektif düzeltmesi eklemektir.
+
 ## Referans Mesafe Otomatik Ölçülebilir mi?
 
 Tek kameradan, sahnede hiçbir bilinen ölçek yokken güvenilir gerçek mesafe otomatik çıkarılamaz. Monoküler görüntüde ölçek belirsizliği vardır; yani sistem piksel hareketini görür ama bu hareketin kaç metreye karşılık geldiğini bilmek için bir referansa ihtiyaç duyar.

@@ -107,6 +107,49 @@ Default `horizontal_fov=70°` ve CCT-XS `stable_count=3` sonrası crop'larla:
 Bu sonuçlar mutlak km/s olarak kabul edilmemelidir. Ancak plaka yaklaşma/uzaklaşma ölçeği
 temelli bir `range-rate` sinyali üretildiğini gösterir.
 
+## SPEED-EXP-002 Full-Frame Plate BBox / XYZ Denemesi
+
+Sıradaki teknik adımda `run_plate_detection_smoke.py` güncellenerek per-frame plaka
+tespit kayıtlarına full-frame alanlar eklendi:
+
+* `bbox_xyxy_frame`
+* `center_xy_frame`
+* `width_px`
+* `height_px`
+* `vehicle_roi_origin_xy`
+* `vehicle_bbox_xyxy_frame`
+
+Bu alanlarla `SPEED-EXP-002` çalıştırıldı:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/run_plate_scale_speed_baseline.py \
+  --experiment-id SPEED-EXP-002 \
+  --plate-detection-summary models/benchmarks/artifacts/plate_detection/POCR-EXP-005-local-video-smoke-yolo-fullbbox-summary.json \
+  --output-dir models/benchmarks/artifacts/speed/SPEED-EXP-002-plate-bbox-xyz \
+  --report testing/reports/speed_exp_002_plate_bbox_xyz_baseline.md \
+  --summary-name speed_exp_002_plate_bbox_xyz_summary
+```
+
+Full-frame plate center varsa hız hesabı artık yalnız `abs(dZ)` değil, yaklaşık 3D
+displacement kullanır:
+
+```text
+X = (u - cx) * Z / fx
+Y = (v - cy) * Z / fy
+speed = sqrt(dX^2 + dY^2 + dZ^2) / dt * 3.6
+```
+
+SPEED-EXP-002 geomean median hız adayları:
+
+| Video | Geomean median km/h | Geomean mean km/h | Not |
+|---|---:|---:|---|
+| video_1.mp4 | 3.7806 | 4.0178 | düşük güvenli |
+| video_2.mp4 | 3.8768 | 4.2688 | düşük güvenli |
+| video_3.mp4 | 12.8163 | 15.9842 | düşük güvenli |
+
+Bu deneme `xyz_displacement` moduna geçişi doğruladı; ancak aspect-ratio mismatch
+devam ettiği için mutlak km/s değeri hâlâ raporda düşük güvenli aktarılmalıdır.
+
 ## Neden Düşük Güvenli?
 
 Mevcut plaka crop'larının median aspect ratio değerleri `3.20-3.39` aralığında, standart
@@ -120,9 +163,10 @@ uzun plaka oranı `4.73` civarındadır. Bu fark şunlardan kaynaklanabilir:
 
 ## Sonraki Matematiksel İyileştirme
 
-1. Plate detector summary içine full-frame `plate_bbox_xyxy` ve plate center yazılmalı.
-2. Plaka crop yerine full-frame bbox üzerinden `u, v, w, h` serisi çıkarılmalı.
-3. Depth-only hız yerine yaklaşık 3D nokta serisi denenmeli:
+1. Plaka bbox aspect ratio sapmasının kaynağı manuel overlay üzerinden incelenmeli.
+2. Detector crop'larının plaka dışı yüzey/çerçeve içerip içermediği kontrol edilmeli.
+3. Plaka köşe noktası veya dörtgen tespiti eklenmeli.
+4. Daha savunulabilir yaklaşık 3D nokta serisi için bbox yerine köşe/perspektif düzeltmesi kullanılmalı:
 
 ```text
 X = (u - cx) * Z / fx
@@ -131,8 +175,8 @@ Z = depth
 speed = sqrt((X2-X1)^2 + (Y2-Y1)^2 + (Z2-Z1)^2) / dt
 ```
 
-4. Plaka 4 köşesi çıkarılabilirse `solvePnP` denenmeli.
-5. Demo alanında en az bir saha kalibrasyon ölçüsüyle scale/fov doğrulanmalı.
+5. Plaka 4 köşesi çıkarılabilirse `solvePnP` denenmeli.
+6. Demo alanında en az bir saha kalibrasyon ölçüsüyle scale/fov doğrulanmalı.
 
 ## Rapor Dili
 

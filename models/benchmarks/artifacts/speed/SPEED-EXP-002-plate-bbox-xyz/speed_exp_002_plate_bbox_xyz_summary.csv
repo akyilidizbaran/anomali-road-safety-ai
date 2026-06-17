@@ -1,0 +1,10 @@
+video,variant,full_frame_plate_bbox_available,usable_measurement_count,plate_aspect_ratio_median,plate_width_px_median,plate_height_px_median,segment_count,valid_segment_count,outlier_count,mean_speed_kmh,median_speed_kmh,p95_speed_kmh,confidence_note
+video_1.mp4,width,True,201,3.3519,302.42,90.97,200,200,0,3.6521,3.0973,6.6183,low_plate_crop_aspect_differs_from_standard_width
+video_1.mp4,height,True,201,3.3519,302.42,90.97,200,200,0,4.7046,4.5422,7.6266,low_plate_crop_aspect_differs_from_standard_height
+video_1.mp4,geomean,True,201,3.3519,302.42,90.97,200,200,0,4.0178,3.7806,6.4634,low_plate_crop_aspect_differs_from_standard_geomean
+video_2.mp4,width,True,190,3.3939,318.08,93.735,189,189,0,3.3165,3.2847,6.1416,low_plate_crop_aspect_differs_from_standard_width
+video_2.mp4,height,True,190,3.3939,318.08,93.735,189,189,0,5.5965,4.3888,10.5834,low_plate_crop_aspect_differs_from_standard_height
+video_2.mp4,geomean,True,190,3.3939,318.08,93.735,189,189,0,4.2688,3.8768,7.8424,low_plate_crop_aspect_differs_from_standard_geomean
+video_3.mp4,width,True,178,3.2069,184.56,50.56,177,177,0,14.7163,12.0596,26.8275,low_plate_crop_aspect_differs_from_standard_width
+video_3.mp4,height,True,178,3.2069,184.56,50.56,177,177,0,19.9879,14.5751,57.8952,low_plate_crop_aspect_differs_from_standard_height
+video_3.mp4,geomean,True,178,3.2069,184.56,50.56,177,177,0,15.9842,12.8163,41.8915,low_plate_crop_aspect_differs_from_standard_geomean

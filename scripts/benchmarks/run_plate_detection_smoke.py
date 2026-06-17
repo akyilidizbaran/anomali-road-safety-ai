@@ -420,7 +420,28 @@ def process_video(video_path: Path, spec: dict[str, Any], detector_model: Any,
                         "plate_count": len(dets),
                         "best_confidence": best_conf,
                         "latency_ms": round(latency, 3),
-                        "detections": [{"bbox_xyxy_crop": det["bbox_xyxy"], "confidence": det["confidence"]} for det in dets],
+                        "vehicle_bbox_xyxy_frame": [round(float(v), 2) for v in vbox],
+                        "vehicle_roi_xyxy_frame": [cx1, cy1, cx2, cy2],
+                        "vehicle_roi_origin_xy": [cx1, cy1],
+                        "detections": [
+                            {
+                                "bbox_xyxy_crop": det["bbox_xyxy"],
+                                "bbox_xyxy_frame": [
+                                    round(float(cx1 + det["bbox_xyxy"][0]), 2),
+                                    round(float(cy1 + det["bbox_xyxy"][1]), 2),
+                                    round(float(cx1 + det["bbox_xyxy"][2]), 2),
+                                    round(float(cy1 + det["bbox_xyxy"][3]), 2),
+                                ],
+                                "center_xy_frame": [
+                                    round(float(cx1 + (det["bbox_xyxy"][0] + det["bbox_xyxy"][2]) / 2.0), 2),
+                                    round(float(cy1 + (det["bbox_xyxy"][1] + det["bbox_xyxy"][3]) / 2.0), 2),
+                                ],
+                                "width_px": round(float(det["bbox_xyxy"][2] - det["bbox_xyxy"][0]), 2),
+                                "height_px": round(float(det["bbox_xyxy"][3] - det["bbox_xyxy"][1]), 2),
+                                "confidence": det["confidence"],
+                            }
+                            for det in dets
+                        ],
                     }
                 per_frame_records.append(frame_rec)
         out_frame = cv2.resize(frame, (out_w, out_h), interpolation=cv2.INTER_AREA) if args.video_scale != 1.0 else frame

@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Plate/OCR event/evidence hattı tamamlandıktan sonra hız modülüne geçildi; ilk deneme `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline`.
-* Son değişiklik neydi? Türkiye uzun plaka boyutu (`0.52m x 0.11m`) varsayımıyla CCT-XS doğrulanmış plaka crop'larından width/height/geomean tabanlı yaklaşık range-rate/hız çıktıları üretildi.
-* Bir sonraki net adım ne? Plate detector summary içine full-frame `plate_bbox_xyxy` / center bilgisi yazdırıp depth-only hız yerine `X/Y/Z` konum serisi veya plate-corner `solvePnP` yaklaşımını denemek.
+* Son değişiklik neydi? Plate detector summary içine full-frame `plate_bbox_xyxy` / center alanları eklendi ve `SPEED-EXP-002` ile `X/Y/Z` displacement tabanlı hız adayları üretildi.
+* Bir sonraki net adım ne? Plaka bbox aspect-ratio sapmasını manuel overlay üzerinden inceleyip plaka köşe/perspektif düzeltmesi veya `solvePnP` yaklaşımını tasarlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -187,6 +187,7 @@
 * 2026-06-17 — Karar: CCT-XS OCR baseline rapor şablonu ve proje dokümanlarına sabitlendi. | Gerekçe: Kullanıcı CCT-XS ile devam etmeyi onayladı ve FTR/rapor şablonu doğrultusunda Markdown dosyalarıyla kararın kalıcılaştırılmasını istedi. | Etki: Plate/OCR araştırma kararı, model deney kartı, FTR veriseti/çözüm/test bölümleri, event/evidence contract ve runbook'lar CCT-XS + stability gate yaklaşımına göre güncellendi. | Alternatifler: Kararı yalnız PROJECT_MEMORY içinde bırakmak; rapor üretiminde izlenebilirlik zayıflayacağı için reddedildi.
 * 2026-06-17 — Karar: Plate/OCR event/evidence enrichment aktif OCR yolu CCT-XS original + temporal stability gate olarak bağlandı. | Gerekçe: Kullanıcı CCT-XS kararını doğruladı; event/evidence'a tek kare OCR veya en yüksek confidence yerine stabil temporal karar yazılmalı. Üç test videosunda `stable_count=3`, `window_size=7`, `min_confidence=0.75`, format/province-valid gate geçti. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json`, `pocr_exp_008_cct_xs_model_counts.csv/json` ve `pocr_exp_008_cct_xs_event_evidence_enrichment.md` üretildi. | Alternatifler: Eski Paddle enrichment'i aktif tutmak veya CCT-XS raw temporal vote'u gate olmadan event'e yazmak; izlenebilirlik ve güvenilirlik nedeniyle reddedildi.
 * 2026-06-17 — Karar: Hız modülünde ilk mutlak km/s denemesi plaka görünür hedefler için `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline` olarak açıldı. | Gerekçe: Türkiye uzun plaka ölçüsü (`0.52m x 0.11m`) bilinen fiziksel referans sağlar ve literatürde plaka geometrisiyle tek kamera mesafe/hız kestirimi yaklaşımları vardır. | Etki: Width, height ve geomean tabanlı depth/range-rate varyantları üretildi; sonuçlar düşük güvenli işaretlendi çünkü mevcut crop aspect ratio standart uzun plaka oranından sapıyor ve full-frame plate center yok. | Alternatifler: Doğrudan homografi veya yalnız track-center relative speed; plaka görünür senaryo için önce plate-scale baseline denenmesi seçildi.
+* 2026-06-17 — Karar: Plate-scale hız hesabı için `SPEED-EXP-002` full-frame plate bbox / center kayıtları kullanılacak. | Gerekçe: Crop-only ölçüm lateral hareketi içermez; full-frame center ile yaklaşık `X/Y/Z` displacement üretilebilir. | Etki: `run_plate_detection_smoke.py` per-frame kayıtlara `bbox_xyxy_frame`, `center_xy_frame`, `width_px`, `height_px`, `vehicle_roi_origin_xy` ekler; `run_plate_scale_speed_baseline.py` full bbox varsa `xyz_displacement` moduna geçer. | Alternatifler: Crop-only depth/range-rate ile devam etmek; yan/lateral bileşeni kaçırdığı için yetersiz.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -262,6 +263,7 @@
 * 2026-06-17 — Milestone: CCT-XS OCR baseline FTR dokümantasyonuna sabitlendi. | Sonuç: `decision_ocr_cct_xs_baseline_2026_06_17.md`, `POCR_EXP_006_007_cct_xs_ocr_baseline.md`, FTR veri/çözüm/test bölümleri ve event/evidence contract güncellendi.
 * 2026-06-17 — Milestone: POCR-EXP-008 CCT-XS event/evidence enrichment tamamlandı. | Sonuç: 3 target event için CCT-XS OCR `stable_read` olarak event/evidence JSON'a işlendi; model-derived count CSV/JSON kaydedildi. `video_1` first stable frame `3`, `video_2` `4`, `video_3` `25`.
 * 2026-06-17 — Milestone: SPEED-EXP-001 plate-scale speed baseline tamamlandı. | Sonuç: CCT-XS doğrulanmış plaka crop'larıyla width/height/geomean yöntemleri denendi. Median hız adayları: `video_1` geomean `4.104 km/h`, `video_2` geomean `3.312 km/h`, `video_3` geomean `12.564 km/h`; tüm sonuçlar aspect-ratio mismatch nedeniyle düşük güvenli.
+* 2026-06-17 — Milestone: SPEED-EXP-002 full-frame plate bbox / XYZ speed baseline tamamlandı. | Sonuç: Full-frame plate bbox/center ile `xyz_displacement` modu çalıştı. Geomean median hız adayları: `video_1=3.7806 km/h`, `video_2=3.8768 km/h`, `video_3=12.8163 km/h`; sonuçlar aspect-ratio mismatch nedeniyle hâlâ düşük güvenli.
 
 ## 8) Yapılanlar
 
@@ -367,7 +369,9 @@
 * [x] Plate/OCR model-derived count özetlerini CSV/JSON olarak kaydet.
 * [ ] Plate/OCR manual review sonuçlarını `testing/templates/manual_plate_ocr_review.csv` formatına göre kaydet. (Model-derived counts üretildi; gerçek manuel doğruluk etiketi ayrı tutulur.)
 * [x] `SPEED-EXP-001` plate-scale monocular speed baseline script'ini yaz ve 3 video üzerinde çalıştır.
-* [ ] Plate detector summary içine full-frame `plate_bbox_xyxy`, plate center ve ROI origin alanlarını yazdır; depth-only hız yerine `X/Y/Z` konum serisi denemesi için altyapı hazırla.
+* [x] Plate detector summary içine full-frame `plate_bbox_xyxy`, plate center ve ROI origin alanlarını yazdır; depth-only hız yerine `X/Y/Z` konum serisi denemesi için altyapı hazırla.
+* [x] `SPEED-EXP-002` full-frame plate bbox / XYZ speed baseline'ı 3 video üzerinde çalıştır.
+* [ ] Plate bbox aspect-ratio sapmasını manuel overlay üzerinden incele ve köşe/perspektif düzeltmesi planla.
 * [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Next active AI step)
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
 * [x] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.

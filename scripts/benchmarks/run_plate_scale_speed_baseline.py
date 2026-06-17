@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SPEED-EXP-001 - Plate-scale monocular speed baseline.
+"""Plate-scale monocular speed baseline.
 
 This experiment estimates approximate speed from visible license plate crops.
 It uses the Turkish long plate size prior (0.52 m x 0.11 m) and a configurable
@@ -16,7 +16,10 @@ Outputs:
   * concise Markdown report
 
 The script does not re-run detection or OCR. It reads existing plate crop files
-and derives pixel measurements from their image dimensions.
+and, when available, full-frame plate bbox records from the plate detector
+summary. Without full-frame bbox records it falls back to depth/range-rate from
+crop dimensions only. With full-frame bbox records it estimates an approximate
+X/Y/Z trajectory and computes 3D displacement speed candidates.
 """
 
 from __future__ import annotations
@@ -120,6 +123,36 @@ def source_ocr_by_video(summary: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {video["video"]: video for video in summary.get("videos", []) if video.get("video")}
 
 
+def per_frame_plate_index(video_detection_summary: dict[str, Any], detector_key: str) -> dict[int, dict[str, Any]]:
+    per_frame = video_detection_summary.get("per_frame")
+    if not isinstance(per_frame, list):
+        return {}
+    indexed: dict[int, dict[str, Any]] = {}
+    for frame_row in per_frame:
+        frame = int(frame_row.get("frame") or 0)
+        model_info = (frame_row.get("models") or {}).get(detector_key) or {}
+        detections = model_info.get("detections") or []
+        if not frame or not detections:
+            continue
+        best = max(detections, key=lambda item: float(item.get("confidence") or 0.0))
+        bbox = best.get("bbox_xyxy_frame")
+        center = best.get("center_xy_frame")
+        if not bbox or not center:
+            continue
+        indexed[frame] = {
+            "frame": frame,
+            "plate_bbox_xyxy_frame": [float(v) for v in bbox],
+            "plate_center_xy_frame": [float(v) for v in center],
+            "plate_width_px_frame": float(best.get("width_px") or (float(bbox[2]) - float(bbox[0]))),
+            "plate_height_px_frame": float(best.get("height_px") or (float(bbox[3]) - float(bbox[1]))),
+            "plate_detection_confidence": float(best.get("confidence") or 0.0),
+            "vehicle_bbox_xyxy_frame": model_info.get("vehicle_bbox_xyxy_frame"),
+            "vehicle_roi_xyxy_frame": model_info.get("vehicle_roi_xyxy_frame"),
+            "vehicle_roi_origin_xy": model_info.get("vehicle_roi_origin_xy"),
+        }
+    return indexed
+
+
 def usable_ocr_rows(video_ocr: dict[str, Any], min_ocr_confidence: float) -> list[dict[str, Any]]:
     rows = video_ocr.get("per_crop") or []
     usable = []
@@ -136,7 +169,7 @@ def usable_ocr_rows(video_ocr: dict[str, Any], min_ocr_confidence: float) -> lis
     return sorted(usable, key=lambda item: int(item["frame"]))
 
 
-def crop_measurements(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def crop_measurements(rows: list[dict[str, Any]], plate_index: dict[int, dict[str, Any]]) -> list[dict[str, Any]]:
     measured = []
     for row in rows:
         crop_path = resolve_rootish(row["crop_file"])
@@ -144,16 +177,28 @@ def crop_measurements(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         if img is None:
             continue
         height_px, width_px = img.shape[:2]
+        plate_frame = plate_index.get(int(row["frame"])) or {}
+        full_width_px = float(plate_frame.get("plate_width_px_frame") or width_px)
+        full_height_px = float(plate_frame.get("plate_height_px_frame") or height_px)
+        full_center = plate_frame.get("plate_center_xy_frame")
         if width_px <= 0 or height_px <= 0:
             continue
         measured.append(
             {
                 "frame": int(row["frame"]),
                 "crop_file": rel(crop_path),
-                "plate_width_px": float(width_px),
-                "plate_height_px": float(height_px),
-                "plate_area_px": float(width_px * height_px),
-                "plate_aspect_ratio": round(float(width_px / height_px), 4),
+                "plate_width_px": full_width_px,
+                "plate_height_px": full_height_px,
+                "plate_area_px": float(full_width_px * full_height_px),
+                "plate_aspect_ratio": round(float(full_width_px / full_height_px), 4),
+                "crop_width_px": float(width_px),
+                "crop_height_px": float(height_px),
+                "crop_aspect_ratio": round(float(width_px / height_px), 4),
+                "plate_bbox_xyxy_frame": plate_frame.get("plate_bbox_xyxy_frame"),
+                "plate_center_xy_frame": full_center,
+                "plate_detection_confidence": plate_frame.get("plate_detection_confidence"),
+                "vehicle_bbox_xyxy_frame": plate_frame.get("vehicle_bbox_xyxy_frame"),
+                "vehicle_roi_xyxy_frame": plate_frame.get("vehicle_roi_xyxy_frame"),
                 "ocr_text": row.get("normalized_text"),
                 "ocr_confidence": float(row.get("ocr_confidence") or 0.0),
             }
@@ -180,21 +225,26 @@ def estimate_positions(
 
     variants = {"width": [], "height": [], "geomean": []}
     for item in measurements:
-        # The plate crop is already a bbox crop, so its center in the full image is
-        # unavailable from the crop alone. For SPEED-EXP-001 the primary signal is
-        # depth/range-rate from plate scale. X/Y are left as unavailable.
         w_px = item["plate_width_px"]
         h_px = item["plate_height_px"]
         z_width = fx * plate_width_m / w_px
         z_height = fy * plate_height_m / h_px
         z_geomean = math.sqrt(max(0.0, z_width * z_height))
         for key, depth in [("width", z_width), ("height", z_height), ("geomean", z_geomean)]:
+            center = item.get("plate_center_xy_frame")
+            if center:
+                u, v = float(center[0]), float(center[1])
+                x_m = (u - cx) * depth / fx
+                y_m = (v - cy) * depth / fy
+            else:
+                x_m = None
+                y_m = None
             variants[key].append(
                 {
                     **item,
                     "depth_m": round(depth, 4),
-                    "x_m": None,
-                    "y_m": None,
+                    "x_m": round(x_m, 4) if x_m is not None else None,
+                    "y_m": round(y_m, 4) if y_m is not None else None,
                     "fx_px": round(fx, 4),
                     "fy_px": round(fy, 4),
                     "cx_px": round(cx, 4),
@@ -222,7 +272,16 @@ def estimate_speed_series(
             continue
         dt = frame_delta / fps
         delta_depth = float(cur["depth_m"]) - float(prev["depth_m"])
-        speed_kmh = abs(delta_depth) / dt * 3.6
+        use_xyz = prev.get("x_m") is not None and cur.get("x_m") is not None
+        if use_xyz:
+            dx = float(cur["x_m"]) - float(prev["x_m"])
+            dy = float(cur["y_m"]) - float(prev["y_m"])
+            distance_m = math.sqrt(dx * dx + dy * dy + delta_depth * delta_depth)
+        else:
+            dx = None
+            dy = None
+            distance_m = abs(delta_depth)
+        speed_kmh = distance_m / dt * 3.6
         raw_segments.append(
             {
                 "start_frame": int(prev["frame"]),
@@ -232,6 +291,10 @@ def estimate_speed_series(
                 "depth_start_m": float(prev["depth_m"]),
                 "depth_end_m": float(cur["depth_m"]),
                 "delta_depth_m": round(delta_depth, 4),
+                "delta_x_m": round(dx, 4) if dx is not None else None,
+                "delta_y_m": round(dy, 4) if dy is not None else None,
+                "distance_m": round(distance_m, 4),
+                "speed_mode": "xyz_displacement" if use_xyz else "depth_range_rate",
                 "speed_kmh_raw": round(speed_kmh, 4),
                 "outlier": speed_kmh > max_speed_kmh,
             }
@@ -282,6 +345,7 @@ def process_video(
 ) -> dict[str, Any]:
     det_video = detection_summary[video_name]
     rows = usable_ocr_rows(ocr_summary, args.min_ocr_confidence)
+    plate_index = per_frame_plate_index(det_video, args.detector_key)
     if args.start_after_stable_frame:
         stable_frame = None
         # Prefer the first frame at which the same valid OCR value has appeared
@@ -302,7 +366,7 @@ def process_video(
         if stable_frame is not None:
             rows = [row for row in rows if int(row["frame"]) >= stable_frame]
 
-    measurements = crop_measurements(rows)
+    measurements = crop_measurements(rows, plate_index)
     if args.limit_per_video:
         measurements = measurements[: args.limit_per_video]
     fps = float(det_video.get("frame_meta", {}).get("fps") or 0.0)
@@ -339,6 +403,7 @@ def process_video(
         "source_plate_detection_rate": (
             (det_video.get("models") or {}).get(args.detector_key, {}).get("plate_detection_rate")
         ),
+        "full_frame_plate_bbox_available": bool(plate_index),
         "usable_measurement_count": len(measurements),
         "plate_aspect_ratio_median": median(aspect_values),
         "plate_aspect_ratio_mean": mean(aspect_values),
@@ -357,6 +422,7 @@ def write_csv(summary: dict[str, Any], csv_path: Path) -> None:
                 {
                     "video": video["video"],
                     "variant": variant,
+                    "full_frame_plate_bbox_available": video.get("full_frame_plate_bbox_available"),
                     "usable_measurement_count": video["usable_measurement_count"],
                     "plate_aspect_ratio_median": video["plate_aspect_ratio_median"],
                     "plate_width_px_median": video["plate_width_px_median"],
@@ -379,7 +445,7 @@ def write_csv(summary: dict[str, Any], csv_path: Path) -> None:
 
 def build_report(summary: dict[str, Any]) -> str:
     lines = [
-        "# SPEED-EXP-001 Plate-Scale Monocular Speed Baseline",
+        f"# {summary['experiment_id']} Plate-Scale Monocular Speed Baseline",
         "",
         f"Tarih: `{summary['generated_at_utc']}`",
         "",
@@ -397,7 +463,8 @@ def build_report(summary: dict[str, Any]) -> str:
         "* Width yöntemi: `Z = fx * 0.52 / plate_width_px`",
         "* Height yöntemi: `Z = fy * 0.11 / plate_height_px`",
         "* Geomean yöntemi: `Z = sqrt(Z_width * Z_height)`",
-        "* Hız: `speed_kmh = abs(Z_t2 - Z_t1) / dt * 3.6`",
+        "* Full-frame plate center varsa: `X=(u-cx)*Z/fx`, `Y=(v-cy)*Z/fy`",
+        "* Hız: full-frame center varsa `sqrt(dX^2+dY^2+dZ^2)/dt*3.6`, yoksa `abs(dZ)/dt*3.6`",
         "",
         "## Konfigürasyon",
         "",
@@ -408,14 +475,15 @@ def build_report(summary: dict[str, Any]) -> str:
         "",
         "## Özet",
         "",
-        "| Video | Variant | Measurements | Aspect Median | Width px | Height px | Median km/h | Mean km/h | Outliers | Note |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---:|---|",
+        "| Video | Variant | Full BBox | Measurements | Aspect Median | Width px | Height px | Median km/h | Mean km/h | Outliers | Note |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
     for video in summary["videos"]:
         for variant, payload in video.get("variants", {}).items():
             s = payload["summary"]
             lines.append(
-                f"| {video['video']} | {variant} | {video['usable_measurement_count']} | "
+                f"| {video['video']} | {variant} | {video.get('full_frame_plate_bbox_available')} | "
+                f"{video['usable_measurement_count']} | "
                 f"{video['plate_aspect_ratio_median']} | {video['plate_width_px_median']} | "
                 f"{video['plate_height_px_median']} | {s['median_speed_kmh']} | "
                 f"{s['mean_speed_kmh']} | {s['outlier_count']} | {s['confidence_note']} |"
@@ -434,11 +502,13 @@ def build_report(summary: dict[str, Any]) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="SPEED-EXP-001 plate-scale monocular speed baseline.")
+    parser.add_argument("--experiment-id", default="SPEED-EXP-001")
     parser.add_argument("--plate-detection-summary", type=Path, default=DEFAULT_PLATE_DETECTION_SUMMARY)
     parser.add_argument("--ocr-summary", type=Path, default=DEFAULT_OCR_SUMMARY)
     parser.add_argument("--detector-key", default="yolo")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
+    parser.add_argument("--summary-name", default="speed_exp_001_plate_scale_summary")
     parser.add_argument("--horizontal-fov-deg", type=float, default=70.0)
     parser.add_argument("--plate-width-m", type=float, default=0.52)
     parser.add_argument("--plate-height-m", type=float, default=0.11)
@@ -466,7 +536,7 @@ def main() -> None:
         videos.append(process_video(video_name, detection_by_video, ocr_by_video[video_name], args))
 
     payload = {
-        "experiment_id": "SPEED-EXP-001",
+        "experiment_id": args.experiment_id,
         "stage": "plate_scale_monocular_speed_baseline",
         "generated_at_utc": now_utc(),
         "source_plate_detection_summary": rel(args.plate_detection_summary.resolve()),
@@ -492,8 +562,8 @@ def main() -> None:
     }
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    summary_path = args.output_dir / "speed_exp_001_plate_scale_summary.json"
-    csv_path = args.output_dir / "speed_exp_001_plate_scale_summary.csv"
+    summary_path = args.output_dir / f"{args.summary_name}.json"
+    csv_path = args.output_dir / f"{args.summary_name}.csv"
     summary_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     write_csv(payload, csv_path)
     args.report.parent.mkdir(parents=True, exist_ok=True)
