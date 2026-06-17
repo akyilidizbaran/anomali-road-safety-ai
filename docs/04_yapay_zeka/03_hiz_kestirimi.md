@@ -12,6 +12,40 @@ Ground truth hız yaklaşımı, yerel sahada zorunlu doğrudan ölçüm yapmak y
 
 Kalibrasyon denemesi **final scope** olarak tutulacaktır. MVP aşamasında hız modülü mutlak km/s iddiası kurmak yerine track tabanlı göreli hareket, ani hızlanma/yavaşlama ve motion anomaly sinyali üretebilir.
 
+## Plate-Scale Monocular Speed Baseline
+
+Plakanın göründüğü hedef araçlarda ayrı bir ara yöntem denenir: Türkiye uzun plaka boyutu
+ön bilgisi (`0.52m x 0.11m`) ile plaka crop piksel boyutundan yaklaşık derinlik ve frame
+arası range-rate/hız sinyali üretilir.
+
+İlk deney:
+
+* Deney adı: `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline`
+* Script: `scripts/benchmarks/run_plate_scale_speed_baseline.py`
+* Kaynak: `POCR-EXP-005` plate detector crop'ları + `POCR-EXP-007` CCT-XS per-crop OCR çıktıları
+* Çıktılar:
+  * `models/benchmarks/artifacts/speed/SPEED-EXP-001-plate-scale/speed_exp_001_plate_scale_summary.json`
+  * `models/benchmarks/artifacts/speed/SPEED-EXP-001-plate-scale/speed_exp_001_plate_scale_summary.csv`
+  * `testing/reports/speed_exp_001_plate_scale_baseline.md`
+
+Formül:
+
+```text
+Z_width   = fx * 0.52 / plate_width_px
+Z_height  = fy * 0.11 / plate_height_px
+Z_geomean = sqrt(Z_width * Z_height)
+speed_kmh = abs(Z_t2 - Z_t1) / dt * 3.6
+```
+
+Bu yöntem ilk aşamada düşük güvenli araştırma baseline'ıdır. Çünkü mevcut crop-only
+artefactlerde plakanın full-frame merkez koordinatı saklanmaz; bu nedenle lateral hareket
+bileşeni hesaba katılamaz. Ayrıca crop aspect ratio standart uzun plaka oranından belirgin
+saparsa mutlak km/s iddiası kurulmaz.
+
+Sonraki iyileştirme için plate detector summary içine full-frame `plate_bbox_xyxy`, plate
+center ve mümkünse plate corner bilgisi yazılmalıdır. Böylece `X/Y/Z` konum serisi veya
+`solvePnP` tabanlı hız hesabı denenebilir.
+
 ## Referans Mesafe Otomatik Ölçülebilir mi?
 
 Tek kameradan, sahnede hiçbir bilinen ölçek yokken güvenilir gerçek mesafe otomatik çıkarılamaz. Monoküler görüntüde ölçek belirsizliği vardır; yani sistem piksel hareketini görür ama bu hareketin kaç metreye karşılık geldiğini bilmek için bir referansa ihtiyaç duyar.

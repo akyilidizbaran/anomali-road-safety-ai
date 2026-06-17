@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` plate detector ve `fast-plate-ocr cct-xs-v2-global-model` aktif OCR baseline olarak event/evidence hattına bağlandı.
-* Son değişiklik neydi? `POCR-EXP-008` CCT-XS event/evidence enrichment tamamlandı. `stable_count=3`, `window_size=7`, `min_confidence=0.75`, format/province-valid gate ile üç videoda da `stable_read` sonucu üretildi; model-derived count CSV/JSON kaydedildi.
-* Bir sonraki net adım ne? Plate/OCR hattı sonrası relative speed / motion signal baseline'a geçilecek; ilk hedef absolute km/s değil, track/plate bbox history üzerinden göreli hareket skoru üretmek.
+* Şu an ne yapıyoruz? Plate/OCR event/evidence hattı tamamlandıktan sonra hız modülüne geçildi; ilk deneme `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline`.
+* Son değişiklik neydi? Türkiye uzun plaka boyutu (`0.52m x 0.11m`) varsayımıyla CCT-XS doğrulanmış plaka crop'larından width/height/geomean tabanlı yaklaşık range-rate/hız çıktıları üretildi.
+* Bir sonraki net adım ne? Plate detector summary içine full-frame `plate_bbox_xyxy` / center bilgisi yazdırıp depth-only hız yerine `X/Y/Z` konum serisi veya plate-corner `solvePnP` yaklaşımını denemek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -186,6 +186,7 @@
 * 2026-06-17 — Karar: CCT-XS için OCR fine-tune bu aşamada açılmayacak; temporal stability gate uygulanacak. | Gerekçe: `video_3` üzerinde sorun sistematik karakter karıştırma değil, uzak/karanlık erken frame'lerde okunabilirlik sınırı. Baseline CCT-XS `first_expected_plate_frame=19`, `first_stable_vote_frame=25` üretir; 2x upscale bunu `18/20`ye çeker ama latency `1.642 ms -> 5.564 ms` olur ve erken yanlış format-valid adayları artar. 3x upscale ilk stabil sonucu yanlış `34TC8512` yapabildi. | Etki: Runtime/event evidence tek frame OCR sonucu yerine stabil tekrar sonrası temporal vote yazacak; upscale varsayılan olmayacak. | Alternatifler: CCT-XS fine-tune veya 2x/3x upscale default yapmak; bu aşamada reddedildi.
 * 2026-06-17 — Karar: CCT-XS OCR baseline rapor şablonu ve proje dokümanlarına sabitlendi. | Gerekçe: Kullanıcı CCT-XS ile devam etmeyi onayladı ve FTR/rapor şablonu doğrultusunda Markdown dosyalarıyla kararın kalıcılaştırılmasını istedi. | Etki: Plate/OCR araştırma kararı, model deney kartı, FTR veriseti/çözüm/test bölümleri, event/evidence contract ve runbook'lar CCT-XS + stability gate yaklaşımına göre güncellendi. | Alternatifler: Kararı yalnız PROJECT_MEMORY içinde bırakmak; rapor üretiminde izlenebilirlik zayıflayacağı için reddedildi.
 * 2026-06-17 — Karar: Plate/OCR event/evidence enrichment aktif OCR yolu CCT-XS original + temporal stability gate olarak bağlandı. | Gerekçe: Kullanıcı CCT-XS kararını doğruladı; event/evidence'a tek kare OCR veya en yüksek confidence yerine stabil temporal karar yazılmalı. Üç test videosunda `stable_count=3`, `window_size=7`, `min_confidence=0.75`, format/province-valid gate geçti. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json`, `pocr_exp_008_cct_xs_model_counts.csv/json` ve `pocr_exp_008_cct_xs_event_evidence_enrichment.md` üretildi. | Alternatifler: Eski Paddle enrichment'i aktif tutmak veya CCT-XS raw temporal vote'u gate olmadan event'e yazmak; izlenebilirlik ve güvenilirlik nedeniyle reddedildi.
+* 2026-06-17 — Karar: Hız modülünde ilk mutlak km/s denemesi plaka görünür hedefler için `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline` olarak açıldı. | Gerekçe: Türkiye uzun plaka ölçüsü (`0.52m x 0.11m`) bilinen fiziksel referans sağlar ve literatürde plaka geometrisiyle tek kamera mesafe/hız kestirimi yaklaşımları vardır. | Etki: Width, height ve geomean tabanlı depth/range-rate varyantları üretildi; sonuçlar düşük güvenli işaretlendi çünkü mevcut crop aspect ratio standart uzun plaka oranından sapıyor ve full-frame plate center yok. | Alternatifler: Doğrudan homografi veya yalnız track-center relative speed; plaka görünür senaryo için önce plate-scale baseline denenmesi seçildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -260,6 +261,7 @@
 * 2026-06-17 — Milestone: POCR-EXP-007 CCT-XS early-read/stability analizi tamamlandı. | Sonuç: Baseline CCT-XS, 2x+CLAHE ve 3x+CLAHE karşılaştırıldı; 2x küçük erken okuma kazanımı sağladı ancak latency ve yanlış erken vote riski nedeniyle varsayılan yapılmadı. Stabilite raporu ve CSV üretildi.
 * 2026-06-17 — Milestone: CCT-XS OCR baseline FTR dokümantasyonuna sabitlendi. | Sonuç: `decision_ocr_cct_xs_baseline_2026_06_17.md`, `POCR_EXP_006_007_cct_xs_ocr_baseline.md`, FTR veri/çözüm/test bölümleri ve event/evidence contract güncellendi.
 * 2026-06-17 — Milestone: POCR-EXP-008 CCT-XS event/evidence enrichment tamamlandı. | Sonuç: 3 target event için CCT-XS OCR `stable_read` olarak event/evidence JSON'a işlendi; model-derived count CSV/JSON kaydedildi. `video_1` first stable frame `3`, `video_2` `4`, `video_3` `25`.
+* 2026-06-17 — Milestone: SPEED-EXP-001 plate-scale speed baseline tamamlandı. | Sonuç: CCT-XS doğrulanmış plaka crop'larıyla width/height/geomean yöntemleri denendi. Median hız adayları: `video_1` geomean `4.104 km/h`, `video_2` geomean `3.312 km/h`, `video_3` geomean `12.564 km/h`; tüm sonuçlar aspect-ratio mismatch nedeniyle düşük güvenli.
 
 ## 8) Yapılanlar
 
@@ -364,6 +366,8 @@
 * [x] Plate/OCR sonuçlarını event/evidence JSON skeleton içine işle.
 * [x] Plate/OCR model-derived count özetlerini CSV/JSON olarak kaydet.
 * [ ] Plate/OCR manual review sonuçlarını `testing/templates/manual_plate_ocr_review.csv` formatına göre kaydet. (Model-derived counts üretildi; gerçek manuel doğruluk etiketi ayrı tutulur.)
+* [x] `SPEED-EXP-001` plate-scale monocular speed baseline script'ini yaz ve 3 video üzerinde çalıştır.
+* [ ] Plate detector summary içine full-frame `plate_bbox_xyxy`, plate center ve ROI origin alanlarını yazdır; depth-only hız yerine `X/Y/Z` konum serisi denemesi için altyapı hazırla.
 * [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Next active AI step)
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
 * [x] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
@@ -428,6 +432,7 @@
 * POCR-EXP-006 overlay videoları OCR'i yeniden çalıştırmaz; summary JSON'lardaki örnek frame/highest-confidence sonuçlarını detection annotated video üzerine yazar. Frame-level detay için manual review CSV/summary JSON, görsel akış için `.mp4` overlay birlikte kontrol edilmelidir.
 * POCR-EXP-007 sonucuna göre CCT-XS 2x/3x upscale varsayılan yapılmamalı: 2x yalnız çok küçük erken okuma kazanımı sağladı, 3x ilk stabil sonucu yanlış adaya kaydırabildi. Evidence için `stable_count>=3`, `window_size=7`, `min_confidence>=0.75`, format/province valid gate önerilir.
 * POCR-EXP-008 event/evidence enrichment'te final OCR alanı tek kare `highest_confidence_result` üzerinden değil, CCT-XS temporal stability gate sonucu üzerinden yazılır. `pocr_exp_008_cct_xs_model_counts.csv` model-derived count tablosudur; gerçek manuel accuracy etiketi değildir.
+* SPEED-EXP-001 crop-only artefactleri plakanın full-frame merkez koordinatını içermez; bu yüzden mevcut hız hesabı yalnız plate scale/depth değişimi kullanır. Lateral hareket ve daha savunulabilir km/s için plate detector summary full-frame bbox/center yazmalıdır.
 * Vehicle detection fine-tune tekrar aktif planlamaya alındı; ilk resmi model `YOLO11n`, ana veri omurgası BDD100K, eğitim ortamı Colab + Drive, zorunlu model çıktısı `.pt`, ONNX ise opsiyonel deployment kanıtı olarak tutulacak.
 * Arkadaş önerisindeki ACDC/DAWN/ExDark/Foggy Cityscapes kaynakları ilk eğitim merge'üne doğrudan alınmayacak; önce BDD100K general detector eğitilecek, condition breakdown zayıflık gösterirse specialist/evaluation fazına taşınacak.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.

@@ -1,0 +1,10 @@
+video,variant,usable_measurement_count,plate_aspect_ratio_median,plate_width_px_median,plate_height_px_median,segment_count,valid_segment_count,outlier_count,mean_speed_kmh,median_speed_kmh,p95_speed_kmh,confidence_note
+video_1.mp4,width,201,3.3483,303.0,91.0,200,200,0,3.2229,3.294,5.076,low_plate_crop_aspect_differs_from_standard_width
+video_1.mp4,height,201,3.3483,303.0,91.0,200,200,0,5.4054,5.958,9.54,low_plate_crop_aspect_differs_from_standard_height
+video_1.mp4,geomean,201,3.3483,303.0,91.0,200,200,0,4.072,4.104,7.038,low_plate_crop_aspect_differs_from_standard_geomean
+video_2.mp4,width,190,3.3906,318.5,93.5,189,189,0,3.0786,3.114,4.842,low_plate_crop_aspect_differs_from_standard_width
+video_2.mp4,height,190,3.3906,318.5,93.5,189,189,0,5.7714,5.706,8.82,low_plate_crop_aspect_differs_from_standard_height
+video_2.mp4,geomean,190,3.3906,318.5,93.5,189,189,0,3.9451,3.312,6.498,low_plate_crop_aspect_differs_from_standard_geomean
+video_3.mp4,width,178,3.2038,184.0,50.0,177,177,0,13.3743,10.818,24.408,low_plate_crop_aspect_differs_from_standard_width
+video_3.mp4,height,178,3.2038,184.0,50.0,177,177,0,22.8272,20.466,43.092,low_plate_crop_aspect_differs_from_standard_height
+video_3.mp4,geomean,178,3.2038,184.0,50.0,177,177,0,16.3343,12.564,38.196,low_plate_crop_aspect_differs_from_standard_geomean
