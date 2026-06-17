@@ -14,10 +14,11 @@ Tarih: 2026-06-11
 
 ## İlk Baseline
 
-* Plate detector: target ROI üzerinde çalışan indirilebilir YOLO/ONNX license plate detector.
+* Plate detector: target ROI üzerinde çalışan YOLO11n tabanlı single-class `license_plate` detector.
 * İlk kaynak adayları:
-  * Roboflow/CC BY 4.0 kaynaklı license plate recognition dataset/model ailesi.
-  * HF `morsetechlab/yolov11-license-plate-detection` yalnız lisans notuyla smoke test.
+  * Turkish Number Plates Roboflow dataset, Türkiye plaka geometrisine en yakın birincil fine-tune verisi.
+  * Roboflow/CC BY 4.0 kaynaklı License Plate Recognition dataset/model ailesi, hacim artırma ve pretrained smoke test kaynağı.
+  * HF `morsetechlab/yolov11-license-plate-detection` yalnız lisans/dataset contamination notuyla smoke test.
   * HF `nickmuchi/yolos-small-finetuned-license-plate-detection` ikinci detector adayı.
 * OCR: PaddleOCR PP-OCRv5 Latin/mobile recognition.
 * OCR ikinci aday: EasyOCR.
@@ -51,3 +52,18 @@ Tarih: 2026-06-11
 * Ultralytics tabanlı modeller AGPL-3.0 / Enterprise lisans notuyla değerlendirilmelidir.
 * PaddleOCR, EasyOCR ve Tesseract Apache-2.0 çizgisinde daha düşük lisans riski taşır.
 * Roboflow/HF dataset/model lisansı model card ve dataset sayfasından her koşu öncesi doğrulanmalıdır.
+
+## 2026-06-15 Güncellemesi
+
+Detay literatür ve veri/model önerisi:
+
+* `research/04_plate_ocr/plate_detection_literature_recommendation_2026_06_15.md`
+
+Güncel plate detection kararı:
+
+* İlk gerçek fine-tune modeli: `YOLO11n single-class license_plate detector`.
+* Birincil veri: `Turkish Number Plates` Roboflow dataset.
+* Hacim destek verisi: `License Plate Recognition` Roboflow dataset; kendi duplicate temizliği ve split üretimi şart.
+* Benchmark/generalization: `UFPR-ALPR`.
+* Opsiyonel ileriki pretraining/adverse condition kaynağı: `CCPD`.
+* OCR'a geçiş kriteri: target track başına en az bir usable plate crop + doğru failure reason alanları.

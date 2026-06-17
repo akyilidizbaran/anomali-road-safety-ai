@@ -21,6 +21,8 @@ Kaynaklar:
 * `docs/05_veri_seti/04_dataset_license_checklist.md`
 * `models/experiments/COND_EXP_001_bdd100k_condition_classifier.md`
 * `testing/reports/cond_exp_001_condition_classifier_run_review.md`
+* `models/experiments/POCR_EXP_005_plate_detector_report.md`
+* `testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
 
 ## 3. Yapay Zeka Çözümü
 
@@ -63,6 +65,8 @@ Kaynaklar:
 * `testing/templates/`
 * `research/03_condition_experts/condition_profile_classifier_router_plan.md`
 * `models/experiments/COND_EXP_001_bdd100k_condition_classifier.md`
+* `models/experiments/POCR_EXP_005_plate_detector_report.md`
+* `testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
 
 ## 4. Çözümün Sınanması
 
@@ -74,6 +78,8 @@ Kaynaklar:
 * `models/benchmarks/`
 * `docs/09_evidence_aciklanabilirlik/02_evidence_ui_logic.md`
 * `testing/reports/cond_exp_001_condition_classifier_run_review.md`
+* `testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
+* `models/benchmarks/artifacts/plate_detection/POCR-EXP-005-YOLO11N-PLATE-DETECTOR-summary.md`
 
 ## 5. Kaynakça
 

@@ -6,15 +6,18 @@ Araç tespiti için Colab üzerinde tekrar üretilebilir fine-tune deneyi tasarl
 
 ## Güncel Durum
 
-Status: **Deferred / TODO**
+Status: **Active planning / next implementation**
 
-2026-06-10 kararıyla fine-tune kapsamı şimdilik backlog'a alındı. Aktif sıra, fine-tune edilmemiş pretrained modellerle benchmark ve pipeline değerlendirmesidir.
+2026-06-12 kararıyla araç tespiti fine-tune kapsamı tekrar aktif planlamaya alındı. Kullanıcı, arkadaşları plate/OCR aşamalarıyla uğraşırken araç tespitinden başlayarak FTR formatına uygun veri seti ve model hazırlığını ilerletmek istiyor.
 
-Fine-tune planı korunur; `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` ileride kullanılacaktır.
+Fine-tune planı `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` üzerinden Colab + Drive iş akışıyla yürütülecektir.
 
-Aktif faz:
+Aktif fine-tune referansı:
 
-* `pretrained_baseline_plan.md`
+* `ftr_vehicle_detection_finetune_plan.md`
+* `models/experiments/VD_EXP_002_bdd100k_yolo11n.md`
+* `data/README_assets/bdd100k_vehicle_detection_dataset_card.md`
+* `data/README_assets/bdd100k_vehicle_detection_mapping.yaml`
 
 ## Genel Yaklaşım
 
@@ -51,8 +54,9 @@ Bu nedenle ilk aşamada "condition detect + fine-tune" yerine "condition-aware g
 | VD-EXP-003 | YOLO11s fine-tune | BDD100K 4-class, same split | 640 | Quality gain ölçümü |
 | VD-EXP-004 | YOLOv10n fine-tune | BDD100K 4-class, same split | 640 | NMS-free latency kıyası |
 | VD-EXP-005 | YOLOv10s fine-tune | BDD100K + selected UA-DETRAC | 640 | Low-latency challenger |
-| VD-EXP-006 | YOLOv8n fine-tune | BDD100K 4-class | 640 | Stable fallback |
+| VD-EXP-006 | YOLO11n motorcycle-focused fine-tune | BDD100K 4-class + motorcycle-focused sampling | 640 | Düşük ışık motorcycle/car confusion iyileştirme |
 | VD-EXP-007 | RT-DETR-L pilot | BDD100K small pilot | 640 | Transformer challenger |
+| VD-EXP-012 | YOLOv8n fine-tune | BDD100K 4-class | 640 | Stable fallback |
 
 ## VD-EXP-002 Colab Hattı
 
@@ -67,7 +71,7 @@ Mapping ve dataset card:
 
 Notebook görevleri:
 
-1. BDD100K'i notebook içinden `manual`, `kaggle`, `direct` veya `gdown` moduyla Drive altına yerleştirir.
+1. BDD100K'i notebook içinden Kaggle modu ile Drive altına yerleştirir (`solesensei/solesensei_bdd100k` pratik mirror).
 2. BDD100K Drive path'lerini doğrular.
 3. BDD JSON detection label formatını YOLO label formatına çevirir.
 4. `car`, `bus`, `truck`, `motorcycle` sınıf mapping'ini uygular.
@@ -77,7 +81,8 @@ Notebook görevleri:
 8. `YOLO11n` fine-tune çalıştırır.
 9. İsteğe bağlı `YOLO11s` ve `YOLOv10n` challenger fine-tune/test koşularını aynı split üzerinde çalıştırır.
 10. Overall validation, baseline vs fine-tuned delta ve condition breakdown validation sonuçlarını üretir.
-11. `.pt` ve ONNX export çıktısını Drive altında saklar.
+11. `.pt` checkpoint çıktısını Drive altında saklar.
+12. ONNX export'u opsiyonel olarak üretir; FTR kabul kriteri değil, deployment kanıtı olarak değerlendirilir.
 
 ## Condition-Specific Fine-Tune Planı
 

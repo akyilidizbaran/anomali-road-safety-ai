@@ -1,16 +1,61 @@
 # Decision - Vehicle Detector v1
 
 Tarih: 2026-06-08
+Son güncelleme: 2026-06-15
 
 ## Karar Durumu
 
-Status: **Provisional baseline selected**
+Status: **Active runtime baseline locked for current MVP**
 
-Bu dosya final model seçimi değildir. İlk ölçülebilir baseline kararını kaydeder.
+Bu dosya ilk ölçülebilir baseline kararını ve 2026-06-15 itibarıyla aktif MVP
+runtime detector seçimini kaydeder. Bu karar nihai akademik/ürün modeli iddiası
+değildir; mevcut demo ve FTR kanıt üretimi için sabitlenen çalışma modelidir.
 
 ## Seçilen İlk Baseline
 
 İlk deney modeli: **YOLO11n**
+
+## Aktif MVP Detector Kararı - 2026-06-15
+
+Aktif checkpoint:
+
+```text
+models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt
+```
+
+Aktif model etiketi:
+
+```text
+vehicle_detector_general_yolo11n_bdd100k_v1
+```
+
+Runtime evidence / final-acceptance confidence gate:
+
+```text
+TBD after threshold sweep
+```
+
+Current manual-review candidate gate:
+
+```text
+0.60
+```
+
+Manual review sonucu:
+
+* `Test/video_1.mp4`, `Test/video_2.mp4` ve `Test/video_3.mp4` içinde ana araç her frame'de yakalanıyor.
+* BBox ana araç için stabil.
+* Daha düşük threshold değerlerinde false positive gözleniyor.
+* `confidence >= 0.60` ile gözlenen false positive problemi demo/manual review kapsamında ortadan kalkıyor.
+* `0.60` final threshold değildir; yalnız mevcut 3 video manual review kapsamında gözlenen aday downstream evidence/target acceptance gate değeridir.
+* Frame-level candidate detection ve tracking continuity gerekirse daha düşük aday eşiğiyle çalışabilir; final event/evidence threshold değeri threshold sweep + manuel review sonrası seçilecektir.
+* Bu sonuç frame-level ground truth accuracy değildir; `manual qualitative review` olarak raporlanmalıdır.
+
+Model lock kararı:
+
+* `VD-EXP-002-GENERAL-YOLO11N`, mevcut MVP için active/best detector olarak sabitlenir.
+* `VD-EXP-006-MOTORCYCLE-FOCUS-YOLO11N`, başarısız/regresyon üreten deneme olarak kaydedildi ve runtime'a terfi ettirilmedi.
+* Motorcycle özel fine-tune şimdilik ertelendi; kısa vadeli odak `car` / genel araç varlığı, tracking, plate/OCR, speed/risk/evidence modüllerine kaydırıldı.
 
 ## Gerekçe
 
@@ -58,10 +103,12 @@ YOLO11n aşağıdaki durumlardan biri gerçekleşirse baseline olmaktan çıkar:
 * Output contract dönüşümü kırılgan çıkar.
 * Tracking ve evidence crop kalitesi yetersiz olur.
 * Lisans değerlendirmesi kullanım amacına uygun bulunmaz.
+* Threshold sweep sonrası seçilen değer altında ana araç detection sürekliliği bozulursa veya false positive tekrar sistematik hale gelirse.
 
 ## Sonraki Aksiyonlar
 
-* `benchmark_plan.md` uygulanacak.
-* `finetune_plan.md` içindeki VD-EXP-001 ve VD-EXP-002 hazırlanacak.
-* `models/benchmarks/vehicle_detection_comparison.csv` gerçek sonuçlar için genişletilecek.
-* `architecture/contracts/model_output_contract.md` VehicleDetectionOutput alanları güncellenecek.
+* `final_confidence_threshold` quantitative threshold sweep + manual review sonrası seçilecek.
+* `candidate_evidence_confidence_threshold=0.60` yalnız mevcut dark-video manual review gözlemi olarak korunacak.
+* Heavy vehicle detection fine-tune durdurulacak; zaman kısıtı nedeniyle sıradaki modüller için baseline/tune akışına geçilecek.
+* Sıradaki AI kapsamları: tracking stability, plate detection/OCR, relative speed, risk/evidence fusion, cabin/driver-object kapsamı.
+* `architecture/contracts/model_output_contract.md` VehicleDetectionOutput örneği threshold seçim durumuyla hizalanacak.

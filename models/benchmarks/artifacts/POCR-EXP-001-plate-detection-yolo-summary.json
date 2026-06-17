@@ -1,0 +1,120 @@
+{
+  "experiment_id": "POCR-EXP-001",
+  "stage": "plate_detection_smoke_test",
+  "ocr": "not_in_scope_this_stage",
+  "generated_at_utc": "2026-06-11T17:18:29Z",
+  "vehicle_detector": "yolo11n.pt",
+  "tracker": "bytetrack.yaml",
+  "models_requested": [
+    "yolo"
+  ],
+  "models_loaded": [
+    "yolo"
+  ],
+  "padding_ratio": 0.1,
+  "plate_conf": 0.25,
+  "input_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json",
+  "videos_dir": "Test",
+  "runs_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection",
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "target_track_id": 1,
+      "target_track_selection_reason": "iou_match_best_frame=1.00",
+      "target_frame_count": 342,
+      "frame_meta": {
+        "width": 3840,
+        "height": 2160,
+        "fps": 50.0,
+        "frames": 423
+      },
+      "annotated_video": "runs/plate_ocr/POCR-EXP-001-plate-detection/annotated/video_1_plate_detection.mp4",
+      "models": {
+        "yolo": {
+          "model_ref": "/Users/elifsena/Downloads/5G Teknofest/models/checkpoints/plate/license_plate_detector.pt",
+          "run_frames": 342,
+          "target_track_frames": 342,
+          "frames_with_plate": 209,
+          "plate_detection_rate": 0.6111,
+          "total_plates": 209,
+          "mean_confidence": 0.741,
+          "max_confidence": 0.7791,
+          "mean_latency_ms": 26.291,
+          "p95_latency_ms": 45.689,
+          "plate_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_1"
+        }
+      },
+      "per_frame": "omitted_use_--keep-per-frame"
+    },
+    {
+      "video": "video_2.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "target_track_id": 14,
+      "target_track_selection_reason": "iou_match_best_frame=1.00",
+      "target_frame_count": 340,
+      "frame_meta": {
+        "width": 3840,
+        "height": 2160,
+        "fps": 50.0,
+        "frames": 457
+      },
+      "annotated_video": "runs/plate_ocr/POCR-EXP-001-plate-detection/annotated/video_2_plate_detection.mp4",
+      "models": {
+        "yolo": {
+          "model_ref": "/Users/elifsena/Downloads/5G Teknofest/models/checkpoints/plate/license_plate_detector.pt",
+          "run_frames": 340,
+          "target_track_frames": 340,
+          "frames_with_plate": 192,
+          "plate_detection_rate": 0.5647,
+          "total_plates": 192,
+          "mean_confidence": 0.748,
+          "max_confidence": 0.795,
+          "mean_latency_ms": 21.324,
+          "p95_latency_ms": 30.374,
+          "plate_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_2"
+        }
+      },
+      "per_frame": "omitted_use_--keep-per-frame"
+    },
+    {
+      "video": "video_3.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "target_track_id": 23,
+      "target_track_selection_reason": "iou_match_best_frame=1.00",
+      "target_frame_count": 284,
+      "frame_meta": {
+        "width": 3840,
+        "height": 2160,
+        "fps": 50.0,
+        "frames": 383
+      },
+      "annotated_video": "runs/plate_ocr/POCR-EXP-001-plate-detection/annotated/video_3_plate_detection.mp4",
+      "models": {
+        "yolo": {
+          "model_ref": "/Users/elifsena/Downloads/5G Teknofest/models/checkpoints/plate/license_plate_detector.pt",
+          "run_frames": 284,
+          "target_track_frames": 284,
+          "frames_with_plate": 212,
+          "plate_detection_rate": 0.7465,
+          "total_plates": 215,
+          "mean_confidence": 0.73,
+          "max_confidence": 0.7787,
+          "mean_latency_ms": 24.904,
+          "p95_latency_ms": 41.003,
+          "plate_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_3"
+        }
+      },
+      "per_frame": "omitted_use_--keep-per-frame"
+    }
+  ],
+  "manual_review_template": "testing/templates/manual_plate_ocr_review.csv",
+  "notes": [
+    "Detector-only smoke test; OCR yok.",
+    "Ham plaka/araç görselleri runs/ altında ignore'ludur, commit edilmez.",
+    "Hedef track IoU eşleşmesiyle seçilir; track ID numarasına güvenilmez."
+  ]
+}

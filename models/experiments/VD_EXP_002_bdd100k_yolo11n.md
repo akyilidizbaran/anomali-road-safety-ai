@@ -117,6 +117,62 @@ Detay rapor:
 * `testing/reports/vd_exp_002_finetuned_general_detector_summary.md`
 * `testing/reports/vd_exp_002_dark_video_smoke_test_runbook.md`
 
+## Local Smoke Test Manual Review Update - 2026-06-15
+
+Güncel smoke pipeline çıktısı condition profile ve manual review kalite alanlarını birlikte üretir.
+
+2026-06-15 kullanıcı manuel review kararı:
+
+* `Test/video_1.mp4`, `Test/video_2.mp4` ve `Test/video_3.mp4` içinde ana araç her frame'de olması gerektiği gibi yakalanıyor.
+* Ana araç bbox davranışı stabil kabul edildi.
+* Daha düşük threshold değerlerinde false positive gözleniyor.
+* Runtime/demo için downstream evidence/final-acceptance gate adayı `0.60` olduğunda gözlenen false positive problemi kalmıyor.
+* `0.60` final threshold değildir; final değer threshold sweep ve manuel review tablosu sonrası seçilecektir.
+* Bu nedenle `VD-EXP-002-GENERAL-YOLO11N`, mevcut MVP için active/best detector olarak sabitlendi.
+* `VD-EXP-006-MOTORCYCLE-FOCUS-YOLO11N` başarısız/regresyon kabul edildi; motorcycle özel fine-tune şimdilik ertelendi.
+
+Aktif runtime ayarı:
+
+```json
+{
+  "active_detector": "VD-EXP-002-GENERAL-YOLO11N",
+  "model_version": "vehicle_detector_general_yolo11n_bdd100k_v1",
+  "checkpoint": "models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt",
+  "threshold_selection_status": "pending_threshold_sweep",
+  "candidate_evidence_confidence_threshold": 0.60,
+  "final_confidence_threshold": "TBD",
+  "class_filter": ["car", "bus", "truck", "motorcycle"],
+  "primary_mvp_scope": "car/general vehicle detection"
+}
+```
+
+Smoke test sonucu:
+
+| Video | Condition profile | Detector profile | Class review | Not |
+|---|---|---|---|---|
+| `video_1.mp4` | `night_low_light` | `general` | reviewed | Ana araç her frame'de doğru tespit ediliyor. |
+| `video_2.mp4` | `night_low_light` | `general` | reviewed | Ana araç her frame'de doğru tespit ediliyor. |
+| `video_3.mp4` | `night_low_light` | `general` | required | Ana araç doğru; arka plandaki çok karanlık motosiklet sistematik biçimde `car` sınıflanıyor. |
+
+`video_3` için kısa vadeli event/evidence politikası:
+
+```json
+{
+  "class_review_required": false,
+  "raw_detector_class_counts_are_final": true,
+  "class_reliability": "raw_detector_prediction_used",
+  "recommended_event_label": "car"
+}
+```
+
+Bu politika raw detector çıktısını değiştirmez ve event/evidence tarafına modelin ürettiği sınıfı taşır. Motorcycle/car confusion gözlemi yalnız genel model iyileştirme failure-case'i olarak kullanılır; bu 3 video için özel runtime kuralı yazılmaz.
+
+Motorcycle özel model iyileştirme deneyi:
+
+* `models/experiments/VD_EXP_006_motorcycle_focus_yolo11n.md`
+* Sonuç: Başarısız/regresyon; active detector değildir.
+* Karar: Zaman kısıtı nedeniyle motorcycle fine-tune ertelendi, ağır vehicle detection tune yerine diğer modüllerin baseline/tune aşamasına geçilecek.
+
 ## Acceptance Criteria
 
 * Training runs without dataset conversion errors.

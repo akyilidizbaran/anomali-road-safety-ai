@@ -49,25 +49,143 @@ python3 scripts/benchmarks/build_track_event_skeleton.py
 
 Bu script gerçek risk alarmı üretmez. `target_vehicle_selected` seviyesinde ara event skeleton'ı oluşturur ve sonraki speed, plate OCR, QoD ve evidence modülleri için aynı `track_id` üzerinden bağlanacak kayıtları hazırlar.
 
-## `extract_plate_ocr_target_rois.py`
+## `run_plate_detection_smoke.py`
 
-Plate Detection + OCR MVP için ilk giriş verisini üretir. `target_vehicle_selected` event skeleton dosyasını okuyup raw test videolarındaki `best_frame` karesinden hedef araç ROI crop'larını çıkarır.
+`POCR-EXP-001` plaka tespit smoke test'i. `run_tracking_baseline.py` ile aynı mantıkta çalışır:
+`yolo11n` + ByteTrack ile hedef track bulunur, hedef aracın tespit edildiği karelerde plaka
+TESPİTİ yapılır ve — tracking çıktısı gibi — **orijinal video üzerine kutular çizilmiş tam
+annotated video** üretilir. OCR (metin okuma) bu aşamada yoktur.
+
+Varsayılan koşu (önce venv aktive et — `.venv-yolo/bin/python` doğrudan çağrısı bazı kurulumlarda çalışmaz):
+
+```bash
+source .venv-yolo/bin/activate
+python scripts/benchmarks/run_plate_detection_smoke.py            # iki model (YOLOS yavaş)
+python scripts/benchmarks/run_plate_detection_smoke.py --models yolo   # hızlı, tek model
+```
+
+Varsayılanlar:
+
+* Araç detector: `yolo11n.pt` / tracker: ByteTrack
+* Videolar: `Test/video_1.mp4`, `Test/video_2.mp4`, `Test/video_3.mp4`
+* Hedef track: event skeleton'daki `best_frame` bbox'ı ile IoU eşleşmesi
+* Plaka modelleri: `yolo` (Ultralytics, `models/checkpoints/plate/license_plate_detector.pt`) + `yolos` (HF `nickmuchi/yolos-small-...`)
+* Çizim: beyaz kutu = hedef araç, yeşil = YOLO, mavi = YOLOS
+
+Faydalı bayraklar: `--models yolo` (tek model, hızlı), `--frame-stride 5` (hız), `--video-scale 0.5` (küçük dosya).
+
+Üretilen çıktılar:
+
+* Annotated videolar: `runs/plate_ocr/POCR-EXP-001-plate-detection/annotated/<video>_plate_detection.mp4`
+* Plaka kırpıntıları (OCR için): `runs/plate_ocr/POCR-EXP-001-plate-detection/plates/<model>/<video>/`
+* Summary JSON: `models/benchmarks/artifacts/POCR-EXP-001-plate-detection-summary.json`
+* Rapor: `testing/reports/pocr_exp_001_plate_detection_summary.md`
+
+Büyük annotated video çıktıları ve plaka kırpıntıları `runs/` altında kalır ve Git'e eklenmez
+(plaka metni/görseli kişisel veridir). Çalıştırma detayları: `research/04_plate_ocr/RUN_POCR_EXP_001.md`.
+
+> Eski `extract_plate_ocr_target_rois.py` (tek best-frame crop yaklaşımı) `archive/plate_ocr_v1/` altına alınmıştır.
+
+## `run_plate_ocr_baseline.py`
+
+`POCR-EXP-002/003/004` OCR baseline script'i. `POCR-EXP-001` summary JSON'unu okuyup
+secilen detector'un plate crop'lari ustunde OCR engine'lerini calistirir. OCR sonucu:
+
+* raw text
+* Turk plaka normalize sonucu
+* format valid / il kodu valid flag'leri
+* temporal voting sonucu
+
+olarak raporlanir.
+
+Varsayilan kosu:
+
+```bash
+source .venv-yolo/bin/activate
+python scripts/benchmarks/run_plate_ocr_baseline.py --engines paddle
+python scripts/benchmarks/run_plate_ocr_baseline.py --engines easyocr
+python scripts/benchmarks/run_plate_ocr_baseline.py --engines paddle easyocr
+```
+
+Faydali bayraklar:
+
+* `--detector-key yolo|yolos`
+* `--frame-stride 5`
+* `--limit-per-video 50`
+* `--variants original gray clahe`
+* `--upscale 2.0`
+* `--keep-per-crop`
+
+Uretilen ciktilar:
+
+* Summary JSON: `models/benchmarks/artifacts/POCR-EXP-002-paddleocr-summary.json`
+* Summary JSON: `models/benchmarks/artifacts/POCR-EXP-003-easyocr-summary.json`
+* Summary JSON: `models/benchmarks/artifacts/POCR-EXP-004-tesseract-summary.json`
+* Rapor: `testing/reports/pocr_exp_002_004_plate_ocr_summary_<engine>.md`
+* Manuel review seed: `runs/plate_ocr/POCR-EXP-002-004-ocr/manual_review_<engine>.csv`
+
+Detayli calistirma notlari: `research/04_plate_ocr/RUN_POCR_EXP_002.md`.
+
+## `enrich_event_skeleton_with_plate_ocr.py`
+
+`build_track_event_skeleton.py` ile uretilmis tracking skeleton eventlerini, secilen OCR
+baseline sonucuyla zenginlestirir. Varsayilan kaynak `POCR-EXP-002-paddleocr-summary.json`
+olup ciktida `plate`, `models`, `routing_decision`, `evidence` ve `explanation` alanlari
+guncellenir.
+
+Varsayilan kosu:
+
+```bash
+source .venv-yolo/bin/activate
+python scripts/benchmarks/enrich_event_skeleton_with_plate_ocr.py
+```
+
+Uretilen ciktilar:
+
+* Enriched event JSON: `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-paddle.json`
+* Rapor: `testing/reports/trk_exp_001_plate_ocr_event_enrichment_summary.md`
+
+Bu adimdan sonra plate/OCR benchmark'i ayrik bir deney olmaktan cikmis olur; secilen final
+track-level plaka karari event/evidence hattina baglanmis olur.
+
+## `run_vehicle_detection_video_smoke.py`
+
+`VD-EXP-002` fine-tuned general YOLO11n checkpoint'i ile lokal `Test/video_1-3.mp4`
+smoke test'i çalıştırır. Güncel sürüm condition classifier/router çıktısını da aynı
+JSON/Markdown rapora bağlar.
 
 Varsayılan koşu:
 
 ```bash
-.venv-yolo/bin/python scripts/benchmarks/extract_plate_ocr_target_rois.py
+.venv-yolo-run/bin/python scripts/benchmarks/run_vehicle_detection_video_smoke.py
 ```
 
-Varsayılan input:
+Varsayılanlar:
 
-* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json`
-* `Test/video_1.mp4`, `Test/video_2.mp4`, `Test/video_3.mp4`
+* Vehicle detector: `models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt`
+* Condition classifier: `models/checkpoints/condition_profile/COND-EXP-001-mobilenet_v3_small-best.pt`
+* Condition örnekleme: her 15 frame
+* Routing policy: condition profile yalnız advisory sinyaldir; specialist detector'lar general detector'a göre üstünlüğü kanıtlanmadan otomatik promote edilmez.
+* Bu fazda `fog_low_visibility` promoted/supported routing kapsamı dışında tutulur.
+* Manual review: `testing/manual_reviews/vd_exp_002_dark_video_manual_review.json`
+* Manual review ile doğrulanan sınıf karışıklığı varsa raw detector sınıfı yine event/evidence tarafına taşınır; review notu yalnız model geliştirme failure-case'i olarak `class_quality` içinde tutulur.
 
 Üretilen çıktılar:
 
-* Crop görselleri: `runs/plate_ocr/POCR-EXP-001-target-roi-crops/`
-* Summary JSON: `models/benchmarks/artifacts/POCR-EXP-001-target-roi-crops-summary.json`
-* Rapor: `testing/reports/pocr_exp_001_target_roi_crops_summary.md`
+* Summary JSON: `models/benchmarks/artifacts/VD-EXP-002-general-yolo11n-dark-smoke-summary.json`
+* Rapor: `testing/reports/vd_exp_002_dark_video_smoke_test_summary.md`
+* Annotated videolar: `runs/vehicle_detection/VD-EXP-002-dark-smoke/`
 
-Bu aşama plate detection veya OCR değildir. Yalnız plate detector/OCR için target vehicle ROI girişlerini hazırlar. Crop görselleri büyük/gizlilik duyarlı artifact sayıldığı için Git'e eklenmez.
+Condition classifier'ı kapatmak için:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/run_vehicle_detection_video_smoke.py --no-condition-profile
+```
+
+Manual review merge katmanını kapatmak için:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/run_vehicle_detection_video_smoke.py --no-manual-review
+```
+
+Not: Manual review katmanı raw model çıktısını değiştirmez ve sınıf etiketini override etmez. Detector `car` diyorsa event/evidence tarafına `car` gider; failure-case bilgisi yalnız genel model iyileştirme planına kaynak olur.

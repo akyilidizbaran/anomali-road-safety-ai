@@ -1,0 +1,120 @@
+{
+  "experiment_id": "POCR-EXP-001",
+  "stage": "plate_detection_smoke_test",
+  "ocr": "not_in_scope_this_stage",
+  "generated_at_utc": "2026-06-11T17:24:26Z",
+  "vehicle_detector": "yolo11n.pt",
+  "tracker": "bytetrack.yaml",
+  "models_requested": [
+    "yolos"
+  ],
+  "models_loaded": [
+    "yolos"
+  ],
+  "padding_ratio": 0.1,
+  "plate_conf": 0.25,
+  "input_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json",
+  "videos_dir": "Test",
+  "runs_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection",
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "target_track_id": 1,
+      "target_track_selection_reason": "iou_match_best_frame=1.00",
+      "target_frame_count": 69,
+      "frame_meta": {
+        "width": 3840,
+        "height": 2160,
+        "fps": 50.0,
+        "frames": 423
+      },
+      "annotated_video": "runs/plate_ocr/POCR-EXP-001-plate-detection/annotated/video_1_plate_detection_yolos.mp4",
+      "models": {
+        "yolos": {
+          "model_ref": "nickmuchi/yolos-small-finetuned-license-plate-detection",
+          "run_frames": 69,
+          "target_track_frames": 342,
+          "frames_with_plate": 46,
+          "plate_detection_rate": 0.6667,
+          "total_plates": 56,
+          "mean_confidence": 0.941,
+          "max_confidence": 1.0,
+          "mean_latency_ms": 164.329,
+          "p95_latency_ms": 193.753,
+          "plate_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolos/video_1"
+        }
+      },
+      "per_frame": "omitted_use_--keep-per-frame"
+    },
+    {
+      "video": "video_2.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "target_track_id": 14,
+      "target_track_selection_reason": "iou_match_best_frame=1.00",
+      "target_frame_count": 68,
+      "frame_meta": {
+        "width": 3840,
+        "height": 2160,
+        "fps": 50.0,
+        "frames": 457
+      },
+      "annotated_video": "runs/plate_ocr/POCR-EXP-001-plate-detection/annotated/video_2_plate_detection_yolos.mp4",
+      "models": {
+        "yolos": {
+          "model_ref": "nickmuchi/yolos-small-finetuned-license-plate-detection",
+          "run_frames": 68,
+          "target_track_frames": 340,
+          "frames_with_plate": 43,
+          "plate_detection_rate": 0.6324,
+          "total_plates": 53,
+          "mean_confidence": 0.914,
+          "max_confidence": 1.0,
+          "mean_latency_ms": 171.218,
+          "p95_latency_ms": 221.109,
+          "plate_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolos/video_2"
+        }
+      },
+      "per_frame": "omitted_use_--keep-per-frame"
+    },
+    {
+      "video": "video_3.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "target_track_id": 23,
+      "target_track_selection_reason": "iou_match_best_frame=1.00",
+      "target_frame_count": 57,
+      "frame_meta": {
+        "width": 3840,
+        "height": 2160,
+        "fps": 50.0,
+        "frames": 383
+      },
+      "annotated_video": "runs/plate_ocr/POCR-EXP-001-plate-detection/annotated/video_3_plate_detection_yolos.mp4",
+      "models": {
+        "yolos": {
+          "model_ref": "nickmuchi/yolos-small-finetuned-license-plate-detection",
+          "run_frames": 57,
+          "target_track_frames": 284,
+          "frames_with_plate": 51,
+          "plate_detection_rate": 0.8947,
+          "total_plates": 55,
+          "mean_confidence": 0.957,
+          "max_confidence": 1.0,
+          "mean_latency_ms": 170.056,
+          "p95_latency_ms": 220.748,
+          "plate_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolos/video_3"
+        }
+      },
+      "per_frame": "omitted_use_--keep-per-frame"
+    }
+  ],
+  "manual_review_template": "testing/templates/manual_plate_ocr_review.csv",
+  "notes": [
+    "Detector-only smoke test; OCR yok.",
+    "Ham plaka/araç görselleri runs/ altında ignore'ludur, commit edilmez.",
+    "Hedef track IoU eşleşmesiyle seçilir; track ID numarasına güvenilmez."
+  ]
+}

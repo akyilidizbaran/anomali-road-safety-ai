@@ -136,6 +136,9 @@ Frame içindeki araçları bulur. Pipeline’ın kök model çıktısıdır.
 * `fallback_detector`
 * `routing_mode`
 * `confidence_threshold`
+* `evidence_confidence_threshold`
+* `candidate_evidence_confidence_threshold`
+* `threshold_selection_status`
 * `inference_latency_ms`
 * `postprocess_latency_ms`
 * `nms_threshold`
@@ -194,16 +197,19 @@ Opsiyonel detection alanları:
   "frame_id": "frame_000123",
   "timestamp_utc": "2026-06-08T10:30:12Z",
   "status": "ok",
-  "model_version": "vehicle_detector_yolo11n_v1",
+  "model_version": "vehicle_detector_general_yolo11n_bdd100k_v1",
   "condition_profile": "dark",
   "condition_confidence": 0.86,
-  "selected_detector": "vehicle_detector_yolo11n_general_v1",
-  "fallback_detector": "vehicle_detector_yolo11n_general_v1",
+  "selected_detector": "vehicle_detector_general_yolo11n_bdd100k_v1",
+  "fallback_detector": "vehicle_detector_general_yolo11n_bdd100k_v1",
   "routing_mode": "general_fallback",
   "source_resolution": "1280x720",
   "processed_resolution": "640x640",
   "input_size": 640,
   "confidence_threshold": 0.25,
+  "threshold_selection_status": "pending_threshold_sweep",
+  "candidate_evidence_confidence_threshold": 0.60,
+  "final_confidence_threshold": null,
   "nms_threshold": 0.7,
   "class_filter": ["car", "bus", "truck", "motorcycle"],
   "detections": [

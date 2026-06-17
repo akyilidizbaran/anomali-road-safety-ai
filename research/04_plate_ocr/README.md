@@ -52,9 +52,32 @@ OCR pipeline kararı, format kontrol kuralı ve test metriği seti.
 
 * `deep_research/deep_research_report.md`
 * `decision_plate_ocr_baseline_v1.md`
+* `plate_detection_literature_recommendation_2026_06_15.md`
 * `benchmark_plan.md`
 * `dataset_license_checklist.md`
+* `RUN_POCR_EXP_005.md`
+* `../../models/experiments/POCR_EXP_005_plate_detector_report.md`
+* `../../testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
 * `../../testing/templates/manual_plate_ocr_review.csv`
 * `../../models/benchmarks/plate_ocr/plate_ocr_baseline_comparison.csv`
 
 İlk OCR baseline PaddleOCR PP-OCRv5 Latin/mobile recognition olarak seçildi. EasyOCR ikinci aday, Tesseract debug/fallback adayıdır. Fine-tune ilk MVP'de açılmayacaktır.
+
+Calistirma script'leri:
+
+* `../../scripts/benchmarks/run_plate_detection_smoke.py`
+* `../../scripts/benchmarks/run_plate_ocr_baseline.py`
+* `RUN_POCR_EXP_001.md`
+* `RUN_POCR_EXP_002.md`
+* `RUN_POCR_EXP_005.md`
+
+## 2026-06-17 POCR-EXP-005 Durumu
+
+YOLO11n tabanlı single-class `license_plate` detector fine-tune koşusu tamamlandı. Yeni `best.pt`, aynı val/test split üzerinde önceki lokal baseline'a göre belirgin şekilde daha yüksek `mAP@0.5:0.95` verdi.
+
+Önemli notlar:
+
+* Bu sonuç plate detection sonucudur; OCR doğruluğu değildir.
+* UFPR dış benchmark koşmadı.
+* Yeni model, lokal `Test/video_1-3.mp4` target ROI smoke/manual review geçmeden runtime default olarak terfi ettirilmeyecek.
+* İndirilecek aday model: `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt`.

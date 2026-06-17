@@ -8,6 +8,15 @@ Eğitimin ana yükü sıfırdan model eğitmek olmayacak. İnternet üzerinde er
 
 Runtime akışında ortam/hava/ışık/görüş bağlamı erken üretilir; ancak model geliştirme yükü açısından ilk ana araştırma ve deney başlığı araç tespitidir. Bu ayrım raporda açık tutulmalıdır.
 
+2026-06-15 güncel durum:
+
+* `VD-EXP-002-GENERAL-YOLO11N`, mevcut MVP için aktif/best vehicle detector olarak sabitlendi.
+* Runtime/demo evidence/final-acceptance confidence gate: `TBD after threshold sweep`.
+* Current manual-review candidate false-positive pruning gate: `0.60`.
+* Manuel review: `Test/video_1-3.mp4` içinde ana araç her frame'de yakalanıyor, bbox stabil, `0.60` aday gate sonrası gözlenen false positive kalmıyor. Bu değer final threshold değildir.
+* `VD-EXP-006-MOTORCYCLE-FOCUS-YOLO11N` başarısız/regresyon kabul edildi; motorcycle özel fine-tune ertelendi.
+* Zaman kısıtı nedeniyle ağır vehicle detection tune yerine diğer AI modüllerinin baseline/tune aşamalarına geçilecek.
+
 ## Geliştirme Sırası
 
 1. Araç tespiti.
@@ -73,6 +82,35 @@ Araç tespitinden sonra tasarlanan modüller sırasıyla:
 10. **Risk skoru ve kritik mod orkestrasyonu:** Modül çıktıları tek risk skoruna ve uzman çağırma politikasına bağlanır.
 11. **5G/QoD adapter:** Riskli araçta QoD aday/request akışı başlatılır; aktif olursa gerçek video kalite artırımı seçici şekilde bağlanır.
 12. **LLM açıklama katmanı:** Event JSON, API/local LLM/template fallback ile insan okunur açıklamaya çevrilir.
+
+## Güncel Aktif Sıra - 2026-06-15
+
+Araç tespiti ve tracking omurgası mevcut MVP için yeterli kabul edildiği için
+sıradaki çalışma sırası aşağıdaki gibi güncellendi:
+
+1. **Plate Detection + OCR baseline/tune**
+   * Hedef araç/track penceresi üzerinden plaka bbox ve OCR çıkarımı.
+   * Her frame değil, track-level en iyi crop penceresi.
+   * Evidence JSON'a `plate_ocr_result`, confidence, warning ve crop refs ekleme.
+2. **Relative Speed / Motion Signal**
+   * Mutlak km/s iddiası kurmadan önce track center/bbox history üzerinden göreli hız sinyali.
+   * `speed_mode=relative` ve `calibration_unavailable` warning alanları.
+3. **Risk / Evidence Fusion**
+   * Vehicle detection, tracking, plate/OCR ve relative motion sinyallerini tek event JSON'a bağlama.
+   * Confidence, warning, model version ve source refs zorunlu.
+4. **Condition Router entegrasyonu**
+   * COND-EXP-001 output'u açıklayıcı/advisory sinyal olarak korunur.
+   * Detector routing hâlâ `general_fallback`; specialist terfi yok.
+5. **Cabin / Driver-Object baseline**
+   * Ağır eğitimden önce pretrained veya public baseline araştırması.
+   * Kontrollü video ve görünürlük yeterliyse çalışacak final genişletme olarak tutulur.
+
+Bu sırada araç tespiti tekrar açılacaksa yalnız şu koşullarda açılmalıdır:
+
+* Threshold sweep sonrası seçilen confidence gate altında ana araç / evidence kabul davranışı bozulursa.
+* Car bbox stabilitesi evidence crop için yetersiz kalırsa.
+* Yeni test videolarında sistematik false positive tekrar ortaya çıkarsa.
+* Yeni veri seti veya hedef senaryo car/general detection başarısını belirgin düşürürse.
 
 ## İlk Model İçin Kabul Kriteri
 

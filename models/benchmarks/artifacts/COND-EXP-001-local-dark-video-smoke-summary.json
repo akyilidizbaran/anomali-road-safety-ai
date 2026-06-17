@@ -1,0 +1,344 @@
+{
+  "experiment_id": "COND-EXP-001-local-dark-video-smoke",
+  "checkpoint": "/Users/baran/Desktop/5G Teknofest/models/checkpoints/condition_profile/COND-EXP-001-mobilenet_v3_small-best.pt",
+  "backbone": "mobilenet_v3_small",
+  "selection_source": "COND-EXP-001 best_val_macro_f1 selected checkpoint",
+  "condition_classes": [
+    "day_clear",
+    "night_low_light",
+    "low_light_transition",
+    "rain",
+    "fog_low_visibility",
+    "adverse_other",
+    "unknown"
+  ],
+  "device": "mps",
+  "videos": [
+    {
+      "video": "/Users/baran/Desktop/5G Teknofest/Test/video_1.mp4",
+      "status": "ok",
+      "source_resolution": [
+        3840,
+        2160
+      ],
+      "video_fps": 50.0,
+      "total_frames": 423,
+      "sample_every_n_frames": 15,
+      "sampled_frames": 28,
+      "profile_counts": {
+        "night_low_light": 28
+      },
+      "profile_ratios": {
+        "day_clear": 0.0,
+        "night_low_light": 1.0,
+        "low_light_transition": 0.0,
+        "rain": 0.0,
+        "fog_low_visibility": 0.0,
+        "adverse_other": 0.0,
+        "unknown": 0.0
+      },
+      "dominant_profile": "night_low_light",
+      "dominant_confidence_mean": 0.7689277923532895,
+      "mean_confidence": 0.7689277923532895,
+      "top_mean_scores": [
+        {
+          "label": "night_low_light",
+          "score": 0.7689277923532895
+        },
+        {
+          "label": "adverse_other",
+          "score": 0.11690839333459735
+        },
+        {
+          "label": "rain",
+          "score": 0.09176957933232188
+        }
+      ],
+      "sampled_preview": [
+        {
+          "frame_id": 15,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8309
+        },
+        {
+          "frame_id": 30,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8488
+        },
+        {
+          "frame_id": 45,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8638
+        },
+        {
+          "frame_id": 60,
+          "condition_profile": "night_low_light",
+          "confidence": 0.843
+        },
+        {
+          "frame_id": 75,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8518
+        },
+        {
+          "frame_id": 90,
+          "condition_profile": "night_low_light",
+          "confidence": 0.812
+        },
+        {
+          "frame_id": 105,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8074
+        },
+        {
+          "frame_id": 120,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8256
+        },
+        {
+          "frame_id": 135,
+          "condition_profile": "night_low_light",
+          "confidence": 0.854
+        },
+        {
+          "frame_id": 150,
+          "condition_profile": "night_low_light",
+          "confidence": 0.829
+        },
+        {
+          "frame_id": 165,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8179
+        },
+        {
+          "frame_id": 180,
+          "condition_profile": "night_low_light",
+          "confidence": 0.6832
+        }
+      ],
+      "processing_seconds": 3.5414852500000507,
+      "sampled_fps": 7.906287340883207,
+      "selected_detector_profile": "general",
+      "fallback_used": true,
+      "routing_reason": "night_low_light specialist is not promoted; general detector remains active"
+    },
+    {
+      "video": "/Users/baran/Desktop/5G Teknofest/Test/video_2.mp4",
+      "status": "ok",
+      "source_resolution": [
+        3840,
+        2160
+      ],
+      "video_fps": 50.0,
+      "total_frames": 457,
+      "sample_every_n_frames": 15,
+      "sampled_frames": 30,
+      "profile_counts": {
+        "night_low_light": 29,
+        "adverse_other": 1
+      },
+      "profile_ratios": {
+        "day_clear": 0.0,
+        "night_low_light": 0.9666666666666667,
+        "low_light_transition": 0.0,
+        "rain": 0.0,
+        "fog_low_visibility": 0.0,
+        "adverse_other": 0.03333333333333333,
+        "unknown": 0.0
+      },
+      "dominant_profile": "night_low_light",
+      "dominant_confidence_mean": 0.742630521798956,
+      "mean_confidence": 0.7294341325759888,
+      "top_mean_scores": [
+        {
+          "label": "night_low_light",
+          "score": 0.7281314820051193
+        },
+        {
+          "label": "adverse_other",
+          "score": 0.13750357863803706
+        },
+        {
+          "label": "rain",
+          "score": 0.10951748788356781
+        }
+      ],
+      "sampled_preview": [
+        {
+          "frame_id": 15,
+          "condition_profile": "night_low_light",
+          "confidence": 0.7784
+        },
+        {
+          "frame_id": 30,
+          "condition_profile": "night_low_light",
+          "confidence": 0.7786
+        },
+        {
+          "frame_id": 45,
+          "condition_profile": "night_low_light",
+          "confidence": 0.7856
+        },
+        {
+          "frame_id": 60,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8073
+        },
+        {
+          "frame_id": 75,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8033
+        },
+        {
+          "frame_id": 90,
+          "condition_profile": "night_low_light",
+          "confidence": 0.801
+        },
+        {
+          "frame_id": 105,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8107
+        },
+        {
+          "frame_id": 120,
+          "condition_profile": "night_low_light",
+          "confidence": 0.808
+        },
+        {
+          "frame_id": 135,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8454
+        },
+        {
+          "frame_id": 150,
+          "condition_profile": "night_low_light",
+          "confidence": 0.7833
+        },
+        {
+          "frame_id": 165,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8014
+        },
+        {
+          "frame_id": 180,
+          "condition_profile": "night_low_light",
+          "confidence": 0.661
+        }
+      ],
+      "processing_seconds": 1.801549125000065,
+      "sampled_fps": 16.65233525064098,
+      "selected_detector_profile": "general",
+      "fallback_used": true,
+      "routing_reason": "night_low_light specialist is not promoted; general detector remains active"
+    },
+    {
+      "video": "/Users/baran/Desktop/5G Teknofest/Test/video_3.mp4",
+      "status": "ok",
+      "source_resolution": [
+        3840,
+        2160
+      ],
+      "video_fps": 50.0,
+      "total_frames": 383,
+      "sample_every_n_frames": 15,
+      "sampled_frames": 25,
+      "profile_counts": {
+        "night_low_light": 24,
+        "rain": 1
+      },
+      "profile_ratios": {
+        "day_clear": 0.0,
+        "night_low_light": 0.96,
+        "low_light_transition": 0.0,
+        "rain": 0.04,
+        "fog_low_visibility": 0.0,
+        "adverse_other": 0.0,
+        "unknown": 0.0
+      },
+      "dominant_profile": "night_low_light",
+      "dominant_confidence_mean": 0.7231273824969927,
+      "mean_confidence": 0.7083483171463013,
+      "top_mean_scores": [
+        {
+          "label": "night_low_light",
+          "score": 0.7080048584938049
+        },
+        {
+          "label": "rain",
+          "score": 0.1645205043256283
+        },
+        {
+          "label": "adverse_other",
+          "score": 0.1069595356285572
+        }
+      ],
+      "sampled_preview": [
+        {
+          "frame_id": 15,
+          "condition_profile": "night_low_light",
+          "confidence": 0.6416
+        },
+        {
+          "frame_id": 30,
+          "condition_profile": "night_low_light",
+          "confidence": 0.5903
+        },
+        {
+          "frame_id": 45,
+          "condition_profile": "night_low_light",
+          "confidence": 0.6765
+        },
+        {
+          "frame_id": 60,
+          "condition_profile": "night_low_light",
+          "confidence": 0.5785
+        },
+        {
+          "frame_id": 75,
+          "condition_profile": "night_low_light",
+          "confidence": 0.5633
+        },
+        {
+          "frame_id": 90,
+          "condition_profile": "night_low_light",
+          "confidence": 0.5811
+        },
+        {
+          "frame_id": 105,
+          "condition_profile": "night_low_light",
+          "confidence": 0.6966
+        },
+        {
+          "frame_id": 120,
+          "condition_profile": "night_low_light",
+          "confidence": 0.6744
+        },
+        {
+          "frame_id": 135,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8434
+        },
+        {
+          "frame_id": 150,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8505
+        },
+        {
+          "frame_id": 165,
+          "condition_profile": "night_low_light",
+          "confidence": 0.8104
+        },
+        {
+          "frame_id": 180,
+          "condition_profile": "night_low_light",
+          "confidence": 0.831
+        }
+      ],
+      "processing_seconds": 1.5127835839999761,
+      "sampled_fps": 16.525827133777515,
+      "selected_detector_profile": "general",
+      "fallback_used": true,
+      "routing_reason": "night_low_light specialist is not promoted; general detector remains active"
+    }
+  ]
+}

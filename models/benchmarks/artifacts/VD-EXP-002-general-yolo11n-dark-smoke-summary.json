@@ -1,9 +1,10 @@
 {
   "experiment_id": "VD-EXP-002-dark-video-smoke",
+  "report_title": "VD-EXP-002 Dark Video Smoke Test Summary",
   "weights": "models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt",
   "device": "mps",
   "imgsz": 640,
-  "conf": 0.25,
+  "conf": 0.6,
   "classes": [
     0,
     1,
@@ -11,6 +12,17 @@
     3
   ],
   "runs_dir": "runs/vehicle_detection/VD-EXP-002-dark-smoke",
+  "condition_profile_enabled": true,
+  "condition_checkpoint": "models/checkpoints/condition_profile/COND-EXP-001-mobilenet_v3_small-best.pt",
+  "condition_sample_every": 15,
+  "condition_confidence_threshold": 0.65,
+  "unpromoted_condition_profiles": [
+    "fog_low_visibility"
+  ],
+  "detector_routing_policy": "condition profile is advisory; specialist detector profiles are not promoted until condition-specific benchmarks beat the general detector",
+  "manual_review_enabled": true,
+  "manual_review_source": "testing/manual_reviews/vd_exp_002_dark_video_manual_review.json",
+  "manual_review_id": "VD-EXP-002-dark-video-manual-review-v1",
   "videos": [
     {
       "video": "Test/video_1.mp4",
@@ -19,19 +31,65 @@
       "width": 3840,
       "height": 2160,
       "frames_processed": 423,
-      "frames_with_detections": 423,
-      "total_detections": 598,
+      "frames_with_detections": 388,
+      "total_detections": 476,
       "detections_by_class": {
-        "car": 598
+        "car": 476
       },
-      "mean_confidence": 0.779,
-      "mean_pipeline_ms": 17.263,
-      "p95_pipeline_ms": 24.224,
-      "mean_inference_ms": 9.627,
-      "p95_inference_ms": 13.176,
-      "wall_seconds": 14.614,
-      "effective_fps": 28.945,
-      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_1/video_1.mp4"
+      "mean_confidence": 0.853,
+      "mean_pipeline_ms": 21.157,
+      "p95_pipeline_ms": 30.468,
+      "mean_inference_ms": 10.315,
+      "p95_inference_ms": 15.237,
+      "wall_seconds": 16.163,
+      "effective_fps": 26.171,
+      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_1/video_1.mp4",
+      "condition_profile": {
+        "status": "ok",
+        "dominant_profile": "night_low_light",
+        "dominant_confidence_mean": 0.769,
+        "mean_confidence": 0.769,
+        "sampled_frames": 28,
+        "profile_counts": {
+          "night_low_light": 28
+        },
+        "top_mean_scores": [
+          {
+            "label": "night_low_light",
+            "score": 0.7689277923532895
+          },
+          {
+            "label": "adverse_other",
+            "score": 0.11690839333459735
+          },
+          {
+            "label": "rain",
+            "score": 0.09176957933232188
+          }
+        ],
+        "profile_supported_in_current_scope": true,
+        "detector_profile_used": "general",
+        "specialist_promoted": false,
+        "fallback_used": true,
+        "routing_reason": "night_low_light specialist is not promoted; general detector remains active"
+      },
+      "manual_review": {
+        "manual_status": "reviewed",
+        "main_vehicle_detected_each_frame": true,
+        "class_confusion_confirmed": false,
+        "reviewer_note": "Ana araç her frame'de doğru şekilde tespit ediliyor. Bu video için manuel review kapsamında sınıf karışıklığı not edilmedi.",
+        "bbox_stability": "stable_manual_review",
+        "runtime_confidence_threshold_selected": 0.6,
+        "false_positive_after_threshold_0_60": false
+      },
+      "class_quality": {
+        "manual_review_status": "reviewed",
+        "class_review_required": false,
+        "raw_detector_class_counts_are_final": true,
+        "class_reliability": "manual_review_passed_for_observed_scope",
+        "warnings": [],
+        "event_policy": "raw_detector_class_counts_can_be_reported_as_smoke-test_observation_only"
+      }
     },
     {
       "video": "Test/video_2.mp4",
@@ -40,19 +98,66 @@
       "width": 3840,
       "height": 2160,
       "frames_processed": 457,
-      "frames_with_detections": 457,
-      "total_detections": 645,
+      "frames_with_detections": 365,
+      "total_detections": 468,
       "detections_by_class": {
-        "car": 645
+        "car": 468
       },
-      "mean_confidence": 0.735,
-      "mean_pipeline_ms": 16.276,
-      "p95_pipeline_ms": 21.998,
-      "mean_inference_ms": 9.573,
-      "p95_inference_ms": 13.451,
-      "wall_seconds": 14.922,
-      "effective_fps": 30.625,
-      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_2/video_2.mp4"
+      "mean_confidence": 0.831,
+      "mean_pipeline_ms": 19.458,
+      "p95_pipeline_ms": 25.152,
+      "mean_inference_ms": 10.446,
+      "p95_inference_ms": 15.72,
+      "wall_seconds": 16.443,
+      "effective_fps": 27.793,
+      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_2/video_2.mp4",
+      "condition_profile": {
+        "status": "ok",
+        "dominant_profile": "night_low_light",
+        "dominant_confidence_mean": 0.743,
+        "mean_confidence": 0.729,
+        "sampled_frames": 30,
+        "profile_counts": {
+          "night_low_light": 29,
+          "adverse_other": 1
+        },
+        "top_mean_scores": [
+          {
+            "label": "night_low_light",
+            "score": 0.7281314820051193
+          },
+          {
+            "label": "adverse_other",
+            "score": 0.13750357863803706
+          },
+          {
+            "label": "rain",
+            "score": 0.10951748788356781
+          }
+        ],
+        "profile_supported_in_current_scope": true,
+        "detector_profile_used": "general",
+        "specialist_promoted": false,
+        "fallback_used": true,
+        "routing_reason": "night_low_light specialist is not promoted; general detector remains active"
+      },
+      "manual_review": {
+        "manual_status": "reviewed",
+        "main_vehicle_detected_each_frame": true,
+        "class_confusion_confirmed": false,
+        "reviewer_note": "Ana araç her frame'de doğru şekilde tespit ediliyor. Bu video için manuel review kapsamında sınıf karışıklığı not edilmedi.",
+        "bbox_stability": "stable_manual_review",
+        "runtime_confidence_threshold_selected": 0.6,
+        "false_positive_after_threshold_0_60": false
+      },
+      "class_quality": {
+        "manual_review_status": "reviewed",
+        "class_review_required": false,
+        "raw_detector_class_counts_are_final": true,
+        "class_reliability": "manual_review_passed_for_observed_scope",
+        "warnings": [],
+        "event_policy": "raw_detector_class_counts_can_be_reported_as_smoke-test_observation_only"
+      }
     },
     {
       "video": "Test/video_3.mp4",
@@ -61,20 +166,85 @@
       "width": 3840,
       "height": 2160,
       "frames_processed": 383,
-      "frames_with_detections": 383,
-      "total_detections": 617,
+      "frames_with_detections": 373,
+      "total_detections": 486,
       "detections_by_class": {
-        "car": 611,
-        "motorcycle": 6
+        "car": 486
       },
-      "mean_confidence": 0.732,
-      "mean_pipeline_ms": 16.983,
-      "p95_pipeline_ms": 25.073,
-      "mean_inference_ms": 9.972,
-      "p95_inference_ms": 14.208,
-      "wall_seconds": 13.464,
-      "effective_fps": 28.446,
-      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_3/video_3.mp4"
+      "mean_confidence": 0.8,
+      "mean_pipeline_ms": 20.297,
+      "p95_pipeline_ms": 27.974,
+      "mean_inference_ms": 10.936,
+      "p95_inference_ms": 16.674,
+      "wall_seconds": 14.756,
+      "effective_fps": 25.956,
+      "annotated_video_uri": "runs/vehicle_detection/VD-EXP-002-dark-smoke/video_3/video_3.mp4",
+      "condition_profile": {
+        "status": "ok",
+        "dominant_profile": "night_low_light",
+        "dominant_confidence_mean": 0.723,
+        "mean_confidence": 0.708,
+        "sampled_frames": 25,
+        "profile_counts": {
+          "night_low_light": 24,
+          "rain": 1
+        },
+        "top_mean_scores": [
+          {
+            "label": "night_low_light",
+            "score": 0.7080048584938049
+          },
+          {
+            "label": "rain",
+            "score": 0.1645205043256283
+          },
+          {
+            "label": "adverse_other",
+            "score": 0.1069595356285572
+          }
+        ],
+        "profile_supported_in_current_scope": true,
+        "detector_profile_used": "general",
+        "specialist_promoted": false,
+        "fallback_used": true,
+        "routing_reason": "night_low_light specialist is not promoted; general detector remains active"
+      },
+      "manual_review": {
+        "manual_status": "reviewed",
+        "main_vehicle_detected_each_frame": true,
+        "class_confusion_confirmed": true,
+        "issue_type": "background_dark_motorcycle_detected_as_car_all_visible_frames",
+        "affected_object": "background_dark_motorcycle",
+        "expected_class": "motorcycle",
+        "observed_raw_detector_class": "car",
+        "manual_observation": "Ana araç her frame'de doğru tespit ediliyor. Arka planda çok karanlıkta görünen motosiklet ise görünür olduğu karelerde sistematik biçimde car olarak sınıflandırılıyor.",
+        "runtime_mitigation": {
+          "class_review_required": false,
+          "use_raw_detector_class_as_event_label": true,
+          "recommended_event_label": "car",
+          "evidence_note": "Manual review observed motorcycle/car confusion in this sample, but VD-EXP-006 motorcycle-focused fine-tune was not promoted. Runtime evidence carries VD-EXP-002 detector output; final confidence threshold is pending threshold sweep, with 0.60 kept only as a current manual-review candidate gate."
+        },
+        "model_improvement_experiment": "VD-EXP-006-MOTORCYCLE-FOCUS_FAILED_NOT_PROMOTED",
+        "bbox_stability": "stable_manual_review",
+        "runtime_confidence_threshold_selected": 0.6,
+        "false_positive_after_threshold_0_60": false
+      },
+      "class_quality": {
+        "manual_review_status": "reviewed",
+        "class_review_required": false,
+        "raw_detector_class_counts_are_final": true,
+        "class_reliability": "raw_detector_prediction_used",
+        "warnings": [
+          "manual_review_observed_motorcycle_car_confusion_model_improvement_needed"
+        ],
+        "affected_object": "background_dark_motorcycle",
+        "expected_class": "motorcycle",
+        "observed_raw_detector_class": "car",
+        "recommended_event_label": "car",
+        "model_improvement_experiment": "VD-EXP-006-MOTORCYCLE-FOCUS_FAILED_NOT_PROMOTED",
+        "evidence_note": "Manual review observed motorcycle/car confusion in this sample, but VD-EXP-006 motorcycle-focused fine-tune was not promoted. Runtime evidence carries VD-EXP-002 detector output; final confidence threshold is pending threshold sweep, with 0.60 kept only as a current manual-review candidate gate.",
+        "event_policy": "carry the detector class as predicted in event/evidence; use the manual observation only as a model improvement signal, not as a per-video runtime override"
+      }
     }
   ]
 }

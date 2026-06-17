@@ -6,6 +6,9 @@
 * Source URL: https://github.com/ucbdrive/bdd100k
 * Format reference: https://github.com/ucbdrive/bdd100k/blob/master/doc/format.md
 * License reference: https://github.com/ucbdrive/bdd100k/blob/master/LICENSE
+* Practical Colab mirror: https://www.kaggle.com/datasets/solesensei/solesensei_bdd100k
+* Required label package: BDD100K `Detection 2020 Labels`
+* Practical label download URL: https://dl.cv.ethz.ch/bdd100k/data/bdd100k_det_20_labels_trainval.zip
 * Version/date accessed: 2026-06-08
 * License: BSD-3-Clause in GitHub repository; project will keep code/data usage private/licensed. Download portal terms should still be archived for traceability.
 * Citation: BDD100K paper / official citation to be added from dataset source.
@@ -54,6 +57,10 @@ See:
   * convert BDD JSON boxes to YOLO label format,
   * create condition breakdown validation lists.
 * Risks:
+  * Kaggle mirror is a practical access path, not the official source of record,
+  * current Drive mirror has images but detection label JSON files were not found by Drive search,
+  * do not re-download images when only labels are missing; download/add `Detection 2020 Labels` only,
+  * mirror content and label path structure must be validated on first Colab run,
   * download portal terms should be archived for traceability,
   * class naming must be verified on the downloaded label version,
   * image-level split must avoid leakage where applicable,

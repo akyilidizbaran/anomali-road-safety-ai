@@ -50,6 +50,29 @@ Kaynak rapor:
 
 * `testing/reports/cond_exp_001_condition_classifier_run_review.md`
 
+## POCR-EXP-005 Plaka Tespiti İlk Sonuçları
+
+YOLO11n tabanlı tek sınıflı plate detector fine-tune koşusu tamamlanmıştır. Bu sonuçlar yalnız plate bbox tespitini kapsar; OCR doğruluğu değildir.
+
+| Model | Split | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 |
+|---|---|---:|---:|---:|---:|
+| POCR-EXP-005 | val | 0.9947 | 0.9891 | 0.9948 | 0.8569 |
+| POCR-EXP-005 | test | 0.9951 | 0.9907 | 0.9948 | 0.8543 |
+| Önceki baseline | test | 0.9726 | 0.9586 | 0.9754 | 0.6089 |
+
+Test split üzerinde `mAP@0.5:0.95` artışı yaklaşık `+0.2454` olarak ölçülmüştür. Bu, plate bbox yerleşim kalitesinde belirgin iyileşme sinyali verir.
+
+Sınırlılık:
+
+* UFPR-ALPR dış benchmark bu koşuda bulunmadığı için skipped.
+* Gerçek `Test/video_1-3.mp4` target vehicle ROI smoke/manual review henüz yapılmadı.
+* OCR/format doğrulama ayrı deneydir.
+
+Kaynak raporlar:
+
+* `models/experiments/POCR_EXP_005_plate_detector_report.md`
+* `testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
+
 ## Çözümümüze Neden Güveniyoruz?
 
 Bu soru yalnız accuracy ile cevaplanmamalıdır. Cevap şu kanıtlarla kurulmalıdır:

@@ -64,6 +64,23 @@ Kaynak koşu incelemesi:
 * `testing/reports/cond_exp_001_condition_classifier_run_review.md`
 * `models/experiments/COND_EXP_001_bdd100k_condition_classifier.md`
 
+## POCR-EXP-005 Plaka Tespiti Veri Seti Notu
+
+Plaka tespiti için ilk kapsamlı fine-tune koşusunda Turkish Number Plates Roboflow v2 ve Roboflow License Plate Recognition v13 kaynakları birleştirilmiştir. Etiketler tek sınıf `license_plate` olarak normalize edilmiş, duplicate/near-duplicate temizliği sonrası deterministik train/validation/test ayrımı üretilmiştir.
+
+| Split | Görüntü | Label |
+|---|---:|---:|
+| train | 85,039 | 85,039 |
+| val | 10,636 | 10,636 |
+| test | 10,757 | 10,757 |
+
+Bu veri seti plate bbox tespiti içindir; OCR metni/karakter etiketi içerdiği varsayımıyla raporlanmamalıdır. OCR doğruluğu için ayrı plate crop + metin etiketi veya manuel review süreci gerekir.
+
+Kaynak koşu incelemesi:
+
+* `models/experiments/POCR_EXP_005_plate_detector_report.md`
+* `testing/reports/pocr_exp_005_plate_detector_ftr_summary.md`
+
 ## Sorulacak Noktalar
 
 * Hangi veri setleri kesin kullanılacak?

@@ -1,0 +1,61 @@
+{
+  "review_id": "VD-EXP-002-dark-video-manual-review-v1",
+  "review_date": "2026-06-15",
+  "review_type": "manual qualitative review",
+  "scope": "Local dark-video smoke test manual observation. This is not a ground-truth benchmark.",
+  "videos": {
+    "Test/video_1.mp4": {
+      "manual_status": "reviewed",
+      "main_vehicle_detected_each_frame": true,
+      "class_confusion_confirmed": false,
+      "reviewer_note": "Ana araç her frame'de doğru şekilde tespit ediliyor. Bu video için manuel review kapsamında sınıf karışıklığı not edilmedi.",
+      "bbox_stability": "stable_manual_review",
+      "false_positive_after_candidate_threshold_0_60": false,
+      "candidate_evidence_confidence_threshold": 0.6,
+      "final_confidence_threshold": "TBD_after_threshold_sweep"
+    },
+    "Test/video_2.mp4": {
+      "manual_status": "reviewed",
+      "main_vehicle_detected_each_frame": true,
+      "class_confusion_confirmed": false,
+      "reviewer_note": "Ana araç her frame'de doğru şekilde tespit ediliyor. Bu video için manuel review kapsamında sınıf karışıklığı not edilmedi.",
+      "bbox_stability": "stable_manual_review",
+      "false_positive_after_candidate_threshold_0_60": false,
+      "candidate_evidence_confidence_threshold": 0.6,
+      "final_confidence_threshold": "TBD_after_threshold_sweep"
+    },
+    "Test/video_3.mp4": {
+      "manual_status": "reviewed",
+      "main_vehicle_detected_each_frame": true,
+      "class_confusion_confirmed": true,
+      "issue_type": "background_dark_motorcycle_detected_as_car_all_visible_frames",
+      "affected_object": "background_dark_motorcycle",
+      "expected_class": "motorcycle",
+      "observed_raw_detector_class": "car",
+      "manual_observation": "Ana araç her frame'de doğru tespit ediliyor. Arka planda çok karanlıkta görünen motosiklet ise görünür olduğu karelerde sistematik biçimde car olarak sınıflandırılıyor.",
+      "runtime_mitigation": {
+        "class_review_required": false,
+        "use_raw_detector_class_as_event_label": true,
+        "recommended_event_label": "car",
+        "evidence_note": "Manual review observed motorcycle/car confusion in this sample, but VD-EXP-006 motorcycle-focused fine-tune was not promoted. Runtime evidence carries VD-EXP-002 detector output; final confidence threshold is pending threshold sweep, with 0.60 kept only as a current manual-review candidate gate."
+      },
+      "model_improvement_experiment": "VD-EXP-006-MOTORCYCLE-FOCUS_FAILED_NOT_PROMOTED",
+      "bbox_stability": "stable_manual_review",
+      "false_positive_after_candidate_threshold_0_60": false,
+      "candidate_evidence_confidence_threshold": 0.6,
+      "final_confidence_threshold": "TBD_after_threshold_sweep"
+    }
+  },
+  "final_runtime_detector_decision": {
+    "active_detector": "VD-EXP-002-GENERAL-YOLO11N",
+    "active_checkpoint": "models/checkpoints/vehicle_detection/VD-EXP-002-GENERAL-YOLO11N-best.pt",
+    "main_vehicle_detected_each_frame_all_videos": true,
+    "bbox_stability": "stable_manual_review",
+    "false_positive_policy": "False positives were observed at lower confidence settings; confidence 0.60 is only the current manual-review candidate gate for false-positive pruning, not the final selected threshold.",
+    "motorcycle_scope": "deferred; BDD100K motorcycle-focused VD-EXP-006 regressed and is not promoted",
+    "review_limit": "manual qualitative review, not frame-level ground truth accuracy",
+    "threshold_selection_status": "pending_threshold_sweep",
+    "candidate_evidence_confidence_threshold": 0.6,
+    "final_confidence_threshold": "TBD_after_quantitative_threshold_sweep_and_manual_review"
+  }
+}

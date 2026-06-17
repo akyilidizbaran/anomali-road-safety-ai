@@ -18,6 +18,16 @@ ByteTrack veya BoT-SORT, araç tespitlerini track ID’ye dönüştürür. Track
 
 İki aşamalı mimari önerilir: vehicle ROI -> plate detector -> OCR. Türk plaka formatı regex/post-processing ile doğrulanır. OCR çıktısı temporal voting ile iyileştirilebilir.
 
+POCR-EXP-005 kapsamında iki aşamalı mimarinin ilk adımı olan plate detector için YOLO11n tabanlı tek sınıflı `license_plate` modeli fine-tune edilmiştir. Model tam frame eğitim verisi üzerinde plaka bbox tespiti öğrenmiştir; runtime'da false positive ve latency azaltmak için ByteTrack ile seçilen hedef araç ROI içinde çalıştırılması planlanır.
+
+Üretilen checkpoint:
+
+```text
+POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt
+```
+
+Bu checkpoint OCR modeli değildir. OCR tarafında PaddleOCR/EasyOCR karşılaştırması, Türk plaka regex post-processing ve track-level temporal voting bir sonraki aşamada ele alınacaktır.
+
 ### Hız
 
 Sabit kamera ve referans mesafe varsa homografi + tracking ile km/s tahmini yapılır. Kalibrasyon yoksa mutlak hız iddiası yerine göreli hız/risk skoru verilir.
@@ -56,6 +66,8 @@ Görünürlük yeterliyse araç cam/ön bölge ROI’sinde sürücü, yolcu, tel
 * Frame skipping.
 * Async inference.
 * Model çalışma frekansı ayrıştırma.
+
+POCR-EXP-005 için ONNX export başarıyla üretilmiştir. MacBook/local edge runtime testinde önce `.pt`, ardından gerekirse ONNX Runtime karşılaştırması yapılacaktır.
 
 ## Sorulacak Noktalar
 
