@@ -383,24 +383,58 @@ class FastPlateOcrEngine(OcrEngine):
         return lines
 
 
+def bbox_components(raw_bbox: Any, width: int, height: int) -> tuple[list[float], list[float]]:
+    if raw_bbox is None:
+        return [0.0, float(width)], [0.0, float(height)]
+    if (
+        isinstance(raw_bbox, (list, tuple))
+        and len(raw_bbox) == 4
+        and all(isinstance(value, (int, float)) for value in raw_bbox)
+    ):
+        x0, x1, y0, y1 = [float(value) for value in raw_bbox]
+        return [x0, x1], [y0, y1]
+    xs: list[float] = []
+    ys: list[float] = []
+    for point in raw_bbox:
+        if not isinstance(point, (list, tuple)) or len(point) < 2:
+            continue
+        xs.append(float(point[0]))
+        ys.append(float(point[1]))
+    if xs and ys:
+        return xs, ys
+    return [0.0, float(width)], [0.0, float(height)]
+
+
 class EasyOcrEngine(OcrEngine):
     key = "easyocr"
 
-    def __init__(self, lang: str, gpu: bool) -> None:
+    def __init__(self, lang: str, gpu: bool, detector: bool) -> None:
         import easyocr
 
-        self.reader = easyocr.Reader([lang], gpu=gpu)
-        self.model_ref = f"EasyOCR(lang={lang}, gpu={gpu})"
+        self.detector = detector
+        self.reader = easyocr.Reader([lang], gpu=gpu, detector=detector, recognizer=True, verbose=False)
+        mode = "detector+recognizer" if detector else "recognizer_only"
+        self.model_ref = f"EasyOCR(lang={lang}, gpu={gpu}, mode={mode})"
 
     def recognize(self, image: np.ndarray) -> list[dict[str, Any]]:
-        result = self.reader.readtext(image, detail=1, paragraph=False)
+        allowlist = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        if self.detector:
+            result = self.reader.readtext(image, detail=1, paragraph=False, allowlist=allowlist)
+        else:
+            grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
+            result = self.reader.recognize(
+                grey,
+                detail=1,
+                paragraph=False,
+                allowlist=allowlist,
+                reformat=False,
+            )
         lines: list[dict[str, Any]] = []
         for item in result:
             if len(item) < 3:
                 continue
             polygon, text, confidence = item[0], item[1], item[2]
-            xs = [float(point[0]) for point in polygon]
-            ys = [float(point[1]) for point in polygon]
+            xs, ys = bbox_components(polygon, image.shape[1], image.shape[0])
             lines.append(
                 {
                     "text": str(text).strip(),
@@ -464,8 +498,14 @@ def build_engines(args: argparse.Namespace) -> list[OcrEngine]:
             print(f"[skip] PaddleOCR yuklenemedi -> {exc}")
     if "easyocr" in args.engines:
         try:
-            engines.append(EasyOcrEngine(lang=args.easyocr_lang, gpu=args.easyocr_gpu))
-            print(f"[ok] EasyOCR yuklendi (gpu={args.easyocr_gpu})")
+            engines.append(
+                EasyOcrEngine(
+                    lang=args.easyocr_lang,
+                    gpu=args.easyocr_gpu,
+                    detector=args.easyocr_detector,
+                )
+            )
+            print(f"[ok] EasyOCR yuklendi (gpu={args.easyocr_gpu}, detector={args.easyocr_detector})")
         except Exception as exc:  # noqa: BLE001
             print(f"[skip] EasyOCR yuklenemedi -> {exc}")
     if "tesseract" in args.engines:
@@ -976,6 +1016,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--paddle-lang", default="en")
     parser.add_argument("--easyocr-lang", default="en")
     parser.add_argument("--easyocr-gpu", action="store_true")
+    parser.add_argument(
+        "--easyocr-detector",
+        action="store_true",
+        help="Plate crop yerine tam goruntu OCR denenmek istenirse EasyOCR text detector'u da yukle.",
+    )
     parser.add_argument("--tesseract-lang", default="eng")
     parser.add_argument("--tesseract-config", default="--psm 7")
     parser.add_argument("--fastplate-model", default="cct-s-v2-global-model")

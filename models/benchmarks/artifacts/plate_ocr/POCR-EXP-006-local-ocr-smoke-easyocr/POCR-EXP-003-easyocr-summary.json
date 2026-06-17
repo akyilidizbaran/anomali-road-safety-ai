@@ -1,0 +1,367 @@
+{
+  "experiment_id": "POCR-EXP-003",
+  "ocr_engine": "easyocr",
+  "ocr_engine_label": "EasyOCR",
+  "generated_at_utc": "2026-06-17T08:19:44Z",
+  "source_experiment_id": "POCR-EXP-005",
+  "source_stage": "plate_detection_smoke_test",
+  "source_detector_key": "yolo",
+  "source_detection_summary": "models/benchmarks/artifacts/plate_detection/POCR-EXP-005-local-video-smoke-yolo-summary.json",
+  "input_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json",
+  "model_ref": "EasyOCR(lang=en, gpu=False, mode=recognizer_only)",
+  "variants": [
+    "original"
+  ],
+  "upscale": 1.0,
+  "frame_stride": 1,
+  "limit_per_video": 2,
+  "min_ocr_confidence": 0.35,
+  "license_note": "Apache-2.0, package/model kaynaklari tekrar kontrol edilmeli",
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "track_id": "TRK-001",
+      "best_frame": 276,
+      "target_track_id": 1,
+      "source_plate_crop_dir": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1",
+      "crop_count": 2,
+      "processed_crops": 2,
+      "ocr_read_count": 2,
+      "format_valid_count": 2,
+      "province_valid_count": 2,
+      "mean_ocr_latency_ms": 23.734,
+      "p95_ocr_latency_ms": 40.887,
+      "source_detector_plate_detection_rate": 0.6095,
+      "best_frame_result": {
+        "raw_text": "L05Q0522",
+        "cleaned_text": "L05Q0522",
+        "normalized_text": "10SQ0522",
+        "ocr_confidence": 0.2109,
+        "format_valid": true,
+        "province_code_valid": true,
+        "correction_count": 2,
+        "variant": "original",
+        "line_count": 1,
+        "failure_reason": null,
+        "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1/frame_000002_plate0.jpg",
+        "frame": 2,
+        "latency_ms": 6.581
+      },
+      "highest_confidence_result": {
+        "raw_text": "L04C0522",
+        "cleaned_text": "L04C0522",
+        "normalized_text": "10AC0522",
+        "ocr_confidence": 0.4304,
+        "format_valid": true,
+        "province_code_valid": true,
+        "correction_count": 2,
+        "variant": "original",
+        "line_count": 1,
+        "failure_reason": null,
+        "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1/frame_000001_plate0.jpg",
+        "frame": 1,
+        "latency_ms": 40.887
+      },
+      "temporal_vote": {
+        "plate_text": "10AC0522",
+        "vote_confidence": 1.0,
+        "format_valid": true,
+        "province_code_valid": true,
+        "candidate_count": 1,
+        "top_candidates": [
+          {
+            "plate_text": "10AC0522",
+            "score": 1.1804,
+            "count": 1,
+            "max_confidence": 0.4304,
+            "format_valid": true,
+            "province_code_valid": true
+          }
+        ]
+      },
+      "time_to_first_readable_plate_frames": 0,
+      "time_to_first_readable_plate_seconds": 0.0,
+      "sample_results": [
+        {
+          "raw_text": "L04C0522",
+          "cleaned_text": "L04C0522",
+          "normalized_text": "10AC0522",
+          "ocr_confidence": 0.4304,
+          "format_valid": true,
+          "province_code_valid": true,
+          "correction_count": 2,
+          "variant": "original",
+          "line_count": 1,
+          "failure_reason": null,
+          "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1/frame_000001_plate0.jpg",
+          "frame": 1,
+          "latency_ms": 40.887
+        },
+        {
+          "raw_text": "L05Q0522",
+          "cleaned_text": "L05Q0522",
+          "normalized_text": "10SQ0522",
+          "ocr_confidence": 0.2109,
+          "format_valid": true,
+          "province_code_valid": true,
+          "correction_count": 2,
+          "variant": "original",
+          "line_count": 1,
+          "failure_reason": null,
+          "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1/frame_000002_plate0.jpg",
+          "frame": 2,
+          "latency_ms": 6.581
+        }
+      ],
+      "latency_samples_ms": [
+        40.887,
+        6.581
+      ],
+      "per_crop": "omitted_use_--keep-per-crop"
+    },
+    {
+      "video": "video_2.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "track_id": "TRK-001",
+      "best_frame": 281,
+      "target_track_id": 6,
+      "source_plate_crop_dir": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2",
+      "crop_count": 2,
+      "processed_crops": 2,
+      "ocr_read_count": 2,
+      "format_valid_count": 2,
+      "province_valid_count": 2,
+      "mean_ocr_latency_ms": 5.879,
+      "p95_ocr_latency_ms": 5.95,
+      "source_detector_plate_detection_rate": 0.6168,
+      "best_frame_result": {
+        "raw_text": "104140522",
+        "cleaned_text": "104140522",
+        "normalized_text": "10AIA0522",
+        "ocr_confidence": 0.1457,
+        "format_valid": true,
+        "province_code_valid": true,
+        "correction_count": 3,
+        "variant": "original",
+        "line_count": 1,
+        "failure_reason": null,
+        "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2/frame_000003_plate0.jpg",
+        "frame": 3,
+        "latency_ms": 5.95
+      },
+      "highest_confidence_result": {
+        "raw_text": "041Q0522",
+        "cleaned_text": "041Q0522",
+        "normalized_text": "04IQ0522",
+        "ocr_confidence": 0.2282,
+        "format_valid": true,
+        "province_code_valid": true,
+        "correction_count": 1,
+        "variant": "original",
+        "line_count": 1,
+        "failure_reason": null,
+        "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2/frame_000002_plate0.jpg",
+        "frame": 2,
+        "latency_ms": 5.807
+      },
+      "temporal_vote": {
+        "plate_text": "04IQ0522",
+        "vote_confidence": 0.522,
+        "format_valid": true,
+        "province_code_valid": true,
+        "candidate_count": 2,
+        "top_candidates": [
+          {
+            "plate_text": "04IQ0522",
+            "score": 0.9782,
+            "count": 1,
+            "max_confidence": 0.2282,
+            "format_valid": true,
+            "province_code_valid": true
+          },
+          {
+            "plate_text": "10AIA0522",
+            "score": 0.8957,
+            "count": 1,
+            "max_confidence": 0.1457,
+            "format_valid": true,
+            "province_code_valid": true
+          }
+        ]
+      },
+      "time_to_first_readable_plate_frames": 1,
+      "time_to_first_readable_plate_seconds": 0.02,
+      "sample_results": [
+        {
+          "raw_text": "041Q0522",
+          "cleaned_text": "041Q0522",
+          "normalized_text": "04IQ0522",
+          "ocr_confidence": 0.2282,
+          "format_valid": true,
+          "province_code_valid": true,
+          "correction_count": 1,
+          "variant": "original",
+          "line_count": 1,
+          "failure_reason": null,
+          "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2/frame_000002_plate0.jpg",
+          "frame": 2,
+          "latency_ms": 5.807
+        },
+        {
+          "raw_text": "104140522",
+          "cleaned_text": "104140522",
+          "normalized_text": "10AIA0522",
+          "ocr_confidence": 0.1457,
+          "format_valid": true,
+          "province_code_valid": true,
+          "correction_count": 3,
+          "variant": "original",
+          "line_count": 1,
+          "failure_reason": null,
+          "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2/frame_000003_plate0.jpg",
+          "frame": 3,
+          "latency_ms": 5.95
+        }
+      ],
+      "latency_samples_ms": [
+        5.807,
+        5.95
+      ],
+      "per_crop": "omitted_use_--keep-per-crop"
+    },
+    {
+      "video": "video_3.mp4",
+      "status": "completed",
+      "failure_reason": null,
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "track_id": "TRK-002",
+      "best_frame": 214,
+      "target_track_id": 10,
+      "source_plate_crop_dir": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3",
+      "crop_count": 2,
+      "processed_crops": 2,
+      "ocr_read_count": 2,
+      "format_valid_count": 0,
+      "province_valid_count": 0,
+      "mean_ocr_latency_ms": 12.107,
+      "p95_ocr_latency_ms": 12.435,
+      "source_detector_plate_detection_rate": 0.7833,
+      "best_frame_result": {
+        "raw_text": "2",
+        "cleaned_text": "2",
+        "normalized_text": "2",
+        "ocr_confidence": 0.0237,
+        "format_valid": false,
+        "province_code_valid": false,
+        "correction_count": null,
+        "variant": "original",
+        "line_count": 1,
+        "failure_reason": null,
+        "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3/frame_000003_plate0.jpg",
+        "frame": 3,
+        "latency_ms": 11.779
+      },
+      "highest_confidence_result": {
+        "raw_text": "2",
+        "cleaned_text": "2",
+        "normalized_text": "2",
+        "ocr_confidence": 0.0237,
+        "format_valid": false,
+        "province_code_valid": false,
+        "correction_count": null,
+        "variant": "original",
+        "line_count": 1,
+        "failure_reason": null,
+        "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3/frame_000003_plate0.jpg",
+        "frame": 3,
+        "latency_ms": 11.779
+      },
+      "temporal_vote": {
+        "plate_text": "2",
+        "vote_confidence": 0.614,
+        "format_valid": false,
+        "province_code_valid": false,
+        "candidate_count": 2,
+        "top_candidates": [
+          {
+            "plate_text": "2",
+            "score": 0.0237,
+            "count": 1,
+            "max_confidence": 0.0237,
+            "format_valid": false,
+            "province_code_valid": false
+          },
+          {
+            "plate_text": "1",
+            "score": 0.0149,
+            "count": 1,
+            "max_confidence": 0.0149,
+            "format_valid": false,
+            "province_code_valid": false
+          }
+        ]
+      },
+      "time_to_first_readable_plate_frames": 1,
+      "time_to_first_readable_plate_seconds": 0.02,
+      "sample_results": [
+        {
+          "raw_text": "2",
+          "cleaned_text": "2",
+          "normalized_text": "2",
+          "ocr_confidence": 0.0237,
+          "format_valid": false,
+          "province_code_valid": false,
+          "correction_count": null,
+          "variant": "original",
+          "line_count": 1,
+          "failure_reason": null,
+          "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3/frame_000003_plate0.jpg",
+          "frame": 3,
+          "latency_ms": 11.779
+        },
+        {
+          "raw_text": "1",
+          "cleaned_text": "1",
+          "normalized_text": "1",
+          "ocr_confidence": 0.0149,
+          "format_valid": false,
+          "province_code_valid": false,
+          "correction_count": null,
+          "variant": "original",
+          "line_count": 1,
+          "failure_reason": null,
+          "crop_file": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3/frame_000002_plate0.jpg",
+          "frame": 2,
+          "latency_ms": 12.435
+        }
+      ],
+      "latency_samples_ms": [
+        12.435,
+        11.779
+      ],
+      "per_crop": "omitted_use_--keep-per-crop"
+    }
+  ],
+  "aggregate": {
+    "processed_tracks": 3,
+    "processed_crops": 6,
+    "ocr_read_count": 6,
+    "format_valid_count": 4,
+    "province_valid_count": 4,
+    "tracks_with_temporal_vote": 3,
+    "mean_ocr_latency_ms": 13.907,
+    "p95_ocr_latency_ms": 40.887
+  },
+  "manual_review_template": "testing/templates/manual_plate_ocr_review.csv",
+  "notes": [
+    "Plate detector crop ciktilari kaynaktir.",
+    "OCR sonucu raw + normalized olarak raporlanir.",
+    "Turk plaka validasyonu regex + il kodu kurali ile yapilir."
+  ],
+  "manual_review_seed": "runs/plate_ocr/POCR-EXP-006-local-ocr-smoke-easyocr/manual_review_easyocr.csv"
+}
