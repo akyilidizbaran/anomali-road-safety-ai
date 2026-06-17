@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` plate detector adayı ve `fast-plate-ocr cct-xs-v2-global-model` ilk lokal OCR manual-review adayı.
-* Son değişiklik neydi? `POCR-EXP-006` local OCR baseline genişletildi; `613` plate crop üzerinde fast-plate-ocr CCT-S/CCT-XS, EasyOCR ve PaddleOCR karşılaştırıldı. CCT-XS ve PaddleOCR 3/3 track için temporal vote `34TC8532` üretti; CCT-XS mean/p95 `1.672/2.145 ms`, PaddleOCR `54.453/104.749 ms`, EasyOCR ise farklı düşük güvenli vote'lara kaydı.
-* Bir sonraki net adım ne? Kullanıcı `runs/plate_ocr/POCR-EXP-006-manual-video-review/` altındaki CCT-XS/CCT-S/PaddleOCR/EasyOCR overlay videoları üzerinden `34TC8532` sonucunu manuel kontrol edecek; doğruysa OCR fine-tune'a geçmeden CCT-XS event/evidence enrichment'e bağlanacak, yanlışsa crop seçimi/OCR modeli/fine-tune planı yeniden değerlendirilecek.
+* Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` plate detector adayı ve `fast-plate-ocr cct-xs-v2-global-model` aktif OCR baseline adayı.
+* Son değişiklik neydi? `POCR-EXP-007` CCT-XS stability analizi eklendi. `video_3` gecikmesinin karakter karıştırma değil uzak/karanlık erken frame okunabilirliği olduğu görüldü; baseline CCT-XS ilk doğru okumayı frame `19`, stabil vote'u frame `25`te verirken 2x upscale yalnız frame `18/20`ye çekti ama latency ve erken yanlış okuma riskini artırdı.
+* Bir sonraki net adım ne? Kullanıcı `runs/plate_ocr/POCR-EXP-007-cct-xs-early-read-review/` altındaki baseline-percrop ve upscale2 overlay videolarını izleyecek. CCT-XS original + temporal stability gate kabul edilirse OCR fine-tune açılmadan event/evidence enrichment'e bağlanacak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -183,6 +183,7 @@
 * 2026-06-16 — Karar: POCR-EXP-005 raw Roboflow image/label ağaçları Google Drive'a kopyalanmayacak. | Gerekçe: İkinci crashed notebook'ta `roboflow_lpr` başarıyla indirildi/extract edildi; crash `safe_copytree(local_dir, drive_dir)` sırasında `[Errno 5] Input/output error` ile oldu. Roboflow LPR yaklaşık `200k+` küçük dosya çıkardığı için Drive mount raw-tree cache kırılgan. | Etki: `USE_DRIVE_RAW_TREE_CACHE=False` ve `SAVE_RAW_TREE_TO_DRIVE=False`; Drive yalnız manifest, metadata, checkpoint, summary ve rapor için kullanılacak. Partial Drive raw cache marker yoksa yok sayılır. | Alternatifler: Tüm raw dataset'i Drive'a kopyalamak veya tek tek dosya cache'i zorlamak; performans/kararlılık nedeniyle reddedildi.
 * 2026-06-17 — Karar: `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt`, aktif aday plate detector olarak kaydedildi; runtime default'a terfi ettirilmedi. | Gerekçe: Colab fine-tune başarıyla tamamlandı ve aynı val/test split üzerinde baseline'a göre test `mAP@0.5:0.95` `0.6089 -> 0.8543` iyileşti; ancak UFPR dış benchmark ve lokal target-video manual review eksik. | Etki: FTR veri/model/test Markdown kaynakları güncellendi; yeni model indirildikten sonra `Test/video_1-3.mp4` detector-only smoke/manual review yapılacak. | Alternatifler: Modeli doğrudan runtime default yapmak; dış/saha kontrolü eksik olduğu için reddedildi.
 * 2026-06-17 — Karar: POCR-EXP-006 lokal OCR baseline'da `fast-plate-ocr cct-xs-v2-global-model` ilk manual-review adayı seçildi; PaddleOCR ikinci kontrol adayı olarak tutuldu. | Gerekçe: CCT-XS ve PaddleOCR 613 crop ve 3 target track üzerinde aynı temporal vote sonucunu (`34TC8532`) verdi; CCT-XS mean/p95 OCR latency `1.672/2.145 ms`, PaddleOCR `54.453/104.749 ms`. EasyOCR ise `04IC0522`, `04IC0522`, `04C0522` gibi düşük güvenli vote'lara kaydı. | Etki: Manuel review CCT-XS üzerinden başlayacak; PaddleOCR doğrulayıcı ikinci baseline olarak saklanacak; EasyOCR bu crop seti için önerilmeyecek. | Alternatifler: PaddleOCR'i daha genel OCR olduğu için seçmek veya EasyOCR'i hız nedeniyle aday tutmak.
+* 2026-06-17 — Karar: CCT-XS için OCR fine-tune bu aşamada açılmayacak; temporal stability gate uygulanacak. | Gerekçe: `video_3` üzerinde sorun sistematik karakter karıştırma değil, uzak/karanlık erken frame'lerde okunabilirlik sınırı. Baseline CCT-XS `first_expected_plate_frame=19`, `first_stable_vote_frame=25` üretir; 2x upscale bunu `18/20`ye çeker ama latency `1.642 ms -> 5.564 ms` olur ve erken yanlış format-valid adayları artar. 3x upscale ilk stabil sonucu yanlış `34TC8512` yapabildi. | Etki: Runtime/event evidence tek frame OCR sonucu yerine stabil tekrar sonrası temporal vote yazacak; upscale varsayılan olmayacak. | Alternatifler: CCT-XS fine-tune veya 2x/3x upscale default yapmak; bu aşamada reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -254,6 +255,7 @@
 * 2026-06-17 — Milestone: POCR-EXP-005 local target-video plate detection smoke run tamamlandı. | Sonuç: `best.pt` lokal `models/checkpoints/plate/` altına indirildi; `Test/video_1-3.mp4` için 4K annotated video, plate crop ve JSON/Markdown özet üretildi. Hedef track eşleşmesi üç videoda da IoU `0.98`; plaka tespit oranları `video_1=0.6095`, `video_2=0.6168`, `video_3=0.7833`. Manuel review bekleniyor.
 * 2026-06-17 — Milestone: POCR-EXP-006 local OCR baseline tamamlandı. | Sonuç: `fast-plate-ocr` CCT-S/CCT-XS, EasyOCR recognition-only ve PaddleOCR 2.10 PP-OCRv4 en, `POCR-EXP-005` plate crop'ları üzerinde çalıştırıldı. CCT-XS birincil, PaddleOCR ikinci kontrol adayı seçildi; EasyOCR önerilmedi.
 * 2026-06-17 — Milestone: POCR-EXP-006 manual video review overlay'leri üretildi. | Sonuç: CCT-XS, CCT-S, PaddleOCR ve EasyOCR için `Test/video_1-3.mp4` üzerine OCR temporal vote/frame OCR overlay içeren `.mp4` çıktıları `runs/plate_ocr/POCR-EXP-006-manual-video-review/` altında üretildi. Büyük video çıktıları Git'e eklenmez.
+* 2026-06-17 — Milestone: POCR-EXP-007 CCT-XS early-read/stability analizi tamamlandı. | Sonuç: Baseline CCT-XS, 2x+CLAHE ve 3x+CLAHE karşılaştırıldı; 2x küçük erken okuma kazanımı sağladı ancak latency ve yanlış erken vote riski nedeniyle varsayılan yapılmadı. Stabilite raporu ve CSV üretildi.
 
 ## 8) Yapılanlar
 
@@ -350,6 +352,8 @@
 * [x] `POCR-EXP-006` için `fast-plate-ocr` CCT-S ve CCT-XS local OCR baseline çalıştır.
 * [x] `POCR-EXP-006` CCT-XS/CCT-S/PaddleOCR/EasyOCR için manuel video review overlay çıktıları üret.
 * [ ] `POCR-EXP-006` CCT-XS temporal vote `34TC8532` sonucunu overlay videoları üzerinden manuel kontrol et.
+* [x] `POCR-EXP-007` CCT-XS baseline vs upscale stability analizini üret.
+* [ ] CCT-XS temporal stability gate'i event/evidence enrichment script'ine bağla.
 * [x] `POCR-EXP-002` için PaddleOCR baseline çalıştır.
 * [x] `POCR-EXP-003` için EasyOCR baseline comparison çalıştır.
 * [ ] Plate/OCR sonuçlarını event/evidence JSON skeleton içine işle.
@@ -416,6 +420,7 @@
 * Plaka metni kişisel veri gibi ele alınmalı; raw plate crop ve OCR çıktıları Git'e eklenmemeli, demo/raporda maskeleme opsiyonu korunmalıdır.
 * POCR-EXP-006 OCR baseline sonucu manuel ground truth değildir. `34TC8532` temporal vote'u gerçek plaka ile manuel karşılaştırılmadan doğru kabul edilmemelidir.
 * POCR-EXP-006 overlay videoları OCR'i yeniden çalıştırmaz; summary JSON'lardaki örnek frame/highest-confidence sonuçlarını detection annotated video üzerine yazar. Frame-level detay için manual review CSV/summary JSON, görsel akış için `.mp4` overlay birlikte kontrol edilmelidir.
+* POCR-EXP-007 sonucuna göre CCT-XS 2x/3x upscale varsayılan yapılmamalı: 2x yalnız çok küçük erken okuma kazanımı sağladı, 3x ilk stabil sonucu yanlış adaya kaydırabildi. Evidence için `stable_count>=3`, `window_size=7`, `min_confidence>=0.75`, format/province valid gate önerilir.
 * Vehicle detection fine-tune tekrar aktif planlamaya alındı; ilk resmi model `YOLO11n`, ana veri omurgası BDD100K, eğitim ortamı Colab + Drive, zorunlu model çıktısı `.pt`, ONNX ise opsiyonel deployment kanıtı olarak tutulacak.
 * Arkadaş önerisindeki ACDC/DAWN/ExDark/Foggy Cityscapes kaynakları ilk eğitim merge'üne doğrudan alınmayacak; önce BDD100K general detector eğitilecek, condition breakdown zayıflık gösterirse specialist/evaluation fazına taşınacak.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
