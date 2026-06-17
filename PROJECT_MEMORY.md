@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` yerelde indirildi ve `Test/video_1-3.mp4` üzerinde detector-only smoke çıktıları üretildi.
-* Son değişiklik neydi? POCR-EXP-005 local target-video smoke run tamamlandı; üç videoda hedef track IoU `0.98`, plaka tespit oranları sırasıyla `0.6095`, `0.6168`, `0.7833` olarak kaydedildi.
-* Bir sonraki net adım ne? Kullanıcı `runs/plate_ocr/POCR-EXP-005-local-smoke/annotated/` altındaki videoları manuel review edecek; plaka bbox davranışı kabul edilirse PaddleOCR/EasyOCR OCR fazına geçilecek.
+* Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` plate detector adayı ve `fast-plate-ocr cct-xs-v2-global-model` ilk lokal OCR manual-review adayı.
+* Son değişiklik neydi? `POCR-EXP-006` local OCR baseline çalıştırıldı; `613` plate crop üzerinde CCT-S ve CCT-XS denendi, iki model de 3/3 track için temporal vote `34TC8532` üretti. CCT-XS ortalama OCR latency `1.672 ms`, p95 `2.145 ms` ile daha uygun aday oldu.
+* Bir sonraki net adım ne? Kullanıcı annotated video/crop çıktıları üzerinden temporal vote `34TC8532` sonucunu manuel kontrol edecek; doğruysa OCR fine-tune'a geçmeden event/evidence enrichment'e bağlanacak, yanlışsa crop seçimi/OCR modeli/fine-tune planı yeniden değerlendirilecek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -182,6 +182,7 @@
 * 2026-06-16 — Karar: POCR-EXP-005 crash sebebi API key değil, Roboflow split path resolver hatasıdır. | Gerekçe: Outcrashed notebook çıktısında `Roboflow key present: True`; iki dataset de indirildi/extract edildi, fakat Cell 5 `train/val/test=0` saydı. Roboflow `data.yaml` relative path'leri `../train/images` gibi yazabildiği için tek path çözümü yetmedi. | Etki: Cell 5 `train/images`, `valid/images`, `val/images`, `test/images`, `../...` ve fallback `images` discovery destekleyecek şekilde patch'lendi; runbook crash teşhisiyle güncellendi. | Alternatifler: API key değiştirmek veya veriyi baştan indirmek; gereksiz.
 * 2026-06-16 — Karar: POCR-EXP-005 raw Roboflow image/label ağaçları Google Drive'a kopyalanmayacak. | Gerekçe: İkinci crashed notebook'ta `roboflow_lpr` başarıyla indirildi/extract edildi; crash `safe_copytree(local_dir, drive_dir)` sırasında `[Errno 5] Input/output error` ile oldu. Roboflow LPR yaklaşık `200k+` küçük dosya çıkardığı için Drive mount raw-tree cache kırılgan. | Etki: `USE_DRIVE_RAW_TREE_CACHE=False` ve `SAVE_RAW_TREE_TO_DRIVE=False`; Drive yalnız manifest, metadata, checkpoint, summary ve rapor için kullanılacak. Partial Drive raw cache marker yoksa yok sayılır. | Alternatifler: Tüm raw dataset'i Drive'a kopyalamak veya tek tek dosya cache'i zorlamak; performans/kararlılık nedeniyle reddedildi.
 * 2026-06-17 — Karar: `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt`, aktif aday plate detector olarak kaydedildi; runtime default'a terfi ettirilmedi. | Gerekçe: Colab fine-tune başarıyla tamamlandı ve aynı val/test split üzerinde baseline'a göre test `mAP@0.5:0.95` `0.6089 -> 0.8543` iyileşti; ancak UFPR dış benchmark ve lokal target-video manual review eksik. | Etki: FTR veri/model/test Markdown kaynakları güncellendi; yeni model indirildikten sonra `Test/video_1-3.mp4` detector-only smoke/manual review yapılacak. | Alternatifler: Modeli doğrudan runtime default yapmak; dış/saha kontrolü eksik olduğu için reddedildi.
+* 2026-06-17 — Karar: POCR-EXP-006 lokal OCR baseline'da `fast-plate-ocr cct-xs-v2-global-model` ilk manual-review adayı seçildi. | Gerekçe: CCT-S ve CCT-XS 613 crop ve 3 target track üzerinde aynı temporal vote sonucunu (`34TC8532`) verdi; CCT-XS mean OCR latency `1.672 ms`, p95 `2.145 ms` ile CCT-S'e göre belirgin daha hızlıydı. | Etki: PaddleOCR/EasyOCR kalite kararı verilmeden önce lokal indirme/kurulum engeli olarak bekletilecek; manuel review CCT-XS çıktısı üzerinden başlayacak. | Alternatifler: CCT-S'i daha yüksek kapasite nedeniyle seçmek veya PaddleOCR/EasyOCR kurulumu çözülene kadar beklemek.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -251,6 +252,7 @@
 * 2026-06-15 — Milestone: VD-EXP-002 active detector lock tamamlandı. | Sonuç: Ana araç her frame'de yakalanıyor, bbox stabil, `0.60` aday gate ile gözlenen false positive kalmıyor. Aktif detector `VD-EXP-002-GENERAL-YOLO11N`; final threshold threshold sweep sonrası seçilecek; sıradaki çalışma diğer AI modüllerinin baseline/tune kapsamına geçti.
 * 2026-06-17 — Milestone: POCR-EXP-005 YOLO11n plate detector fine-tune koşusu tamamlandı ve raporlandı. | Sonuç: 106,432 normalize/dedup plaka tespit kaydıyla 80 epoch eğitim tamamlandı; test precision `0.9951`, recall `0.9907`, mAP@0.5 `0.9948`, mAP@0.5:0.95 `0.8543`. `best.pt`, `last.pt` ve ONNX Drive'a yazıldı; OCR ve lokal target-video smoke test sonraki adım.
 * 2026-06-17 — Milestone: POCR-EXP-005 local target-video plate detection smoke run tamamlandı. | Sonuç: `best.pt` lokal `models/checkpoints/plate/` altına indirildi; `Test/video_1-3.mp4` için 4K annotated video, plate crop ve JSON/Markdown özet üretildi. Hedef track eşleşmesi üç videoda da IoU `0.98`; plaka tespit oranları `video_1=0.6095`, `video_2=0.6168`, `video_3=0.7833`. Manuel review bekleniyor.
+* 2026-06-17 — Milestone: POCR-EXP-006 local OCR baseline tamamlandı. | Sonuç: `fast-plate-ocr` CCT-S ve CCT-XS varyantları `POCR-EXP-005` plate crop'ları üzerinde çalıştırıldı; 613 crop işlendi, 3/3 track için temporal vote üretildi. EasyOCR/PaddleOCR lokal kurulum/download engelleri nedeniyle kalite kıyasına dahil edilmedi.
 
 ## 8) Yapılanlar
 
@@ -344,8 +346,10 @@
 * [x] İki modelli plaka tespit smoke-test script'ini yaz (`run_plate_detection_smoke.py`, detector-only).
 * [ ] (Kullanıcı/MacBook) `POCR-EXP-001` plate detector smoke test'i çalıştır: `--models yolo yolos`.
 * [ ] İki plaka modelini overlay'ler üzerinden manuel karşılaştır ve birini seç.
-* [ ] `POCR-EXP-002` için PaddleOCR baseline çalıştır.
-* [ ] `POCR-EXP-003` için EasyOCR baseline comparison çalıştır.
+* [x] `POCR-EXP-006` için `fast-plate-ocr` CCT-S ve CCT-XS local OCR baseline çalıştır.
+* [ ] `POCR-EXP-006` CCT-XS temporal vote `34TC8532` sonucunu annotated video/crop üzerinden manuel kontrol et.
+* [ ] `POCR-EXP-002` için PaddleOCR baseline çalıştır; mevcut lokal durumda PaddlePaddle kurulum/download engeli var.
+* [ ] `POCR-EXP-003` için EasyOCR baseline comparison çalıştır; mevcut lokal durumda ilk model download çok yavaş/kesiliyor.
 * [ ] Plate/OCR sonuçlarını event/evidence JSON skeleton içine işle.
 * [ ] Plate/OCR manual review sonuçlarını `testing/templates/manual_plate_ocr_review.csv` formatına göre kaydet.
 * [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Deferred)
@@ -384,6 +388,7 @@
 * [x] POCR-EXP-005 notebook'u Colab'da çalıştır; summary JSON ve Drive checkpoint yollarını repo raporlarına işle.
 * [x] POCR-EXP-005 patch'li notebook'u yeniden çalıştır; Cell 4'te `[skip raw tree Drive copy]`, Cell 5'te non-zero split/labeled counts ve final `best.pt` çıktısını doğrula.
 * [x] POCR-EXP-005 `best.pt` checkpoint'ini lokal `models/checkpoints/plate/` altına al ve `Test/video_1-3.mp4` üzerinde detector-only smoke/manual review çalıştır.
+* [x] POCR-EXP-006 fast-plate-ocr CCT-S/CCT-XS lokal OCR baseline çalıştır ve benchmark CSV/rapora işle.
 * [ ] UFPR-ALPR dataset hazırlığını benchmark-only external generalization set olarak ekle.
 * [ ] Relative speed için absolute km/s yerine önce track/plate bbox history tabanlı göreli hız modunu çıkar.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
@@ -403,9 +408,10 @@
 * Tracking ground truth henüz yok; `Test/video_1-3.mp4` üstündeki ilk tracking metrikleri manual review ve proxy metrikler olacaktır.
 * ID switch evidence ve plate OCR temporal voting'i yanlış araca bağlayabilir; bu yüzden `id_switch_suspected`, `track_stability` ve best-frame audit alanları zorunlu tutulmalıdır.
 * Track-to-event scoring heuristic'tir; ground-truth olmadan mutlak doğruluk iddiası kurulamaz. Manuel review ile seçilen hedef aracın doğru olup olmadığı kontrol edilmelidir.
-* Plate/OCR ilk araştırma kararı kaynaklıdır ama henüz lokal model koşusu yapılmadı; lisans/model card bilgisi model indirmeden önce tekrar doğrulanmalıdır.
+* Plate/OCR tarafında ilk lokal OCR koşusu `fast-plate-ocr` ile yapıldı; PaddleOCR/EasyOCR kalite kıyası henüz yapılmadı. Lisans/model card bilgisi final rapor öncesi tekrar doğrulanmalıdır.
 * Ultralytics tabanlı plate detector modelleri AGPL-3.0/Enterprise etkisi taşıyabilir; private repo olmak lisans riskini otomatik çözmez.
 * Plaka metni kişisel veri gibi ele alınmalı; raw plate crop ve OCR çıktıları Git'e eklenmemeli, demo/raporda maskeleme opsiyonu korunmalıdır.
+* POCR-EXP-006 OCR baseline sonucu manuel ground truth değildir. `34TC8532` temporal vote'u gerçek plaka ile manuel karşılaştırılmadan doğru kabul edilmemelidir.
 * Vehicle detection fine-tune tekrar aktif planlamaya alındı; ilk resmi model `YOLO11n`, ana veri omurgası BDD100K, eğitim ortamı Colab + Drive, zorunlu model çıktısı `.pt`, ONNX ise opsiyonel deployment kanıtı olarak tutulacak.
 * Arkadaş önerisindeki ACDC/DAWN/ExDark/Foggy Cityscapes kaynakları ilk eğitim merge'üne doğrudan alınmayacak; önce BDD100K general detector eğitilecek, condition breakdown zayıflık gösterirse specialist/evaluation fazına taşınacak.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
@@ -456,6 +462,9 @@
 * VD-EXP-006 motorcycle-focused BDD100K denemesi bu kapsamda başarısız kabul edildi. Bu model doğrudan runtime default'a terfi ettirilirse evidence class stability bozulabilir. Motorcycle özel eğitim şimdilik ertelenir; aktif best model VD-EXP-002 general YOLO11n olarak kalır.
 * Runtime/demo vehicle detection için downstream evidence/final-acceptance gate final değeri threshold sweep + manual review sonrası seçilmeli. `0.60`, yalnız mevcut 3 dark video manual review kapsamında false-positive pruning için aday gate değeridir; frame-level candidate detection/tracking continuity için daha düşük aday threshold kullanılabilir.
 * Fine-tuned VD-EXP-002 vehicle detector sınıf ID'leri COCO sabitleri değildir: `{0: car, 1: bus, 2: truck, 3: motorcycle}`. Video smoke/tracking script'leri class filtrelerini sabit `2/3/5/7` yerine `model.names` üzerinden çözmelidir; aksi halde `no_target_track` üretir.
+* Lokal OCR venv'i Python 3.12 ile kurulmalı: `.venv-yolo-run/bin/python -m venv .venv-ocr-run`. Sistem `python3` Python 3.14 döndürürse PaddlePaddle wheel bulunmayabilir.
+* EasyOCR ilk model download'u uzun sürebilir ve terminal pipe kesilirse model tamamlanmadan kalabilir. Bu durum OCR kalitesi hatası değildir; gerekirse model cache'i önceden indirilmeli veya çıktı log dosyasına yönlendirilmelidir.
+* `fast-plate-ocr` lokal baseline için hafif ve pratik çalıştı; ancak model hub/model lisansı final rapor öncesi tekrar doğrulanmalıdır.
 
 ### Güncelleme Kaydı
 

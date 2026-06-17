@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""POCR-EXP-002/003/004 - Plate OCR baseline over POCR-EXP-001 crops.
+"""Plate OCR baseline over detector-produced plate crops.
 
-Bu script plaka detection smoke test'inin (`POCR-EXP-001`) uretdigi crop'lari okuyup
+Bu script plaka detection smoke test'inin uretdigi crop'lari okuyup
 OCR baseline'larini olculebilir hale getirir.
 
 Akis:
@@ -40,6 +40,12 @@ DEFAULT_REPORT = ROOT / "testing" / "reports" / "pocr_exp_002_004_plate_ocr_summ
 DEFAULT_RUNS_DIR = ROOT / "runs" / "plate_ocr" / "POCR-EXP-002-004-ocr"
 
 ENGINE_META = {
+    "fastplate": {
+        "experiment_id": "POCR-EXP-006",
+        "summary_name": "POCR-EXP-006-fast-plate-ocr-summary.json",
+        "label": "fast-plate-ocr",
+        "license_note": "MIT; ONNX Runtime tabanli plate-specific OCR, model hub lisansi ayrica dogrulanmali",
+    },
     "paddle": {
         "experiment_id": "POCR-EXP-002",
         "summary_name": "POCR-EXP-002-paddleocr-summary.json",
@@ -345,6 +351,38 @@ class PaddleOcrEngine(OcrEngine):
         return lines
 
 
+class FastPlateOcrEngine(OcrEngine):
+    key = "fastplate"
+
+    def __init__(self, model_name: str, device: str) -> None:
+        from fast_plate_ocr import LicensePlateRecognizer
+
+        self.reader = LicensePlateRecognizer(model_name, device=device)
+        self.model_ref = f"fast-plate-ocr({model_name}, device={device})"
+
+    def recognize(self, image: np.ndarray) -> list[dict[str, Any]]:
+        if image.ndim == 2:
+            image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+        predictions = self.reader.run(image, return_confidence=True)
+        lines: list[dict[str, Any]] = []
+        for prediction in predictions:
+            text = str(getattr(prediction, "plate", "") or "").strip()
+            if not text:
+                continue
+            char_probs = getattr(prediction, "char_probs", None)
+            confidence = float(np.mean(char_probs)) if char_probs is not None and len(char_probs) else 0.0
+            lines.append(
+                {
+                    "text": text,
+                    "confidence": confidence,
+                    "bbox": [0.0, 0.0, float(image.shape[1]), float(image.shape[0])],
+                    "region": getattr(prediction, "region", None),
+                    "region_prob": getattr(prediction, "region_prob", None),
+                }
+            )
+        return lines
+
+
 class EasyOcrEngine(OcrEngine):
     key = "easyocr"
 
@@ -412,6 +450,12 @@ class TesseractOcrEngine(OcrEngine):
 
 def build_engines(args: argparse.Namespace) -> list[OcrEngine]:
     engines: list[OcrEngine] = []
+    if "fastplate" in args.engines:
+        try:
+            engines.append(FastPlateOcrEngine(model_name=args.fastplate_model, device=args.fastplate_device))
+            print(f"[ok] fast-plate-ocr yuklendi ({args.fastplate_model}, device={args.fastplate_device})")
+        except Exception as exc:  # noqa: BLE001
+            print(f"[skip] fast-plate-ocr yuklenemedi -> {exc}")
     if "paddle" in args.engines:
         try:
             engines.append(PaddleOcrEngine(lang=args.paddle_lang))
@@ -861,13 +905,13 @@ def write_manual_review_seed(
 
 def build_report(run_meta: dict[str, Any], summaries: list[dict[str, Any]]) -> str:
     lines = [
-        "# POCR-EXP-002/003/004 Plate OCR Baselines",
+        "# Plate OCR Baselines",
         "",
         f"Tarih: {run_meta['generated_at_utc']}",
         "",
         "## Amaç",
         "",
-        "POCR-EXP-001 crop'lari ustunde OCR baseline'larini calistirip Turk plaka normalize + "
+        "Plate detector crop'lari ustunde OCR baseline'larini calistirip Turk plaka normalize + "
         "temporal voting hattini olculebilir hale getirmek.",
         "",
         "## Konfigurasyon",
@@ -877,6 +921,11 @@ def build_report(run_meta: dict[str, Any], summaries: list[dict[str, Any]]) -> s
         f"* OCR engine'leri: `{', '.join(run_meta['engines'])}`",
         f"* Variantlar: `{', '.join(run_meta['variants'])}` | upscale `{run_meta['upscale']}`",
         f"* OCR confidence esigi: `{run_meta['min_ocr_confidence']}`",
+        "* OCR model ref'leri: "
+        + "; ".join(
+            f"{summary['ocr_engine']}={summary.get('model_ref', summary['ocr_engine'])}"
+            for summary in summaries
+        ),
         "",
         "## Sonuc (engine x video)",
         "",
@@ -911,7 +960,7 @@ def build_report(run_meta: dict[str, Any], summaries: list[dict[str, Any]]) -> s
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="POCR-EXP-002/003/004 plate OCR baseline.")
+    parser = argparse.ArgumentParser(description="Plate OCR baseline over detector-produced crops.")
     parser.add_argument("--detection-summary", type=Path, default=DEFAULT_DETECTION_SUMMARY)
     parser.add_argument("--detector-key", default="auto", choices=["auto", "yolo", "yolos"])
     parser.add_argument("--engines", nargs="+", default=["paddle"], choices=list(ENGINE_META))
@@ -929,6 +978,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--easyocr-gpu", action="store_true")
     parser.add_argument("--tesseract-lang", default="eng")
     parser.add_argument("--tesseract-config", default="--psm 7")
+    parser.add_argument("--fastplate-model", default="cct-s-v2-global-model")
+    parser.add_argument("--fastplate-device", default="cpu", choices=["auto", "cpu", "cuda"])
     return parser.parse_args()
 
 
@@ -950,7 +1001,7 @@ def main() -> None:
     if not engines:
         raise SystemExit(
             "Hic OCR engine yuklenemedi. Ornek kurulum: "
-            "pip install paddleocr easyocr pytesseract"
+            "pip install fast-plate-ocr onnxruntime easyocr paddleocr pytesseract"
         )
 
     args.artifact_dir.mkdir(parents=True, exist_ok=True)
@@ -1001,7 +1052,7 @@ def main() -> None:
             },
             "manual_review_template": "testing/templates/manual_plate_ocr_review.csv",
             "notes": [
-                "POCR-EXP-001 crop ciktilari kaynaktir.",
+                "Plate detector crop ciktilari kaynaktir.",
                 "OCR sonucu raw + normalized olarak raporlanir.",
                 "Turk plaka validasyonu regex + il kodu kurali ile yapilir.",
             ],
