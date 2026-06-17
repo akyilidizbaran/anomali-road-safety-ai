@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` plate detector adayı ve `fast-plate-ocr cct-xs-v2-global-model` aktif OCR baseline adayı.
-* Son değişiklik neydi? `POCR-EXP-007` CCT-XS stability analizi eklendi. `video_3` gecikmesinin karakter karıştırma değil uzak/karanlık erken frame okunabilirliği olduğu görüldü; baseline CCT-XS ilk doğru okumayı frame `19`, stabil vote'u frame `25`te verirken 2x upscale yalnız frame `18/20`ye çekti ama latency ve erken yanlış okuma riskini artırdı.
-* Bir sonraki net adım ne? Kullanıcı `runs/plate_ocr/POCR-EXP-007-cct-xs-early-read-review/` altındaki baseline-percrop ve upscale2 overlay videolarını izleyecek. CCT-XS original + temporal stability gate kabul edilirse OCR fine-tune açılmadan event/evidence enrichment'e bağlanacak.
+* Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` plate detector ve `fast-plate-ocr cct-xs-v2-global-model` aktif OCR baseline olarak event/evidence hattına bağlandı.
+* Son değişiklik neydi? `POCR-EXP-008` CCT-XS event/evidence enrichment tamamlandı. `stable_count=3`, `window_size=7`, `min_confidence=0.75`, format/province-valid gate ile üç videoda da `stable_read` sonucu üretildi; model-derived count CSV/JSON kaydedildi.
+* Bir sonraki net adım ne? Plate/OCR hattı sonrası relative speed / motion signal baseline'a geçilecek; ilk hedef absolute km/s değil, track/plate bbox history üzerinden göreli hareket skoru üretmek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -185,6 +185,7 @@
 * 2026-06-17 — Karar: POCR-EXP-006 lokal OCR baseline'da `fast-plate-ocr cct-xs-v2-global-model` ilk manual-review adayı seçildi; PaddleOCR ikinci kontrol adayı olarak tutuldu. | Gerekçe: CCT-XS ve PaddleOCR 613 crop ve 3 target track üzerinde aynı temporal vote sonucunu (`34TC8532`) verdi; CCT-XS mean/p95 OCR latency `1.672/2.145 ms`, PaddleOCR `54.453/104.749 ms`. EasyOCR ise `04IC0522`, `04IC0522`, `04C0522` gibi düşük güvenli vote'lara kaydı. | Etki: Manuel review CCT-XS üzerinden başlayacak; PaddleOCR doğrulayıcı ikinci baseline olarak saklanacak; EasyOCR bu crop seti için önerilmeyecek. | Alternatifler: PaddleOCR'i daha genel OCR olduğu için seçmek veya EasyOCR'i hız nedeniyle aday tutmak.
 * 2026-06-17 — Karar: CCT-XS için OCR fine-tune bu aşamada açılmayacak; temporal stability gate uygulanacak. | Gerekçe: `video_3` üzerinde sorun sistematik karakter karıştırma değil, uzak/karanlık erken frame'lerde okunabilirlik sınırı. Baseline CCT-XS `first_expected_plate_frame=19`, `first_stable_vote_frame=25` üretir; 2x upscale bunu `18/20`ye çeker ama latency `1.642 ms -> 5.564 ms` olur ve erken yanlış format-valid adayları artar. 3x upscale ilk stabil sonucu yanlış `34TC8512` yapabildi. | Etki: Runtime/event evidence tek frame OCR sonucu yerine stabil tekrar sonrası temporal vote yazacak; upscale varsayılan olmayacak. | Alternatifler: CCT-XS fine-tune veya 2x/3x upscale default yapmak; bu aşamada reddedildi.
 * 2026-06-17 — Karar: CCT-XS OCR baseline rapor şablonu ve proje dokümanlarına sabitlendi. | Gerekçe: Kullanıcı CCT-XS ile devam etmeyi onayladı ve FTR/rapor şablonu doğrultusunda Markdown dosyalarıyla kararın kalıcılaştırılmasını istedi. | Etki: Plate/OCR araştırma kararı, model deney kartı, FTR veriseti/çözüm/test bölümleri, event/evidence contract ve runbook'lar CCT-XS + stability gate yaklaşımına göre güncellendi. | Alternatifler: Kararı yalnız PROJECT_MEMORY içinde bırakmak; rapor üretiminde izlenebilirlik zayıflayacağı için reddedildi.
+* 2026-06-17 — Karar: Plate/OCR event/evidence enrichment aktif OCR yolu CCT-XS original + temporal stability gate olarak bağlandı. | Gerekçe: Kullanıcı CCT-XS kararını doğruladı; event/evidence'a tek kare OCR veya en yüksek confidence yerine stabil temporal karar yazılmalı. Üç test videosunda `stable_count=3`, `window_size=7`, `min_confidence=0.75`, format/province-valid gate geçti. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json`, `pocr_exp_008_cct_xs_model_counts.csv/json` ve `pocr_exp_008_cct_xs_event_evidence_enrichment.md` üretildi. | Alternatifler: Eski Paddle enrichment'i aktif tutmak veya CCT-XS raw temporal vote'u gate olmadan event'e yazmak; izlenebilirlik ve güvenilirlik nedeniyle reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -258,6 +259,7 @@
 * 2026-06-17 — Milestone: POCR-EXP-006 manual video review overlay'leri üretildi. | Sonuç: CCT-XS, CCT-S, PaddleOCR ve EasyOCR için `Test/video_1-3.mp4` üzerine OCR temporal vote/frame OCR overlay içeren `.mp4` çıktıları `runs/plate_ocr/POCR-EXP-006-manual-video-review/` altında üretildi. Büyük video çıktıları Git'e eklenmez.
 * 2026-06-17 — Milestone: POCR-EXP-007 CCT-XS early-read/stability analizi tamamlandı. | Sonuç: Baseline CCT-XS, 2x+CLAHE ve 3x+CLAHE karşılaştırıldı; 2x küçük erken okuma kazanımı sağladı ancak latency ve yanlış erken vote riski nedeniyle varsayılan yapılmadı. Stabilite raporu ve CSV üretildi.
 * 2026-06-17 — Milestone: CCT-XS OCR baseline FTR dokümantasyonuna sabitlendi. | Sonuç: `decision_ocr_cct_xs_baseline_2026_06_17.md`, `POCR_EXP_006_007_cct_xs_ocr_baseline.md`, FTR veri/çözüm/test bölümleri ve event/evidence contract güncellendi.
+* 2026-06-17 — Milestone: POCR-EXP-008 CCT-XS event/evidence enrichment tamamlandı. | Sonuç: 3 target event için CCT-XS OCR `stable_read` olarak event/evidence JSON'a işlendi; model-derived count CSV/JSON kaydedildi. `video_1` first stable frame `3`, `video_2` `4`, `video_3` `25`.
 
 ## 8) Yapılanlar
 
@@ -353,15 +355,16 @@
 * [ ] İki plaka modelini overlay'ler üzerinden manuel karşılaştır ve birini seç.
 * [x] `POCR-EXP-006` için `fast-plate-ocr` CCT-S ve CCT-XS local OCR baseline çalıştır.
 * [x] `POCR-EXP-006` CCT-XS/CCT-S/PaddleOCR/EasyOCR için manuel video review overlay çıktıları üret.
-* [ ] `POCR-EXP-006` CCT-XS temporal vote `34TC8532` sonucunu overlay videoları üzerinden manuel kontrol et.
+* [x] `POCR-EXP-006` CCT-XS temporal vote `34TC8532` sonucunu overlay videoları üzerinden manuel kontrol et.
 * [x] `POCR-EXP-007` CCT-XS baseline vs upscale stability analizini üret.
 * [x] CCT-XS OCR baseline kararını rapor şablonu Markdown kaynaklarına sabitle.
-* [ ] CCT-XS temporal stability gate'i event/evidence enrichment script'ine bağla.
+* [x] CCT-XS temporal stability gate'i event/evidence enrichment script'ine bağla.
 * [x] `POCR-EXP-002` için PaddleOCR baseline çalıştır.
 * [x] `POCR-EXP-003` için EasyOCR baseline comparison çalıştır.
-* [ ] Plate/OCR sonuçlarını event/evidence JSON skeleton içine işle.
-* [ ] Plate/OCR manual review sonuçlarını `testing/templates/manual_plate_ocr_review.csv` formatına göre kaydet.
-* [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Deferred)
+* [x] Plate/OCR sonuçlarını event/evidence JSON skeleton içine işle.
+* [x] Plate/OCR model-derived count özetlerini CSV/JSON olarak kaydet.
+* [ ] Plate/OCR manual review sonuçlarını `testing/templates/manual_plate_ocr_review.csv` formatına göre kaydet. (Model-derived counts üretildi; gerçek manuel doğruluk etiketi ayrı tutulur.)
+* [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Next active AI step)
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
 * [x] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
 * [x] PaddleOCR / EasyOCR plate OCR baseline kıyasını planla.
@@ -424,6 +427,7 @@
 * POCR-EXP-006 OCR baseline sonucu manuel ground truth değildir. `34TC8532` temporal vote'u gerçek plaka ile manuel karşılaştırılmadan doğru kabul edilmemelidir.
 * POCR-EXP-006 overlay videoları OCR'i yeniden çalıştırmaz; summary JSON'lardaki örnek frame/highest-confidence sonuçlarını detection annotated video üzerine yazar. Frame-level detay için manual review CSV/summary JSON, görsel akış için `.mp4` overlay birlikte kontrol edilmelidir.
 * POCR-EXP-007 sonucuna göre CCT-XS 2x/3x upscale varsayılan yapılmamalı: 2x yalnız çok küçük erken okuma kazanımı sağladı, 3x ilk stabil sonucu yanlış adaya kaydırabildi. Evidence için `stable_count>=3`, `window_size=7`, `min_confidence>=0.75`, format/province valid gate önerilir.
+* POCR-EXP-008 event/evidence enrichment'te final OCR alanı tek kare `highest_confidence_result` üzerinden değil, CCT-XS temporal stability gate sonucu üzerinden yazılır. `pocr_exp_008_cct_xs_model_counts.csv` model-derived count tablosudur; gerçek manuel accuracy etiketi değildir.
 * Vehicle detection fine-tune tekrar aktif planlamaya alındı; ilk resmi model `YOLO11n`, ana veri omurgası BDD100K, eğitim ortamı Colab + Drive, zorunlu model çıktısı `.pt`, ONNX ise opsiyonel deployment kanıtı olarak tutulacak.
 * Arkadaş önerisindeki ACDC/DAWN/ExDark/Foggy Cityscapes kaynakları ilk eğitim merge'üne doğrudan alınmayacak; önce BDD100K general detector eğitilecek, condition breakdown zayıflık gösterirse specialist/evaluation fazına taşınacak.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
