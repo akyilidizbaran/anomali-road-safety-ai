@@ -4,7 +4,7 @@
 
 * Şu an ne yapıyoruz? `VD-EXP-002-GENERAL-YOLO11N` vehicle detector aktif/best olarak sabit; `POCR-EXP-005-YOLO11N-PLATE-DETECTOR-best.pt` plate detector adayı ve `fast-plate-ocr cct-xs-v2-global-model` ilk lokal OCR manual-review adayı.
 * Son değişiklik neydi? `POCR-EXP-006` local OCR baseline genişletildi; `613` plate crop üzerinde fast-plate-ocr CCT-S/CCT-XS, EasyOCR ve PaddleOCR karşılaştırıldı. CCT-XS ve PaddleOCR 3/3 track için temporal vote `34TC8532` üretti; CCT-XS mean/p95 `1.672/2.145 ms`, PaddleOCR `54.453/104.749 ms`, EasyOCR ise farklı düşük güvenli vote'lara kaydı.
-* Bir sonraki net adım ne? Kullanıcı annotated video/crop çıktıları üzerinden `34TC8532` sonucunu manuel kontrol edecek; doğruysa OCR fine-tune'a geçmeden CCT-XS event/evidence enrichment'e bağlanacak, yanlışsa crop seçimi/OCR modeli/fine-tune planı yeniden değerlendirilecek.
+* Bir sonraki net adım ne? Kullanıcı `runs/plate_ocr/POCR-EXP-006-manual-video-review/` altındaki CCT-XS/CCT-S/PaddleOCR/EasyOCR overlay videoları üzerinden `34TC8532` sonucunu manuel kontrol edecek; doğruysa OCR fine-tune'a geçmeden CCT-XS event/evidence enrichment'e bağlanacak, yanlışsa crop seçimi/OCR modeli/fine-tune planı yeniden değerlendirilecek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -253,6 +253,7 @@
 * 2026-06-17 — Milestone: POCR-EXP-005 YOLO11n plate detector fine-tune koşusu tamamlandı ve raporlandı. | Sonuç: 106,432 normalize/dedup plaka tespit kaydıyla 80 epoch eğitim tamamlandı; test precision `0.9951`, recall `0.9907`, mAP@0.5 `0.9948`, mAP@0.5:0.95 `0.8543`. `best.pt`, `last.pt` ve ONNX Drive'a yazıldı; OCR ve lokal target-video smoke test sonraki adım.
 * 2026-06-17 — Milestone: POCR-EXP-005 local target-video plate detection smoke run tamamlandı. | Sonuç: `best.pt` lokal `models/checkpoints/plate/` altına indirildi; `Test/video_1-3.mp4` için 4K annotated video, plate crop ve JSON/Markdown özet üretildi. Hedef track eşleşmesi üç videoda da IoU `0.98`; plaka tespit oranları `video_1=0.6095`, `video_2=0.6168`, `video_3=0.7833`. Manuel review bekleniyor.
 * 2026-06-17 — Milestone: POCR-EXP-006 local OCR baseline tamamlandı. | Sonuç: `fast-plate-ocr` CCT-S/CCT-XS, EasyOCR recognition-only ve PaddleOCR 2.10 PP-OCRv4 en, `POCR-EXP-005` plate crop'ları üzerinde çalıştırıldı. CCT-XS birincil, PaddleOCR ikinci kontrol adayı seçildi; EasyOCR önerilmedi.
+* 2026-06-17 — Milestone: POCR-EXP-006 manual video review overlay'leri üretildi. | Sonuç: CCT-XS, CCT-S, PaddleOCR ve EasyOCR için `Test/video_1-3.mp4` üzerine OCR temporal vote/frame OCR overlay içeren `.mp4` çıktıları `runs/plate_ocr/POCR-EXP-006-manual-video-review/` altında üretildi. Büyük video çıktıları Git'e eklenmez.
 
 ## 8) Yapılanlar
 
@@ -347,7 +348,8 @@
 * [ ] (Kullanıcı/MacBook) `POCR-EXP-001` plate detector smoke test'i çalıştır: `--models yolo yolos`.
 * [ ] İki plaka modelini overlay'ler üzerinden manuel karşılaştır ve birini seç.
 * [x] `POCR-EXP-006` için `fast-plate-ocr` CCT-S ve CCT-XS local OCR baseline çalıştır.
-* [ ] `POCR-EXP-006` CCT-XS temporal vote `34TC8532` sonucunu annotated video/crop üzerinden manuel kontrol et.
+* [x] `POCR-EXP-006` CCT-XS/CCT-S/PaddleOCR/EasyOCR için manuel video review overlay çıktıları üret.
+* [ ] `POCR-EXP-006` CCT-XS temporal vote `34TC8532` sonucunu overlay videoları üzerinden manuel kontrol et.
 * [x] `POCR-EXP-002` için PaddleOCR baseline çalıştır.
 * [x] `POCR-EXP-003` için EasyOCR baseline comparison çalıştır.
 * [ ] Plate/OCR sonuçlarını event/evidence JSON skeleton içine işle.
@@ -413,6 +415,7 @@
 * Ultralytics tabanlı plate detector modelleri AGPL-3.0/Enterprise etkisi taşıyabilir; private repo olmak lisans riskini otomatik çözmez.
 * Plaka metni kişisel veri gibi ele alınmalı; raw plate crop ve OCR çıktıları Git'e eklenmemeli, demo/raporda maskeleme opsiyonu korunmalıdır.
 * POCR-EXP-006 OCR baseline sonucu manuel ground truth değildir. `34TC8532` temporal vote'u gerçek plaka ile manuel karşılaştırılmadan doğru kabul edilmemelidir.
+* POCR-EXP-006 overlay videoları OCR'i yeniden çalıştırmaz; summary JSON'lardaki örnek frame/highest-confidence sonuçlarını detection annotated video üzerine yazar. Frame-level detay için manual review CSV/summary JSON, görsel akış için `.mp4` overlay birlikte kontrol edilmelidir.
 * Vehicle detection fine-tune tekrar aktif planlamaya alındı; ilk resmi model `YOLO11n`, ana veri omurgası BDD100K, eğitim ortamı Colab + Drive, zorunlu model çıktısı `.pt`, ONNX ise opsiyonel deployment kanıtı olarak tutulacak.
 * Arkadaş önerisindeki ACDC/DAWN/ExDark/Foggy Cityscapes kaynakları ilk eğitim merge'üne doğrudan alınmayacak; önce BDD100K general detector eğitilecek, condition breakdown zayıflık gösterirse specialist/evaluation fazına taşınacak.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
