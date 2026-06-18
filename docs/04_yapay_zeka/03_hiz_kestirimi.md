@@ -69,6 +69,33 @@ standart uzun Türkiye plaka oranından (`4.73`) belirgin sapmasıdır. Sonraki 
 plaka bbox'ın gerçekten tüm plaka yüzeyini kapsayıp kapsamadığını manuel overlay ile
 incelemek ve mümkünse plaka köşesi/perspektif düzeltmesi eklemektir.
 
+## Vehicle Dimension Prior / Speed Fusion
+
+Plaka ölçeği tek başına her senaryoda yeterli değildir. Bu nedenle hız modülüne ayrı bir
+`Vehicle Dimension Prior` sinyali eklenir. Bu sinyal araç crop'undan gövde tipi veya
+fine-grained araç etiketi çıkarır ve yaklaşık wheelbase/uzunluk ön bilgisi üretir.
+
+İlk deney:
+
+* Deney adı: `VATTR-EXP-001`
+* Notebook: `notebooks/VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab.ipynb`
+* Veri adayı: BoxCars116k
+* İlk backbone: `MobileNetV3-Large`
+* Amaç: `Speed Fusion Layer` için `body_type`, `wheelbase_m_mean`, confidence ve
+  `use_for_speed_fusion` alanlarını üretmek.
+
+Bu modül marka/model sonucunu kesin kanıt yapmaz. Confidence düşükse veya gövde tipi
+belirsizse dimension-prior sinyali mutlak km/s hesabına katılmaz. Önerilen fusion:
+
+```text
+speed_candidate =
+  plate_scale_signal +
+  homography_track_signal +
+  vehicle_dimension_prior_signal
+```
+
+Kalibrasyon veya güvenilir ölçek yoksa çıktı `speed_mode=relative` olarak kalır.
+
 ## Referans Mesafe Otomatik Ölçülebilir mi?
 
 Tek kameradan, sahnede hiçbir bilinen ölçek yokken güvenilir gerçek mesafe otomatik çıkarılamaz. Monoküler görüntüde ölçek belirsizliği vardır; yani sistem piksel hareketini görür ama bu hareketin kaç metreye karşılık geldiğini bilmek için bir referansa ihtiyaç duyar.

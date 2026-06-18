@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Plate/OCR event/evidence hattı tamamlandıktan sonra hız modülüne geçildi; ilk deneme `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline`.
-* Son değişiklik neydi? Plate detector summary içine full-frame `plate_bbox_xyxy` / center alanları eklendi ve `SPEED-EXP-002` ile `X/Y/Z` displacement tabanlı hız adayları üretildi.
-* Bir sonraki net adım ne? Plaka bbox aspect-ratio sapmasını manuel overlay üzerinden inceleyip plaka köşe/perspektif düzeltmesi veya `solvePnP` yaklaşımını tasarlamak.
+* Şu an ne yapıyoruz? Hız modülü için plate-scale ve full-frame plate bbox denemelerine ek olarak `Vehicle Dimension Prior` sinyali ekleniyor.
+* Son değişiklik neydi? `VATTR-EXP-001` BoxCars vehicle attribute / dimension prior Colab notebook'u oluşturuldu; hız dokümanı `Speed Fusion Layer` yaklaşımıyla güncellendi.
+* Bir sonraki net adım ne? `VATTR-EXP-001` smoke run ile BoxCars erişimini ve classifier eğitimini doğrulamak; ardından `KPT-EXP-001` OpenPifPaf ApolloCar3D keypoint smoke test veya `SPEED-EXP-004` fusion layer uygulamasına geçmek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -188,6 +188,7 @@
 * 2026-06-17 — Karar: Plate/OCR event/evidence enrichment aktif OCR yolu CCT-XS original + temporal stability gate olarak bağlandı. | Gerekçe: Kullanıcı CCT-XS kararını doğruladı; event/evidence'a tek kare OCR veya en yüksek confidence yerine stabil temporal karar yazılmalı. Üç test videosunda `stable_count=3`, `window_size=7`, `min_confidence=0.75`, format/province-valid gate geçti. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json`, `pocr_exp_008_cct_xs_model_counts.csv/json` ve `pocr_exp_008_cct_xs_event_evidence_enrichment.md` üretildi. | Alternatifler: Eski Paddle enrichment'i aktif tutmak veya CCT-XS raw temporal vote'u gate olmadan event'e yazmak; izlenebilirlik ve güvenilirlik nedeniyle reddedildi.
 * 2026-06-17 — Karar: Hız modülünde ilk mutlak km/s denemesi plaka görünür hedefler için `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline` olarak açıldı. | Gerekçe: Türkiye uzun plaka ölçüsü (`0.52m x 0.11m`) bilinen fiziksel referans sağlar ve literatürde plaka geometrisiyle tek kamera mesafe/hız kestirimi yaklaşımları vardır. | Etki: Width, height ve geomean tabanlı depth/range-rate varyantları üretildi; sonuçlar düşük güvenli işaretlendi çünkü mevcut crop aspect ratio standart uzun plaka oranından sapıyor ve full-frame plate center yok. | Alternatifler: Doğrudan homografi veya yalnız track-center relative speed; plaka görünür senaryo için önce plate-scale baseline denenmesi seçildi.
 * 2026-06-17 — Karar: Plate-scale hız hesabı için `SPEED-EXP-002` full-frame plate bbox / center kayıtları kullanılacak. | Gerekçe: Crop-only ölçüm lateral hareketi içermez; full-frame center ile yaklaşık `X/Y/Z` displacement üretilebilir. | Etki: `run_plate_detection_smoke.py` per-frame kayıtlara `bbox_xyxy_frame`, `center_xy_frame`, `width_px`, `height_px`, `vehicle_roi_origin_xy` ekler; `run_plate_scale_speed_baseline.py` full bbox varsa `xyz_displacement` moduna geçer. | Alternatifler: Crop-only depth/range-rate ile devam etmek; yan/lateral bileşeni kaçırdığı için yetersiz.
+* 2026-06-18 — Karar: Hız modülüne ayrı `Vehicle Dimension Prior` sinyali eklenecek; plaka modeliyle tek modelde birleştirilmeyecek. | Gerekçe: Plaka tespiti, araç attribute tanıma ve keypoint/wheelbase çıkarımı farklı görevlerdir; tek model yaklaşımı mevcut çalışan plate detector'ü bozabilir. | Etki: `VATTR-EXP-001` BoxCars notebook'u eklendi; `Speed Fusion Layer` plate-scale, homography/track ve dimension-prior sinyallerini confidence-aware birleştirecek. | Alternatifler: Marka/model tanımayı doğrudan hız hesabına bağlamak veya plaka modeliyle multi-task fine-tune yapmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -264,6 +265,7 @@
 * 2026-06-17 — Milestone: POCR-EXP-008 CCT-XS event/evidence enrichment tamamlandı. | Sonuç: 3 target event için CCT-XS OCR `stable_read` olarak event/evidence JSON'a işlendi; model-derived count CSV/JSON kaydedildi. `video_1` first stable frame `3`, `video_2` `4`, `video_3` `25`.
 * 2026-06-17 — Milestone: SPEED-EXP-001 plate-scale speed baseline tamamlandı. | Sonuç: CCT-XS doğrulanmış plaka crop'larıyla width/height/geomean yöntemleri denendi. Median hız adayları: `video_1` geomean `4.104 km/h`, `video_2` geomean `3.312 km/h`, `video_3` geomean `12.564 km/h`; tüm sonuçlar aspect-ratio mismatch nedeniyle düşük güvenli.
 * 2026-06-17 — Milestone: SPEED-EXP-002 full-frame plate bbox / XYZ speed baseline tamamlandı. | Sonuç: Full-frame plate bbox/center ile `xyz_displacement` modu çalıştı. Geomean median hız adayları: `video_1=3.7806 km/h`, `video_2=3.8768 km/h`, `video_3=12.8163 km/h`; sonuçlar aspect-ratio mismatch nedeniyle hâlâ düşük güvenli.
+* 2026-06-18 — Milestone: VATTR-EXP-001 vehicle dimension prior notebook'u oluşturuldu. | Sonuç: BoxCars116k kaynaklı MobileNetV3-Large/EfficientNet-B0 classifier akışı, label map, dimension-prior table ve Speed Fusion contract çıktıları için Colab notebook eklendi.
 
 ## 8) Yapılanlar
 
@@ -371,6 +373,7 @@
 * [x] `SPEED-EXP-001` plate-scale monocular speed baseline script'ini yaz ve 3 video üzerinde çalıştır.
 * [x] Plate detector summary içine full-frame `plate_bbox_xyxy`, plate center ve ROI origin alanlarını yazdır; depth-only hız yerine `X/Y/Z` konum serisi denemesi için altyapı hazırla.
 * [x] `SPEED-EXP-002` full-frame plate bbox / XYZ speed baseline'ı 3 video üzerinde çalıştır.
+* [x] `VATTR-EXP-001` vehicle attribute / dimension prior Colab notebook'unu oluştur.
 * [ ] Plate bbox aspect-ratio sapmasını manuel overlay üzerinden incele ve köşe/perspektif düzeltmesi planla.
 * [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Next active AI step)
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
@@ -412,6 +415,9 @@
 * [x] POCR-EXP-006 EasyOCR ve PaddleOCR baseline'larını aynı plate crop seti üzerinde çalıştır ve karşılaştır.
 * [ ] UFPR-ALPR dataset hazırlığını benchmark-only external generalization set olarak ekle.
 * [ ] Relative speed için absolute km/s yerine önce track/plate bbox history tabanlı göreli hız modunu çıkar.
+* [ ] `VATTR-EXP-001` smoke run ile BoxCars dataset erişimini, split seçimini ve ilk classifier metriğini doğrula.
+* [ ] `KPT-EXP-001` OpenPifPaf ApolloCar3D pretrained vehicle keypoint smoke test planla.
+* [ ] `SPEED-EXP-004` Speed Fusion Layer içinde plate-scale + homography/track + vehicle dimension prior sinyallerini birleştir.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
@@ -437,6 +443,7 @@
 * POCR-EXP-007 sonucuna göre CCT-XS 2x/3x upscale varsayılan yapılmamalı: 2x yalnız çok küçük erken okuma kazanımı sağladı, 3x ilk stabil sonucu yanlış adaya kaydırabildi. Evidence için `stable_count>=3`, `window_size=7`, `min_confidence>=0.75`, format/province valid gate önerilir.
 * POCR-EXP-008 event/evidence enrichment'te final OCR alanı tek kare `highest_confidence_result` üzerinden değil, CCT-XS temporal stability gate sonucu üzerinden yazılır. `pocr_exp_008_cct_xs_model_counts.csv` model-derived count tablosudur; gerçek manuel accuracy etiketi değildir.
 * SPEED-EXP-001 crop-only artefactleri plakanın full-frame merkez koordinatını içermez; bu yüzden mevcut hız hesabı yalnız plate scale/depth değişimi kullanır. Lateral hareket ve daha savunulabilir km/s için plate detector summary full-frame bbox/center yazmalıdır.
+* Vehicle dimension prior yanlış marka/model veya gövde tipi tahmini yaparsa wheelbase ölçeği hız hesabını bozabilir. Bu sinyal yalnız confidence yüksek ve viewpoint/track stabilitesi uygun olduğunda `use_for_speed_fusion=true` olmalıdır.
 * Vehicle detection fine-tune tekrar aktif planlamaya alındı; ilk resmi model `YOLO11n`, ana veri omurgası BDD100K, eğitim ortamı Colab + Drive, zorunlu model çıktısı `.pt`, ONNX ise opsiyonel deployment kanıtı olarak tutulacak.
 * Arkadaş önerisindeki ACDC/DAWN/ExDark/Foggy Cityscapes kaynakları ilk eğitim merge'üne doğrudan alınmayacak; önce BDD100K general detector eğitilecek, condition breakdown zayıflık gösterirse specialist/evaluation fazına taşınacak.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
@@ -495,4 +502,4 @@
 
 ### Güncelleme Kaydı
 
-* Son güncelleme: 2026-06-17
+* Son güncelleme: 2026-06-18
