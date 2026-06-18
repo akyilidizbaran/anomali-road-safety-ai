@@ -192,6 +192,7 @@
 * 2026-06-18 — Karar: `SPEED-EXP-004` ilk Speed Fusion sürümü weighted average yerine güvenli karar ağacı kullanacak. | Gerekçe: Ground truth hız yokken karmaşık ağırlıklı fusion yanlış kesinlik üretebilir; homography varsa birincil absolute candidate, yoksa relative speed daha savunulabilir. | Etki: Uygulama sırası `004A relative track/bbox`, `004B plate+VATTR sanity-check`, `004C homography candidate`, `004D evidence enrichment` olarak belirlendi. | Alternatifler: Tüm sinyalleri tek formülde ağırlıklı ortalamak; erken aşama için riskli.
 * 2026-06-18 — Karar: BoxCars indirme akışı direct URL + Kaggle fallback şeklinde tutulacak. | Gerekçe: Resmi README linki kullanıcı tarafında boş sayfaya düşebiliyor ve yerel DNS kontrolünde `medusa.fit.vutbr.cz` çözülemedi; Kaggle mirror pratik fallback sağlar. | Etki: VATTR notebook `AUTO_DOWNLOAD_BOXCARS=True`, `ENABLE_KAGGLE_FALLBACK=True` oldu; Drive `datasets/boxcars` klasörüne download link Markdown yüklendi. | Alternatifler: Kullanıcıdan manuel indirmeyi zorunlu tutmak.
 * 2026-06-18 — Karar: Aktif olarak çalıştırılacak ilk Colab notebook `VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab.ipynb` olacak; `SPEED-EXP-004A` ise notebook değil lokal/script adımıdır. | Gerekçe: Yol haritasında ilk teknik hız adımı relative track/bbox baseline olsa da bu adım yeni eğitim gerektirmez; BoxCars/VATTR notebook'u `004B` dimension-prior sanity-check için gerekli ayrı modeli üretir. | Etki: `speed_fusion_roadmap_2026_06_18.md` içinde notebook ve script ayrımı yazıldı. | Alternatifler: Önce `004A` için yeni Colab notebook yaratmak; gereksiz GPU/Drive bağımlılığı oluşturacağı için reddedildi.
+* 2026-06-18 — Karar: `VATTR-EXP-001` output-saved smoke run başarıyla tamamlandı ancak model runtime/default'a terfi etmeyecek. | Gerekçe: Kaggle fallback, split, eğitim ve Drive export başarılı; fakat test accuracy `0.49`, macro-F1 `0.1915`, `mpv/suv/van` F1 `0.0`. Bu kalite Speed Fusion için güvenilir dimension prior üretmeye yetmez. | Etki: Aktif notebook class weights + balanced sampler ile güncellendi; sonraki run heavy comparison olmalı. | Alternatifler: Smoke checkpoint'i doğrudan kullanmak; minority class failure nedeniyle reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -271,6 +272,7 @@
 * 2026-06-18 — Milestone: VATTR-EXP-001 vehicle dimension prior notebook'u oluşturuldu. | Sonuç: BoxCars116k kaynaklı MobileNetV3-Large/EfficientNet-B0 classifier akışı, label map, dimension-prior table ve Speed Fusion contract çıktıları için Colab notebook eklendi.
 * 2026-06-18 — Milestone: SPEED-EXP-004 Speed Fusion uygulama planı eklendi. | Sonuç: GPT araştırma çıktısı; `absolute_candidate`, `relative`, `unavailable` modları, candidate contract, quality gates, evidence JSON alanları ve uygulama sırası halinde repo dokümanına çevrildi.
 * 2026-06-18 — Milestone: SPEED-EXP-004 ayrıntılı yol haritası kaydedildi. | Sonuç: `speed_fusion_roadmap_2026_06_18.md` dosyası, 004A-004D aşamalarını, ilk notebook kararını, riskleri ve başarı kriterlerini içerir.
+* 2026-06-18 — Milestone: VATTR-EXP-001 smoke run incelendi. | Sonuç: BoxCars Kaggle fallback ve artefact export başarılı; model kalitesi yetersiz bulundu, aktif notebook class imbalance düzeltmeleriyle patch'lendi.
 
 ## 8) Yapılanlar
 
@@ -424,6 +426,8 @@
 * [ ] UFPR-ALPR dataset hazırlığını benchmark-only external generalization set olarak ekle.
 * [ ] Relative speed için absolute km/s yerine önce track/plate bbox history tabanlı göreli hız modunu çıkar.
 * [ ] `VATTR-EXP-001` smoke run ile BoxCars dataset erişimini, split seçimini ve ilk classifier metriğini doğrula.
+* [x] `VATTR-EXP-001` output-saved smoke run sonuçlarını incele ve raporla.
+* [ ] Patch'li `VATTR-EXP-001` heavy run çalıştır; minority class F1 değerlerini yeniden değerlendir.
 * [ ] `KPT-EXP-001` OpenPifPaf ApolloCar3D pretrained vehicle keypoint smoke test planla.
 * [ ] `SPEED-EXP-004` Speed Fusion Layer içinde plate-scale + homography/track + vehicle dimension prior sinyallerini birleştir.
 * [ ] `SPEED-EXP-004A` relative track/bbox speed baseline script'ini uygula.
@@ -453,6 +457,7 @@
 * POCR-EXP-008 event/evidence enrichment'te final OCR alanı tek kare `highest_confidence_result` üzerinden değil, CCT-XS temporal stability gate sonucu üzerinden yazılır. `pocr_exp_008_cct_xs_model_counts.csv` model-derived count tablosudur; gerçek manuel accuracy etiketi değildir.
 * SPEED-EXP-001 crop-only artefactleri plakanın full-frame merkez koordinatını içermez; bu yüzden mevcut hız hesabı yalnız plate scale/depth değişimi kullanır. Lateral hareket ve daha savunulabilir km/s için plate detector summary full-frame bbox/center yazmalıdır.
 * Vehicle dimension prior yanlış marka/model veya gövde tipi tahmini yaparsa wheelbase ölçeği hız hesabını bozabilir. Bu sinyal yalnız confidence yüksek ve viewpoint/track stabilitesi uygun olduğunda `use_for_speed_fusion=true` olmalıdır.
+* VATTR-EXP-001 smoke checkpoint'i runtime'a alınmamalıdır. Smoke run'da `mpv/suv/van` F1 `0.0`; aktif notebook class weights + balanced sampler ile düzeltildi ama ağır run sonucu gelmeden model güvenilir dimension prior sayılmaz.
 * Vehicle detection fine-tune tekrar aktif planlamaya alındı; ilk resmi model `YOLO11n`, ana veri omurgası BDD100K, eğitim ortamı Colab + Drive, zorunlu model çıktısı `.pt`, ONNX ise opsiyonel deployment kanıtı olarak tutulacak.
 * Arkadaş önerisindeki ACDC/DAWN/ExDark/Foggy Cityscapes kaynakları ilk eğitim merge'üne doğrudan alınmayacak; önce BDD100K general detector eğitilecek, condition breakdown zayıflık gösterirse specialist/evaluation fazına taşınacak.
 * ReID şimdilik kapalıdır; ancak uzun occlusion veya yoğun trafik senaryosunda BoT-SORT ReID modu yeniden değerlendirilebilir.
