@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Hız modülü için plate-scale ve full-frame plate bbox denemelerine ek olarak `Vehicle Dimension Prior` sinyali ekleniyor.
-* Son değişiklik neydi? `VATTR-EXP-001` BoxCars notebook'u direct download + Kaggle fallback destekleyecek şekilde güncellendi; Drive `datasets/boxcars` içine indirme link notu yüklendi; `SPEED-EXP-004` Speed Fusion uygulama planı eklendi.
-* Bir sonraki net adım ne? BoxCars smoke run ile VATTR erişimini doğrulamak; paralelde `SPEED-EXP-004A` relative track/bbox speed baseline uygulamasına başlamak.
+* Son değişiklik neydi? `SPEED-EXP-004` ayrıntılı yol haritası ayrı Markdown dosyasına kaydedildi; `VATTR-EXP-001` notebook'u nested zip içeren BoxCars/Kaggle arşivlerine karşı güçlendirildi.
+* Bir sonraki net adım ne? Kullanıcı Colab'da `VATTR-EXP-001` smoke run çalıştıracak; repo tarafında `SPEED-EXP-004A` relative track/bbox speed baseline script'i uygulanacak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -191,6 +191,7 @@
 * 2026-06-18 — Karar: Hız modülüne ayrı `Vehicle Dimension Prior` sinyali eklenecek; plaka modeliyle tek modelde birleştirilmeyecek. | Gerekçe: Plaka tespiti, araç attribute tanıma ve keypoint/wheelbase çıkarımı farklı görevlerdir; tek model yaklaşımı mevcut çalışan plate detector'ü bozabilir. | Etki: `VATTR-EXP-001` BoxCars notebook'u eklendi; `Speed Fusion Layer` plate-scale, homography/track ve dimension-prior sinyallerini confidence-aware birleştirecek. | Alternatifler: Marka/model tanımayı doğrudan hız hesabına bağlamak veya plaka modeliyle multi-task fine-tune yapmak.
 * 2026-06-18 — Karar: `SPEED-EXP-004` ilk Speed Fusion sürümü weighted average yerine güvenli karar ağacı kullanacak. | Gerekçe: Ground truth hız yokken karmaşık ağırlıklı fusion yanlış kesinlik üretebilir; homography varsa birincil absolute candidate, yoksa relative speed daha savunulabilir. | Etki: Uygulama sırası `004A relative track/bbox`, `004B plate+VATTR sanity-check`, `004C homography candidate`, `004D evidence enrichment` olarak belirlendi. | Alternatifler: Tüm sinyalleri tek formülde ağırlıklı ortalamak; erken aşama için riskli.
 * 2026-06-18 — Karar: BoxCars indirme akışı direct URL + Kaggle fallback şeklinde tutulacak. | Gerekçe: Resmi README linki kullanıcı tarafında boş sayfaya düşebiliyor ve yerel DNS kontrolünde `medusa.fit.vutbr.cz` çözülemedi; Kaggle mirror pratik fallback sağlar. | Etki: VATTR notebook `AUTO_DOWNLOAD_BOXCARS=True`, `ENABLE_KAGGLE_FALLBACK=True` oldu; Drive `datasets/boxcars` klasörüne download link Markdown yüklendi. | Alternatifler: Kullanıcıdan manuel indirmeyi zorunlu tutmak.
+* 2026-06-18 — Karar: Aktif olarak çalıştırılacak ilk Colab notebook `VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab.ipynb` olacak; `SPEED-EXP-004A` ise notebook değil lokal/script adımıdır. | Gerekçe: Yol haritasında ilk teknik hız adımı relative track/bbox baseline olsa da bu adım yeni eğitim gerektirmez; BoxCars/VATTR notebook'u `004B` dimension-prior sanity-check için gerekli ayrı modeli üretir. | Etki: `speed_fusion_roadmap_2026_06_18.md` içinde notebook ve script ayrımı yazıldı. | Alternatifler: Önce `004A` için yeni Colab notebook yaratmak; gereksiz GPU/Drive bağımlılığı oluşturacağı için reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -269,6 +270,7 @@
 * 2026-06-17 — Milestone: SPEED-EXP-002 full-frame plate bbox / XYZ speed baseline tamamlandı. | Sonuç: Full-frame plate bbox/center ile `xyz_displacement` modu çalıştı. Geomean median hız adayları: `video_1=3.7806 km/h`, `video_2=3.8768 km/h`, `video_3=12.8163 km/h`; sonuçlar aspect-ratio mismatch nedeniyle hâlâ düşük güvenli.
 * 2026-06-18 — Milestone: VATTR-EXP-001 vehicle dimension prior notebook'u oluşturuldu. | Sonuç: BoxCars116k kaynaklı MobileNetV3-Large/EfficientNet-B0 classifier akışı, label map, dimension-prior table ve Speed Fusion contract çıktıları için Colab notebook eklendi.
 * 2026-06-18 — Milestone: SPEED-EXP-004 Speed Fusion uygulama planı eklendi. | Sonuç: GPT araştırma çıktısı; `absolute_candidate`, `relative`, `unavailable` modları, candidate contract, quality gates, evidence JSON alanları ve uygulama sırası halinde repo dokümanına çevrildi.
+* 2026-06-18 — Milestone: SPEED-EXP-004 ayrıntılı yol haritası kaydedildi. | Sonuç: `speed_fusion_roadmap_2026_06_18.md` dosyası, 004A-004D aşamalarını, ilk notebook kararını, riskleri ve başarı kriterlerini içerir.
 
 ## 8) Yapılanlar
 
@@ -379,6 +381,7 @@
 * [x] `VATTR-EXP-001` vehicle attribute / dimension prior Colab notebook'unu oluştur.
 * [x] BoxCars116k direct download ve Kaggle fallback bilgisini Drive/notebook/runbook içine işle.
 * [x] GPT speed-fusion çıktısını `SPEED-EXP-004` uygulama planına dönüştür.
+* [x] `SPEED-EXP-004` yol haritasını ayrıntılı Markdown olarak kaydet.
 * [ ] Plate bbox aspect-ratio sapmasını manuel overlay üzerinden incele ve köşe/perspektif düzeltmesi planla.
 * [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Next active AI step)
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
