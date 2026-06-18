@@ -3,8 +3,8 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? Hız modülü için plate-scale ve full-frame plate bbox denemelerine ek olarak `Vehicle Dimension Prior` sinyali ekleniyor.
-* Son değişiklik neydi? `VATTR-EXP-001` BoxCars vehicle attribute / dimension prior Colab notebook'u oluşturuldu; hız dokümanı `Speed Fusion Layer` yaklaşımıyla güncellendi.
-* Bir sonraki net adım ne? `VATTR-EXP-001` smoke run ile BoxCars erişimini ve classifier eğitimini doğrulamak; ardından `KPT-EXP-001` OpenPifPaf ApolloCar3D keypoint smoke test veya `SPEED-EXP-004` fusion layer uygulamasına geçmek.
+* Son değişiklik neydi? `VATTR-EXP-001` BoxCars notebook'u direct download + Kaggle fallback destekleyecek şekilde güncellendi; Drive `datasets/boxcars` içine indirme link notu yüklendi; `SPEED-EXP-004` Speed Fusion uygulama planı eklendi.
+* Bir sonraki net adım ne? BoxCars smoke run ile VATTR erişimini doğrulamak; paralelde `SPEED-EXP-004A` relative track/bbox speed baseline uygulamasına başlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -189,6 +189,8 @@
 * 2026-06-17 — Karar: Hız modülünde ilk mutlak km/s denemesi plaka görünür hedefler için `SPEED-EXP-001 Plate-Scale Monocular Speed Baseline` olarak açıldı. | Gerekçe: Türkiye uzun plaka ölçüsü (`0.52m x 0.11m`) bilinen fiziksel referans sağlar ve literatürde plaka geometrisiyle tek kamera mesafe/hız kestirimi yaklaşımları vardır. | Etki: Width, height ve geomean tabanlı depth/range-rate varyantları üretildi; sonuçlar düşük güvenli işaretlendi çünkü mevcut crop aspect ratio standart uzun plaka oranından sapıyor ve full-frame plate center yok. | Alternatifler: Doğrudan homografi veya yalnız track-center relative speed; plaka görünür senaryo için önce plate-scale baseline denenmesi seçildi.
 * 2026-06-17 — Karar: Plate-scale hız hesabı için `SPEED-EXP-002` full-frame plate bbox / center kayıtları kullanılacak. | Gerekçe: Crop-only ölçüm lateral hareketi içermez; full-frame center ile yaklaşık `X/Y/Z` displacement üretilebilir. | Etki: `run_plate_detection_smoke.py` per-frame kayıtlara `bbox_xyxy_frame`, `center_xy_frame`, `width_px`, `height_px`, `vehicle_roi_origin_xy` ekler; `run_plate_scale_speed_baseline.py` full bbox varsa `xyz_displacement` moduna geçer. | Alternatifler: Crop-only depth/range-rate ile devam etmek; yan/lateral bileşeni kaçırdığı için yetersiz.
 * 2026-06-18 — Karar: Hız modülüne ayrı `Vehicle Dimension Prior` sinyali eklenecek; plaka modeliyle tek modelde birleştirilmeyecek. | Gerekçe: Plaka tespiti, araç attribute tanıma ve keypoint/wheelbase çıkarımı farklı görevlerdir; tek model yaklaşımı mevcut çalışan plate detector'ü bozabilir. | Etki: `VATTR-EXP-001` BoxCars notebook'u eklendi; `Speed Fusion Layer` plate-scale, homography/track ve dimension-prior sinyallerini confidence-aware birleştirecek. | Alternatifler: Marka/model tanımayı doğrudan hız hesabına bağlamak veya plaka modeliyle multi-task fine-tune yapmak.
+* 2026-06-18 — Karar: `SPEED-EXP-004` ilk Speed Fusion sürümü weighted average yerine güvenli karar ağacı kullanacak. | Gerekçe: Ground truth hız yokken karmaşık ağırlıklı fusion yanlış kesinlik üretebilir; homography varsa birincil absolute candidate, yoksa relative speed daha savunulabilir. | Etki: Uygulama sırası `004A relative track/bbox`, `004B plate+VATTR sanity-check`, `004C homography candidate`, `004D evidence enrichment` olarak belirlendi. | Alternatifler: Tüm sinyalleri tek formülde ağırlıklı ortalamak; erken aşama için riskli.
+* 2026-06-18 — Karar: BoxCars indirme akışı direct URL + Kaggle fallback şeklinde tutulacak. | Gerekçe: Resmi README linki kullanıcı tarafında boş sayfaya düşebiliyor ve yerel DNS kontrolünde `medusa.fit.vutbr.cz` çözülemedi; Kaggle mirror pratik fallback sağlar. | Etki: VATTR notebook `AUTO_DOWNLOAD_BOXCARS=True`, `ENABLE_KAGGLE_FALLBACK=True` oldu; Drive `datasets/boxcars` klasörüne download link Markdown yüklendi. | Alternatifler: Kullanıcıdan manuel indirmeyi zorunlu tutmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -266,6 +268,7 @@
 * 2026-06-17 — Milestone: SPEED-EXP-001 plate-scale speed baseline tamamlandı. | Sonuç: CCT-XS doğrulanmış plaka crop'larıyla width/height/geomean yöntemleri denendi. Median hız adayları: `video_1` geomean `4.104 km/h`, `video_2` geomean `3.312 km/h`, `video_3` geomean `12.564 km/h`; tüm sonuçlar aspect-ratio mismatch nedeniyle düşük güvenli.
 * 2026-06-17 — Milestone: SPEED-EXP-002 full-frame plate bbox / XYZ speed baseline tamamlandı. | Sonuç: Full-frame plate bbox/center ile `xyz_displacement` modu çalıştı. Geomean median hız adayları: `video_1=3.7806 km/h`, `video_2=3.8768 km/h`, `video_3=12.8163 km/h`; sonuçlar aspect-ratio mismatch nedeniyle hâlâ düşük güvenli.
 * 2026-06-18 — Milestone: VATTR-EXP-001 vehicle dimension prior notebook'u oluşturuldu. | Sonuç: BoxCars116k kaynaklı MobileNetV3-Large/EfficientNet-B0 classifier akışı, label map, dimension-prior table ve Speed Fusion contract çıktıları için Colab notebook eklendi.
+* 2026-06-18 — Milestone: SPEED-EXP-004 Speed Fusion uygulama planı eklendi. | Sonuç: GPT araştırma çıktısı; `absolute_candidate`, `relative`, `unavailable` modları, candidate contract, quality gates, evidence JSON alanları ve uygulama sırası halinde repo dokümanına çevrildi.
 
 ## 8) Yapılanlar
 
@@ -374,6 +377,8 @@
 * [x] Plate detector summary içine full-frame `plate_bbox_xyxy`, plate center ve ROI origin alanlarını yazdır; depth-only hız yerine `X/Y/Z` konum serisi denemesi için altyapı hazırla.
 * [x] `SPEED-EXP-002` full-frame plate bbox / XYZ speed baseline'ı 3 video üzerinde çalıştır.
 * [x] `VATTR-EXP-001` vehicle attribute / dimension prior Colab notebook'unu oluştur.
+* [x] BoxCars116k direct download ve Kaggle fallback bilgisini Drive/notebook/runbook içine işle.
+* [x] GPT speed-fusion çıktısını `SPEED-EXP-004` uygulama planına dönüştür.
 * [ ] Plate bbox aspect-ratio sapmasını manuel overlay üzerinden incele ve köşe/perspektif düzeltmesi planla.
 * [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Next active AI step)
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
@@ -418,6 +423,7 @@
 * [ ] `VATTR-EXP-001` smoke run ile BoxCars dataset erişimini, split seçimini ve ilk classifier metriğini doğrula.
 * [ ] `KPT-EXP-001` OpenPifPaf ApolloCar3D pretrained vehicle keypoint smoke test planla.
 * [ ] `SPEED-EXP-004` Speed Fusion Layer içinde plate-scale + homography/track + vehicle dimension prior sinyallerini birleştir.
+* [ ] `SPEED-EXP-004A` relative track/bbox speed baseline script'ini uygula.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
