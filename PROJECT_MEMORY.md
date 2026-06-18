@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülü için plate-scale ve full-frame plate bbox denemelerine ek olarak `Vehicle Dimension Prior` sinyali ekleniyor.
-* Son değişiklik neydi? `SPEED-EXP-004` ayrıntılı yol haritası ayrı Markdown dosyasına kaydedildi; `VATTR-EXP-001` notebook'u nested zip içeren BoxCars/Kaggle arşivlerine karşı güçlendirildi.
-* Bir sonraki net adım ne? Kullanıcı Colab'da `VATTR-EXP-001` smoke run çalıştıracak; repo tarafında `SPEED-EXP-004A` relative track/bbox speed baseline script'i uygulanacak.
+* Şu an ne yapıyoruz? Hız modülünün ilk karar destek katmanı olan `SPEED-EXP-004A` relative track/bbox speed baseline üretildi; sırada VATTR target-crop smoke test ve `SPEED-EXP-004B` sanity-check bağlantısı var.
+* Son değişiklik neydi? ByteTrack target event history üzerinden `scale_normalized_speed`, bbox scale dynamics, confidence ve warning/fallback alanları üreten `run_relative_track_speed_baseline.py` eklendi.
+* Bir sonraki net adım ne? `VATTR-EXP-001-efficientnet_b0-best.pth` modelini 3 demo video target crop'larında lokal test edip `SPEED-EXP-004B` plate-scale + VATTR sanity-check katmanına bağlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -195,6 +195,7 @@
 * 2026-06-18 — Karar: `VATTR-EXP-001` output-saved smoke run başarıyla tamamlandı ancak model runtime/default'a terfi etmeyecek. | Gerekçe: Kaggle fallback, split, eğitim ve Drive export başarılı; fakat test accuracy `0.49`, macro-F1 `0.1915`, `mpv/suv/van` F1 `0.0`. Bu kalite Speed Fusion için güvenilir dimension prior üretmeye yetmez. | Etki: Aktif notebook class weights + balanced sampler ile güncellendi; sonraki run heavy comparison olmalı. | Alternatifler: Smoke checkpoint'i doğrudan kullanmak; minority class failure nedeniyle reddedildi.
 * 2026-06-18 — Karar: `VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab_outhard.ipynb` gerçek heavy run kabul edilmeyecek. | Gerekçe: Output config hâlâ `SMOKE_MODE=True`, `EPOCHS=3`, `MAX_VEHICLES_PER_SPLIT=800`, tek backbone `mobilenet_v3_large`; train/val/test yine `1600/1542/1600`. Test macro-F1 `0.1339`, `mpv/suv/van` F1 `0.0`. | Etki: Aktif notebook varsayılanı `RUN_MODE='heavy'`, `FREEZE_BACKBONE=False`, iki backbone ve full split olacak şekilde güncellendi. | Alternatifler: Bu koşuyu heavy sonuç kabul etmek; config ve metrikler nedeniyle reddedildi.
 * 2026-06-18 — Karar: `VATTR-EXP-001` hard-final run başarılı kabul edilecek ve `efficientnet_b0` checkpoint'i ilk `vehicle_dimension_prior` adayı olacak. | Gerekçe: Full split ile `44694/2563/39875` train/val/test image kullanıldı; iki backbone 20 epoch koştu; best backbone `efficientnet_b0`, test accuracy `0.8898`, macro-F1 `0.8579`; `mpv/suv/van` F1 değerleri `0.68/0.82/0.94`. | Etki: `SPEED-EXP-004B` hazırlığına geçilebilir; ancak event/evidence runtime bağlantısı öncesi 3 demo video target crop'larında lokal VATTR smoke test yapılmalı. | Alternatifler: VATTR'ı tamamen ertelemek veya MobileNetV3 seçmek; EfficientNet validation/test dengesi daha iyi olduğu için reddedildi.
+* 2026-06-18 — Karar: `SPEED-EXP-004A` ilk uygulama kalibrasyonsuz relative track/bbox speed baseline olarak kabul edilecek. | Gerekçe: ByteTrack target history üzerinden üç demo event için `relative` speed block üretildi; `video_1/video_2` normal, `video_3` fast çıktı. Mutlak km/s iddiası kurulmadı, `fallback_reason=no_reliable_metric_calibration` korundu. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004a.json`, speed summary CSV/JSON ve rapor üretildi; `SPEED-EXP-004B` bu block üzerine bağlanacak. | Alternatifler: Doğrudan homografi veya plate-scale km/s'yi ana çıktı yapmak; kalibrasyon/ground-truth eksikliği nedeniyle reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -277,6 +278,7 @@
 * 2026-06-18 — Milestone: VATTR-EXP-001 smoke run incelendi. | Sonuç: BoxCars Kaggle fallback ve artefact export başarılı; model kalitesi yetersiz bulundu, aktif notebook class imbalance düzeltmeleriyle patch'lendi.
 * 2026-06-18 — Milestone: VATTR-EXP-001 outhard çıktısı incelendi. | Sonuç: Koşunun heavy olmadığı doğrulandı; aktif notebook default heavy config'e geçirildi.
 * 2026-06-18 — Milestone: VATTR-EXP-001 hard-final run incelendi. | Sonuç: EfficientNet-B0 body classifier, BoxCars body split üzerinde test macro-F1 `0.8579` üretti ve ilk dimension-prior adayı olarak kabul edildi.
+* 2026-06-18 — Milestone: SPEED-EXP-004A relative track/bbox speed baseline tamamlandı. | Sonuç: 3 target event için kalibrasyonsuz relative speed block üretildi; `video_1=normal`, `video_2=normal`, `video_3=fast`, tümü `speed_mode=relative`.
 
 ## 8) Yapılanlar
 
@@ -428,7 +430,7 @@
 * [x] POCR-EXP-006 fast-plate-ocr CCT-S/CCT-XS lokal OCR baseline çalıştır ve benchmark CSV/rapora işle.
 * [x] POCR-EXP-006 EasyOCR ve PaddleOCR baseline'larını aynı plate crop seti üzerinde çalıştır ve karşılaştır.
 * [ ] UFPR-ALPR dataset hazırlığını benchmark-only external generalization set olarak ekle.
-* [ ] Relative speed için absolute km/s yerine önce track/plate bbox history tabanlı göreli hız modunu çıkar.
+* [x] Relative speed için absolute km/s yerine önce track/plate bbox history tabanlı göreli hız modunu çıkar.
 * [ ] `VATTR-EXP-001` smoke run ile BoxCars dataset erişimini, split seçimini ve ilk classifier metriğini doğrula.
 * [x] `VATTR-EXP-001` output-saved smoke run sonuçlarını incele ve raporla.
 * [ ] Patch'li `VATTR-EXP-001` heavy run çalıştır; minority class F1 değerlerini yeniden değerlendir.
@@ -437,7 +439,7 @@
 * [ ] `VATTR-EXP-001-efficientnet_b0-best.pth` modelini 3 demo video target crop'larında lokal smoke test et.
 * [ ] `KPT-EXP-001` OpenPifPaf ApolloCar3D pretrained vehicle keypoint smoke test planla.
 * [ ] `SPEED-EXP-004` Speed Fusion Layer içinde plate-scale + homography/track + vehicle dimension prior sinyallerini birleştir.
-* [ ] `SPEED-EXP-004A` relative track/bbox speed baseline script'ini uygula.
+* [x] `SPEED-EXP-004A` relative track/bbox speed baseline script'ini uygula.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.

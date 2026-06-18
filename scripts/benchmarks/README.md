@@ -49,6 +49,34 @@ python3 scripts/benchmarks/build_track_event_skeleton.py
 
 Bu script gerçek risk alarmı üretmez. `target_vehicle_selected` seviyesinde ara event skeleton'ı oluşturur ve sonraki speed, plate OCR, QoD ve evidence modülleri için aynı `track_id` üzerinden bağlanacak kayıtları hazırlar.
 
+## `run_relative_track_speed_baseline.py`
+
+`SPEED-EXP-004A` relative track/bbox speed baseline script'idir. CCT-XS ile zenginleştirilmiş
+event skeleton'ı okuyup ByteTrack target history üzerinden kalibrasyonsuz göreli hız sinyali
+üretir. Bu script **km/s üretmez**; `relative_speed_score`, `relative_speed_label`,
+`fusion_confidence`, `warning_flags` ve `fallback_reason` alanlarını oluşturur.
+
+Varsayılan koşu:
+
+```bash
+python3 scripts/benchmarks/run_relative_track_speed_baseline.py
+```
+
+Varsayılan input:
+
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json`
+
+Üretilen çıktılar:
+
+* Summary JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-004A-relative-track-bbox/speed_exp_004a_relative_track_speed_summary.json`
+* Summary CSV: `models/benchmarks/artifacts/speed/SPEED-EXP-004A-relative-track-bbox/speed_exp_004a_relative_track_speed_summary.csv`
+* Enriched event JSON: `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004a.json`
+* Rapor: `testing/reports/speed_exp_004a_relative_track_bbox_baseline.md`
+
+`fallback_reason=no_reliable_metric_calibration` hata değildir; homografi veya ölçülü referans
+olmadığı için bu çıktının mutlak hız yerine relative motion evidence olarak yorumlanması
+gerektiğini belirtir.
+
 ## `run_plate_detection_smoke.py`
 
 `POCR-EXP-001` plaka tespit smoke test'i. `run_tracking_baseline.py` ile aynı mantıkta çalışır:
