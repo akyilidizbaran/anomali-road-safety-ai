@@ -224,6 +224,7 @@ def make_speed_004b(
     prior_table: dict[str, Any],
     plate_candidate: dict[str, Any] | None,
     min_vattr_confidence: float,
+    min_vattr_margin: float,
 ) -> dict[str, Any]:
     speed_004a = event.get("speed_exp_004a") or {}
     relative_label = speed_004a.get("relative_speed_label")
@@ -231,7 +232,17 @@ def make_speed_004b(
     predicted_label = vattr.get("predicted_body_label")
     prior = (prior_table.get("priors") or {}).get(predicted_label) if predicted_label else None
     vattr_conf = float(vattr.get("vehicle_attribute_confidence") or 0.0)
-    use_vattr = bool(prior and prior.get("use_for_speed_fusion") and vattr_conf >= min_vattr_confidence)
+    top3 = vattr.get("top3_mean_probabilities") or []
+    top2_conf = float(top3[1]["confidence"]) if len(top3) > 1 and top3[1].get("confidence") is not None else 0.0
+    vattr_margin = vattr_conf - top2_conf
+    vattr_failure_reason = None
+    if not prior:
+        vattr_failure_reason = "vehicle_dimension_prior_unavailable"
+    elif vattr_conf < min_vattr_confidence:
+        vattr_failure_reason = "vehicle_attribute_low_confidence"
+    elif vattr_margin < min_vattr_margin:
+        vattr_failure_reason = "vehicle_attribute_low_margin"
+    use_vattr = bool(prior and prior.get("use_for_speed_fusion") and vattr_failure_reason is None)
 
     quality_flags = ["relative_track_speed_available"]
     warning_flags = ["not_absolute_kmh", "not_for_legal_enforcement"]
@@ -266,7 +277,7 @@ def make_speed_004b(
     if use_vattr:
         quality_flags.append("vehicle_dimension_prior_available")
     elif prior:
-        warning_flags.append("vehicle_attribute_low_confidence")
+        warning_flags.append(vattr_failure_reason or "vehicle_attribute_not_used")
     else:
         warning_flags.append("vehicle_dimension_prior_unavailable")
 
@@ -295,13 +306,16 @@ def make_speed_004b(
             "status": vattr.get("status"),
             "predicted_body_label": predicted_label,
             "vehicle_attribute_confidence": round_or_none(vattr.get("vehicle_attribute_confidence"), 6),
+            "top1_top2_margin": round(vattr_margin, 6) if top3 else None,
+            "min_confidence_required": min_vattr_confidence,
+            "min_margin_required": min_vattr_margin,
             "use_for_speed_fusion": use_vattr,
             "prior": prior,
             "crop_count": vattr.get("crop_count"),
             "best_crop_uri": vattr.get("best_crop_uri"),
             "top3_mean_probabilities": vattr.get("top3_mean_probabilities"),
             "per_crop_vote_counts": vattr.get("per_crop_vote_counts"),
-            "failure_reason": vattr.get("failure_reason"),
+            "failure_reason": vattr.get("failure_reason") or vattr_failure_reason,
         },
         "plate_scale_sanity": plate_candidate,
         "sanity_check": {
@@ -336,7 +350,9 @@ def flatten(event: dict[str, Any], speed_004b: dict[str, Any]) -> dict[str, Any]
         "plate_scale_confidence": plate.get("confidence"),
         "vattr_label": vattr.get("predicted_body_label"),
         "vattr_confidence": vattr.get("vehicle_attribute_confidence"),
+        "vattr_top1_top2_margin": vattr.get("top1_top2_margin"),
         "vattr_use_for_speed_fusion": vattr.get("use_for_speed_fusion"),
+        "vattr_failure_reason": vattr.get("failure_reason"),
         "wheelbase_m_mean": (vattr.get("prior") or {}).get("wheelbase_m_mean"),
         "fusion_confidence": speed_004b.get("fusion_confidence"),
         "sanity_decision": sanity.get("decision"),
@@ -356,12 +372,12 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
 
 def make_report(path: Path, rows: list[dict[str, Any]], args: argparse.Namespace) -> None:
     table = [
-        "| Video | Track | Relative | Plate km/h | VATTR label | VATTR conf | Fusion conf | Warnings |",
-        "|---|---:|---|---:|---|---:|---:|---|",
+        "| Video | Track | Relative | Plate km/h | VATTR label | VATTR conf | Margin | Use VATTR | Fusion conf | Warnings |",
+        "|---|---:|---|---:|---|---:|---:|---|---:|---|",
     ]
     for row in rows:
         table.append(
-            "| {video} | {track_id} | {relative_label} | {plate_scale_kmh_geomean} | {vattr_label} | {vattr_confidence} | {fusion_confidence} | {warning_flags} |".format(
+            "| {video} | {track_id} | {relative_label} | {plate_scale_kmh_geomean} | {vattr_label} | {vattr_confidence} | {vattr_top1_top2_margin} | {vattr_use_for_speed_fusion} | {fusion_confidence} | {warning_flags} |".format(
                 **row
             )
         )
@@ -384,6 +400,8 @@ sonucunu destekleyen/çürüten yardımcı evidence olarak kullanılır.
 * VATTR label map: `{rel(args.label_map)}`
 * VATTR dimension priors: `{rel(args.priors)}`
 * Target ROI crops: `{rel(args.crop_dir)}`
+* Minimum VATTR confidence: `{args.min_vattr_confidence}`
+* Minimum VATTR top1-top2 margin: `{args.min_vattr_margin}`
 
 ## Sonuç Tablosu
 
@@ -417,7 +435,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--enriched-events", type=Path, default=DEFAULT_ENRICHED_EVENTS)
     parser.add_argument("--batch-size", type=int, default=16)
-    parser.add_argument("--min-vattr-confidence", type=float, default=0.35)
+    parser.add_argument("--min-vattr-confidence", type=float, default=0.60)
+    parser.add_argument("--min-vattr-margin", type=float, default=0.15)
     return parser.parse_args()
 
 
@@ -442,7 +461,14 @@ def main() -> None:
         crop_paths = crop_index.get(event_id, [])
         vattr = predict_crops(model, label_names, crop_paths, device, args.batch_size)
         plate_candidate = plate_index.get(video)
-        speed_004b = make_speed_004b(event, vattr, prior_table, plate_candidate, args.min_vattr_confidence)
+        speed_004b = make_speed_004b(
+            event,
+            vattr,
+            prior_table,
+            plate_candidate,
+            args.min_vattr_confidence,
+            args.min_vattr_margin,
+        )
         event["speed_exp_004b"] = speed_004b
         event["speed"]["fusion_confidence"] = speed_004b["fusion_confidence"]
         event["speed"]["candidate_count"] = len(speed_004b["candidate_speeds"])

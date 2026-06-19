@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-19T08:55:03Z",
+  "generated_at_utc": "2026-06-19T09:04:49Z",
   "experiment_id": "SPEED-EXP-004B",
   "purpose": "plate_scale_and_vehicle_dimension_prior_sanity_check",
   "input_event_json": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004a.json",
@@ -52,7 +52,10 @@
           "status": "computed",
           "predicted_body_label": "suv",
           "vehicle_attribute_confidence": 0.463309,
-          "use_for_speed_fusion": true,
+          "top1_top2_margin": 0.261441,
+          "min_confidence_required": 0.6,
+          "min_margin_required": 0.15,
+          "use_for_speed_fusion": false,
           "prior": {
             "body_type": "suv",
             "wheelbase_m_mean": 2.85,
@@ -86,7 +89,7 @@
             "suv": 7,
             "van": 1
           },
-          "failure_reason": null
+          "failure_reason": "vehicle_attribute_low_confidence"
         },
         "plate_scale_sanity": {
           "status": "completed",
@@ -103,16 +106,16 @@
           "decision": "use_relative_with_supporting_priors",
           "disagreement_flags": [],
           "quality_flags": [
-            "relative_track_speed_available",
-            "vehicle_dimension_prior_available"
+            "relative_track_speed_available"
           ],
           "warning_flags": [
             "not_absolute_kmh",
             "not_for_legal_enforcement",
-            "plate_scale_low_confidence"
+            "plate_scale_low_confidence",
+            "vehicle_attribute_low_confidence"
           ]
         },
-        "fusion_confidence": 0.9,
+        "fusion_confidence": 0.8717,
         "fallback_reason": "no_reliable_metric_calibration",
         "limitations": [
           "VATTR is a body/dimension prior, not a direct speed estimator.",
@@ -166,7 +169,10 @@
           "status": "computed",
           "predicted_body_label": "suv",
           "vehicle_attribute_confidence": 0.418496,
-          "use_for_speed_fusion": true,
+          "top1_top2_margin": 0.11561,
+          "min_confidence_required": 0.6,
+          "min_margin_required": 0.15,
+          "use_for_speed_fusion": false,
           "prior": {
             "body_type": "suv",
             "wheelbase_m_mean": 2.85,
@@ -200,7 +206,7 @@
             "suv": 6,
             "van": 1
           },
-          "failure_reason": null
+          "failure_reason": "vehicle_attribute_low_confidence"
         },
         "plate_scale_sanity": {
           "status": "completed",
@@ -217,16 +223,16 @@
           "decision": "use_relative_with_supporting_priors",
           "disagreement_flags": [],
           "quality_flags": [
-            "relative_track_speed_available",
-            "vehicle_dimension_prior_available"
+            "relative_track_speed_available"
           ],
           "warning_flags": [
             "not_absolute_kmh",
             "not_for_legal_enforcement",
-            "plate_scale_low_confidence"
+            "plate_scale_low_confidence",
+            "vehicle_attribute_low_confidence"
           ]
         },
-        "fusion_confidence": 0.6677,
+        "fusion_confidence": 0.5877,
         "fallback_reason": "no_reliable_metric_calibration",
         "limitations": [
           "VATTR is a body/dimension prior, not a direct speed estimator.",
@@ -280,7 +286,10 @@
           "status": "computed",
           "predicted_body_label": "van",
           "vehicle_attribute_confidence": 0.425803,
-          "use_for_speed_fusion": true,
+          "top1_top2_margin": 0.157898,
+          "min_confidence_required": 0.6,
+          "min_margin_required": 0.15,
+          "use_for_speed_fusion": false,
           "prior": {
             "body_type": "van",
             "wheelbase_m_mean": 3.2,
@@ -314,7 +323,7 @@
             "suv": 2,
             "van": 6
           },
-          "failure_reason": null
+          "failure_reason": "vehicle_attribute_low_confidence"
         },
         "plate_scale_sanity": {
           "status": "completed",
@@ -333,17 +342,17 @@
             "relative_fast_plate_scale_low_disagreement"
           ],
           "quality_flags": [
-            "relative_track_speed_available",
-            "vehicle_dimension_prior_available"
+            "relative_track_speed_available"
           ],
           "warning_flags": [
             "candidate_disagreement_high",
             "not_absolute_kmh",
             "not_for_legal_enforcement",
-            "plate_scale_low_confidence"
+            "plate_scale_low_confidence",
+            "vehicle_attribute_low_confidence"
           ]
         },
-        "fusion_confidence": 0.5898,
+        "fusion_confidence": 0.5098,
         "fallback_reason": "no_reliable_metric_calibration",
         "limitations": [
           "VATTR is a body/dimension prior, not a direct speed estimator.",

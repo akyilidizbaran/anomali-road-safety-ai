@@ -16,14 +16,16 @@ sonucunu destekleyen/çürüten yardımcı evidence olarak kullanılır.
 * VATTR label map: `models/checkpoints/vehicle_attribute/VATTR-EXP-001-label-map.json`
 * VATTR dimension priors: `models/checkpoints/vehicle_attribute/VATTR-EXP-001-dimension-prior-table.json`
 * Target ROI crops: `runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames`
+* Minimum VATTR confidence: `0.6`
+* Minimum VATTR top1-top2 margin: `0.15`
 
 ## Sonuç Tablosu
 
-| Video | Track | Relative | Plate km/h | VATTR label | VATTR conf | Fusion conf | Warnings |
-|---|---:|---|---:|---|---:|---:|---|
-| video_1.mp4 | TRK-001 | normal | 3.7806 | suv | 0.463309 | 0.9 | not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence |
-| video_2.mp4 | TRK-001 | normal | 3.8768 | suv | 0.418496 | 0.6677 | not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence |
-| video_3.mp4 | TRK-002 | fast | 12.8163 | van | 0.425803 | 0.5898 | candidate_disagreement_high|not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence |
+| Video | Track | Relative | Plate km/h | VATTR label | VATTR conf | Margin | Use VATTR | Fusion conf | Warnings |
+|---|---:|---|---:|---|---:|---:|---|---:|---|
+| video_1.mp4 | TRK-001 | normal | 3.7806 | suv | 0.463309 | 0.261441 | False | 0.8717 | not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence|vehicle_attribute_low_confidence |
+| video_2.mp4 | TRK-001 | normal | 3.8768 | suv | 0.418496 | 0.11561 | False | 0.5877 | not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence|vehicle_attribute_low_confidence |
+| video_3.mp4 | TRK-002 | fast | 12.8163 | van | 0.425803 | 0.157898 | False | 0.5098 | candidate_disagreement_high|not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence|vehicle_attribute_low_confidence |
 
 ## Yorum
 
