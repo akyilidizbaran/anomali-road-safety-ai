@@ -1,0 +1,20 @@
+{
+  "experiment_id": "VATTR-EXP-001",
+  "selected_split": "body",
+  "label_names": [
+    "combi",
+    "hatchback",
+    "mpv",
+    "sedan",
+    "suv",
+    "van"
+  ],
+  "label_to_id": {
+    "combi": 0,
+    "hatchback": 1,
+    "mpv": 2,
+    "sedan": 3,
+    "suv": 4,
+    "van": 5
+  }
+}

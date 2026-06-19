@@ -1,0 +1,361 @@
+{
+  "generated_at_utc": "2026-06-19T08:55:03Z",
+  "experiment_id": "SPEED-EXP-004B",
+  "purpose": "plate_scale_and_vehicle_dimension_prior_sanity_check",
+  "input_event_json": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004a.json",
+  "source_plate_speed_summary": "models/benchmarks/artifacts/speed/SPEED-EXP-002-plate-bbox-xyz/speed_exp_002_plate_bbox_xyz_summary.json",
+  "vattr_checkpoint": "models/checkpoints/vehicle_attribute/VATTR-EXP-001-efficientnet_b0-best.pth",
+  "vattr_checkpoint_drive_id": "1tQVq24gKbbhODVqBYG7fG9g-0GYZgHt9",
+  "event_count": 3,
+  "events": [
+    {
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "video": "video_1.mp4",
+      "track_id": "TRK-001",
+      "speed_exp_004b": {
+        "experiment_id": "SPEED-EXP-004B",
+        "speed_mode": "relative",
+        "primary_speed_source": "relative_track_bbox",
+        "candidate_speeds": [
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.244016,
+            "relative_speed_label": "normal",
+            "confidence": 0.8717,
+            "quality_flags": [
+              "bbox_height_sufficient",
+              "bbox_history_available",
+              "bbox_scale_near_constant",
+              "fps_available",
+              "track_stability_high"
+            ],
+            "failure_flags": [
+              "no_metric_calibration",
+              "not_absolute_kmh"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.7806,
+            "confidence": 0.28,
+            "quality_flags": [
+              "full_frame_plate_bbox_available"
+            ],
+            "failure_flags": [
+              "low_plate_crop_aspect_differs_from_standard_geomean"
+            ]
+          }
+        ],
+        "vehicle_dimension_prior": {
+          "source": "VATTR-EXP-001",
+          "status": "computed",
+          "predicted_body_label": "suv",
+          "vehicle_attribute_confidence": 0.463309,
+          "use_for_speed_fusion": true,
+          "prior": {
+            "body_type": "suv",
+            "wheelbase_m_mean": 2.85,
+            "wheelbase_m_min": 2.6,
+            "wheelbase_m_max": 3.1,
+            "length_m_mean": 4.65,
+            "source": "generic_vehicle_dimension_prior",
+            "label_name": "suv",
+            "selected_split": "body",
+            "use_for_speed_fusion": true
+          },
+          "crop_count": 13,
+          "best_crop_uri": "runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000282_target_roi.jpg",
+          "top3_mean_probabilities": [
+            {
+              "label": "suv",
+              "confidence": 0.463309
+            },
+            {
+              "label": "mpv",
+              "confidence": 0.201868
+            },
+            {
+              "label": "hatchback",
+              "confidence": 0.158975
+            }
+          ],
+          "per_crop_vote_counts": {
+            "hatchback": 2,
+            "mpv": 3,
+            "suv": 7,
+            "van": 1
+          },
+          "failure_reason": null
+        },
+        "plate_scale_sanity": {
+          "status": "completed",
+          "source_experiment": "SPEED-EXP-002",
+          "source_variant": "geomean",
+          "speed_kmh": 3.7806,
+          "confidence": 0.28,
+          "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+          "usable_measurement_count": 201,
+          "plate_aspect_ratio_median": 3.3519,
+          "full_frame_plate_bbox_available": true
+        },
+        "sanity_check": {
+          "decision": "use_relative_with_supporting_priors",
+          "disagreement_flags": [],
+          "quality_flags": [
+            "relative_track_speed_available",
+            "vehicle_dimension_prior_available"
+          ],
+          "warning_flags": [
+            "not_absolute_kmh",
+            "not_for_legal_enforcement",
+            "plate_scale_low_confidence"
+          ]
+        },
+        "fusion_confidence": 0.9,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "limitations": [
+          "VATTR is a body/dimension prior, not a direct speed estimator.",
+          "Plate-scale candidate remains low-confidence without calibrated camera geometry.",
+          "Final absolute km/h requires homography or measured reference."
+        ]
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "video": "video_2.mp4",
+      "track_id": "TRK-001",
+      "speed_exp_004b": {
+        "experiment_id": "SPEED-EXP-004B",
+        "speed_mode": "relative",
+        "primary_speed_source": "relative_track_bbox",
+        "candidate_speeds": [
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.22973,
+            "relative_speed_label": "normal",
+            "confidence": 0.5877,
+            "quality_flags": [
+              "bbox_height_sufficient",
+              "bbox_history_available",
+              "bbox_scale_near_constant",
+              "fps_available",
+              "track_stability_high"
+            ],
+            "failure_flags": [
+              "id_switch_suspected",
+              "no_metric_calibration",
+              "not_absolute_kmh"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.8768,
+            "confidence": 0.28,
+            "quality_flags": [
+              "full_frame_plate_bbox_available"
+            ],
+            "failure_flags": [
+              "low_plate_crop_aspect_differs_from_standard_geomean"
+            ]
+          }
+        ],
+        "vehicle_dimension_prior": {
+          "source": "VATTR-EXP-001",
+          "status": "computed",
+          "predicted_body_label": "suv",
+          "vehicle_attribute_confidence": 0.418496,
+          "use_for_speed_fusion": true,
+          "prior": {
+            "body_type": "suv",
+            "wheelbase_m_mean": 2.85,
+            "wheelbase_m_min": 2.6,
+            "wheelbase_m_max": 3.1,
+            "length_m_mean": 4.65,
+            "source": "generic_vehicle_dimension_prior",
+            "label_name": "suv",
+            "selected_split": "body",
+            "use_for_speed_fusion": true
+          },
+          "crop_count": 13,
+          "best_crop_uri": "runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000095_target_roi.jpg",
+          "top3_mean_probabilities": [
+            {
+              "label": "suv",
+              "confidence": 0.418496
+            },
+            {
+              "label": "mpv",
+              "confidence": 0.302886
+            },
+            {
+              "label": "van",
+              "confidence": 0.137723
+            }
+          ],
+          "per_crop_vote_counts": {
+            "combi": 1,
+            "mpv": 5,
+            "suv": 6,
+            "van": 1
+          },
+          "failure_reason": null
+        },
+        "plate_scale_sanity": {
+          "status": "completed",
+          "source_experiment": "SPEED-EXP-002",
+          "source_variant": "geomean",
+          "speed_kmh": 3.8768,
+          "confidence": 0.28,
+          "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+          "usable_measurement_count": 190,
+          "plate_aspect_ratio_median": 3.3939,
+          "full_frame_plate_bbox_available": true
+        },
+        "sanity_check": {
+          "decision": "use_relative_with_supporting_priors",
+          "disagreement_flags": [],
+          "quality_flags": [
+            "relative_track_speed_available",
+            "vehicle_dimension_prior_available"
+          ],
+          "warning_flags": [
+            "not_absolute_kmh",
+            "not_for_legal_enforcement",
+            "plate_scale_low_confidence"
+          ]
+        },
+        "fusion_confidence": 0.6677,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "limitations": [
+          "VATTR is a body/dimension prior, not a direct speed estimator.",
+          "Plate-scale candidate remains low-confidence without calibrated camera geometry.",
+          "Final absolute km/h requires homography or measured reference."
+        ]
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "video": "video_3.mp4",
+      "track_id": "TRK-002",
+      "speed_exp_004b": {
+        "experiment_id": "SPEED-EXP-004B",
+        "speed_mode": "relative",
+        "primary_speed_source": "relative_track_bbox",
+        "candidate_speeds": [
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.62354,
+            "relative_speed_label": "fast",
+            "confidence": 0.6298,
+            "quality_flags": [
+              "bbox_height_sufficient",
+              "bbox_history_available",
+              "bbox_scale_increasing",
+              "fps_available",
+              "track_stability_high"
+            ],
+            "failure_flags": [
+              "id_switch_suspected",
+              "no_metric_calibration",
+              "not_absolute_kmh"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 12.8163,
+            "confidence": 0.28,
+            "quality_flags": [
+              "full_frame_plate_bbox_available"
+            ],
+            "failure_flags": [
+              "low_plate_crop_aspect_differs_from_standard_geomean"
+            ]
+          }
+        ],
+        "vehicle_dimension_prior": {
+          "source": "VATTR-EXP-001",
+          "status": "computed",
+          "predicted_body_label": "van",
+          "vehicle_attribute_confidence": 0.425803,
+          "use_for_speed_fusion": true,
+          "prior": {
+            "body_type": "van",
+            "wheelbase_m_mean": 3.2,
+            "wheelbase_m_min": 2.75,
+            "wheelbase_m_max": 3.75,
+            "length_m_mean": 4.9,
+            "source": "generic_vehicle_dimension_prior",
+            "label_name": "van",
+            "selected_split": "body",
+            "use_for_speed_fusion": true
+          },
+          "crop_count": 13,
+          "best_crop_uri": "runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000157_target_roi.jpg",
+          "top3_mean_probabilities": [
+            {
+              "label": "van",
+              "confidence": 0.425803
+            },
+            {
+              "label": "mpv",
+              "confidence": 0.267905
+            },
+            {
+              "label": "hatchback",
+              "confidence": 0.17168
+            }
+          ],
+          "per_crop_vote_counts": {
+            "hatchback": 2,
+            "mpv": 3,
+            "suv": 2,
+            "van": 6
+          },
+          "failure_reason": null
+        },
+        "plate_scale_sanity": {
+          "status": "completed",
+          "source_experiment": "SPEED-EXP-002",
+          "source_variant": "geomean",
+          "speed_kmh": 12.8163,
+          "confidence": 0.28,
+          "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+          "usable_measurement_count": 178,
+          "plate_aspect_ratio_median": 3.2069,
+          "full_frame_plate_bbox_available": true
+        },
+        "sanity_check": {
+          "decision": "use_relative_with_sanity_warnings",
+          "disagreement_flags": [
+            "relative_fast_plate_scale_low_disagreement"
+          ],
+          "quality_flags": [
+            "relative_track_speed_available",
+            "vehicle_dimension_prior_available"
+          ],
+          "warning_flags": [
+            "candidate_disagreement_high",
+            "not_absolute_kmh",
+            "not_for_legal_enforcement",
+            "plate_scale_low_confidence"
+          ]
+        },
+        "fusion_confidence": 0.5898,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "limitations": [
+          "VATTR is a body/dimension prior, not a direct speed estimator.",
+          "Plate-scale candidate remains low-confidence without calibrated camera geometry.",
+          "Final absolute km/h requires homography or measured reference."
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "No final km/h claim.",
+    "VATTR is a body/dimension prior signal.",
+    "Plate-scale candidate is low-confidence without homography/calibration."
+  ]
+}

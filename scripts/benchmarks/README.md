@@ -77,6 +77,43 @@ Varsayılan input:
 olmadığı için bu çıktının mutlak hız yerine relative motion evidence olarak yorumlanması
 gerektiğini belirtir.
 
+## `run_speed_004b_plate_vattr_sanity.py`
+
+`SPEED-EXP-004B` plate-scale + VATTR sanity-check script'idir. `SPEED-EXP-004A`
+relative speed block'unu, `SPEED-EXP-002` plate-scale adayını ve `VATTR-EXP-001`
+vehicle body/dimension-prior classifier çıktısını aynı event/evidence contract'ında
+birleştirir.
+
+Varsayılan koşu:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/run_speed_004b_plate_vattr_sanity.py
+```
+
+Gerekli lokal checkpoint:
+
+* `models/checkpoints/vehicle_attribute/VATTR-EXP-001-efficientnet_b0-best.pth`
+
+Bu `.pth` dosyası Git'e eklenmez. Drive kaynağı:
+
+* `VATTR-EXP-001-efficientnet_b0-best.pth`
+* Drive file ID: `1tQVq24gKbbhODVqBYG7fG9g-0GYZgHt9`
+
+Küçük label/prior JSON dosyaları:
+
+* `models/checkpoints/vehicle_attribute/VATTR-EXP-001-label-map.json`
+* `models/checkpoints/vehicle_attribute/VATTR-EXP-001-dimension-prior-table.json`
+
+Üretilen çıktılar:
+
+* Summary JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-004B-plate-vattr-sanity/speed_exp_004b_plate_vattr_sanity_summary.json`
+* Summary CSV: `models/benchmarks/artifacts/speed/SPEED-EXP-004B-plate-vattr-sanity/speed_exp_004b_plate_vattr_sanity_summary.csv`
+* Enriched event JSON: `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json`
+* Rapor: `testing/reports/speed_exp_004b_plate_vattr_sanity.md`
+
+Bu script de kesin km/s üretmez. VATTR çıktısı doğrudan hız değil, body/dimension prior
+ve sanity-check sinyali olarak kullanılmalıdır.
+
 ## `run_plate_detection_smoke.py`
 
 `POCR-EXP-001` plaka tespit smoke test'i. `run_tracking_baseline.py` ile aynı mantıkta çalışır:

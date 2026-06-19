@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülünün ilk karar destek katmanı olan `SPEED-EXP-004A` relative track/bbox speed baseline üretildi; sırada VATTR target-crop smoke test ve `SPEED-EXP-004B` sanity-check bağlantısı var.
-* Son değişiklik neydi? ByteTrack target event history üzerinden `scale_normalized_speed`, bbox scale dynamics, confidence ve warning/fallback alanları üreten `run_relative_track_speed_baseline.py` eklendi.
-* Bir sonraki net adım ne? `VATTR-EXP-001-efficientnet_b0-best.pth` modelini 3 demo video target crop'larında lokal test edip `SPEED-EXP-004B` plate-scale + VATTR sanity-check katmanına bağlamak.
+* Şu an ne yapıyoruz? Hız modülünde `SPEED-EXP-004A` relative track/bbox baseline ve `SPEED-EXP-004B` plate-scale + VATTR sanity-check katmanı üretildi.
+* Son değişiklik neydi? VATTR EfficientNet-B0 checkpoint'i lokal target ROI crop'larında çalıştırıldı; plate-scale düşük güvenli aday ve VATTR body/dimension prior event/evidence JSON'a `speed_exp_004b` olarak işlendi.
+* Bir sonraki net adım ne? `SPEED-EXP-004C` için sabit kamera görüntüsünde yarı manuel homografi/ölçülü referans noktaları belirleyip `absolute_candidate` hız adayını denemek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -196,6 +196,7 @@
 * 2026-06-18 — Karar: `VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab_outhard.ipynb` gerçek heavy run kabul edilmeyecek. | Gerekçe: Output config hâlâ `SMOKE_MODE=True`, `EPOCHS=3`, `MAX_VEHICLES_PER_SPLIT=800`, tek backbone `mobilenet_v3_large`; train/val/test yine `1600/1542/1600`. Test macro-F1 `0.1339`, `mpv/suv/van` F1 `0.0`. | Etki: Aktif notebook varsayılanı `RUN_MODE='heavy'`, `FREEZE_BACKBONE=False`, iki backbone ve full split olacak şekilde güncellendi. | Alternatifler: Bu koşuyu heavy sonuç kabul etmek; config ve metrikler nedeniyle reddedildi.
 * 2026-06-18 — Karar: `VATTR-EXP-001` hard-final run başarılı kabul edilecek ve `efficientnet_b0` checkpoint'i ilk `vehicle_dimension_prior` adayı olacak. | Gerekçe: Full split ile `44694/2563/39875` train/val/test image kullanıldı; iki backbone 20 epoch koştu; best backbone `efficientnet_b0`, test accuracy `0.8898`, macro-F1 `0.8579`; `mpv/suv/van` F1 değerleri `0.68/0.82/0.94`. | Etki: `SPEED-EXP-004B` hazırlığına geçilebilir; ancak event/evidence runtime bağlantısı öncesi 3 demo video target crop'larında lokal VATTR smoke test yapılmalı. | Alternatifler: VATTR'ı tamamen ertelemek veya MobileNetV3 seçmek; EfficientNet validation/test dengesi daha iyi olduğu için reddedildi.
 * 2026-06-18 — Karar: `SPEED-EXP-004A` ilk uygulama kalibrasyonsuz relative track/bbox speed baseline olarak kabul edilecek. | Gerekçe: ByteTrack target history üzerinden üç demo event için `relative` speed block üretildi; `video_1/video_2` normal, `video_3` fast çıktı. Mutlak km/s iddiası kurulmadı, `fallback_reason=no_reliable_metric_calibration` korundu. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004a.json`, speed summary CSV/JSON ve rapor üretildi; `SPEED-EXP-004B` bu block üzerine bağlanacak. | Alternatifler: Doğrudan homografi veya plate-scale km/s'yi ana çıktı yapmak; kalibrasyon/ground-truth eksikliği nedeniyle reddedildi.
+* 2026-06-19 — Karar: `SPEED-EXP-004B` plate-scale + VATTR sanity-check katmanı kullanılabilir ilk evidence-fusion adımı olarak kabul edilecek. | Gerekçe: VATTR checkpoint lokal target ROI sample crop'larında çalıştı; `video_1/video_2` için body prior `suv`, `video_3` için `van` üretti. Plate-scale adayları düşük güvenli tutuldu ve `video_3` için relative fast vs plate-scale low disagreement `candidate_disagreement_high` olarak işaretlendi. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json`, 4B summary CSV/JSON ve rapor üretildi. | Alternatifler: Plate-scale adayını doğrudan km/s kabul etmek veya VATTR'ı hız kaynağı gibi kullanmak; karar destek/kanıt güvenliği nedeniyle reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -279,6 +280,7 @@
 * 2026-06-18 — Milestone: VATTR-EXP-001 outhard çıktısı incelendi. | Sonuç: Koşunun heavy olmadığı doğrulandı; aktif notebook default heavy config'e geçirildi.
 * 2026-06-18 — Milestone: VATTR-EXP-001 hard-final run incelendi. | Sonuç: EfficientNet-B0 body classifier, BoxCars body split üzerinde test macro-F1 `0.8579` üretti ve ilk dimension-prior adayı olarak kabul edildi.
 * 2026-06-18 — Milestone: SPEED-EXP-004A relative track/bbox speed baseline tamamlandı. | Sonuç: 3 target event için kalibrasyonsuz relative speed block üretildi; `video_1=normal`, `video_2=normal`, `video_3=fast`, tümü `speed_mode=relative`.
+* 2026-06-19 — Milestone: SPEED-EXP-004B plate-scale + VATTR sanity-check tamamlandı. | Sonuç: VATTR target ROI smoke inference ve plate-scale sanity-check event/evidence JSON'a işlendi; `video_3` disagreement flag üretti.
 
 ## 8) Yapılanlar
 
@@ -436,10 +438,12 @@
 * [ ] Patch'li `VATTR-EXP-001` heavy run çalıştır; minority class F1 değerlerini yeniden değerlendir.
 * [x] `VATTR-EXP-001` outhard çıktısının gerçek heavy run olup olmadığını kontrol et.
 * [x] `VATTR-EXP-001` hard-final çıktısını incele ve ilk vehicle dimension prior checkpoint kararını ver.
-* [ ] `VATTR-EXP-001-efficientnet_b0-best.pth` modelini 3 demo video target crop'larında lokal smoke test et.
+* [x] `VATTR-EXP-001-efficientnet_b0-best.pth` modelini 3 demo video target crop'larında lokal smoke test et.
 * [ ] `KPT-EXP-001` OpenPifPaf ApolloCar3D pretrained vehicle keypoint smoke test planla.
 * [ ] `SPEED-EXP-004` Speed Fusion Layer içinde plate-scale + homography/track + vehicle dimension prior sinyallerini birleştir.
 * [x] `SPEED-EXP-004A` relative track/bbox speed baseline script'ini uygula.
+* [x] `SPEED-EXP-004B` plate-scale + VATTR sanity-check event/evidence bağlantısını uygula.
+* [ ] `SPEED-EXP-004C` semi-manual homography absolute candidate hazırlığını yap.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.

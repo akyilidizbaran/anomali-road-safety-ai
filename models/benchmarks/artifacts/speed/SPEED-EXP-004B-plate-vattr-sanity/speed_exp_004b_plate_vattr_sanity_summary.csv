@@ -1,0 +1,4 @@
+event_id,video,track_id,speed_mode,relative_label,plate_scale_kmh_geomean,plate_scale_confidence,vattr_label,vattr_confidence,vattr_use_for_speed_fusion,wheelbase_m_mean,fusion_confidence,sanity_decision,warning_flags,disagreement_flags
+EVT-TRK-EXP-001-video_1-TRK-001,video_1.mp4,TRK-001,relative,normal,3.7806,0.28,suv,0.463309,True,2.85,0.9,use_relative_with_supporting_priors,not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence,
+EVT-TRK-EXP-001-video_2-TRK-001,video_2.mp4,TRK-001,relative,normal,3.8768,0.28,suv,0.418496,True,2.85,0.6677,use_relative_with_supporting_priors,not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence,
+EVT-TRK-EXP-001-video_3-TRK-002,video_3.mp4,TRK-002,relative,fast,12.8163,0.28,van,0.425803,True,3.2,0.5898,use_relative_with_sanity_warnings,candidate_disagreement_high|not_absolute_kmh|not_for_legal_enforcement|plate_scale_low_confidence,relative_fast_plate_scale_low_disagreement

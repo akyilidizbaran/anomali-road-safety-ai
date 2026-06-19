@@ -1,0 +1,73 @@
+{
+  "experiment_id": "VATTR-EXP-001",
+  "warning": "Approximate class-level vehicle dimension priors. Not legal/forensic speed evidence. Calibrate before absolute km/h claims.",
+  "selected_split": "body",
+  "priors": {
+    "combi": {
+      "body_type": "wagon",
+      "wheelbase_m_mean": 2.8,
+      "wheelbase_m_min": 2.55,
+      "wheelbase_m_max": 3.05,
+      "length_m_mean": 4.7,
+      "source": "generic_vehicle_dimension_prior",
+      "label_name": "combi",
+      "selected_split": "body",
+      "use_for_speed_fusion": true
+    },
+    "hatchback": {
+      "body_type": "hatchback",
+      "wheelbase_m_mean": 2.55,
+      "wheelbase_m_min": 2.35,
+      "wheelbase_m_max": 2.75,
+      "length_m_mean": 4.1,
+      "source": "generic_vehicle_dimension_prior",
+      "label_name": "hatchback",
+      "selected_split": "body",
+      "use_for_speed_fusion": true
+    },
+    "mpv": {
+      "body_type": "mpv",
+      "wheelbase_m_mean": 2.9,
+      "wheelbase_m_min": 2.6,
+      "wheelbase_m_max": 3.25,
+      "length_m_mean": 4.65,
+      "source": "generic_vehicle_dimension_prior",
+      "label_name": "mpv",
+      "selected_split": "body",
+      "use_for_speed_fusion": true
+    },
+    "sedan": {
+      "body_type": "sedan",
+      "wheelbase_m_mean": 2.75,
+      "wheelbase_m_min": 2.55,
+      "wheelbase_m_max": 3.0,
+      "length_m_mean": 4.55,
+      "source": "generic_vehicle_dimension_prior",
+      "label_name": "sedan",
+      "selected_split": "body",
+      "use_for_speed_fusion": true
+    },
+    "suv": {
+      "body_type": "suv",
+      "wheelbase_m_mean": 2.85,
+      "wheelbase_m_min": 2.6,
+      "wheelbase_m_max": 3.1,
+      "length_m_mean": 4.65,
+      "source": "generic_vehicle_dimension_prior",
+      "label_name": "suv",
+      "selected_split": "body",
+      "use_for_speed_fusion": true
+    },
+    "van": {
+      "body_type": "van",
+      "wheelbase_m_mean": 3.2,
+      "wheelbase_m_min": 2.75,
+      "wheelbase_m_max": 3.75,
+      "length_m_mean": 4.9,
+      "source": "generic_vehicle_dimension_prior",
+      "label_name": "van",
+      "selected_split": "body",
+      "use_for_speed_fusion": true
+    }
+  }
+}
