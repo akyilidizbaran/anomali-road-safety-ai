@@ -1,0 +1,103 @@
+{
+  "experiment_id": "SPEED-EXP-006B-demo-transfer",
+  "stage": "local_demo_transfer_smoke_test",
+  "created_at": "2026-06-20T16:35:06Z",
+  "source_timeseries": "models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_timeseries.csv",
+  "source_005a_summary": "models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_summary.json",
+  "best_006b_reference_metrics": {
+    "method": "huber_features",
+    "loo_mae_kmh": 2.7088,
+    "loo_rmse_kmh": 3.475,
+    "loo_median_abs_error_kmh": 2.1109,
+    "loo_p90_abs_error_kmh": 5.9034,
+    "loo_mean_rel_error_pct": 4.0835
+  },
+  "best_006b_geometry_params": {
+    "horizontal_fov_deg": 60.0,
+    "vehicle_height_m": 1.5,
+    "moving_average_window": 9,
+    "max_segment_speed_kmh": 140.0,
+    "segment_trim_fraction": 0.0,
+    "min_bbox_height_ratio": 0.1
+  },
+  "model_artifact_note": "The final huber_features sklearn model was not exported from Colab; this run applies the 006B best geometry parameters only.",
+  "summary_json": "models/benchmarks/artifacts/speed/SPEED-EXP-006B-demo-transfer/speed_exp_006b_demo_transfer_summary.json",
+  "timeseries_csv": "models/benchmarks/artifacts/speed/SPEED-EXP-006B-demo-transfer/speed_exp_006b_demo_transfer_timeseries.csv",
+  "summary_plot": "runs/speed/SPEED-EXP-006B-demo-transfer/plots/speed_006b_demo_transfer_comparison.png",
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "speed_005a_kmh": 2.640442,
+      "speed_005a_confidence": 0.72,
+      "speed_006b_transfer_kmh": 3.526502,
+      "speed_006b_median_kmh": 3.471962,
+      "speed_006b_range_kmh": [
+        2.568299,
+        4.499213
+      ],
+      "speed_006b_p90_kmh": 6.677132,
+      "confidence": 0.6994,
+      "observation_count": 342,
+      "valid_segment_count": 340,
+      "selected_candidate_row_count": 341,
+      "candidate_valid_ratio": 0.997067,
+      "speed_cv": 1.238415,
+      "mean_detection_confidence": 0.828964,
+      "invalid_segment_reasons": {
+        "speed_outlier_gate": 1
+      },
+      "plot_uri": "runs/speed/SPEED-EXP-006B-demo-transfer/plots/video_1_speed_006b_transfer.png"
+    },
+    {
+      "video": "video_2.mp4",
+      "speed_005a_kmh": 2.334246,
+      "speed_005a_confidence": 0.72,
+      "speed_006b_transfer_kmh": 3.204902,
+      "speed_006b_median_kmh": 3.152261,
+      "speed_006b_range_kmh": [
+        2.019601,
+        4.285152
+      ],
+      "speed_006b_p90_kmh": 6.543465,
+      "confidence": 0.6974,
+      "observation_count": 341,
+      "valid_segment_count": 336,
+      "selected_candidate_row_count": 340,
+      "candidate_valid_ratio": 0.988235,
+      "speed_cv": 1.622159,
+      "mean_detection_confidence": 0.815747,
+      "invalid_segment_reasons": {
+        "speed_outlier_gate": 4
+      },
+      "plot_uri": "runs/speed/SPEED-EXP-006B-demo-transfer/plots/video_2_speed_006b_transfer.png"
+    },
+    {
+      "video": "video_3.mp4",
+      "speed_005a_kmh": 15.064621,
+      "speed_005a_confidence": 0.72,
+      "speed_006b_transfer_kmh": 16.227622,
+      "speed_006b_median_kmh": 15.163884,
+      "speed_006b_range_kmh": [
+        11.150773,
+        21.868198
+      ],
+      "speed_006b_p90_kmh": 34.583133,
+      "confidence": 0.6985,
+      "observation_count": 285,
+      "valid_segment_count": 282,
+      "selected_candidate_row_count": 284,
+      "candidate_valid_ratio": 0.992958,
+      "speed_cv": 0.678591,
+      "mean_detection_confidence": 0.807063,
+      "invalid_segment_reasons": {
+        "speed_outlier_gate": 2
+      },
+      "plot_uri": "runs/speed/SPEED-EXP-006B-demo-transfer/plots/video_3_speed_006b_transfer.png"
+    }
+  ],
+  "limitations": [
+    "No ground-truth speed exists for the three local demo videos.",
+    "This is not the persisted huber_features model inference; it is a best-parameter transfer smoke test.",
+    "Outputs are approximate support evidence, not legal speed measurements."
+  ]
+}

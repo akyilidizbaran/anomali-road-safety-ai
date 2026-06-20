@@ -218,6 +218,33 @@ Karar:
   `support_evidence` olarak tutulmalıdır.
 * Saha/dark demo transferi için ayrıca confidence ve fallback gerekçesi yazılmalıdır.
 
+### SPEED-EXP-006B Demo Transfer Smoke Test
+
+006B best geometry parametreleri, mevcut `SPEED-EXP-005A` target-track timeseries çıktıları
+üzerinden 3 lokal demo videoya uygulandı. Bu koşu final `huber_features` model artifact'iyle
+birebir inference değildir; çünkü çıktı notebook'unda sklearn model dosyası export edilmemişti.
+Aktif Colab notebook'a bu eksikliği gidermek için `Cell 10B` final `.joblib` export hücresi
+eklendi.
+
+Demo transfer sonuçları:
+
+| Video | 005A km/h | 006B transfer km/h | Confidence | Yorum |
+|---|---:|---:|---:|---|
+| `video_1.mp4` | `2.64` | `3.53` | `0.6994` | Düşük hız bandı korunuyor |
+| `video_2.mp4` | `2.33` | `3.20` | `0.6974` | Düşük hız bandı korunuyor |
+| `video_3.mp4` | `15.06` | `16.23` | `0.6985` | Göreli olarak hızlı video ayrışıyor |
+
+Çıktılar:
+
+* Rapor: `testing/reports/speed_exp_006b_demo_transfer.md`
+* Summary JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-006B-demo-transfer/speed_exp_006b_demo_transfer_summary.json`
+* Timeseries CSV: `models/benchmarks/artifacts/speed/SPEED-EXP-006B-demo-transfer/speed_exp_006b_demo_transfer_timeseries.csv`
+* Grafikler: `runs/speed/SPEED-EXP-006B-demo-transfer/plots/`
+
+Yorum: 006B transferi 005A ile aynı sıralamayı korur; `video_3` açıkça daha hızlı sinyal
+üretir. Ancak 3 demo videoda ground-truth hız olmadığı için bu sonuç doğruluk metriği değil,
+trend/fallback/confidence kontrolüdür.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.

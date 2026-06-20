@@ -217,6 +217,7 @@
 * 2026-06-20 — Karar: FTR ana teslimi bloklanmadan `SPEED-EXP-006B` geniş VS13 kalibrasyon notebook'u hazırlanacak. | Gerekçe: FTR `results.json` hız alanı istemiyor, fakat kullanıcı hız modülünü kapatmadan geçmek istemiyor; bu nedenle hızda savunulabilir son karar için 13 araç paketini destekleyen leave-one-vehicle-out kalibrasyon gerekir. | Etki: `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb` eklendi; global/lineer/robust kalibrasyon ve hafif tabular regressor kıyasları üretilecek. | Alternatifler: Hız çalışmalarını tamamen bırakmak veya mevcut 3 araç sonucunu final saymak; ilki kullanıcı hedefiyle, ikincisi metriklerle uyumsuz.
 * 2026-06-20 — Karar: `SPEED-EXP-006B` manifest split bug'i düzeltildi. | Gerekçe: 006B paket sözlüklerinde sabit `split` yok; değerlendirme Cell 10'da leave-one-vehicle-out ile `vehicle` üzerinden dinamik yapılır. Outcrashed koşuda Cell 6 hâlâ `meta['split']` beklediği için `KeyError: 'split'` verdi. | Etki: Manifest artık `split='loo_pool'` ve `loo_group=vehicle` yazar; 006B çıktı klasörü de 006 ile karışmaması için `SPEED-EXP-006B-VS13-wide-subset-calibration` olarak ayrıldı. | Alternatifler: Paketlere manuel train/val/test split eklemek; LOO hedefiyle uyumsuz olduğu için reddedildi.
 * 2026-06-20 — Karar: `SPEED-EXP-006B` mevcut hız fazı için başarılı kapanış kabul edilecek. | Gerekçe: 13 VS13 araç paketinden 156 video leave-one-vehicle-out CV ile işlendi; en iyi `huber_features` sonucu MAE `2.7088 km/h`, RMSE `3.4750 km/h`, median AE `2.1109 km/h`, P90 AE `5.9034 km/h`, mean relative error `4.0835%` verdi. | Etki: Hız raporda `dataset-calibrated approximate speed candidate` ve event/evidence'da destek sinyali olarak anlatılabilir; FTR `results.json` hız alanı istemediği için Docker/FTR ana işlerini artık bloklamaz. | Alternatifler: `SPEED-EXP-006C` ile segment selector araştırmasına devam etmek; yalnız zaman kalırsa opsiyonel.
+* 2026-06-20 — Karar: `SPEED-EXP-006B` demo transferi 3 lokal videoda yalnız smoke/trend testi olarak yorumlanacak. | Gerekçe: 006B output notebook'u final `huber_features` sklearn artifact'i export etmedi; lokal test 006B best geometry parametrelerini 005A target-track timeseries'e uyguladı. Sonuçlar `video_1=3.53`, `video_2=3.20`, `video_3=16.23 km/h` ve aynı düşük/daha hızlı sıralamayı korudu. | Etki: `speed_exp_006b_demo_transfer` raporu, summary JSON ve timeseries CSV eklendi; aktif Colab notebook'a gelecekte tam model inference için `Cell 10B` `.joblib` export hücresi eklendi. | Alternatifler: Hemen tam Huber model inference yapmak; model artifact'i olmadığı için yeniden Colab export gerektirir.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -316,6 +317,7 @@
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` wide-subset calibration notebook hazırlandı. | Sonuç: 13 VS13 araç paketini destekleyen, varsayılan 12 video/araç subset kullanan, leave-one-vehicle-out CV ve hafif tabular calibration regressor karşılaştırması yapan Colab notebook eklendi.
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` split crash düzeltildi. | Sonuç: Cell 6 manifest builder sabit split beklemiyor; `loo_pool` + `loo_group` alanlarıyla sonraki LOO kalibrasyon hücresine uyumlu hale getirildi.
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` healthfinished koşusu incelendi ve hız fazı kapatıldı. | Sonuç: 13 araç / 156 video LOO CV sonucunda en iyi `huber_features` modeli MAE `2.7088 km/h`, RMSE `3.4750 km/h` verdi; hız artık FTR'yi bloklamayan approximate/support evidence katmanı olarak konumlandı.
+* 2026-06-20 — Milestone: `SPEED-EXP-006B` demo transfer smoke test tamamlandı. | Sonuç: 3 lokal demo videoda 006B best geometry parametreleriyle trend grafikleri üretildi; video_1/video_2 düşük hız bandında, video_3 daha hızlı bandında kaldı.
 
 ## 8) Yapılanlar
 
@@ -489,6 +491,7 @@
 * [x] `SPEED-EXP-006B` geniş VS13 subset kalibrasyon/training notebook'unu hazırla.
 * [x] `SPEED-EXP-006B` Cell 6 `KeyError: 'split'` crash'ini düzelt.
 * [x] `SPEED-EXP-006B` healthfinished çıktısını incele; LOO MAE/RMSE ve karar raporunu kaydet.
+* [x] `SPEED-EXP-006B` best geometry parametrelerini 3 lokal demo videoya uygula ve grafik/rapor üret.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
