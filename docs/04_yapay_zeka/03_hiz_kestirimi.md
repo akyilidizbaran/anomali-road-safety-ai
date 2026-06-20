@@ -81,6 +81,66 @@ Eğer test MAE makul çıkarsa hız modülü “dataset-calibrated approximate s
 olarak raporlanabilir. Test MAE yüksek veya tutarsız çıkarsa hız modülü yine
 `relative/support evidence` olarak kalır.
 
+### SPEED-EXP-006 Outhealth Değerlendirmesi
+
+`SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab_outhealth.ipynb` koşusu tamamlandı ve
+pipeline sağlık kontrolü başarılı geçti:
+
+* Toplam `18` VS13 video işlendi.
+* Splitler araç/paket bazlı kuruldu:
+  * train: `RenaultCaptur`, 6 video, `30-102 km/h`
+  * validation: `KiaSportage`, 6 video, `31-105 km/h`
+  * test: `VWPassat`, 6 video, `30-100 km/h`
+* YOLO + ByteTrack tracking tüm videolarda `ok` döndü.
+* Manifest, raw speed candidate, calibration grid, best prediction, summary ve plot çıktıları üretildi.
+
+En iyi `global_alpha` kalibrasyon koşusu:
+
+| Metrik | Değer |
+|---|---:|
+| `horizontal_fov_deg` | `70.0` |
+| `vehicle_height_m` | `1.45` |
+| `moving_average_window` | `15` |
+| `global_scale_alpha` | `1.3318` |
+| `train_mae_kmh` | `3.43` |
+| `val_mae_kmh` | `5.19` |
+| `test_mae_kmh` | `8.07` |
+| `test_rmse_kmh` | `12.29` |
+| `test_mean_rel_error_pct` | `12.67` |
+
+Bu sonuç, bbox-geometry adayının bilinen hızlı videolarda anlamlı bir hız sinyali taşıdığını
+gösterir. Ancak test split içinde özellikle orta hızlarda ciddi over-estimation vardır:
+`VWPassat_61` ve `VWPassat_72` için hata yaklaşık `21 km/h` seviyesine çıkmıştır. Bu nedenle
+bu koşu tek başına “tam otomatik mutlak km/s modeli tamamlandı” iddiası için yeterli değildir.
+
+Aktif notebook patch'i sonrası iki kritik düzeltme yapıldı:
+
+1. Confidence hesabı artık tüm videolarda `0.75` tavanına vurmayacak şekilde `coverage`,
+   `valid_ratio`, `speed_cv`, detection confidence ve estimate availability faktörleriyle
+   ayrıştırılır.
+2. Tracking cache kullanılsa bile `base_*` hız/confidence alanları güncel formülle yeniden
+   hesaplanır; pahalı tracking tekrar koşmadan yeni analiz üretilebilir.
+
+Yerel hesapla `linear_raw` kalibrasyon (`speed = a * raw + b`) global alpha'ya göre küçük ama
+gerçek bir iyileştirme potansiyeli göstermiştir:
+
+| Kalibrasyon | Test MAE | Test RMSE |
+|---|---:|---:|
+| `global_alpha` | `8.07 km/h` | `12.29 km/h` |
+| `linear_raw` | `7.59 km/h` | `10.43 km/h` |
+
+Sonraki hız adımı `SPEED-EXP-006B/006C` olarak kalibrasyon modelini genişletmek olmalıdır:
+
+* `global_alpha`, `linear_raw`, robust regression ve piecewise speed-bin correction kıyaslanmalı.
+* Tüm VS13 paketleri veya daha geniş bir subset kullanılmalı.
+* Track segment selector eklenmeli; görüntü giriş/çıkış uçlarındaki bbox jitter segmentleri
+  hız hesabından çıkarılmalı.
+* Confidence skorunun düşük hata ile korelasyonu ayrıca ölçülmeli.
+
+Bu adımlar sonrası test MAE hâlâ yüksek kalırsa hız modülü FTR için `relative/support evidence`
+olarak korunmalı; mutlak km/s yalnız “dataset-calibrated approximate candidate” şeklinde
+düşük iddialı raporlanmalıdır.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.

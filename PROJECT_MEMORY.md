@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülünü bilinen hızlı VS13 videolarda kalibrasyon sanity testine hazırlıyoruz.
-* Son değişiklik neydi? `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb` eklendi; VS13 indirme, track extraction, bbox-geometry hız adayı ve train/val/test parametre optimizasyonu tek notebook'a bağlandı.
-* Bir sonraki net adım ne? Colab'da `SPEED_EXP_006` notebook'unu çalıştırıp test MAE/RMSE sonucuna göre hızın `dataset-calibrated approximate candidate` mı yoksa `relative/support evidence` mı kalacağına karar vermek.
+* Şu an ne yapıyoruz? Hız modülünü VS13 bilinen hızlı videolardaki kalibrasyon sonuçlarına göre iyileştirip kapanış kararına hazırlıyoruz.
+* Son değişiklik neydi? `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab_outhealth.ipynb` koşusu incelendi; 18 video sağlıklı işlendi, test MAE `8.07 km/h` çıktı, orta hızlarda yüksek hata nedeniyle mutlak km/s henüz kapanmadı.
+* Bir sonraki net adım ne? Patch'li `SPEED_EXP_006` notebook'ta Cell 8 sonrası yeniden çalıştırılarak yeni confidence, `linear_raw` ve sonraki `006B/006C` kalibrasyon/segment selector kıyasları değerlendirilecek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -213,6 +213,7 @@
 * 2026-06-20 — Karar: Hız modülü mevcut faz için `SPEED-EXP-005D` ile kapatılacak. | Gerekçe: Kullanıcı Docker/FTR uygulamasına geçmeden önce hızla uğraşmayı bitirmek istedi; elimizde 004A relative, 002 plate-scale ve 005A bbox-geometry sinyalleri yeterli kapanış kanıtı sağlıyor. | Etki: `run_speed_005d_candidate_fusion.py` 3 sinyali tek karar ağacında birleştirir; final speed block `support evidence only` olarak event JSON'a işlenir. FARSEC/depth 005B artık zorunlu sonraki adım değil, future/support olarak kalır. | Alternatifler: FARSEC-lite depth modelini hemen entegre etmek; FTR ana modüllerini geciktireceği için ertelendi.
 * 2026-06-20 — Karar: `SPEED-EXP-005D` confidence skorları mutlak hız doğruluğu değil, sinyal/evidence destek kalitesi olarak yorumlanacak. | Gerekçe: Mevcut üç videoda ground-truth hız yok; 004A/005A/005D skorları yüksek olsa bile bu skorlar track stabilitesi, bbox segment kalitesi ve adaylar arası agreement'tan türetiliyor. | Etki: `plot_speed_confidence_audit.py`, audit JSON, rapor ve grafikler eklendi; hız FTR için `support/evidence only` olarak kapatılır. | Alternatifler: Yüksek confidence'ı doğrudan doğru km/s saymak; bilimsel olarak savunulamaz olduğu için reddedildi.
 * 2026-06-20 — Karar: VS13 ile hız kalibrasyon sanity testi Colab üzerinde yapılacak. | Gerekçe: Lokal internet yavaş; VS13 paketleri büyük ama Colab/Drive cache üzerinden indirilebilir. Bu aşama neural speed modeli eğitimi değil, mevcut bbox-geometry hız adayının bilinen km/s videolarda global scale/FOV/height/window parametre optimizasyonudur. | Etki: `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb` eklendi; ilk paketler `RenaultCaptur`, `KiaSportage`, `VWPassat`, ground-truth hız ise dosya adındaki suffix'ten okunur (`*_66.MP4` -> `66 km/h`). | Alternatifler: Lokal indirme/koşu veya yeni neural speed modeli eğitimi; bu aşama için gereksiz/çok maliyetli görüldü.
+* 2026-06-20 — Karar: `SPEED-EXP-006` outhealth sonucu pipeline sağlıklı ama mutlak km/s kapanışı için yetersiz kabul edilecek. | Gerekçe: 18 VS13 video, araç bazlı train/val/test split ve tüm videolarda `track_status=ok` üretildi; en iyi global-scale test MAE `8.07 km/h`, test RMSE `12.29 km/h`, orta hızlarda ise yaklaşık `21 km/h` over-estimation görüldü. | Etki: Aktif notebook `linear_raw` kalibrasyon kıyası, ayrıştırıcı confidence ve cache üstünden güncel `base_*` yeniden hesaplama desteğiyle patch'lendi; sonraki adım `006B/006C` kalibrasyon + segment selector olacak. | Alternatifler: Mevcut sonucu final mutlak hız modeli saymak; hata dağılımı nedeniyle reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -308,6 +309,7 @@
 * 2026-06-20 — Milestone: `SPEED-EXP-005D` candidate fusion tamamlandı. | Sonuç: 004A relative, 002 plate-scale ve 005A bbox-geometry adayları birleştirildi; `video_1=2.64 km/h normal`, `video_2=2.33 km/h normal`, `video_3=15.06 km/h fast` destek sinyali üretildi; hız FTR ana yolunu bloklamayacak şekilde kapandı.
 * 2026-06-20 — Milestone: `SPEED-EXP-005D` confidence audit tamamlandı. | Sonuç: Confidence comparison, fusion breakdown, speed candidate comparison ve high-confidence timeseries grafikleri üretildi; rapor `testing/reports/speed_exp_005d_confidence_audit.md` altında saklandı.
 * 2026-06-20 — Milestone: `SPEED-EXP-006` VS13 Colab notebook hazırlandı. | Sonuç: VS13 resmi linklerinden indirme, subset extraction, YOLO+ByteTrack track çıkarımı, bbox-geometry hız adayı, train/val/test kalibrasyon grid search ve grafik/rapor çıktıları tek notebook'a bağlandı.
+* 2026-06-20 — Milestone: `SPEED-EXP-006` VS13 outhealth çıktısı incelendi. | Sonuç: 18 video sağlıklı işlendi; en iyi global-scale test MAE `8.07 km/h`, test RMSE `12.29 km/h` bulundu; orta hızlarda yüksek hata nedeniyle hız modülü için `006B/006C` kalibrasyon ve segment selector iyileştirmesi önerildi.
 
 ## 8) Yapılanlar
 
@@ -477,6 +479,7 @@
 * [x] `SPEED-EXP-005D` candidate fusion ile hız modülünü mevcut faz için kapat.
 * [x] `SPEED-EXP-005D` confidence audit raporu ve yüksek-confidence hız grafikleri üret.
 * [x] `SPEED-EXP-006` VS13 known-speed calibration Colab notebook'unu hazırla.
+* [x] `SPEED-EXP-006` outhealth notebook çıktısını incele; tablo formatı, MAE/RMSE, confidence ve tuning ihtiyacını raporla.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
@@ -484,7 +487,8 @@
 * [ ] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
 * [x] `SPEED-EXP-005A/005D` grafik ve fusion sonuçlarını rapor/evidence baglaminda incele; FTR ana yoluna bloklayici yapma.
 * [ ] `SPEED-EXP-005B/005C` depth/plate v2 calismalarini yalniz FTR ana modullerinden sonra future/support olarak degerlendir.
-* [ ] `SPEED-EXP-006` notebook'unu Colab'da çalıştır; test MAE/RMSE ve confidence-vs-error sonucunu incele.
+* [ ] Patch'li `SPEED-EXP-006` notebook'ta Cell 8 sonrası yeniden çalıştır; `linear_raw` kalibrasyon ve yeni confidence dağılımını doğrula.
+* [ ] `SPEED-EXP-006B/006C` için daha geniş VS13 subset, robust/piecewise calibration ve track segment selector deneylerini planla.
 * [ ] `SPEED-EXP-004C` aktif homografi profilini manuel ölçüm noktalarıyla doldur ve opsiyonel reprojection validation + absolute-candidate run'ı çalıştır.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
@@ -536,6 +540,8 @@
 * “30 FPS” tüm uzman modeller her karede çalışır anlamına gelmemeli.
 * Plaka/yüz/veri saklama KVKK riski taşır.
 * Eski demo prototipi bu yeni kapsamın ana çıktısı değildir.
+* SPEED-EXP-006 outhealth koşusunda eski confidence formülü tüm videolarda `0.75` tavanına vurdu; aktif notebook patch'i sonrası Cell 8 sonrası yeniden çalıştırılmalı ve cache kullanılsa bile `base_*` hız/confidence alanlarının güncellendiği kontrol edilmelidir.
+* SPEED-EXP-006 global-alpha sonucu test MAE `8.07 km/h` olsa da hata dağılımı homojen değildir; `VWPassat_61` ve `VWPassat_72` civarında yaklaşık `21 km/h` hata görüldüğü için tek global scale ile tam otomatik mutlak km/s iddiası kurulamaz.
 * Notebook açıklama/metin blokları mutlaka `markdown` hücresi olmalı; Türkçe açıklama satırı `code` hücresinde kalırsa Colab ilk hücrede `SyntaxError` verir.
 * Colab'da `/content/drive/MyDrive/...` altında klasörler boş görünürse önce Drive mount hücresinin çalıştığından ve doğru Google hesabına bağlanıldığından emin olun; mount edilmeden çalışan notebook aynı path altında boş lokal klasörler oluşturabilir.
 * BDD100K label kaynaklarında öncelik `det_20/det_train.json` / `det_val.json`; fallback olarak `bdd100k_labels_images_train.json` / `bdd100k_labels_images_val.json` kabul edilir. Her iki format da condition metadata için kullanılabilir, ancak raporda kullanılan label sürümü açık yazılmalıdır.
