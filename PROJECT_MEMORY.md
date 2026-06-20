@@ -215,6 +215,7 @@
 * 2026-06-20 — Karar: VS13 ile hız kalibrasyon sanity testi Colab üzerinde yapılacak. | Gerekçe: Lokal internet yavaş; VS13 paketleri büyük ama Colab/Drive cache üzerinden indirilebilir. Bu aşama neural speed modeli eğitimi değil, mevcut bbox-geometry hız adayının bilinen km/s videolarda global scale/FOV/height/window parametre optimizasyonudur. | Etki: `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb` eklendi; ilk paketler `RenaultCaptur`, `KiaSportage`, `VWPassat`, ground-truth hız ise dosya adındaki suffix'ten okunur (`*_66.MP4` -> `66 km/h`). | Alternatifler: Lokal indirme/koşu veya yeni neural speed modeli eğitimi; bu aşama için gereksiz/çok maliyetli görüldü.
 * 2026-06-20 — Karar: `SPEED-EXP-006` outhealth sonucu pipeline sağlıklı ama mutlak km/s kapanışı için yetersiz kabul edilecek. | Gerekçe: 18 VS13 video, araç bazlı train/val/test split ve tüm videolarda `track_status=ok` üretildi; en iyi global-scale test MAE `8.07 km/h`, test RMSE `12.29 km/h`, orta hızlarda ise yaklaşık `21 km/h` over-estimation görüldü. | Etki: Aktif notebook `linear_raw` kalibrasyon kıyası, ayrıştırıcı confidence ve cache üstünden güncel `base_*` yeniden hesaplama desteğiyle patch'lendi; sonraki adım `006B/006C` kalibrasyon + segment selector olacak. | Alternatifler: Mevcut sonucu final mutlak hız modeli saymak; hata dağılımı nedeniyle reddedildi.
 * 2026-06-20 — Karar: FTR ana teslimi bloklanmadan `SPEED-EXP-006B` geniş VS13 kalibrasyon notebook'u hazırlanacak. | Gerekçe: FTR `results.json` hız alanı istemiyor, fakat kullanıcı hız modülünü kapatmadan geçmek istemiyor; bu nedenle hızda savunulabilir son karar için 13 araç paketini destekleyen leave-one-vehicle-out kalibrasyon gerekir. | Etki: `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb` eklendi; global/lineer/robust kalibrasyon ve hafif tabular regressor kıyasları üretilecek. | Alternatifler: Hız çalışmalarını tamamen bırakmak veya mevcut 3 araç sonucunu final saymak; ilki kullanıcı hedefiyle, ikincisi metriklerle uyumsuz.
+* 2026-06-20 — Karar: `SPEED-EXP-006B` manifest split bug'i düzeltildi. | Gerekçe: 006B paket sözlüklerinde sabit `split` yok; değerlendirme Cell 10'da leave-one-vehicle-out ile `vehicle` üzerinden dinamik yapılır. Outcrashed koşuda Cell 6 hâlâ `meta['split']` beklediği için `KeyError: 'split'` verdi. | Etki: Manifest artık `split='loo_pool'` ve `loo_group=vehicle` yazar; 006B çıktı klasörü de 006 ile karışmaması için `SPEED-EXP-006B-VS13-wide-subset-calibration` olarak ayrıldı. | Alternatifler: Paketlere manuel train/val/test split eklemek; LOO hedefiyle uyumsuz olduğu için reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -312,6 +313,7 @@
 * 2026-06-20 — Milestone: `SPEED-EXP-006` VS13 Colab notebook hazırlandı. | Sonuç: VS13 resmi linklerinden indirme, subset extraction, YOLO+ByteTrack track çıkarımı, bbox-geometry hız adayı, train/val/test kalibrasyon grid search ve grafik/rapor çıktıları tek notebook'a bağlandı.
 * 2026-06-20 — Milestone: `SPEED-EXP-006` VS13 outhealth çıktısı incelendi. | Sonuç: 18 video sağlıklı işlendi; en iyi global-scale test MAE `8.07 km/h`, test RMSE `12.29 km/h` bulundu; orta hızlarda yüksek hata nedeniyle hız modülü için `006B/006C` kalibrasyon ve segment selector iyileştirmesi önerildi.
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` wide-subset calibration notebook hazırlandı. | Sonuç: 13 VS13 araç paketini destekleyen, varsayılan 12 video/araç subset kullanan, leave-one-vehicle-out CV ve hafif tabular calibration regressor karşılaştırması yapan Colab notebook eklendi.
+* 2026-06-20 — Milestone: `SPEED-EXP-006B` split crash düzeltildi. | Sonuç: Cell 6 manifest builder sabit split beklemiyor; `loo_pool` + `loo_group` alanlarıyla sonraki LOO kalibrasyon hücresine uyumlu hale getirildi.
 
 ## 8) Yapılanlar
 
@@ -483,6 +485,7 @@
 * [x] `SPEED-EXP-006` VS13 known-speed calibration Colab notebook'unu hazırla.
 * [x] `SPEED-EXP-006` outhealth notebook çıktısını incele; tablo formatı, MAE/RMSE, confidence ve tuning ihtiyacını raporla.
 * [x] `SPEED-EXP-006B` geniş VS13 subset kalibrasyon/training notebook'unu hazırla.
+* [x] `SPEED-EXP-006B` Cell 6 `KeyError: 'split'` crash'ini düzelt.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
@@ -546,6 +549,7 @@
 * Eski demo prototipi bu yeni kapsamın ana çıktısı değildir.
 * SPEED-EXP-006 outhealth koşusunda eski confidence formülü tüm videolarda `0.75` tavanına vurdu; aktif notebook patch'i sonrası Cell 8 sonrası yeniden çalıştırılmalı ve cache kullanılsa bile `base_*` hız/confidence alanlarının güncellendiği kontrol edilmelidir.
 * SPEED-EXP-006 global-alpha sonucu test MAE `8.07 km/h` olsa da hata dağılımı homojen değildir; `VWPassat_61` ve `VWPassat_72` civarında yaklaşık `21 km/h` hata görüldüğü için tek global scale ile tam otomatik mutlak km/s iddiası kurulamaz.
+* SPEED-EXP-006B içinde `VS13_PACKAGES` artık sabit `split` alanı taşımaz. Cell 6 manifest `split='loo_pool'` ve `loo_group=vehicle` üretmelidir; gerçek train/test ayrımı Cell 10 leave-one-vehicle-out döngüsünde yapılır.
 * Notebook açıklama/metin blokları mutlaka `markdown` hücresi olmalı; Türkçe açıklama satırı `code` hücresinde kalırsa Colab ilk hücrede `SyntaxError` verir.
 * Colab'da `/content/drive/MyDrive/...` altında klasörler boş görünürse önce Drive mount hücresinin çalıştığından ve doğru Google hesabına bağlanıldığından emin olun; mount edilmeden çalışan notebook aynı path altında boş lokal klasörler oluşturabilir.
 * BDD100K label kaynaklarında öncelik `det_20/det_train.json` / `det_val.json`; fallback olarak `bdd100k_labels_images_train.json` / `bdd100k_labels_images_val.json` kabul edilir. Her iki format da condition metadata için kullanılabilir, ancak raporda kullanılan label sürümü açık yazılmalıdır.

@@ -124,6 +124,28 @@ Notebook Drive altında şu dosyaları üretir:
 * `speed_exp_006b_vs13_wide_subset_calibration_summary.json`
 * plot klasörü
 
+## 2026-06-20 Crash Fix Notu
+
+`SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab_outcrashed.ipynb` çıktısında Cell 6
+manifest aşamasında şu hata görülmüştür:
+
+```text
+KeyError: 'split'
+```
+
+Sebep: `006B` tasarımında araç paketleri artık sabit `train/val/test` split taşımaz. Split,
+Cell 10 içinde leave-one-vehicle-out cross-validation ile dinamik yapılır. Eski manifest hücresi
+hâlâ `meta['split']` beklediği için crash oluşmuştur.
+
+Düzeltme:
+
+* Manifest satırlarına `split='loo_pool'` yazılır.
+* Leave-one-vehicle-out grubu için `loo_group=vehicle` yazılır.
+* Çıktı klasörü `SPEED-EXP-006B-VS13-wide-subset-calibration` olarak ayrılır.
+
+Colab'da güncel notebook ile Cell 6'dan itibaren yeniden çalıştırmak yeterlidir. Runtime
+sıfırlanmışsa Cell 2'den itibaren çalıştırılmalıdır.
+
 ## Sonraki Karar
 
 006B sonuçları iyi çıkarsa hız modülü raporda yaklaşık kalibre hız adayı olarak anlatılır.
