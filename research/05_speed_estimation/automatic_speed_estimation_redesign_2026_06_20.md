@@ -22,6 +22,10 @@ aday üretim sırası aşağıdaki gibi olacaktır:
 3. `SPEED-EXP-005C`: Mevcut plate-scale v2 adayı; fallback/sanity-check olarak korunur.
 4. `SPEED-EXP-005D`: Speed candidate fusion ve if-not-then-do routing.
 
+2026-06-20 kapanış notu: `SPEED-EXP-005D` uygulanarak mevcut hız fazı FTR ana yolunu
+bloklamayacak şekilde kapatıldı. FARSEC-lite/depth çalışması artık zorunlu sonraki adım değil,
+FTR `arac_bilgisi` ve `tespitler` modüllerinden sonra opsiyonel future/support adımıdır.
+
 `SPEED-EXP-004A` relative speed ve `SPEED-EXP-004B` plate/VATTR sanity-check korunur. `SPEED-EXP-004C`
 semi-manual homography yalnız opsiyonel saha doğrulama/fallback olarak kalır.
 

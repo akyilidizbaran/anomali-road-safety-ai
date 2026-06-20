@@ -15,6 +15,16 @@ kadrajdan çıkış ve monoküler ölçek belirsizliği nedeniyle gürültülüd
 pipeline'ının yanlış olduğu anlamına gelmez; yalnızca kalibrasyonsuz bbox-geometry hız adayının
 tek başına final mutlak km/s olarak kullanılamayacağını gösterir.
 
+`SPEED-EXP-005D` ile mevcut hız fazı kapatılmıştır. Bu deney 004A relative, 002 plate-scale
+ve 005A bbox-geometry adaylarını tek karar ağacında birleştirir. Sonuçlar:
+
+* `video_1`: yaklaşık `2.64 km/h`, relative `normal`.
+* `video_2`: yaklaşık `2.33 km/h`, relative `normal`.
+* `video_3`: yaklaşık `15.06 km/h`, relative `fast`.
+
+Bu değerler yalnız support/evidence sinyalidir; FTR `results.json` içine hız alanı olarak
+yazılmayacaktır.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.

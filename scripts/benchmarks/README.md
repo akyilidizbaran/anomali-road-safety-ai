@@ -177,6 +177,28 @@ Moving average penceresi varsayılan olarak `--moving-average-window 25` frame'd
 CLI üzerinden değiştirilebilir. Araç kadrajdan çıkarken oluşan terminal hız pikleri için
 `--post-peak-shrink-ratio 0.85` gate'i kullanılır.
 
+## `run_speed_005d_candidate_fusion.py`
+
+`SPEED-EXP-005D` mevcut hız çalışmalarını kapatan conservative fusion script'idir.
+004A relative track/bbox, 002 plate-scale XYZ ve 005A bbox-geometry adaylarını tek
+karar ağacında birleştirir.
+
+Varsayılan koşu:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/run_speed_005d_candidate_fusion.py
+```
+
+Üretilen çıktılar:
+
+* Summary JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-005D-candidate-fusion/speed_exp_005d_candidate_fusion_summary.json`
+* Summary CSV: `models/benchmarks/artifacts/speed/SPEED-EXP-005D-candidate-fusion/speed_exp_005d_candidate_fusion_summary.csv`
+* Enriched event JSON: `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed005d.json`
+* Rapor: `testing/reports/speed_exp_005d_candidate_fusion.md`
+
+Bu script de FTR `results.json` ana çıktısına hız alanı eklemez. Üretilen hız bloğu yalnız
+risk/evidence ve `slalom` destek sinyali olarak kullanılmalıdır.
+
 ## `run_plate_detection_smoke.py`
 
 `POCR-EXP-001` plaka tespit smoke test'i. `run_tracking_baseline.py` ile aynı mantıkta çalışır:

@@ -1,0 +1,264 @@
+{
+  "generated_at_utc": "2026-06-20T11:06:59Z",
+  "experiment_id": "SPEED-EXP-005D",
+  "purpose": "Conservative fusion of existing speed candidates for support evidence.",
+  "sources": {
+    "events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json",
+    "relative_summary": "models/benchmarks/artifacts/speed/SPEED-EXP-004A-relative-track-bbox/speed_exp_004a_relative_track_speed_summary.json",
+    "plate_summary": "models/benchmarks/artifacts/speed/SPEED-EXP-002-plate-bbox-xyz/speed_exp_002_plate_bbox_xyz_summary.json",
+    "bbox_geometry_summary": "models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_summary.json"
+  },
+  "settings": {
+    "max_agreement_ratio": 0.45
+  },
+  "event_count": 3,
+  "events": [
+    {
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "video": "video_1.mp4",
+      "track_id": "TRK-001",
+      "speed_exp_005d": {
+        "experiment_id": "SPEED-EXP-005D",
+        "video": "video_1.mp4",
+        "speed_mode": "approximate_candidate",
+        "primary_speed_source": "bbox_geometry_auto",
+        "estimated_kmh": 2.640442,
+        "speed_range_kmh": [
+          1.890297,
+          3.501875
+        ],
+        "relative_speed_label": "normal",
+        "relative_speed_score": 0.244016,
+        "fusion_confidence": 0.7072,
+        "decision": "use_bbox_geometry_with_plate_relative_support",
+        "fallback_reason": null,
+        "candidate_agreement": {
+          "bbox_vs_plate_relative_diff_ratio": 0.301581,
+          "max_allowed_ratio": 0.45,
+          "relative_label_supports_candidate": true
+        },
+        "candidate_speeds": [
+          {
+            "source": "bbox_geometry_auto",
+            "speed_kmh": 2.640442,
+            "speed_range_kmh": [
+              1.890297,
+              3.501875
+            ],
+            "confidence": 0.72,
+            "warnings": [
+              "approximate_monocular_speed",
+              "auto_scale_approximation",
+              "not_for_legal_enforcement",
+              "invalid_segments_filtered"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.7806,
+            "confidence": 0.28,
+            "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean"
+          },
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.244016,
+            "relative_speed_label": "normal",
+            "confidence": 0.8717
+          }
+        ],
+        "slalom_support": {
+          "slalom_candidate": false,
+          "source": "relative_track_bbox",
+          "note": "Only a support signal for the FTR sofor_eylemi/slalom label; not a final action detector."
+        },
+        "quality_flags": [
+          "bbox_geometry_candidate_available",
+          "plate_scale_candidate_available",
+          "relative_track_signal_available",
+          "bbox_plate_candidates_agree",
+          "relative_label_supports_bbox_candidate"
+        ],
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "failure_flags": [],
+        "limitations": [
+          "No ground-truth speed is available for these videos.",
+          "The km/h value is approximate and must not be used for legal enforcement.",
+          "Camera FOV, vehicle dimensions and plate geometry are assumed priors.",
+          "FTR results.json does not require a speed field; this block is support evidence."
+        ]
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "video": "video_2.mp4",
+      "track_id": "TRK-001",
+      "speed_exp_005d": {
+        "experiment_id": "SPEED-EXP-005D",
+        "video": "video_2.mp4",
+        "speed_mode": "approximate_candidate",
+        "primary_speed_source": "bbox_geometry_auto",
+        "estimated_kmh": 2.334246,
+        "speed_range_kmh": [
+          1.473131,
+          3.207053
+        ],
+        "relative_speed_label": "normal",
+        "relative_speed_score": 0.22973,
+        "fusion_confidence": 0.651,
+        "decision": "use_bbox_geometry_with_plate_relative_support",
+        "fallback_reason": null,
+        "candidate_agreement": {
+          "bbox_vs_plate_relative_diff_ratio": 0.397894,
+          "max_allowed_ratio": 0.45,
+          "relative_label_supports_candidate": true
+        },
+        "candidate_speeds": [
+          {
+            "source": "bbox_geometry_auto",
+            "speed_kmh": 2.334246,
+            "speed_range_kmh": [
+              1.473131,
+              3.207053
+            ],
+            "confidence": 0.72,
+            "warnings": [
+              "approximate_monocular_speed",
+              "auto_scale_approximation",
+              "not_for_legal_enforcement",
+              "invalid_segments_filtered"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.8768,
+            "confidence": 0.28,
+            "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean"
+          },
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.22973,
+            "relative_speed_label": "normal",
+            "confidence": 0.5877
+          }
+        ],
+        "slalom_support": {
+          "slalom_candidate": false,
+          "source": "relative_track_bbox",
+          "note": "Only a support signal for the FTR sofor_eylemi/slalom label; not a final action detector."
+        },
+        "quality_flags": [
+          "bbox_geometry_candidate_available",
+          "plate_scale_candidate_available",
+          "relative_track_signal_available",
+          "bbox_plate_candidates_agree",
+          "relative_label_supports_bbox_candidate"
+        ],
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "failure_flags": [],
+        "limitations": [
+          "No ground-truth speed is available for these videos.",
+          "The km/h value is approximate and must not be used for legal enforcement.",
+          "Camera FOV, vehicle dimensions and plate geometry are assumed priors.",
+          "FTR results.json does not require a speed field; this block is support evidence."
+        ]
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "video": "video_3.mp4",
+      "track_id": "TRK-002",
+      "speed_exp_005d": {
+        "experiment_id": "SPEED-EXP-005D",
+        "video": "video_3.mp4",
+        "speed_mode": "approximate_candidate",
+        "primary_speed_source": "bbox_geometry_auto",
+        "estimated_kmh": 15.064621,
+        "speed_range_kmh": [
+          9.416141,
+          19.913186
+        ],
+        "relative_speed_label": "fast",
+        "relative_speed_score": 0.62354,
+        "fusion_confidence": 0.72,
+        "decision": "use_bbox_geometry_with_plate_relative_support",
+        "fallback_reason": null,
+        "candidate_agreement": {
+          "bbox_vs_plate_relative_diff_ratio": 0.149245,
+          "max_allowed_ratio": 0.45,
+          "relative_label_supports_candidate": true
+        },
+        "candidate_speeds": [
+          {
+            "source": "bbox_geometry_auto",
+            "speed_kmh": 15.064621,
+            "speed_range_kmh": [
+              9.416141,
+              19.913186
+            ],
+            "confidence": 0.72,
+            "warnings": [
+              "approximate_monocular_speed",
+              "auto_scale_approximation",
+              "not_for_legal_enforcement",
+              "invalid_segments_filtered"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 12.8163,
+            "confidence": 0.28,
+            "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean"
+          },
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.62354,
+            "relative_speed_label": "fast",
+            "confidence": 0.6298
+          }
+        ],
+        "slalom_support": {
+          "slalom_candidate": false,
+          "source": "relative_track_bbox",
+          "note": "Only a support signal for the FTR sofor_eylemi/slalom label; not a final action detector."
+        },
+        "quality_flags": [
+          "bbox_geometry_candidate_available",
+          "plate_scale_candidate_available",
+          "relative_track_signal_available",
+          "bbox_plate_candidates_agree",
+          "relative_label_supports_bbox_candidate"
+        ],
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "failure_flags": [],
+        "limitations": [
+          "No ground-truth speed is available for these videos.",
+          "The km/h value is approximate and must not be used for legal enforcement.",
+          "Camera FOV, vehicle dimensions and plate geometry are assumed priors.",
+          "FTR results.json does not require a speed field; this block is support evidence."
+        ]
+      }
+    }
+  ],
+  "summary_csv": "models/benchmarks/artifacts/speed/SPEED-EXP-005D-candidate-fusion/speed_exp_005d_candidate_fusion_summary.csv",
+  "enriched_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed005d.json",
+  "limitations": [
+    "No ground-truth speed is available.",
+    "This is not a legal/final speed measurement.",
+    "FTR submission schema does not require speed."
+  ]
+}
