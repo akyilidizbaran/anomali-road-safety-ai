@@ -25,6 +25,28 @@ ve 005A bbox-geometry adaylarını tek karar ağacında birleştirir. Sonuçlar:
 Bu değerler yalnız support/evidence sinyalidir; FTR `results.json` içine hız alanı olarak
 yazılmayacaktır.
 
+### Confidence Audit Sonucu
+
+`SPEED-EXP-005D` sonrası ayrı bir confidence audit üretildi:
+
+* Script: `scripts/benchmarks/plot_speed_confidence_audit.py`
+* Rapor: `testing/reports/speed_exp_005d_confidence_audit.md`
+* Audit JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-005D-candidate-fusion/speed_exp_005d_confidence_audit.json`
+* Grafik klasörü: `runs/speed/SPEED-EXP-005D-candidate-fusion/plots/`
+
+Bu audit sonucunda hız katmanlarının confidence anlamı şöyle sabitlendi:
+
+| Katman | Confidence neyi ölçer? | Ne değildir? |
+|---|---|---|
+| `SPEED-EXP-004A` | Track/bbox geçmişinin kararlılığı ve göreli hareket sinyali kalitesi | Mutlak km/s doğruluğu |
+| `SPEED-EXP-002` | Plaka ölçeği adayının düşük güvenli destek değeri | Tek başına hız ölçümü |
+| `SPEED-EXP-005A` | Bbox geometry adayının iç stabilitesi, usable segment oranı ve moving-average kalitesi | Ground-truth hız başarımı |
+| `SPEED-EXP-005D` | Bbox, plaka ve relative sinyallerinin birbirini destekleme skoru | Hukuki/kalibre edilmiş hız güveni |
+
+Bu ayrım kritik: `video_1` ve `video_3` için `005D` confidence yüksek görünür, fakat bu yüksek
+değer aday sinyallerin kendi içinde destekli olduğunu söyler. Ground-truth hız olmadığı için
+“gerçek km/s doğru ölçüldü” iddiası kurulmaz.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.

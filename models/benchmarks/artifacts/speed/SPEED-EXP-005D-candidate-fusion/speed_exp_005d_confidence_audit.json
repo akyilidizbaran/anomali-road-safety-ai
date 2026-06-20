@@ -1,0 +1,138 @@
+{
+  "experiment_id": "SPEED-EXP-005D-confidence-audit",
+  "purpose": "Explain speed-layer confidence scores and generate high-confidence candidate plots.",
+  "ground_truth_speed_available": false,
+  "rows": [
+    {
+      "video": "video_1.mp4",
+      "relative_speed_score": 0.244016,
+      "relative_speed_label": "normal",
+      "relative_confidence": 0.8717,
+      "jitter": 0.646928,
+      "plate_speed_kmh": 3.7806,
+      "plate_confidence": 0.28,
+      "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+      "aspect_ratio_median": 3.3519,
+      "usable_measurement_count": 201,
+      "bbox_speed_kmh": 2.640442,
+      "bbox_confidence": 0.72,
+      "speed_range_kmh": [
+        1.890297,
+        3.501875
+      ],
+      "observation_count": 342,
+      "usable_segment_count": 316,
+      "speed_cv": 0.390488,
+      "invalid_reason_counts": null,
+      "fused_speed_kmh": 2.640442,
+      "fusion_confidence": 0.7072,
+      "decision": "use_bbox_geometry_with_plate_relative_support",
+      "speed_mode": "approximate_candidate",
+      "agreement": 0.301581,
+      "relative_support": true,
+      "confidence_breakdown": {
+        "base": 0.2,
+        "bbox_quality": 0.2736,
+        "plate_support": 0.0336,
+        "relative_track_support": 0.0872,
+        "agreement_support": 0.0429,
+        "relative_label_support": 0.07,
+        "raw_total": 0.7072,
+        "cap_penalty": 0.0,
+        "fused_confidence": 0.7072
+      },
+      "interpretation": "High support for approximate candidate; not ground-truth km/h."
+    },
+    {
+      "video": "video_2.mp4",
+      "relative_speed_score": 0.22973,
+      "relative_speed_label": "normal",
+      "relative_confidence": 0.5877,
+      "jitter": 0.930511,
+      "plate_speed_kmh": 3.8768,
+      "plate_confidence": 0.28,
+      "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+      "aspect_ratio_median": 3.3939,
+      "usable_measurement_count": 190,
+      "bbox_speed_kmh": 2.334246,
+      "bbox_confidence": 0.72,
+      "speed_range_kmh": [
+        1.473131,
+        3.207053
+      ],
+      "observation_count": 341,
+      "usable_segment_count": 296,
+      "speed_cv": 0.372946,
+      "invalid_reason_counts": null,
+      "fused_speed_kmh": 2.334246,
+      "fusion_confidence": 0.651,
+      "decision": "use_bbox_geometry_with_plate_relative_support",
+      "speed_mode": "approximate_candidate",
+      "agreement": 0.397894,
+      "relative_support": true,
+      "confidence_breakdown": {
+        "base": 0.2,
+        "bbox_quality": 0.2736,
+        "plate_support": 0.0336,
+        "relative_track_support": 0.0588,
+        "agreement_support": 0.0151,
+        "relative_label_support": 0.07,
+        "raw_total": 0.651,
+        "cap_penalty": 0.0,
+        "fused_confidence": 0.651
+      },
+      "interpretation": "Bbox signal is internally stable, but final support is limited."
+    },
+    {
+      "video": "video_3.mp4",
+      "relative_speed_score": 0.62354,
+      "relative_speed_label": "fast",
+      "relative_confidence": 0.6298,
+      "jitter": 0.491673,
+      "plate_speed_kmh": 12.8163,
+      "plate_confidence": 0.28,
+      "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+      "aspect_ratio_median": 3.2069,
+      "usable_measurement_count": 178,
+      "bbox_speed_kmh": 15.064621,
+      "bbox_confidence": 0.72,
+      "speed_range_kmh": [
+        9.416141,
+        19.913186
+      ],
+      "observation_count": 285,
+      "usable_segment_count": 272,
+      "speed_cv": 0.565541,
+      "invalid_reason_counts": null,
+      "fused_speed_kmh": 15.064621,
+      "fusion_confidence": 0.72,
+      "decision": "use_bbox_geometry_with_plate_relative_support",
+      "speed_mode": "approximate_candidate",
+      "agreement": 0.149245,
+      "relative_support": true,
+      "confidence_breakdown": {
+        "base": 0.2,
+        "bbox_quality": 0.2736,
+        "plate_support": 0.0336,
+        "relative_track_support": 0.063,
+        "agreement_support": 0.0869,
+        "relative_label_support": 0.07,
+        "raw_total": 0.7271,
+        "cap_penalty": 0.0071,
+        "fused_confidence": 0.72
+      },
+      "interpretation": "High support for approximate candidate; not ground-truth km/h."
+    }
+  ],
+  "plots": {
+    "speed_candidate_comparison": "/Users/baran/Desktop/5G Teknofest/runs/speed/SPEED-EXP-005D-candidate-fusion/plots/speed_candidate_comparison.png",
+    "confidence_comparison": "/Users/baran/Desktop/5G Teknofest/runs/speed/SPEED-EXP-005D-candidate-fusion/plots/confidence_comparison.png",
+    "fusion_confidence_breakdown": "/Users/baran/Desktop/5G Teknofest/runs/speed/SPEED-EXP-005D-candidate-fusion/plots/fusion_confidence_breakdown.png",
+    "speed_candidate_timeseries_grid": "/Users/baran/Desktop/5G Teknofest/runs/speed/SPEED-EXP-005D-candidate-fusion/plots/speed_candidate_timeseries_grid.png"
+  },
+  "interpretation": {
+    "high_confidence_means": "internal signal quality and candidate agreement",
+    "high_confidence_does_not_mean": "verified ground-truth absolute km/h accuracy",
+    "closure": "sufficient as support/evidence signal for FTR phase; not a legal speed estimator"
+  }
+}

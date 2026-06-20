@@ -199,6 +199,35 @@ Varsayılan koşu:
 Bu script de FTR `results.json` ana çıktısına hız alanı eklemez. Üretilen hız bloğu yalnız
 risk/evidence ve `slalom` destek sinyali olarak kullanılmalıdır.
 
+## `plot_speed_confidence_audit.py`
+
+`SPEED-EXP-005D` sonrası hız katmanlarının confidence skorlarını açıklayan audit script'idir.
+004A relative, 002 plate-scale, 005A bbox-geometry ve 005D fusion çıktılarını tek rapor ve
+grafik setinde birleştirir. Amaç, yüksek confidence değerlerinin **mutlak km/s doğruluğu**
+değil, **sinyal/evidence destek kalitesi** olduğunu görünür kılmaktır.
+
+Varsayılan koşu:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/plot_speed_confidence_audit.py
+```
+
+Üretilen çıktılar:
+
+* Audit JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-005D-candidate-fusion/speed_exp_005d_confidence_audit.json`
+* Rapor: `testing/reports/speed_exp_005d_confidence_audit.md`
+* Grafikler: `runs/speed/SPEED-EXP-005D-candidate-fusion/plots/`
+
+Ana grafikler:
+
+* `speed_candidate_comparison.png`: plate-scale, bbox-geometry ve fusion final hız adayları.
+* `confidence_comparison.png`: 004A/002/005A/005D confidence karşılaştırması.
+* `fusion_confidence_breakdown.png`: 005D confidence skorunun bileşenleri.
+* `speed_candidate_timeseries_grid.png`: yüksek confidence görünen 005A moving-average hız eğrileri.
+
+Bu audit sonucu hız fazı FTR için `support/evidence only` olarak kapanır. Kalibre edilmiş
+gerçek km/s doğrulaması için ground-truth video veya ölçülü referans sahne future scope'tur.
+
 ## `run_plate_detection_smoke.py`
 
 `POCR-EXP-001` plaka tespit smoke test'i. `run_tracking_baseline.py` ile aynı mantıkta çalışır:
