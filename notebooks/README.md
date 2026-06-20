@@ -10,6 +10,7 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `POCR_EXP_005_YOLO11N_Plate_Detector_Colab.ipynb`: Turkish Number Plates + Roboflow LPR veri setlerini Roboflow API veya manual zip fallback ile indirir, class-normalized/dedup edilmiş tek sınıf `license_plate` YOLO dataset'i üretir, YOLO11n plate detector fine-tune eder, mevcut `license_plate_detector.pt` baseline ile karşılaştırır ve UFPR-ALPR izinli zip varsa external benchmark çalıştırır. Ağır işlem local `/content/anomali-road-safety-ai-work/` altında yapılır; kalıcı checkpoint/metric/report çıktıları Drive'a yazılır.
 * `VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab.ipynb`: BoxCars116k üzerinden araç crop'ları için vehicle attribute / dimension prior classifier kurar. İlk amaç marka-modeli kesin kanıt yapmak değil, `Speed Fusion Layer` için `body_type`, yaklaşık `wheelbase` ön bilgisi ve güven skoru üretmektir. Varsayılan smoke mode küçük subset ile çalışır; ağır run için `SMOKE_MODE=False`, daha fazla epoch ve ek backbone açılır.
 * `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb`: VS13 bilinen hızlı araç videolarını doğrudan resmi linklerden Colab/Drive cache'e indirir, küçük subset çıkarır, video dosya adındaki hız suffix'inden ground-truth km/s okur, YOLO + ByteTrack ile ana araç track'i üretir, bbox-geometry hız adayını hesaplar ve train/val/test split üzerinde global scale/FOV/vehicle-height/moving-average parametre optimizasyonu yapar. Bu notebook yeni neural speed modeli eğitmez; hız adayının bilinen km/s videolarda ne kadar kalibre edilebildiğini ölçer.
+* `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb`: `SPEED-EXP-006` sanity check sonrası genişletilmiş hız kalibrasyon notebook'udur. VS13 içindeki 13 araç paketini destekler, varsayılan olarak her araçtan dengeli 12 video seçer, leave-one-vehicle-out cross-validation uygular ve `global_alpha`, `linear_raw`, `huber_raw` ile hafif tabular regressor kalibrasyonlarını karşılaştırır. FTR `results.json` hız alanı istemediği için bu notebook FTR ana teslimini bloklamaz; sonuç iyi çıkarsa yalnız `dataset-calibrated approximate speed candidate`, aksi halde `relative/support evidence` kararı üretir.
 
 ## Output-Saved Notebooklar
 
@@ -129,3 +130,15 @@ Bu sayede notebook tek dosyada otomatik indirme yapabilir; key repoya yazılmaz.
 * `vs13_best_calibrated_predictions.csv`.
 * `speed_exp_006_vs13_known_speed_calibration_summary.json`.
 * GT-vs-pred, absolute error ve confidence-vs-error grafikleri.
+
+`SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb` şu çıktıları üretir:
+
+* VS13 seçili araç paketleri için geniş subset manifest'i.
+* `vs13b_first_stage_loo_metrics.csv`.
+* `vs13b_first_stage_loo_predictions.csv`.
+* `vs13b_second_stage_feature_model_metrics.csv`.
+* `vs13b_second_stage_feature_model_predictions.csv`.
+* `vs13b_combined_calibration_metrics.csv`.
+* `vs13b_best_loo_predictions.csv`.
+* `speed_exp_006b_vs13_wide_subset_calibration_summary.json`.
+* Leave-one-vehicle-out GT-vs-pred, absolute error ve confidence-vs-error grafikleri.

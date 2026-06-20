@@ -141,6 +141,39 @@ Bu adımlar sonrası test MAE hâlâ yüksek kalırsa hız modülü FTR için `r
 olarak korunmalı; mutlak km/s yalnız “dataset-calibrated approximate candidate” şeklinde
 düşük iddialı raporlanmalıdır.
 
+### SPEED-EXP-006B Geniş Subset Kalibrasyonu
+
+`SPEED-EXP-006B`, yukarıdaki kararın uygulanabilir Colab karşılığıdır:
+
+* Notebook: `notebooks/SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb`
+* Plan raporu: `testing/reports/speed_exp_006b_wide_subset_calibration_plan.md`
+* Varsayılan veri: VS13 içindeki 13 araç paketinden her araç için dengeli 12 video.
+* Daha ağır run: `MAX_VIDEOS_PER_VEHICLE = None` ile seçili paketlerdeki tüm videolar.
+* Değerlendirme: leave-one-vehicle-out cross-validation.
+
+Bu deneyde görüntü backbone'u yeniden eğitilmez. Eğitilen/optimize edilen katman hız
+kalibrasyon katmanıdır:
+
+1. Birinci aşama: `global_alpha`, `linear_raw`, `huber_raw`.
+2. İkinci aşama: `ridge_features`, `huber_features`, `random_forest_features`,
+   `gradient_boosting_features`.
+
+Optimize edilen feature ve parametreler:
+
+* bbox-geometry raw speed,
+* moving-average window,
+* horizontal FOV varsayımı,
+* araç yüksekliği prior'ı,
+* track başı/sonu trim oranı,
+* minimum bbox height ratio,
+* speed CV,
+* detection confidence,
+* valid segment ratio.
+
+FTR açısından bu çalışma ana teslim hattını bloklamaz. Çünkü resmi FTR `results.json` hız alanı
+istememektedir. 006B yalnız rapor/evidence tarafında “yaklaşık kalibre hız adayı üretilebilir
+mi?” sorusunu cevaplar.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.
