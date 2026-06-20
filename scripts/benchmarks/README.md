@@ -146,7 +146,10 @@ adımına geçilmemelidir.
 
 `SPEED-EXP-005A` bbox geometry automatic speed candidate script'idir. Manuel yol
 referans noktası gerektirmez; hedef track için full per-frame bbox timeline çıkarır,
-varsayılan araç fiziksel boyutu ve FOV prior ile yaklaşık km/s adayı üretir.
+varsayılan araç fiziksel boyutu ve FOV prior ile yaklaşık km/s adayı üretir. Piklerden
+etkilenmemek için ana `estimated_kmh` değeri moving average serisinin ortalaması olarak
+raporlanır; grafiklerde raw segment, rolling median ve moving average çizgileri birlikte
+gösterilir.
 
 Varsayılan koşu:
 
@@ -170,6 +173,9 @@ Varsayılan input:
 Bu script de hukuki/final hız ölçümü değildir. `estimated_kmh` alanı yalnız
 `speed_mode=approximate_candidate` olarak yorumlanmalıdır. Bbox jump/outlier segmentleri
 otomatik filtrelenir; düşük güvenli sonuçlarda `warning_flags` ve `failure_flags` okunmalıdır.
+Moving average penceresi varsayılan olarak `--moving-average-window 25` frame'dir ve
+CLI üzerinden değiştirilebilir. Araç kadrajdan çıkarken oluşan terminal hız pikleri için
+`--post-peak-shrink-ratio 0.85` gate'i kullanılır.
 
 ## `run_plate_detection_smoke.py`
 

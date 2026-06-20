@@ -1,7 +1,7 @@
 {
   "experiment_id": "SPEED-EXP-005A",
   "stage": "bbox_geometry_auto_candidate_v0",
-  "created_at": "2026-06-20T10:26:36Z",
+  "created_at": "2026-06-20T10:37:00Z",
   "source_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json",
   "model": "yolo11n.pt",
   "tracker": "bytetrack.yaml",
@@ -10,6 +10,9 @@
   "conf": 0.25,
   "horizontal_fov_deg": 70.0,
   "smoothing_window": 7,
+  "moving_average_window": 25,
+  "post_peak_shrink_ratio": 0.85,
+  "min_peak_height_px": 120.0,
   "max_speed_kmh": 220.0,
   "plate_speed_source": "models/benchmarks/artifacts/speed/SPEED-EXP-002-plate-bbox-xyz/speed_exp_002_plate_bbox_xyz_summary.json",
   "timeseries_csv": "models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_timeseries.csv",
@@ -32,15 +35,19 @@
       "bbox_geometry_candidate": {
         "source": "bbox_geometry_auto_v0",
         "speed_mode": "approximate_candidate",
-        "estimated_kmh": 2.731578,
+        "estimated_kmh": 2.640442,
+        "estimated_kmh_method": "moving_average_mean",
         "speed_range_kmh": [
-          1.733191,
-          3.767343
+          1.890297,
+          3.501875
         ],
-        "mean_speed_kmh": 4.5276,
-        "p95_speed_kmh": 15.019331,
-        "raw_median_speed_kmh": 2.811639,
-        "confidence": 0.6635,
+        "moving_average_speed_kmh": 2.640442,
+        "moving_average_median_kmh": 2.719181,
+        "rolling_median_speed_kmh": 2.494712,
+        "raw_mean_speed_kmh": 2.65376,
+        "p95_speed_kmh": 3.903823,
+        "raw_median_speed_kmh": 2.386188,
+        "confidence": 0.72,
         "quality_flags": [
           "track_long",
           "bbox_height_sufficient",
@@ -50,7 +57,6 @@
           "approximate_monocular_speed",
           "auto_scale_approximation",
           "not_for_legal_enforcement",
-          "speed_candidate_jitter_high",
           "invalid_segments_filtered"
         ],
         "failure_flags": [],
@@ -66,12 +72,17 @@
         },
         "diagnostics": {
           "observation_count": 342,
-          "usable_segment_count": 341,
+          "usable_segment_count": 316,
+          "moving_average_window_frames": 25,
+          "rolling_median_window_frames": 7,
+          "post_peak_shrink_ratio": 0.85,
+          "min_peak_height_px": 120.0,
           "median_bbox_height_px": 1142.119873,
           "median_depth_m": 3.592938,
-          "speed_cv": 1.714637,
+          "speed_cv": 0.390488,
           "invalid_segment_reasons": {
-            "bbox_height_jump": 1
+            "bbox_height_jump": 1,
+            "post_peak_bbox_shrink": 48
           }
         }
       },
@@ -84,7 +95,7 @@
         "usable_measurement_count": 201
       },
       "plot_uri": "runs/speed/SPEED-EXP-005A-bbox-geometry-auto/plots/video_1_speed_time_plot.png",
-      "tracking_wall_time_s": 8.905265
+      "tracking_wall_time_s": 8.05774
     },
     {
       "video": "video_2.mp4",
@@ -104,15 +115,19 @@
       "bbox_geometry_candidate": {
         "source": "bbox_geometry_auto_v0",
         "speed_mode": "approximate_candidate",
-        "estimated_kmh": 2.487242,
+        "estimated_kmh": 2.334246,
+        "estimated_kmh_method": "moving_average_mean",
         "speed_range_kmh": [
-          1.446251,
-          3.782829
+          1.473131,
+          3.207053
         ],
-        "mean_speed_kmh": 4.577093,
-        "p95_speed_kmh": 11.880035,
-        "raw_median_speed_kmh": 2.46097,
-        "confidence": 0.6342,
+        "moving_average_speed_kmh": 2.334246,
+        "moving_average_median_kmh": 2.222208,
+        "rolling_median_speed_kmh": 2.019522,
+        "raw_mean_speed_kmh": 2.38817,
+        "p95_speed_kmh": 3.736009,
+        "raw_median_speed_kmh": 2.179116,
+        "confidence": 0.72,
         "quality_flags": [
           "track_long",
           "bbox_height_sufficient",
@@ -122,7 +137,6 @@
           "approximate_monocular_speed",
           "auto_scale_approximation",
           "not_for_legal_enforcement",
-          "speed_candidate_jitter_high",
           "invalid_segments_filtered"
         ],
         "failure_flags": [],
@@ -138,12 +152,17 @@
         },
         "diagnostics": {
           "observation_count": 341,
-          "usable_segment_count": 340,
+          "usable_segment_count": 296,
+          "moving_average_window_frames": 25,
+          "rolling_median_window_frames": 7,
+          "post_peak_shrink_ratio": 0.85,
+          "min_peak_height_px": 120.0,
           "median_bbox_height_px": 1163.882263,
           "median_depth_m": 3.439564,
-          "speed_cv": 1.941318,
+          "speed_cv": 0.372946,
           "invalid_segment_reasons": {
             "bbox_height_jump": 3,
+            "post_peak_bbox_shrink": 65,
             "speed_outlier_gate": 1
           }
         }
@@ -157,7 +176,7 @@
         "usable_measurement_count": 190
       },
       "plot_uri": "runs/speed/SPEED-EXP-005A-bbox-geometry-auto/plots/video_2_speed_time_plot.png",
-      "tracking_wall_time_s": 8.92953
+      "tracking_wall_time_s": 7.582795
     },
     {
       "video": "video_3.mp4",
@@ -181,14 +200,18 @@
       "bbox_geometry_candidate": {
         "source": "bbox_geometry_auto_v0",
         "speed_mode": "approximate_candidate",
-        "estimated_kmh": 11.514959,
+        "estimated_kmh": 15.064621,
+        "estimated_kmh_method": "moving_average_mean",
         "speed_range_kmh": [
-          8.118246,
-          17.722692
+          9.416141,
+          19.913186
         ],
-        "mean_speed_kmh": 13.812421,
-        "p95_speed_kmh": 29.022565,
-        "raw_median_speed_kmh": 10.761706,
+        "moving_average_speed_kmh": 15.064621,
+        "moving_average_median_kmh": 13.840782,
+        "rolling_median_speed_kmh": 11.514959,
+        "raw_mean_speed_kmh": 15.280429,
+        "p95_speed_kmh": 30.705636,
+        "raw_median_speed_kmh": 10.905523,
         "confidence": 0.72,
         "quality_flags": [
           "track_long",
@@ -214,12 +237,17 @@
         },
         "diagnostics": {
           "observation_count": 285,
-          "usable_segment_count": 284,
+          "usable_segment_count": 272,
+          "moving_average_window_frames": 25,
+          "rolling_median_window_frames": 7,
+          "post_peak_shrink_ratio": 0.85,
+          "min_peak_height_px": 120.0,
           "median_bbox_height_px": 687.07196,
           "median_depth_m": 6.066076,
-          "speed_cv": 0.720068,
+          "speed_cv": 0.565541,
           "invalid_segment_reasons": {
-            "bbox_height_jump": 1
+            "bbox_height_jump": 1,
+            "post_peak_bbox_shrink": 36
           }
         }
       },
@@ -232,7 +260,7 @@
         "usable_measurement_count": 178
       },
       "plot_uri": "runs/speed/SPEED-EXP-005A-bbox-geometry-auto/plots/video_3_speed_time_plot.png",
-      "tracking_wall_time_s": 6.665332
+      "tracking_wall_time_s": 6.560399
     }
   ],
   "limitations": [

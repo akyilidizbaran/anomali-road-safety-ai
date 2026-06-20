@@ -106,6 +106,15 @@ def rolling_median(values: list[float | None], window: int) -> list[float | None
     return result
 
 
+def moving_average(values: list[float | None], window: int) -> list[float | None]:
+    result: list[float | None] = []
+    for idx in range(len(values)):
+        start = max(0, idx - window + 1)
+        sample = [v for v in values[start : idx + 1] if v is not None and math.isfinite(v)]
+        result.append(float(statistics.fmean(sample)) if sample else None)
+    return result
+
+
 def parse_raw_track_id(track_id: str | int | None) -> int | None:
     if track_id is None:
         return None
@@ -302,6 +311,9 @@ def compute_bbox_geometry_candidate(
     video_run: dict[str, Any],
     horizontal_fov_deg: float,
     smoothing_window: int,
+    moving_average_window: int,
+    post_peak_shrink_ratio: float,
+    min_peak_height_px: float,
     max_speed_kmh: float,
 ) -> dict[str, Any]:
     observations = video_run["observations"]
@@ -315,6 +327,8 @@ def compute_bbox_geometry_candidate(
     invalid_segment_reasons: dict[str, int] = defaultdict(int)
     class_name = observations[0]["class_name"] if observations else "unknown"
     prior = DIMENSION_PRIORS_M.get(class_name, DIMENSION_PRIORS_M["unknown"])
+    max_bbox_height_seen = 0.0
+    max_bbox_height_frame = 0
 
     prev: dict[str, Any] | None = None
     for obs in observations:
@@ -349,6 +363,13 @@ def compute_bbox_geometry_candidate(
                 elif area_delta_log > 0.16:
                     segment_valid = False
                     segment_failure_reason = "bbox_area_jump"
+                elif (
+                    max_bbox_height_seen >= min_peak_height_px
+                    and bbox_h < max_bbox_height_seen * post_peak_shrink_ratio
+                    and int(obs["frame_id"]) > max_bbox_height_frame
+                ):
+                    segment_valid = False
+                    segment_failure_reason = "post_peak_bbox_shrink"
                 dx = x_m - float(prev["x_m"])
                 dz = z_m - float(prev["z_m"])
                 candidate_speed = math.hypot(dx, dz) / dt_s * 3.6
@@ -385,18 +406,25 @@ def compute_bbox_geometry_candidate(
             "bbox_height_px": bbox_h,
             "bbox_area_px": obs["bbox_area_px"],
         }
+        if bbox_h > max_bbox_height_seen:
+            max_bbox_height_seen = bbox_h
+            max_bbox_height_frame = int(obs["frame_id"])
 
     smooth = rolling_median(raw_segment_speeds, smoothing_window)
+    moving_avg = moving_average(raw_segment_speeds, moving_average_window)
     for row, value in zip(enriched_rows, smooth, strict=False):
         row["segment_speed_kmh_smooth"] = round_or_none(value)
+    for row, value in zip(enriched_rows, moving_avg, strict=False):
+        row["segment_speed_kmh_moving_avg"] = round_or_none(value)
 
     usable_raw = [v for v in raw_segment_speeds if v is not None and math.isfinite(v)]
     usable_smooth = [v for v in smooth if v is not None and math.isfinite(v)]
+    usable_moving_avg = [v for v in moving_avg if v is not None and math.isfinite(v)]
     heights = [fnum(row["bbox_height_px"]) for row in enriched_rows]
     z_values = [fnum(row["z_m"]) for row in enriched_rows if row.get("z_m") is not None]
     speed_cv = None
-    if len(usable_smooth) > 2 and statistics.fmean(usable_smooth) > 0:
-        speed_cv = statistics.pstdev(usable_smooth) / statistics.fmean(usable_smooth)
+    if len(usable_moving_avg) > 2 and statistics.fmean(usable_moving_avg) > 0:
+        speed_cv = statistics.pstdev(usable_moving_avg) / statistics.fmean(usable_moving_avg)
 
     warning_flags = ["approximate_monocular_speed", "auto_scale_approximation", "not_for_legal_enforcement"]
     quality_flags: list[str] = []
@@ -409,7 +437,7 @@ def compute_bbox_geometry_candidate(
         quality_flags.append("bbox_height_sufficient")
     else:
         warning_flags.append("small_bbox_height")
-    if usable_smooth:
+    if usable_moving_avg:
         quality_flags.append("speed_candidate_available")
     else:
         failure_flags.append("no_usable_speed_segments")
@@ -422,7 +450,7 @@ def compute_bbox_geometry_candidate(
     confidence += 0.22 * min(len(enriched_rows) / 240.0, 1.0)
     if median(heights):
         confidence += 0.18 * min((median(heights) or 0) / 300.0, 1.0)
-    if usable_smooth:
+    if usable_moving_avg:
         confidence += 0.15
     if speed_cv is not None:
         confidence += 0.12 * max(0.0, min(1.0, 1.0 - speed_cv / 1.2))
@@ -434,11 +462,15 @@ def compute_bbox_geometry_candidate(
 
     return {
         "source": "bbox_geometry_auto_v0",
-        "speed_mode": "approximate_candidate" if usable_smooth else "unavailable",
-        "estimated_kmh": median(usable_smooth),
-        "speed_range_kmh": [percentile(usable_smooth, 25), percentile(usable_smooth, 75)] if usable_smooth else [None, None],
-        "mean_speed_kmh": mean(usable_smooth),
-        "p95_speed_kmh": percentile(usable_smooth, 95),
+        "speed_mode": "approximate_candidate" if usable_moving_avg else "unavailable",
+        "estimated_kmh": mean(usable_moving_avg),
+        "estimated_kmh_method": "moving_average_mean",
+        "speed_range_kmh": [percentile(usable_moving_avg, 25), percentile(usable_moving_avg, 75)] if usable_moving_avg else [None, None],
+        "moving_average_speed_kmh": mean(usable_moving_avg),
+        "moving_average_median_kmh": median(usable_moving_avg),
+        "rolling_median_speed_kmh": median(usable_smooth),
+        "raw_mean_speed_kmh": mean(usable_raw),
+        "p95_speed_kmh": percentile(usable_moving_avg, 95),
         "raw_median_speed_kmh": median(usable_raw),
         "confidence": round(confidence, 4),
         "quality_flags": quality_flags,
@@ -452,7 +484,11 @@ def compute_bbox_geometry_candidate(
         },
         "diagnostics": {
             "observation_count": len(enriched_rows),
-            "usable_segment_count": len(usable_smooth),
+            "usable_segment_count": len(usable_moving_avg),
+            "moving_average_window_frames": moving_average_window,
+            "rolling_median_window_frames": smoothing_window,
+            "post_peak_shrink_ratio": post_peak_shrink_ratio,
+            "min_peak_height_px": min_peak_height_px,
             "median_bbox_height_px": median(heights),
             "median_depth_m": median(z_values),
             "speed_cv": round_or_none(speed_cv),
@@ -481,6 +517,7 @@ def write_timeseries_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "x_m",
         "segment_speed_kmh_raw",
         "segment_speed_kmh_smooth",
+        "segment_speed_kmh_moving_avg",
         "segment_valid",
         "segment_failure_reason",
     ]
@@ -507,6 +544,7 @@ def write_timeseries_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "x_m": row.get("x_m"),
                     "segment_speed_kmh_raw": row.get("segment_speed_kmh_raw"),
                     "segment_speed_kmh_smooth": row.get("segment_speed_kmh_smooth"),
+                    "segment_speed_kmh_moving_avg": row.get("segment_speed_kmh_moving_avg"),
                     "segment_valid": row.get("segment_valid"),
                     "segment_failure_reason": row.get("segment_failure_reason"),
                 }
@@ -518,11 +556,13 @@ def plot_video_speed(video_result: dict[str, Any], output_path: Path) -> None:
     times = [fnum(row.get("time_s")) for row in rows]
     raw = [row.get("segment_speed_kmh_raw") for row in rows]
     smooth = [row.get("segment_speed_kmh_smooth") for row in rows]
+    moving_avg = [row.get("segment_speed_kmh_moving_avg") for row in rows]
     heights = [row.get("bbox_height_px") for row in rows]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig, ax1 = plt.subplots(figsize=(12, 6), dpi=160)
     ax1.plot(times, raw, color="0.72", linewidth=1.0, label="raw segment speed")
     ax1.plot(times, smooth, color="0.05", linewidth=2.0, label="rolling median speed")
+    ax1.plot(times, moving_avg, color="0.25", linewidth=2.0, linestyle="-.", label="moving avg speed")
     ax1.set_xlabel("Time (s)")
     ax1.set_ylabel("Approx. speed candidate (km/h)")
     ax1.grid(True, color="0.88", linewidth=0.8)
@@ -553,13 +593,15 @@ def write_report(path: Path, summary: dict[str, Any]) -> None:
         f"* Model: `{summary['model']}`",
         f"* Tracker: `{summary['tracker']}`",
         f"* Horizontal FOV varsayımı: `{summary['horizontal_fov_deg']}` derece",
-        f"* Smoothing window: `{summary['smoothing_window']}` frame",
+        f"* Rolling median window: `{summary['smoothing_window']}` frame",
+        f"* Moving average window: `{summary['moving_average_window']}` frame",
+        f"* Post-peak bbox shrink gate: `{summary['post_peak_shrink_ratio']}`",
         f"* Plate comparison source: `{summary.get('plate_speed_source') or '-'}`",
         "",
         "## Sonuç Tablosu",
         "",
-        "| Video | Track | Mode | BBox geom km/h | Range km/h | Conf | Plate geomean km/h | Warnings | Plot |",
-        "|---|---:|---|---:|---:|---:|---:|---|---|",
+        "| Video | Track | Mode | Moving avg km/h | Rolling median km/h | Range km/h | Conf | Plate geomean km/h | Warnings | Plot |",
+        "|---|---:|---|---:|---:|---:|---:|---:|---|---|",
     ]
     for row in summary["videos"]:
         candidate = row["bbox_geometry_candidate"]
@@ -570,12 +612,14 @@ def write_report(path: Path, summary: dict[str, Any]) -> None:
             if speed_range[0] is not None and speed_range[1] is not None
             else "-"
         )
+        warning_text = ", ".join(candidate.get("warning_flags") or [])
         lines.append(
             f"| `{row['video']}` | {row.get('selected_raw_track_id')} | `{candidate['speed_mode']}` | "
-            f"{candidate.get('estimated_kmh') if candidate.get('estimated_kmh') is not None else '-'} | "
+            f"{candidate.get('moving_average_speed_kmh') if candidate.get('moving_average_speed_kmh') is not None else '-'} | "
+            f"{candidate.get('rolling_median_speed_kmh') if candidate.get('rolling_median_speed_kmh') is not None else '-'} | "
             f"{range_text} | {candidate['confidence']} | "
             f"{plate.get('median_speed_kmh') if plate.get('median_speed_kmh') is not None else '-'} | "
-            f"{'|'.join(candidate.get('warning_flags') or [])} | `{row.get('plot_uri')}` |"
+            f"{warning_text} | `{row.get('plot_uri')}` |"
         )
     lines.extend(
         [
@@ -583,6 +627,7 @@ def write_report(path: Path, summary: dict[str, Any]) -> None:
             "## Yorum",
             "",
             "* Bu sonuçlar otomatik yaklaşık hız adayıdır; sahada gerçek km/s doğrulaması yoktur.",
+            "* Ana `estimated_kmh` değeri pikleri bastırmak için moving average serisinin ortalaması olarak raporlanır.",
             "* `video_3` yüksek/oynak aday üretirse bu, 004A relative fast sinyaliyle birlikte incelenmelidir.",
             "* Plate-scale ile büyük fark varsa `candidate_disagreement_high` sonraki fusion adımında işaretlenmelidir.",
             "* Grafikler `runs/` altında tutulur ve Git'e eklenmez.",
@@ -615,6 +660,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--conf", type=float, default=0.25)
     parser.add_argument("--horizontal-fov-deg", type=float, default=70.0)
     parser.add_argument("--smoothing-window", type=int, default=7)
+    parser.add_argument("--moving-average-window", type=int, default=25)
+    parser.add_argument("--post-peak-shrink-ratio", type=float, default=0.85)
+    parser.add_argument("--min-peak-height-px", type=float, default=120.0)
     parser.add_argument("--max-speed-kmh", type=float, default=220.0)
     return parser.parse_args()
 
@@ -647,6 +695,9 @@ def main() -> None:
             run,
             horizontal_fov_deg=args.horizontal_fov_deg,
             smoothing_window=args.smoothing_window,
+            moving_average_window=args.moving_average_window,
+            post_peak_shrink_ratio=args.post_peak_shrink_ratio,
+            min_peak_height_px=args.min_peak_height_px,
             max_speed_kmh=args.max_speed_kmh,
         )
         for row in candidate["timeseries"]:
@@ -688,6 +739,9 @@ def main() -> None:
         "conf": args.conf,
         "horizontal_fov_deg": args.horizontal_fov_deg,
         "smoothing_window": args.smoothing_window,
+        "moving_average_window": args.moving_average_window,
+        "post_peak_shrink_ratio": args.post_peak_shrink_ratio,
+        "min_peak_height_px": args.min_peak_height_px,
         "max_speed_kmh": args.max_speed_kmh,
         "plate_speed_source": rel(args.plate_speed) if args.plate_speed.exists() else None,
         "timeseries_csv": rel(timeseries_csv),
