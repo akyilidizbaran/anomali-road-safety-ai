@@ -9,6 +9,7 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab.ipynb`: BDD100K `weather/timeofday/scene` metadata'sından condition label üretir, MobileNetV3-Small ve ResNet18 condition classifier backbone'larını aynı ağır comparison run içinde eğitir, en iyi backbone'u validation macro-F1 ile seçer ve dark video condition smoke test'i destekler.
 * `POCR_EXP_005_YOLO11N_Plate_Detector_Colab.ipynb`: Turkish Number Plates + Roboflow LPR veri setlerini Roboflow API veya manual zip fallback ile indirir, class-normalized/dedup edilmiş tek sınıf `license_plate` YOLO dataset'i üretir, YOLO11n plate detector fine-tune eder, mevcut `license_plate_detector.pt` baseline ile karşılaştırır ve UFPR-ALPR izinli zip varsa external benchmark çalıştırır. Ağır işlem local `/content/anomali-road-safety-ai-work/` altında yapılır; kalıcı checkpoint/metric/report çıktıları Drive'a yazılır.
 * `VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab.ipynb`: BoxCars116k üzerinden araç crop'ları için vehicle attribute / dimension prior classifier kurar. İlk amaç marka-modeli kesin kanıt yapmak değil, `Speed Fusion Layer` için `body_type`, yaklaşık `wheelbase` ön bilgisi ve güven skoru üretmektir. Varsayılan smoke mode küçük subset ile çalışır; ağır run için `SMOKE_MODE=False`, daha fazla epoch ve ek backbone açılır.
+* `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb`: VS13 bilinen hızlı araç videolarını doğrudan resmi linklerden Colab/Drive cache'e indirir, küçük subset çıkarır, YOLO + ByteTrack ile ana araç track'i üretir, bbox-geometry hız adayını hesaplar ve train/val/test split üzerinde global scale/FOV/vehicle-height/moving-average parametre optimizasyonu yapar. Bu notebook yeni neural speed modeli eğitmez; hız adayının bilinen km/s videolarda ne kadar kalibre edilebildiğini ölçer.
 
 ## Output-Saved Notebooklar
 
@@ -118,3 +119,13 @@ Bu sayede notebook tek dosyada otomatik indirme yapabilir; key repoya yazılmaz.
 * MobileNetV3-Large checkpoint ve opsiyonel EfficientNet-B0 challenger.
 * Label map, dimension-prior table, metrics JSON ve Markdown summary.
 * Optional existing vehicle crop smoke inference.
+
+`SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb` şu çıktıları üretir:
+
+* VS13 `RenaultCaptur`, `KiaSportage`, `VWPassat` zip cache dosyaları.
+* `vs13_subset_manifest.csv`.
+* `vs13_base_speed_candidates.csv`.
+* `vs13_calibration_grid_metrics.csv`.
+* `vs13_best_calibrated_predictions.csv`.
+* `speed_exp_006_vs13_known_speed_calibration_summary.json`.
+* GT-vs-pred, absolute error ve confidence-vs-error grafikleri.

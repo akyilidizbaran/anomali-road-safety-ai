@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülünü `SPEED-EXP-005D` confidence audit ile support/evidence katmanı olarak kapatıyoruz.
-* Son değişiklik neydi? 004A relative, 002 plate-scale, 005A bbox-geometry ve 005D fusion confidence skorları ayrı grafik/raporla açıklandı.
-* Bir sonraki net adım ne? Hız ground-truth olmadığı için mutlak km/s iddiasını büyütmeden FTR output adapter/validator ve `arac_bilgisi` hattına dönmek.
+* Şu an ne yapıyoruz? Hız modülünü bilinen hızlı VS13 videolarda kalibrasyon sanity testine hazırlıyoruz.
+* Son değişiklik neydi? `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb` eklendi; VS13 indirme, track extraction, bbox-geometry hız adayı ve train/val/test parametre optimizasyonu tek notebook'a bağlandı.
+* Bir sonraki net adım ne? Colab'da `SPEED_EXP_006` notebook'unu çalıştırıp test MAE/RMSE sonucuna göre hızın `dataset-calibrated approximate candidate` mı yoksa `relative/support evidence` mı kalacağına karar vermek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -212,6 +212,7 @@
 * 2026-06-20 — Karar: Hız pipeline FTR submission icin ana puanlanan modul olmayacak. | Gerekçe: FTR `results.json` semasinda hiz alani yok; mevcut 005A grafikleri bbox geometry ve kadraj cikisi nedeniyle gurultulu. | Etki: Speed calismasi `slalom` destek sinyali ve rapor/evidence arastirma katmani olarak korunur; oncelik arac tipi, plaka, renk, surucu eylemi, nesne ve yolcu etiketlerine kayar. | Alternatifler: Hiz modelini ana gelistirme hedefi yapmak; FTR teslim riskini artirdigi icin reddedildi.
 * 2026-06-20 — Karar: Hız modülü mevcut faz için `SPEED-EXP-005D` ile kapatılacak. | Gerekçe: Kullanıcı Docker/FTR uygulamasına geçmeden önce hızla uğraşmayı bitirmek istedi; elimizde 004A relative, 002 plate-scale ve 005A bbox-geometry sinyalleri yeterli kapanış kanıtı sağlıyor. | Etki: `run_speed_005d_candidate_fusion.py` 3 sinyali tek karar ağacında birleştirir; final speed block `support evidence only` olarak event JSON'a işlenir. FARSEC/depth 005B artık zorunlu sonraki adım değil, future/support olarak kalır. | Alternatifler: FARSEC-lite depth modelini hemen entegre etmek; FTR ana modüllerini geciktireceği için ertelendi.
 * 2026-06-20 — Karar: `SPEED-EXP-005D` confidence skorları mutlak hız doğruluğu değil, sinyal/evidence destek kalitesi olarak yorumlanacak. | Gerekçe: Mevcut üç videoda ground-truth hız yok; 004A/005A/005D skorları yüksek olsa bile bu skorlar track stabilitesi, bbox segment kalitesi ve adaylar arası agreement'tan türetiliyor. | Etki: `plot_speed_confidence_audit.py`, audit JSON, rapor ve grafikler eklendi; hız FTR için `support/evidence only` olarak kapatılır. | Alternatifler: Yüksek confidence'ı doğrudan doğru km/s saymak; bilimsel olarak savunulamaz olduğu için reddedildi.
+* 2026-06-20 — Karar: VS13 ile hız kalibrasyon sanity testi Colab üzerinde yapılacak. | Gerekçe: Lokal internet yavaş; VS13 paketleri büyük ama Colab/Drive cache üzerinden indirilebilir. Bu aşama neural speed modeli eğitimi değil, mevcut bbox-geometry hız adayının bilinen km/s videolarda global scale/FOV/height/window parametre optimizasyonudur. | Etki: `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb` eklendi; ilk paketler `RenaultCaptur=66`, `KiaSportage=72`, `VWPassat=85` km/h. | Alternatifler: Lokal indirme/koşu veya yeni neural speed modeli eğitimi; bu aşama için gereksiz/çok maliyetli görüldü.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -306,6 +307,7 @@
 * 2026-06-20 — Milestone: FTR teslim dokumani repo kapsamiyla hizalandi. | Sonuç: FTR uyum matrisi, resmi output contract, submission requirements ve decision dosyasi eklendi; README, ROADMAP, STATUS, AI pipeline ve speed dokumanlari FTR onceligine gore guncellendi.
 * 2026-06-20 — Milestone: `SPEED-EXP-005D` candidate fusion tamamlandı. | Sonuç: 004A relative, 002 plate-scale ve 005A bbox-geometry adayları birleştirildi; `video_1=2.64 km/h normal`, `video_2=2.33 km/h normal`, `video_3=15.06 km/h fast` destek sinyali üretildi; hız FTR ana yolunu bloklamayacak şekilde kapandı.
 * 2026-06-20 — Milestone: `SPEED-EXP-005D` confidence audit tamamlandı. | Sonuç: Confidence comparison, fusion breakdown, speed candidate comparison ve high-confidence timeseries grafikleri üretildi; rapor `testing/reports/speed_exp_005d_confidence_audit.md` altında saklandı.
+* 2026-06-20 — Milestone: `SPEED-EXP-006` VS13 Colab notebook hazırlandı. | Sonuç: VS13 resmi linklerinden indirme, subset extraction, YOLO+ByteTrack track çıkarımı, bbox-geometry hız adayı, train/val/test kalibrasyon grid search ve grafik/rapor çıktıları tek notebook'a bağlandı.
 
 ## 8) Yapılanlar
 
@@ -474,6 +476,7 @@
 * [x] `SPEED-EXP-005A` moving-average speed çizgilerini ve pik bastırmalı ortalama hesabını ekle.
 * [x] `SPEED-EXP-005D` candidate fusion ile hız modülünü mevcut faz için kapat.
 * [x] `SPEED-EXP-005D` confidence audit raporu ve yüksek-confidence hız grafikleri üret.
+* [x] `SPEED-EXP-006` VS13 known-speed calibration Colab notebook'unu hazırla.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
@@ -481,6 +484,7 @@
 * [ ] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
 * [x] `SPEED-EXP-005A/005D` grafik ve fusion sonuçlarını rapor/evidence baglaminda incele; FTR ana yoluna bloklayici yapma.
 * [ ] `SPEED-EXP-005B/005C` depth/plate v2 calismalarini yalniz FTR ana modullerinden sonra future/support olarak degerlendir.
+* [ ] `SPEED-EXP-006` notebook'unu Colab'da çalıştır; test MAE/RMSE ve confidence-vs-error sonucunu incele.
 * [ ] `SPEED-EXP-004C` aktif homografi profilini manuel ölçüm noktalarıyla doldur ve opsiyonel reprojection validation + absolute-candidate run'ı çalıştır.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.

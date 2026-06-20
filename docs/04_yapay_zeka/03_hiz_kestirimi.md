@@ -47,6 +47,37 @@ Bu ayrım kritik: `video_1` ve `video_3` için `005D` confidence yüksek görün
 değer aday sinyallerin kendi içinde destekli olduğunu söyler. Ground-truth hız olmadığı için
 “gerçek km/s doğru ölçüldü” iddiası kurulmaz.
 
+### VS13 Known-Speed Kalibrasyon Deneyi
+
+Mutlak km/s iddiasını büyütmeden önce bilinen hızlı dış videolarda sanity check yapılacaktır.
+Bu amaçla `SPEED-EXP-006` notebook'u eklendi:
+
+* Notebook: `notebooks/SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb`
+* Veri kaynağı: VS13 known-speed video+annotation paketleri
+* İlk paketler: `RenaultCaptur` (`66 km/h`), `KiaSportage` (`72 km/h`), `VWPassat` (`85 km/h`)
+* Çıktı klasörü: `/content/drive/MyDrive/anomali-road-safety-ai/models/benchmarks/artifacts/speed/SPEED-EXP-006-VS13-known-speed-calibration/`
+
+Bu deney yeni bir neural speed modeli eğitmez. Mevcut `YOLO + ByteTrack + bbox-geometry`
+hız adayını bilinen hızlara karşı test eder ve şu parametreleri optimize eder:
+
+* Global scale correction.
+* Horizontal FOV varsayımı.
+* Araç yükseklik prior'ı.
+* Moving-average window.
+* Segment outlier gate.
+
+Split video/araç bazlıdır; frame bazlı split yapılmaz. İlk varsayılan split:
+
+| Araç | Bilinen hız | Split |
+|---|---:|---|
+| Renault Captur | `66 km/h` | train/calibration |
+| Kia Sportage | `72 km/h` | validation |
+| VW Passat | `85 km/h` | test |
+
+Eğer test MAE makul çıkarsa hız modülü “dataset-calibrated approximate speed candidate”
+olarak raporlanabilir. Test MAE yüksek veya tutarsız çıkarsa hız modülü yine
+`relative/support evidence` olarak kalır.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.
