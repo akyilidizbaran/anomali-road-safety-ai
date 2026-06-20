@@ -54,7 +54,9 @@ Bu amaçla `SPEED-EXP-006` notebook'u eklendi:
 
 * Notebook: `notebooks/SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb`
 * Veri kaynağı: VS13 known-speed video+annotation paketleri
-* İlk paketler: `RenaultCaptur` (`66 km/h`), `KiaSportage` (`72 km/h`), `VWPassat` (`85 km/h`)
+* İlk paketler: `RenaultCaptur`, `KiaSportage`, `VWPassat`
+* Ground-truth hız: paket seviyesinde değil, video dosya adındaki hız suffix'inden okunur
+  (`RenaultCaptur_66.MP4` -> `66 km/h` gibi).
 * Çıktı klasörü: `/content/drive/MyDrive/anomali-road-safety-ai/models/benchmarks/artifacts/speed/SPEED-EXP-006-VS13-known-speed-calibration/`
 
 Bu deney yeni bir neural speed modeli eğitmez. Mevcut `YOLO + ByteTrack + bbox-geometry`
@@ -66,13 +68,14 @@ hız adayını bilinen hızlara karşı test eder ve şu parametreleri optimize 
 * Moving-average window.
 * Segment outlier gate.
 
-Split video/araç bazlıdır; frame bazlı split yapılmaz. İlk varsayılan split:
+Split video/araç bazlıdır; frame bazlı split yapılmaz. İlk varsayılan split paket bazlıdır;
+her paketten seçilen videolar düşük/orta/yüksek hızları kapsayacak şekilde dengeli seçilir:
 
-| Araç | Bilinen hız | Split |
-|---|---:|---|
-| Renault Captur | `66 km/h` | train/calibration |
-| Kia Sportage | `72 km/h` | validation |
-| VW Passat | `85 km/h` | test |
+| Araç paketi | GT hız kaynağı | Split |
+|---|---|---|
+| Renault Captur | Dosya adı suffix'i | train/calibration |
+| Kia Sportage | Dosya adı suffix'i | validation |
+| VW Passat | Dosya adı suffix'i | test |
 
 Eğer test MAE makul çıkarsa hız modülü “dataset-calibrated approximate speed candidate”
 olarak raporlanabilir. Test MAE yüksek veya tutarsız çıkarsa hız modülü yine
