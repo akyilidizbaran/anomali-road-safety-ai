@@ -39,17 +39,37 @@ olarak korunacaktır.
    * FTR ana hedeflerinde araç bilgisi, plaka, renk, sürücü eylemi, nesne/yolcu ve Docker
      contract daha önceliklidir.
 
-## Benchmark Tarafında Önce / Sonra
+## VS13 Genel Performans Karşılaştırması
+
+Hız modülünün ana doğrulama kaynağı 3 lokal demo video değildir. Lokal videolarda ground-truth
+hız olmadığı için bu videolar yalnız transfer/trend smoke test olarak kullanılabilir. Genel
+performans kararı, bilinen hız etiketleri bulunan VS13 veri seti üzerinde yapılan kontrollü
+kalibrasyon deneylerinden gelir.
 
 `SPEED-EXP-006`, 3 araç paketli ilk VS13 sanity check idi. `SPEED-EXP-006B`, 13 araç ve
-leave-one-vehicle-out değerlendirme ile aynı fikri daha sağlam test etti.
+156 video üzerinde leave-one-vehicle-out değerlendirme ile aynı fikri daha sağlam test etti.
 
-| Aşama | Veri | Yöntem | MAE | RMSE | Yorum |
-|---|---:|---|---:|---:|---|
-| `SPEED-EXP-006` | 18 video / 3 araç | `global_alpha` | `8.07 km/h` test | `12.29 km/h` test | Pipeline sağlıklı ama orta hızlarda yüksek hata var |
-| `SPEED-EXP-006` patch analizi | 18 video / 3 araç | `linear_raw` | `7.59 km/h` test | `10.43 km/h` test | Küçük iyileşme, fakat hâlâ kapanış için zayıf |
-| `SPEED-EXP-006B` | 156 video / 13 araç | `linear_raw` | `3.0852 km/h` LOO | `3.7100 km/h` LOO | Geniş subset ile raw kalibrasyon güçlendi |
-| `SPEED-EXP-006B` locked | 156 video / 13 araç | `huber_features` | `2.7088 km/h` LOO | `3.4750 km/h` LOO | Bu faz için raporlanabilir yaklaşık hız adayı |
+| Aşama | Veri | Değerlendirme | Yöntem | MAE | RMSE | Median AE | P90 AE | Mean rel. error | Yorum |
+|---|---:|---|---|---:|---:|---:|---:|---:|---|
+| `SPEED-EXP-006` | 18 video / 3 araç | train/val/test | `global_alpha` | `8.07 km/h` test | `12.29 km/h` test | `-` | `-` | `12.67%` test | Pipeline sağlıklı ama orta hızlarda yüksek hata var |
+| `SPEED-EXP-006` patch analizi | 18 video / 3 araç | test | `linear_raw` | `7.59 km/h` | `10.43 km/h` | `-` | `-` | `-` | Küçük iyileşme, fakat hâlâ kapanış için zayıf |
+| `SPEED-EXP-006B` first-stage | 156 video / 13 araç | leave-one-vehicle-out | `linear_raw` | `3.0852 km/h` | `3.7100 km/h` | `2.8369 km/h` | `5.6488 km/h` | `4.7456%` | Geniş subset ile raw kalibrasyon güçlendi |
+| `SPEED-EXP-006B` alternative | 156 video / 13 araç | leave-one-vehicle-out | `ridge_features` | `2.7128 km/h` | `3.4733 km/h` | `2.2855 km/h` | `6.0888 km/h` | `4.1510%` | Final modele çok yakın güçlü alternatif |
+| `SPEED-EXP-006B` alternative | 156 video / 13 araç | leave-one-vehicle-out | `huber_features`, `vehicle_height=1.7` | `2.7127 km/h` | `3.5042 km/h` | `2.1979 km/h` | `5.9821 km/h` | `4.0681%` | Boy varsayımı değişse de performans kararlı |
+| `SPEED-EXP-006B` locked | 156 video / 13 araç | leave-one-vehicle-out | `huber_features` | `2.7088 km/h` | `3.4750 km/h` | `2.1109 km/h` | `5.9034 km/h` | `4.0835%` | Bu faz için raporlanabilir yaklaşık hız adayı |
+
+VS13 karşılaştırmasının yorumu:
+
+* 006B sonucu yalnız 3 demo video üzerinde üretilmiş bir sonuç değildir; 13 araç paketli,
+  156 videoluk kontrollü bilinen-hız benchmark sonucudur.
+* İlk sanity check'teki `8.07 km/h` test MAE, geniş subset ve robust feature kalibrasyonu ile
+  `2.7088 km/h` LOO MAE seviyesine düştü.
+* RMSE `12.29 km/h` seviyesinden `3.4750 km/h` seviyesine indi. Bu, büyük hata piklerinin
+  belirgin biçimde azaldığını gösterir.
+* `ridge_features` ve `huber_features` birbirine çok yakındır. `huber_features`, daha düşük MAE
+  ve median AE verdiği ve robust regression davranışı sağladığı için kilit model olarak seçildi.
+* P90 hata hâlâ yaklaşık `5.90 km/h` seviyesindedir. Bu nedenle çıktı hukuki/cezai hız ölçümü
+  değil, `dataset_calibrated_approximate_candidate` olarak korunur.
 
 ## Demo Videolarda Önce / Sonra
 

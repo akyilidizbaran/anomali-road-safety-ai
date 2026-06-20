@@ -26,6 +26,8 @@ Kararın dayanağı:
 
 * `SPEED-EXP-006B` VS13 geniş subset koşusu 13 araç / 156 video ile tamamlandı.
 * En iyi `huber_features` sonucu MAE `2.7088 km/h`, RMSE `3.4750 km/h` verdi.
+* Bu performans kararı 3 lokal demo videoya değil, VS13 bilinen-hız benchmark sonuçlarına
+  dayanır.
 * Lokal 3 demo video üzerinde 006B best-parameter transfer testi trendi korudu:
   * `video_1`: `2.64 -> 3.53 km/h`, düşük hız bandı.
   * `video_2`: `2.33 -> 3.20 km/h`, düşük hız bandı.
@@ -37,6 +39,19 @@ Kilit raporu:
 ```text
 testing/reports/speed_phase_lock_2026_06_20.md
 ```
+
+VS13 genel performans özeti:
+
+| Deney | Veri | Değerlendirme | Yöntem | MAE | RMSE | Mean rel. error | Karar |
+|---|---:|---|---|---:|---:|---:|---|
+| `SPEED-EXP-006` | 18 video / 3 araç | train/val/test | `global_alpha` | `8.07 km/h` test | `12.29 km/h` test | `12.67%` test | İlk sanity check; kapanış için yetersiz |
+| `SPEED-EXP-006B` first-stage | 156 video / 13 araç | leave-one-vehicle-out | `linear_raw` | `3.0852 km/h` | `3.7100 km/h` | `4.7456%` | Geniş benchmark ile güçlü baseline |
+| `SPEED-EXP-006B` locked | 156 video / 13 araç | leave-one-vehicle-out | `huber_features` | `2.7088 km/h` | `3.4750 km/h` | `4.0835%` | Bu faz için kilitlenen yaklaşık hız adayı |
+
+Bu tablo, hız modülünün yalnız 3 örnek video üzerinden değil, VS13 üzerinde daha genel bir
+karşılaştırma ile değerlendirildiğini gösterir. Lokal demo video grafikleri modelin transfer
+davranışını ve trend sıralamasını göstermek için saklanır; doğruluk iddiası VS13 tarafındaki
+bilinen hız etiketlerinden gelir.
 
 Mevcut `SPEED-EXP-005A` çizgi grafiklerinde raw ve moving-average hız sinyalleri bbox jitter,
 kadrajdan çıkış ve monoküler ölçek belirsizliği nedeniyle gürültülüdür. Bu durum araç/plaka
