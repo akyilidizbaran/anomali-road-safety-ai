@@ -174,6 +174,50 @@ FTR açısından bu çalışma ana teslim hattını bloklamaz. Çünkü resmi FT
 istememektedir. 006B yalnız rapor/evidence tarafında “yaklaşık kalibre hız adayı üretilebilir
 mi?” sorusunu cevaplar.
 
+### SPEED-EXP-006B Healthfinished Sonucu
+
+`SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab_healthfinished.ipynb` koşusu
+hatasız tamamlandı. Bu sonuç, hız modülünün mevcut fazdaki en güçlü bilinen hızlı veri
+değerlendirmesidir:
+
+| Alan | Sonuç |
+|---|---:|
+| VS13 araç paketi | 13 |
+| Toplam video | 156 |
+| Araç başına video | 12 |
+| Değerlendirme | leave-one-vehicle-out CV |
+| En iyi yöntem | `huber_features` |
+| MAE | `2.7088 km/h` |
+| RMSE | `3.4750 km/h` |
+| Median absolute error | `2.1109 km/h` |
+| P90 absolute error | `5.9034 km/h` |
+| Mean relative error | `4.0835%` |
+
+En iyi parametreler:
+
+```text
+horizontal_fov_deg=60.0
+vehicle_height_m=1.5
+moving_average_window=9
+max_segment_speed_kmh=140.0
+segment_trim_fraction=0.0
+min_bbox_height_ratio=0.1
+```
+
+Birinci aşama en iyi `linear_raw` sonucu `3.0852 km/h` MAE üretmiştir. `huber_features`,
+MAE tarafında yaklaşık `0.38 km/h` ve yaklaşık `12.2%` iyileşme sağlar. Buna karşılık P90 hata
+tamamen yok olmaz; bu nedenle sonuç hukuki/cezai hız ölçümü olarak değil, kontrollü veri seti
+üzerinde kalibre edilmiş yaklaşık hız adayı olarak raporlanmalıdır.
+
+Karar:
+
+* Hız modülü mevcut faz için yeterli şekilde kapanmıştır.
+* FTR `results.json` hız alanı istemediğinden Docker/FTR ana teslim hattı artık hızla
+  bloklanmamalıdır.
+* Event/evidence tarafında hız `dataset_calibrated_approximate_candidate` veya
+  `support_evidence` olarak tutulmalıdır.
+* Saha/dark demo transferi için ayrıca confidence ve fallback gerekçesi yazılmalıdır.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.

@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülünü FTR ana teslimini bloklamadan, VS13 geniş subset üzerinde kalibrasyon/training ile son kez güçlendirmeye çalışıyoruz.
-* Son değişiklik neydi? `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb` eklendi; 13 VS13 araç paketini, leave-one-vehicle-out CV'yi ve hafif tabular calibration regressor kıyaslarını destekliyor.
-* Bir sonraki net adım ne? `SPEED-EXP-006B` notebook'unu Colab'da çalıştırıp LOO MAE/RMSE ve held-out vehicle hata dağılımına göre hızın `dataset-calibrated approximate candidate` mı yoksa `relative/support evidence` mı kalacağına karar vermek.
+* Şu an ne yapıyoruz? Hız modülü `SPEED-EXP-006B` ile mevcut faz için kapatıldı; FTR ana teslim hattına dönüyoruz.
+* Son değişiklik neydi? `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab_healthfinished.ipynb` incelendi; 13 VS13 araç / 156 video leave-one-vehicle-out koşusu hatasız tamamlandı.
+* Bir sonraki net adım ne? FTR `results.json` adapter/validator ve root Docker inference skeleton kurmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -216,6 +216,7 @@
 * 2026-06-20 — Karar: `SPEED-EXP-006` outhealth sonucu pipeline sağlıklı ama mutlak km/s kapanışı için yetersiz kabul edilecek. | Gerekçe: 18 VS13 video, araç bazlı train/val/test split ve tüm videolarda `track_status=ok` üretildi; en iyi global-scale test MAE `8.07 km/h`, test RMSE `12.29 km/h`, orta hızlarda ise yaklaşık `21 km/h` over-estimation görüldü. | Etki: Aktif notebook `linear_raw` kalibrasyon kıyası, ayrıştırıcı confidence ve cache üstünden güncel `base_*` yeniden hesaplama desteğiyle patch'lendi; sonraki adım `006B/006C` kalibrasyon + segment selector olacak. | Alternatifler: Mevcut sonucu final mutlak hız modeli saymak; hata dağılımı nedeniyle reddedildi.
 * 2026-06-20 — Karar: FTR ana teslimi bloklanmadan `SPEED-EXP-006B` geniş VS13 kalibrasyon notebook'u hazırlanacak. | Gerekçe: FTR `results.json` hız alanı istemiyor, fakat kullanıcı hız modülünü kapatmadan geçmek istemiyor; bu nedenle hızda savunulabilir son karar için 13 araç paketini destekleyen leave-one-vehicle-out kalibrasyon gerekir. | Etki: `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb` eklendi; global/lineer/robust kalibrasyon ve hafif tabular regressor kıyasları üretilecek. | Alternatifler: Hız çalışmalarını tamamen bırakmak veya mevcut 3 araç sonucunu final saymak; ilki kullanıcı hedefiyle, ikincisi metriklerle uyumsuz.
 * 2026-06-20 — Karar: `SPEED-EXP-006B` manifest split bug'i düzeltildi. | Gerekçe: 006B paket sözlüklerinde sabit `split` yok; değerlendirme Cell 10'da leave-one-vehicle-out ile `vehicle` üzerinden dinamik yapılır. Outcrashed koşuda Cell 6 hâlâ `meta['split']` beklediği için `KeyError: 'split'` verdi. | Etki: Manifest artık `split='loo_pool'` ve `loo_group=vehicle` yazar; 006B çıktı klasörü de 006 ile karışmaması için `SPEED-EXP-006B-VS13-wide-subset-calibration` olarak ayrıldı. | Alternatifler: Paketlere manuel train/val/test split eklemek; LOO hedefiyle uyumsuz olduğu için reddedildi.
+* 2026-06-20 — Karar: `SPEED-EXP-006B` mevcut hız fazı için başarılı kapanış kabul edilecek. | Gerekçe: 13 VS13 araç paketinden 156 video leave-one-vehicle-out CV ile işlendi; en iyi `huber_features` sonucu MAE `2.7088 km/h`, RMSE `3.4750 km/h`, median AE `2.1109 km/h`, P90 AE `5.9034 km/h`, mean relative error `4.0835%` verdi. | Etki: Hız raporda `dataset-calibrated approximate speed candidate` ve event/evidence'da destek sinyali olarak anlatılabilir; FTR `results.json` hız alanı istemediği için Docker/FTR ana işlerini artık bloklamaz. | Alternatifler: `SPEED-EXP-006C` ile segment selector araştırmasına devam etmek; yalnız zaman kalırsa opsiyonel.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -314,6 +315,7 @@
 * 2026-06-20 — Milestone: `SPEED-EXP-006` VS13 outhealth çıktısı incelendi. | Sonuç: 18 video sağlıklı işlendi; en iyi global-scale test MAE `8.07 km/h`, test RMSE `12.29 km/h` bulundu; orta hızlarda yüksek hata nedeniyle hız modülü için `006B/006C` kalibrasyon ve segment selector iyileştirmesi önerildi.
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` wide-subset calibration notebook hazırlandı. | Sonuç: 13 VS13 araç paketini destekleyen, varsayılan 12 video/araç subset kullanan, leave-one-vehicle-out CV ve hafif tabular calibration regressor karşılaştırması yapan Colab notebook eklendi.
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` split crash düzeltildi. | Sonuç: Cell 6 manifest builder sabit split beklemiyor; `loo_pool` + `loo_group` alanlarıyla sonraki LOO kalibrasyon hücresine uyumlu hale getirildi.
+* 2026-06-20 — Milestone: `SPEED-EXP-006B` healthfinished koşusu incelendi ve hız fazı kapatıldı. | Sonuç: 13 araç / 156 video LOO CV sonucunda en iyi `huber_features` modeli MAE `2.7088 km/h`, RMSE `3.4750 km/h` verdi; hız artık FTR'yi bloklamayan approximate/support evidence katmanı olarak konumlandı.
 
 ## 8) Yapılanlar
 
@@ -486,6 +488,7 @@
 * [x] `SPEED-EXP-006` outhealth notebook çıktısını incele; tablo formatı, MAE/RMSE, confidence ve tuning ihtiyacını raporla.
 * [x] `SPEED-EXP-006B` geniş VS13 subset kalibrasyon/training notebook'unu hazırla.
 * [x] `SPEED-EXP-006B` Cell 6 `KeyError: 'split'` crash'ini düzelt.
+* [x] `SPEED-EXP-006B` healthfinished çıktısını incele; LOO MAE/RMSE ve karar raporunu kaydet.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
@@ -494,8 +497,8 @@
 * [x] `SPEED-EXP-005A/005D` grafik ve fusion sonuçlarını rapor/evidence baglaminda incele; FTR ana yoluna bloklayici yapma.
 * [ ] `SPEED-EXP-005B/005C` depth/plate v2 calismalarini yalniz FTR ana modullerinden sonra future/support olarak degerlendir.
 * [ ] Patch'li `SPEED-EXP-006` notebook'ta Cell 8 sonrası yeniden çalıştır; `linear_raw` kalibrasyon ve yeni confidence dağılımını doğrula.
-* [ ] `SPEED-EXP-006B` notebook'unu Colab'da çalıştır; LOO MAE/RMSE ve held-out vehicle hata dağılımını incele.
-* [ ] `SPEED-EXP-006B` sonucu yetersizse `SPEED-EXP-006C` track segment selector diagnostics veya hız modülünü `relative/support evidence` olarak kapatma kararını ver.
+* [x] `SPEED-EXP-006B` notebook'unu Colab'da çalıştır; LOO MAE/RMSE ve held-out vehicle hata dağılımını incele.
+* [ ] Zaman kalırsa `SPEED-EXP-006C` track segment selector diagnostics aç; FTR ana teslim için zorunlu değildir.
 * [ ] `SPEED-EXP-004C` aktif homografi profilini manuel ölçüm noktalarıyla doldur ve opsiyonel reprojection validation + absolute-candidate run'ı çalıştır.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
