@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülünde `SPEED-EXP-004A` relative track/bbox baseline ve `SPEED-EXP-004B` plate-scale + VATTR sanity-check katmanı üretildi.
-* Son değişiklik neydi? VATTR EfficientNet-B0 checkpoint'i lokal target ROI crop'larında çalıştırıldı; plate-scale düşük güvenli aday ve VATTR body/dimension prior event/evidence JSON'a `speed_exp_004b` olarak işlendi.
-* Bir sonraki net adım ne? `SPEED-EXP-004C` için sabit kamera görüntüsünde yarı manuel homografi/ölçülü referans noktaları belirleyip `absolute_candidate` hız adayını denemek.
+* Şu an ne yapıyoruz? Hız modülünde `SPEED-EXP-004C` için yarı manuel homografi kalibrasyon hazırlığı yapıldı.
+* Son değişiklik neydi? `Test/video_1-3.mp4` içinden 12 kalibrasyon karesi çıkarıldı; `CALIB-DEMO-001.template.json` manuel ölçüm noktaları için hazırlandı.
+* Bir sonraki net adım ne? Kalibrasyon frame'leri üzerinde en az dört yol düzlemi referans noktasını ölçüp aktif homografi profilini doldurmak; ardından 004C reprojection validation + absolute-candidate script'ini çalıştırmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -199,6 +199,8 @@
 * 2026-06-19 — Karar: `SPEED-EXP-004B` plate-scale + VATTR sanity-check katmanı kullanılabilir ilk evidence-fusion adımı olarak kabul edilecek. | Gerekçe: VATTR checkpoint lokal target ROI sample crop'larında çalıştı; `video_1/video_2` için body prior `suv`, `video_3` için `van` üretti. Plate-scale adayları düşük güvenli tutuldu ve `video_3` için relative fast vs plate-scale low disagreement `candidate_disagreement_high` olarak işaretlendi. | Etki: `TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json`, 4B summary CSV/JSON ve rapor üretildi. | Alternatifler: Plate-scale adayını doğrudan km/s kabul etmek veya VATTR'ı hız kaynağı gibi kullanmak; karar destek/kanıt güvenliği nedeniyle reddedildi.
 * 2026-06-19 — Karar: `SPEED-EXP-004B` VATTR kullanımı için `min_vattr_confidence=0.60` ve `top1_top2_margin>=0.15` gate'i uygulanacak. | Gerekçe: Üç demo video aynı araca ait olmasına rağmen VATTR kendi güvenleri `0.463/0.418/0.426` seviyesinde kaldı; bu çıktıları body prior olarak speed fusion'a taşımak fazla iddialı olur. | Etki: Mevcut 3 eventte VATTR tahminleri raporlanıyor ama `use_for_speed_fusion=false`; `vehicle_attribute_low_confidence` warning'i yazılıyor. | Alternatifler: Yeni fine-tune açmak veya düşük güvenli label'ı kullanmak; önce gate düzeltmesi daha doğru ve hızlı olduğu için seçildi.
 
+* 2026-06-20 — Karar: `SPEED-EXP-004C` homografi kalibrasyon hazırlığı local MacBook üzerinde yapılacak, Colab kullanılmayacak. | Gerekçe: Bu adım eğitim/GPU değil; OpenCV frame extraction, manuel yol düzlemi referans noktası seçimi ve homografi validasyonudur. | Etki: `prepare_speed_004c_homography_calibration.py`, `CALIB-DEMO-001.template.json`, summary JSON ve hazırlık raporu eklendi; mutlak km/s yalnız manuel ölçüm noktaları doldurulduktan sonra `absolute_candidate` olarak üretilecek. | Alternatifler: Colab notebook ile yapmak veya ölçüm olmadan km/s üretmek; gereksiz I/O ve yanlış kesinlik riski nedeniyle reddedildi.
+
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
 * 2026-06-06 — Milestone: İlk web demo prototipi oluşturuldu. | Sonuç: Kullanıcı 2026-06-07’de bu kapsamı istemediğini belirtti; yeni yapı sıfırdan kuruldu.
@@ -283,6 +285,8 @@
 * 2026-06-18 — Milestone: SPEED-EXP-004A relative track/bbox speed baseline tamamlandı. | Sonuç: 3 target event için kalibrasyonsuz relative speed block üretildi; `video_1=normal`, `video_2=normal`, `video_3=fast`, tümü `speed_mode=relative`.
 * 2026-06-19 — Milestone: SPEED-EXP-004B plate-scale + VATTR sanity-check tamamlandı. | Sonuç: VATTR target ROI smoke inference ve plate-scale sanity-check event/evidence JSON'a işlendi; `video_3` disagreement flag üretti.
 * 2026-06-19 — Milestone: SPEED-EXP-004B VATTR gate sıkılaştırıldı. | Sonuç: VATTR düşük güvenli body labels artık speed fusion'da kullanılmıyor; 3 demo eventte `use_for_speed_fusion=false` ve `vehicle_attribute_low_confidence` üretildi.
+
+* 2026-06-20 — Milestone: `SPEED-EXP-004C` homografi kalibrasyon hazırlığı tamamlandı. | Sonuç: 3 demo video için 12 kalibrasyon karesi `runs/speed/SPEED-EXP-004C-homography/calibration_frames/` altına çıkarıldı; `CALIB-DEMO-001.template.json`, hazırlık summary JSON ve rapor üretildi.
 
 ## 8) Yapılanlar
 
@@ -395,7 +399,7 @@
 * [x] GPT speed-fusion çıktısını `SPEED-EXP-004` uygulama planına dönüştür.
 * [x] `SPEED-EXP-004` yol haritasını ayrıntılı Markdown olarak kaydet.
 * [ ] Plate bbox aspect-ratio sapmasını manuel overlay üzerinden incele ve köşe/perspektif düzeltmesi planla.
-* [ ] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret. (Next active AI step)
+* [x] Relative speed baseline için `center_history_sample` üzerinden pixel displacement ve motion candidate skorunu üret.
 * [ ] Tracking manual review sonuçlarını `testing/templates/manual_tracking_review.csv` formatına göre kaydet.
 * [x] Plate detection pretrained/public baseline adaylarını araştırıp ilk license plate detector çağrısını seç.
 * [x] PaddleOCR / EasyOCR plate OCR baseline kıyasını planla.
@@ -445,7 +449,8 @@
 * [ ] `SPEED-EXP-004` Speed Fusion Layer içinde plate-scale + homography/track + vehicle dimension prior sinyallerini birleştir.
 * [x] `SPEED-EXP-004A` relative track/bbox speed baseline script'ini uygula.
 * [x] `SPEED-EXP-004B` plate-scale + VATTR sanity-check event/evidence bağlantısını uygula.
-* [ ] `SPEED-EXP-004C` semi-manual homography absolute candidate hazırlığını yap.
+* [x] `SPEED-EXP-004C` semi-manual homography absolute candidate hazırlığını yap.
+* [ ] `SPEED-EXP-004C` aktif homografi profilini manuel ölçüm noktalarıyla doldur ve reprojection validation + absolute-candidate run'ı çalıştır.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
@@ -534,4 +539,4 @@
 
 ### Güncelleme Kaydı
 
-* Son güncelleme: 2026-06-18
+* Son güncelleme: 2026-06-20

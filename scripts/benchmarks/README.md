@@ -114,6 +114,34 @@ Küçük label/prior JSON dosyaları:
 Bu script de kesin km/s üretmez. VATTR çıktısı doğrudan hız değil, body/dimension prior
 ve sanity-check sinyali olarak kullanılmalıdır.
 
+## `prepare_speed_004c_homography_calibration.py`
+
+`SPEED-EXP-004C` semi-manual homography absolute-candidate hazırlık script'idir.
+Bu adım eğitim veya GPU gerektirmez; local MacBook üzerinde OpenCV ile demo videolardan
+kalibrasyon kareleri çıkarır ve manuel doldurulacak homografi profil şablonunu üretir.
+
+Varsayılan koşu:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/prepare_speed_004c_homography_calibration.py --overwrite-profile
+```
+
+Varsayılan input:
+
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json`
+* `Test/video_1.mp4`, `Test/video_2.mp4`, `Test/video_3.mp4`
+
+Üretilen çıktılar:
+
+* Kalibrasyon kareleri: `runs/speed/SPEED-EXP-004C-homography/calibration_frames/`
+* Profil şablonu: `configs/speed_calibration/CALIB-DEMO-001.template.json`
+* Summary JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-004C-homography/speed_exp_004c_homography_calibration_prep_summary.json`
+* Rapor: `testing/reports/speed_exp_004c_homography_calibration_preparation.md`
+
+Bu script **mutlak km/s üretmez**. En az dört ölçülü yol düzlemi referans noktası
+`image_points_px` ve `world_points_m` olarak girilmeden sonraki 004C homografi doğrulama
+adımına geçilmemelidir.
+
 ## `run_plate_detection_smoke.py`
 
 `POCR-EXP-001` plaka tespit smoke test'i. `run_tracking_baseline.py` ile aynı mantıkta çalışır:
