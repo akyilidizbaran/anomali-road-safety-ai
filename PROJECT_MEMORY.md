@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülünde `SPEED-EXP-004C` için yarı manuel homografi kalibrasyon hazırlığı yapıldı.
-* Son değişiklik neydi? `Test/video_1-3.mp4` içinden 12 kalibrasyon karesi çıkarıldı; `CALIB-DEMO-001.template.json` manuel ölçüm noktaları için hazırlandı.
-* Bir sonraki net adım ne? Kalibrasyon frame'leri üzerinde en az dört yol düzlemi referans noktasını ölçüp aktif homografi profilini doldurmak; ardından 004C reprojection validation + absolute-candidate script'ini çalıştırmak.
+* Şu an ne yapıyoruz? Hız modülü manuel referans noktasından otomatik/yaklaşık monocular speed candidate planına yeniden tasarlandı.
+* Son değişiklik neydi? `automatic_speed_estimation_redesign_2026_06_20.md` ile Naver/Revaud bbox geometry, FARSEC-lite depth ve plate-scale v2 if-not-then-do hız planı yazıldı.
+* Bir sonraki net adım ne? `SPEED-EXP-005A` için Naver/Revaud tarzı bbox geometry auto candidate adaptasyonunu başlatmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -201,6 +201,8 @@
 
 * 2026-06-20 — Karar: `SPEED-EXP-004C` homografi kalibrasyon hazırlığı local MacBook üzerinde yapılacak, Colab kullanılmayacak. | Gerekçe: Bu adım eğitim/GPU değil; OpenCV frame extraction, manuel yol düzlemi referans noktası seçimi ve homografi validasyonudur. | Etki: `prepare_speed_004c_homography_calibration.py`, `CALIB-DEMO-001.template.json`, summary JSON ve hazırlık raporu eklendi; mutlak km/s yalnız manuel ölçüm noktaları doldurulduktan sonra `absolute_candidate` olarak üretilecek. | Alternatifler: Colab notebook ile yapmak veya ölçüm olmadan km/s üretmek; gereksiz I/O ve yanlış kesinlik riski nedeniyle reddedildi.
 
+* 2026-06-20 — Karar: Hız modülü manuel yol referans noktası bekleyen homografi ana yolundan çıkarılıp otomatik/yaklaşık monocular speed candidate yoluna yeniden tasarlandı. | Gerekçe: Demo/saha ortamında ölçülü yol noktaları kolay sağlanmayacak; proje otomatik çalışan karar destek hattı hedefliyor. | Etki: Aktif uygulama sırası `SPEED-EXP-005A` Naver/Revaud bbox geometry, `SPEED-EXP-005B` FARSEC-lite depth, `SPEED-EXP-005C` plate-scale v2 fallback ve `SPEED-EXP-005D` if-not-then-do fusion oldu; `SPEED-EXP-004C` manuel homografi opsiyonel doğrulama/fallback olarak kaldı. | Alternatifler: Manuel homografiyi ana yol yapmak; kullanıcı hedefiyle uyumsuz olduğu için reddedildi.
+
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
 * 2026-06-06 — Milestone: İlk web demo prototipi oluşturuldu. | Sonuç: Kullanıcı 2026-06-07’de bu kapsamı istemediğini belirtti; yeni yapı sıfırdan kuruldu.
@@ -287,6 +289,8 @@
 * 2026-06-19 — Milestone: SPEED-EXP-004B VATTR gate sıkılaştırıldı. | Sonuç: VATTR düşük güvenli body labels artık speed fusion'da kullanılmıyor; 3 demo eventte `use_for_speed_fusion=false` ve `vehicle_attribute_low_confidence` üretildi.
 
 * 2026-06-20 — Milestone: `SPEED-EXP-004C` homografi kalibrasyon hazırlığı tamamlandı. | Sonuç: 3 demo video için 12 kalibrasyon karesi `runs/speed/SPEED-EXP-004C-homography/calibration_frames/` altına çıkarıldı; `CALIB-DEMO-001.template.json`, hazırlık summary JSON ve rapor üretildi.
+
+* 2026-06-20 — Milestone: Automatic monocular speed redesign planı tamamlandı. | Sonuç: `research/05_speed_estimation/automatic_speed_estimation_redesign_2026_06_20.md` eklendi; speed README ve implementation plan yeni otomatik candidate sırasına referans verecek şekilde güncellendi.
 
 ## 8) Yapılanlar
 
@@ -450,7 +454,11 @@
 * [x] `SPEED-EXP-004A` relative track/bbox speed baseline script'ini uygula.
 * [x] `SPEED-EXP-004B` plate-scale + VATTR sanity-check event/evidence bağlantısını uygula.
 * [x] `SPEED-EXP-004C` semi-manual homography absolute candidate hazırlığını yap.
-* [ ] `SPEED-EXP-004C` aktif homografi profilini manuel ölçüm noktalarıyla doldur ve reprojection validation + absolute-candidate run'ı çalıştır.
+* [ ] `SPEED-EXP-005A` Naver/Revaud tarzı bbox geometry auto candidate adaptasyonunu başlat.
+* [ ] `SPEED-EXP-005B` FARSEC-lite depth + track speed candidate prototipini başlat.
+* [ ] `SPEED-EXP-005C` plate-scale v2 fallback/sanity-check üret.
+* [ ] `SPEED-EXP-005D` if-not-then-do speed fusion script'ini yaz.
+* [ ] `SPEED-EXP-004C` aktif homografi profilini manuel ölçüm noktalarıyla doldur ve opsiyonel reprojection validation + absolute-candidate run'ı çalıştır.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.

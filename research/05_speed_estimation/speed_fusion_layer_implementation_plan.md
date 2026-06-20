@@ -1,5 +1,11 @@
 # SPEED-EXP-004 Speed Fusion Layer Implementation Plan
 
+> Güncelleme notu — 2026-06-20:
+> Bu planın ilk sürümünde `homography_track` birincil absolute candidate kaynağı olarak
+> düşünülüyordu. Kullanıcı hedefi manuel ölçülü referans noktası beklemeyen otomatik/yaklaşık
+> hız adayları olduğu için aktif plan `automatic_speed_estimation_redesign_2026_06_20.md`
+> ile güncellendi. `homography_track` artık opsiyonel doğrulama/fallback olarak tutulur.
+
 ## Yönetici Özeti
 
 Speed Fusion Layer, tek kameradan gelen hız sinyallerini tek bir kesin hız ölçümü gibi değil, `speed_mode`, hız adayı, güven skoru ve fallback gerekçesi üreten karar destek katmanı olarak tasarlanacaktır.
