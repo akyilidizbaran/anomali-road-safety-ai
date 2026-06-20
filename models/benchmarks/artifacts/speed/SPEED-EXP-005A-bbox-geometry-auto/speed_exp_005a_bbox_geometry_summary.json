@@ -1,0 +1,243 @@
+{
+  "experiment_id": "SPEED-EXP-005A",
+  "stage": "bbox_geometry_auto_candidate_v0",
+  "created_at": "2026-06-20T10:26:36Z",
+  "source_events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json",
+  "model": "yolo11n.pt",
+  "tracker": "bytetrack.yaml",
+  "device": "mps",
+  "imgsz": 640,
+  "conf": 0.25,
+  "horizontal_fov_deg": 70.0,
+  "smoothing_window": 7,
+  "max_speed_kmh": 220.0,
+  "plate_speed_source": "models/benchmarks/artifacts/speed/SPEED-EXP-002-plate-bbox-xyz/speed_exp_002_plate_bbox_xyz_summary.json",
+  "timeseries_csv": "models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_timeseries.csv",
+  "runs_dir": "runs/speed/SPEED-EXP-005A-bbox-geometry-auto",
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "selected_raw_track_id": 1,
+      "expected_raw_track_id": 1,
+      "selection_method": "event_track_id_match",
+      "frame_count": 423,
+      "fps": 50.0,
+      "resolution": "3840x2160",
+      "all_track_observation_counts": {
+        "1": 342,
+        "5": 33,
+        "6": 53
+      },
+      "bbox_geometry_candidate": {
+        "source": "bbox_geometry_auto_v0",
+        "speed_mode": "approximate_candidate",
+        "estimated_kmh": 2.731578,
+        "speed_range_kmh": [
+          1.733191,
+          3.767343
+        ],
+        "mean_speed_kmh": 4.5276,
+        "p95_speed_kmh": 15.019331,
+        "raw_median_speed_kmh": 2.811639,
+        "confidence": 0.6635,
+        "quality_flags": [
+          "track_long",
+          "bbox_height_sufficient",
+          "speed_candidate_available"
+        ],
+        "warning_flags": [
+          "approximate_monocular_speed",
+          "auto_scale_approximation",
+          "not_for_legal_enforcement",
+          "speed_candidate_jitter_high",
+          "invalid_segments_filtered"
+        ],
+        "failure_flags": [],
+        "assumptions": {
+          "horizontal_fov_deg": 70.0,
+          "class_dimension_prior": {
+            "height": 1.55,
+            "width": 1.8,
+            "length": 4.5
+          },
+          "uses_measured_road_reference": false,
+          "uses_manual_homography": false
+        },
+        "diagnostics": {
+          "observation_count": 342,
+          "usable_segment_count": 341,
+          "median_bbox_height_px": 1142.119873,
+          "median_depth_m": 3.592938,
+          "speed_cv": 1.714637,
+          "invalid_segment_reasons": {
+            "bbox_height_jump": 1
+          }
+        }
+      },
+      "plate_scale_comparison": {
+        "source_experiment": "SPEED-EXP-002",
+        "source_variant": "geomean",
+        "median_speed_kmh": 3.7806,
+        "mean_speed_kmh": 4.0178,
+        "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+        "usable_measurement_count": 201
+      },
+      "plot_uri": "runs/speed/SPEED-EXP-005A-bbox-geometry-auto/plots/video_1_speed_time_plot.png",
+      "tracking_wall_time_s": 8.905265
+    },
+    {
+      "video": "video_2.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "selected_raw_track_id": 1,
+      "expected_raw_track_id": 1,
+      "selection_method": "event_track_id_match",
+      "frame_count": 457,
+      "fps": 50.0,
+      "resolution": "3840x2160",
+      "all_track_observation_counts": {
+        "1": 341,
+        "4": 237,
+        "7": 1,
+        "8": 1
+      },
+      "bbox_geometry_candidate": {
+        "source": "bbox_geometry_auto_v0",
+        "speed_mode": "approximate_candidate",
+        "estimated_kmh": 2.487242,
+        "speed_range_kmh": [
+          1.446251,
+          3.782829
+        ],
+        "mean_speed_kmh": 4.577093,
+        "p95_speed_kmh": 11.880035,
+        "raw_median_speed_kmh": 2.46097,
+        "confidence": 0.6342,
+        "quality_flags": [
+          "track_long",
+          "bbox_height_sufficient",
+          "speed_candidate_available"
+        ],
+        "warning_flags": [
+          "approximate_monocular_speed",
+          "auto_scale_approximation",
+          "not_for_legal_enforcement",
+          "speed_candidate_jitter_high",
+          "invalid_segments_filtered"
+        ],
+        "failure_flags": [],
+        "assumptions": {
+          "horizontal_fov_deg": 70.0,
+          "class_dimension_prior": {
+            "height": 1.55,
+            "width": 1.8,
+            "length": 4.5
+          },
+          "uses_measured_road_reference": false,
+          "uses_manual_homography": false
+        },
+        "diagnostics": {
+          "observation_count": 341,
+          "usable_segment_count": 340,
+          "median_bbox_height_px": 1163.882263,
+          "median_depth_m": 3.439564,
+          "speed_cv": 1.941318,
+          "invalid_segment_reasons": {
+            "bbox_height_jump": 3,
+            "speed_outlier_gate": 1
+          }
+        }
+      },
+      "plate_scale_comparison": {
+        "source_experiment": "SPEED-EXP-002",
+        "source_variant": "geomean",
+        "median_speed_kmh": 3.8768,
+        "mean_speed_kmh": 4.2688,
+        "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+        "usable_measurement_count": 190
+      },
+      "plot_uri": "runs/speed/SPEED-EXP-005A-bbox-geometry-auto/plots/video_2_speed_time_plot.png",
+      "tracking_wall_time_s": 8.92953
+    },
+    {
+      "video": "video_3.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "selected_raw_track_id": 2,
+      "expected_raw_track_id": 2,
+      "selection_method": "event_track_id_match",
+      "frame_count": 383,
+      "fps": 50.0,
+      "resolution": "3840x2160",
+      "all_track_observation_counts": {
+        "1": 17,
+        "2": 285,
+        "3": 6,
+        "5": 18,
+        "7": 1,
+        "8": 22,
+        "12": 7,
+        "15": 7
+      },
+      "bbox_geometry_candidate": {
+        "source": "bbox_geometry_auto_v0",
+        "speed_mode": "approximate_candidate",
+        "estimated_kmh": 11.514959,
+        "speed_range_kmh": [
+          8.118246,
+          17.722692
+        ],
+        "mean_speed_kmh": 13.812421,
+        "p95_speed_kmh": 29.022565,
+        "raw_median_speed_kmh": 10.761706,
+        "confidence": 0.72,
+        "quality_flags": [
+          "track_long",
+          "bbox_height_sufficient",
+          "speed_candidate_available"
+        ],
+        "warning_flags": [
+          "approximate_monocular_speed",
+          "auto_scale_approximation",
+          "not_for_legal_enforcement",
+          "invalid_segments_filtered"
+        ],
+        "failure_flags": [],
+        "assumptions": {
+          "horizontal_fov_deg": 70.0,
+          "class_dimension_prior": {
+            "height": 1.55,
+            "width": 1.8,
+            "length": 4.5
+          },
+          "uses_measured_road_reference": false,
+          "uses_manual_homography": false
+        },
+        "diagnostics": {
+          "observation_count": 285,
+          "usable_segment_count": 284,
+          "median_bbox_height_px": 687.07196,
+          "median_depth_m": 6.066076,
+          "speed_cv": 0.720068,
+          "invalid_segment_reasons": {
+            "bbox_height_jump": 1
+          }
+        }
+      },
+      "plate_scale_comparison": {
+        "source_experiment": "SPEED-EXP-002",
+        "source_variant": "geomean",
+        "median_speed_kmh": 12.8163,
+        "mean_speed_kmh": 15.9842,
+        "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+        "usable_measurement_count": 178
+      },
+      "plot_uri": "runs/speed/SPEED-EXP-005A-bbox-geometry-auto/plots/video_3_speed_time_plot.png",
+      "tracking_wall_time_s": 6.665332
+    }
+  ],
+  "limitations": [
+    "No measured road reference points are used.",
+    "Vehicle dimensions and camera FOV are approximate priors.",
+    "Output is an approximate candidate, not legal/final speed."
+  ]
+}

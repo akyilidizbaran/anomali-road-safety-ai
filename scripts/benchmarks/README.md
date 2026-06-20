@@ -142,6 +142,35 @@ Bu script **mutlak km/s üretmez**. En az dört ölçülü yol düzlemi referans
 `image_points_px` ve `world_points_m` olarak girilmeden sonraki 004C homografi doğrulama
 adımına geçilmemelidir.
 
+## `run_speed_005a_bbox_geometry_candidate.py`
+
+`SPEED-EXP-005A` bbox geometry automatic speed candidate script'idir. Manuel yol
+referans noktası gerektirmez; hedef track için full per-frame bbox timeline çıkarır,
+varsayılan araç fiziksel boyutu ve FOV prior ile yaklaşık km/s adayı üretir.
+
+Varsayılan koşu:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/run_speed_005a_bbox_geometry_candidate.py
+```
+
+Varsayılan input:
+
+* `models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed004b.json`
+* `Test/video_1.mp4`, `Test/video_2.mp4`, `Test/video_3.mp4`
+* Plate karşılaştırması: `models/benchmarks/artifacts/speed/SPEED-EXP-002-plate-bbox-xyz/speed_exp_002_plate_bbox_xyz_summary.json`
+
+Üretilen çıktılar:
+
+* Summary JSON: `models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_summary.json`
+* Timeseries CSV: `models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_timeseries.csv`
+* Grafikler: `runs/speed/SPEED-EXP-005A-bbox-geometry-auto/plots/`
+* Rapor: `testing/reports/speed_exp_005a_bbox_geometry_auto_candidate.md`
+
+Bu script de hukuki/final hız ölçümü değildir. `estimated_kmh` alanı yalnız
+`speed_mode=approximate_candidate` olarak yorumlanmalıdır. Bbox jump/outlier segmentleri
+otomatik filtrelenir; düşük güvenli sonuçlarda `warning_flags` ve `failure_flags` okunmalıdır.
+
 ## `run_plate_detection_smoke.py`
 
 `POCR-EXP-001` plaka tespit smoke test'i. `run_tracking_baseline.py` ile aynı mantıkta çalışır:
