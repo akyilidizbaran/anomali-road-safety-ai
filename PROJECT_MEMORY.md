@@ -2,8 +2,8 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Hız modülü `SPEED-EXP-006B` ile mevcut faz için kapatıldı; FTR ana teslim hattına dönüyoruz.
-* Son değişiklik neydi? `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab_healthfinished.ipynb` incelendi; 13 VS13 araç / 156 video leave-one-vehicle-out koşusu hatasız tamamlandı.
+* Şu an ne yapıyoruz? Hız modülü bu faz için kilitlendi; FTR ana teslim hattına dönüyoruz.
+* Son değişiklik neydi? `speed_phase_lock_2026_06_20.md` eklendi; 006/006B benchmark ve 005A/006B demo önce-sonra tabloları kilit kararıyla birlikte kaydedildi.
 * Bir sonraki net adım ne? FTR `results.json` adapter/validator ve root Docker inference skeleton kurmak.
 
 ## 1) Proje Amacı ve Kapsam
@@ -218,6 +218,7 @@
 * 2026-06-20 — Karar: `SPEED-EXP-006B` manifest split bug'i düzeltildi. | Gerekçe: 006B paket sözlüklerinde sabit `split` yok; değerlendirme Cell 10'da leave-one-vehicle-out ile `vehicle` üzerinden dinamik yapılır. Outcrashed koşuda Cell 6 hâlâ `meta['split']` beklediği için `KeyError: 'split'` verdi. | Etki: Manifest artık `split='loo_pool'` ve `loo_group=vehicle` yazar; 006B çıktı klasörü de 006 ile karışmaması için `SPEED-EXP-006B-VS13-wide-subset-calibration` olarak ayrıldı. | Alternatifler: Paketlere manuel train/val/test split eklemek; LOO hedefiyle uyumsuz olduğu için reddedildi.
 * 2026-06-20 — Karar: `SPEED-EXP-006B` mevcut hız fazı için başarılı kapanış kabul edilecek. | Gerekçe: 13 VS13 araç paketinden 156 video leave-one-vehicle-out CV ile işlendi; en iyi `huber_features` sonucu MAE `2.7088 km/h`, RMSE `3.4750 km/h`, median AE `2.1109 km/h`, P90 AE `5.9034 km/h`, mean relative error `4.0835%` verdi. | Etki: Hız raporda `dataset-calibrated approximate speed candidate` ve event/evidence'da destek sinyali olarak anlatılabilir; FTR `results.json` hız alanı istemediği için Docker/FTR ana işlerini artık bloklamaz. | Alternatifler: `SPEED-EXP-006C` ile segment selector araştırmasına devam etmek; yalnız zaman kalırsa opsiyonel.
 * 2026-06-20 — Karar: `SPEED-EXP-006B` demo transferi 3 lokal videoda yalnız smoke/trend testi olarak yorumlanacak. | Gerekçe: 006B output notebook'u final `huber_features` sklearn artifact'i export etmedi; lokal test 006B best geometry parametrelerini 005A target-track timeseries'e uyguladı. Sonuçlar `video_1=3.53`, `video_2=3.20`, `video_3=16.23 km/h` ve aynı düşük/daha hızlı sıralamayı korudu. | Etki: `speed_exp_006b_demo_transfer` raporu, summary JSON ve timeseries CSV eklendi; aktif Colab notebook'a gelecekte tam model inference için `Cell 10B` `.joblib` export hücresi eklendi. | Alternatifler: Hemen tam Huber model inference yapmak; model artifact'i olmadığı için yeniden Colab export gerektirir.
+* 2026-06-20 — Karar: Hız modülü bu faz için kilitlendi. | Gerekçe: VS13 006B geniş subset sonucu raporlanabilir düzeyde; lokal demo transferi trendi koruyor; ground-truth olmayan 3 videoda daha fazla tuning gerçek doğruluk kanıtı üretmez. | Etki: `speed_phase_lock_2026_06_20.md` eklendi; hız çıktısı `dataset_calibrated_approximate_candidate` / `support evidence` olarak kalacak ve FTR `results.json` içine yazılmayacak. | Alternatifler: 006C segment selector veya yeni dataset aramak; FTR ana teslim riskini artırdığı için future scope.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -318,6 +319,7 @@
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` split crash düzeltildi. | Sonuç: Cell 6 manifest builder sabit split beklemiyor; `loo_pool` + `loo_group` alanlarıyla sonraki LOO kalibrasyon hücresine uyumlu hale getirildi.
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` healthfinished koşusu incelendi ve hız fazı kapatıldı. | Sonuç: 13 araç / 156 video LOO CV sonucunda en iyi `huber_features` modeli MAE `2.7088 km/h`, RMSE `3.4750 km/h` verdi; hız artık FTR'yi bloklamayan approximate/support evidence katmanı olarak konumlandı.
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` demo transfer smoke test tamamlandı. | Sonuç: 3 lokal demo videoda 006B best geometry parametreleriyle trend grafikleri üretildi; video_1/video_2 düşük hız bandında, video_3 daha hızlı bandında kaldı.
+* 2026-06-20 — Milestone: Hız fazı kilitlendi. | Sonuç: Kilit raporu, önce/sonra tabloları ve ana hız dokümanı güncellendi; sıradaki ana iş FTR adapter/validator + Docker skeleton.
 
 ## 8) Yapılanlar
 
@@ -492,6 +494,7 @@
 * [x] `SPEED-EXP-006B` Cell 6 `KeyError: 'split'` crash'ini düzelt.
 * [x] `SPEED-EXP-006B` healthfinished çıktısını incele; LOO MAE/RMSE ve karar raporunu kaydet.
 * [x] `SPEED-EXP-006B` best geometry parametrelerini 3 lokal demo videoya uygula ve grafik/rapor üret.
+* [x] Hız modülünü bu faz için kilitle ve önce/sonra çıktı tablolarını Markdown olarak kaydet.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.

@@ -10,6 +10,34 @@ Hız modülü bundan sonra iki amaçla korunur:
 1. `slalom` gibi hareket tabanlı sürücü/araç davranışı etiketlerine destek sinyali üretmek.
 2. Proje raporunda risk/evidence zenginleştirme ve araştırma katkısı olarak anlatılmak.
 
+## 2026-06-20 Kilit Kararı
+
+Hız modülü bu faz için kilitlenmiştir.
+
+Kilitlenen ifade:
+
+```text
+speed_mode = dataset_calibrated_approximate_candidate
+usage = support/evidence signal
+ftr_results_json = no speed field
+```
+
+Kararın dayanağı:
+
+* `SPEED-EXP-006B` VS13 geniş subset koşusu 13 araç / 156 video ile tamamlandı.
+* En iyi `huber_features` sonucu MAE `2.7088 km/h`, RMSE `3.4750 km/h` verdi.
+* Lokal 3 demo video üzerinde 006B best-parameter transfer testi trendi korudu:
+  * `video_1`: `2.64 -> 3.53 km/h`, düşük hız bandı.
+  * `video_2`: `2.33 -> 3.20 km/h`, düşük hız bandı.
+  * `video_3`: `15.06 -> 16.23 km/h`, daha hızlı video.
+* Ground-truth hız olmayan lokal videolarda daha fazla tuning gerçek doğruluğu kanıtlamaz.
+
+Kilit raporu:
+
+```text
+testing/reports/speed_phase_lock_2026_06_20.md
+```
+
 Mevcut `SPEED-EXP-005A` çizgi grafiklerinde raw ve moving-average hız sinyalleri bbox jitter,
 kadrajdan çıkış ve monoküler ölçek belirsizliği nedeniyle gürültülüdür. Bu durum araç/plaka
 pipeline'ının yanlış olduğu anlamına gelmez; yalnızca kalibrasyonsuz bbox-geometry hız adayının

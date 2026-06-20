@@ -9,3 +9,4 @@ Test raporları ve final rapora aktarılacak küçük özetler burada tutulabili
 * `vd_exp_002_dark_video_smoke_test_summary.md`: Smoke test çalıştırılınca üretilecek sonuç raporu.
 * `speed_exp_006b_wide_subset_calibration_review.md`: VS13 13 araç / 156 video wide-subset hız kalibrasyonu sağlık ve karar özeti.
 * `speed_exp_006b_demo_transfer.md`: 006B best geometry parametrelerinin 3 lokal demo videoya transfer smoke-test özeti.
+* `speed_phase_lock_2026_06_20.md`: Hız modülünün bu faz için kilitlenme kararı ve önce/sonra çıktı tabloları.
