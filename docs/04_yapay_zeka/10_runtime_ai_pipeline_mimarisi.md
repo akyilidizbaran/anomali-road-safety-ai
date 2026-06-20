@@ -6,12 +6,31 @@ Runtime AI pipeline, mobil kameradan gelen canlı frame verisini uçtan uca işl
 
 Bu pipeline tek bir monolitik model olarak tasarlanmaz. Ana omurga araç tespiti, takip ve hedef araç seçimi üzerine kurulur. Ağır uzman modeller yalnız gerektiğinde, riskli/hedef araç veya olay penceresi üzerinde çalışır.
 
+## FTR Submission Runtime
+
+FTR aşaması için runtime pipeline'ın ilk teslim edilecek alt kümesi Docker içinde çalışan
+offline video inference hattıdır:
+
+```text
+/app/data/input/video.mp4
+  -> frame sampling/preprocessing
+  -> vehicle/plate/color/type/action/object/passenger experts
+  -> FTR output adapter
+  -> /app/data/output/results.json
+```
+
+Bu FTR hattı canlı mobil/5G demo hattından ayrıdır. Canlı demo mimarisi korunur; ancak
+hakem otomatik değerlendirmesi için öncelikli doğrulama `results.json` schema uyumudur.
+
+FTR output contract: `architecture/contracts/ftr_results_output_contract.md`.
+
 Sistem şu sınırla anlatılmalıdır:
 
 * Sistem karar destek ve erken uyarı mimarisidir.
 * Otomatik ceza veya hukuki yaptırım sistemi değildir.
 * Model çıktıları risk skoru, güven skoru, karar gerekçesi ve evidence package üretmek için kullanılır.
 * Uygulama iddiası ile mimari/final kapsam iddiası ayrı tutulur.
+* FTR submission çıktısı iç event/evidence formatı değil, resmi `arac_bilgisi` + `tespitler` JSON formatıdır.
 
 ## Live Frame Input and Metadata
 
@@ -100,7 +119,9 @@ Neden kök model?
 * Frame ID.
 * Model version.
 
-MVP’de araç tespiti tüm araçları hafif şekilde bulmalıdır. Ağır uzman analizler tüm araçlar için çalıştırılmaz.
+FTR dokümanı test videolarında aynı anda tek ana araç bulunacağını belirtir. Bu nedenle submission
+hattında araç tespiti ve tracking, ana aracı kararlı seçmek için kullanılır; çoklu araç desteği
+geniş mimaride korunur ama ilk FTR contract için ana hedef tek araç özetidir.
 
 ## Vehicle Tracking
 
@@ -181,6 +202,9 @@ Tetikleyici örnekleri:
 
 Critical mode’da yalnız ilgili uzman modeller çağrılır ve event fusion yapılır.
 
+FTR submission modunda critical/normal mode ayrımı hakem JSON'una doğrudan yazılmaz.
+Bu ayrım iç routing için kullanılabilir; dışarıya yalnız izinli FTR etiketleri çıkar.
+
 ## Expert Model Routing
 
 Expert routing, hangi uzman modelin ne zaman çalışacağını belirleyen context-gated policy katmanıdır.
@@ -218,6 +242,10 @@ Plate expert, hedef araç ROI içinde plaka bölgesini bulur ve OCR sonucunu ür
 
 * Target vehicle stable olmalı.
 * Plate visibility yeterli veya kritik olay için gerekli olmalı.
+
+FTR adapter çıktısı için plaka metni Türkiye plaka regex'ine göre normalize edilmeli,
+Türkçe karakter içermemeli ve mümkünse birleşik formatta (`34ABC123`) yazılmalıdır.
+Low-confidence OCR sonucu doğrudan kesin plaka gibi taşınmamalıdır.
 * Görüntü kalitesi çok düşükse QoD candidate olabilir.
 
 Çıktılar:

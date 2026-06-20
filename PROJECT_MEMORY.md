@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `SPEED-EXP-005A` bbox geometry auto speed candidate moving-average pik bastırma ile güncellendi.
-* Son değişiklik neydi? Raw segment, rolling median ve moving average hız çizgileri üretildi; ana `estimated_kmh` moving-average mean oldu ve terminal bbox shrink gate eklendi.
-* Bir sonraki net adım ne? `SPEED-EXP-005A` grafiklerini manuel inceleyip FOV/prior sensitivity veya `SPEED-EXP-005B` FARSEC-lite depth adımına karar vermek.
+* Şu an ne yapıyoruz? FTR teslim dokümanına göre ana hedefi Docker tabanlı `results.json` submission paketine çeviriyoruz.
+* Son değişiklik neydi? FTR PDF incelendi; `arac_bilgisi` + `tespitler` output contract, uyum matrisi, gereksinimler ve roadmap güncellendi.
+* Bir sonraki net adım ne? FTR output adapter/validator ve root Docker submission skeleton (`/app/data/input/video.mp4` -> `/app/data/output/results.json`) oluşturmak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -17,6 +17,10 @@
 * Sistem karar destek sistemi olarak anlatılmalı; ceza veya hukuki hüküm sistemi olarak anlatılmamalı.
 * QoD seçici kullanılmalı; yalnız karar güveni veya kanıt kalitesi artacaksa aday/aktif olmalı.
 * Hız için kalibrasyon yoksa mutlak km/s yerine göreli hız/risk skoru anlatılmalı.
+* FTR otomatik değerlendirme çıktısı rich event/evidence JSON değil, resmi `results.json` formatıdır: `video_id`, `arac_bilgisi`, `tespitler`.
+* FTR etiketleri ASCII-safe, küçük harfli ve resmi dokümandaki değerlerle birebir aynı olmalıdır.
+* FTR submission root Dockerfile ile çalışmalı; `/app/data/input/video.mp4` okumalı ve `/app/data/output/results.json` yazmalıdır.
+* Hız FTR JSON şemasında zorunlu alan değildir; mevcut hız grafikleri araştırma/destek sinyali olarak tutulmalı, final mutlak km/s iddiası kurulmamalıdır.
 * Cabin risk yalnız görünürlük yeterliyse çalışmalı; görünürlük yetersizse “analiz güvenilir değil” çıktısı verilmeli.
 * Evidence package içinde event ID, timestamp, track ID, bbox, confidence, model version, QoD status ve karar gerekçesi bulunmalı.
 * LLM karar verici değil, structured event JSON’u açıklayan katman olarak konumlandırılmalı.
@@ -204,6 +208,8 @@
 * 2026-06-20 — Karar: Hız modülü manuel yol referans noktası bekleyen homografi ana yolundan çıkarılıp otomatik/yaklaşık monocular speed candidate yoluna yeniden tasarlandı. | Gerekçe: Demo/saha ortamında ölçülü yol noktaları kolay sağlanmayacak; proje otomatik çalışan karar destek hattı hedefliyor. | Etki: Aktif uygulama sırası `SPEED-EXP-005A` Naver/Revaud bbox geometry, `SPEED-EXP-005B` FARSEC-lite depth, `SPEED-EXP-005C` plate-scale v2 fallback ve `SPEED-EXP-005D` if-not-then-do fusion oldu; `SPEED-EXP-004C` manuel homografi opsiyonel doğrulama/fallback olarak kaldı. | Alternatifler: Manuel homografiyi ana yol yapmak; kullanıcı hedefiyle uyumsuz olduğu için reddedildi.
 * 2026-06-20 — Karar: `SPEED-EXP-005A` ilk uygulanabilir sürüm, Naver/Revaud fikrine giden ara adım olarak bbox geometry auto v0 şeklinde kurulacak. | Gerekçe: Tam Naver/cctv adaptasyonu öncesi mevcut YOLO11n + ByteTrack event hattından full target timeline ve otomatik km/s adayı üretmek gerekiyor. | Etki: `run_speed_005a_bbox_geometry_candidate.py` full tracking timeline, bbox geometry speed candidate, plate-scale karşılaştırması ve zaman/hız grafikleri üretir. | Alternatifler: Doğrudan FARSEC-lite depth veya naver/cctv repo adaptasyonu; önce veri contract ve baseline davranışı netleşsin diye ertelendi.
 * 2026-06-20 — Karar: `SPEED-EXP-005A` ana hız adayı pikli raw segmentlerden değil moving-average mean değerinden raporlanacak. | Gerekçe: Raw segmentlerde bbox jitter ve kadrajdan çıkış sırasında hız pikleri oluşuyor; çizgi grafiklerde trend okunabilirliği ve event/evidence özet değeri için moving average daha uygun. | Etki: Timeseries CSV'ye `segment_speed_kmh_moving_avg` eklendi; rapor ve summary `moving_average_speed_kmh`, `rolling_median_speed_kmh`, `raw_mean_speed_kmh` alanlarını ayrı tutuyor. Terminal bbox bozulması için `post_peak_bbox_shrink` gate'i kullanılıyor. | Alternatifler: Raw mean veya rolling median'ı ana değer yapmak; raw piklerden, rolling median'ın ise kısa lokal pencere davranışından dolayı ana özet için ertelendi.
+* 2026-06-20 — Karar: FTR asamasinda ana teslim hedefi resmi Docker + `results.json` contract'i olacak. | Gerekçe: Yeni FTR teslim dokümani otomatik degerlendirme icin `/app/data/input/video.mp4` ve `/app/data/output/results.json` path'lerini, `arac_bilgisi`/`tespitler` semasini ve exact ASCII label setini zorunlu kiliyor. | Etki: `architecture/contracts/ftr_results_output_contract.md`, `reports/PCR_FTR/ftr_delivery_alignment_2026_06_20.md`, `project/requirements/03_ftr_submission_requirements.md` eklendi; README/ROADMAP/STATUS/AI docs FTR submission onceligine cekildi. | Alternatifler: Rich event/evidence JSON'u hakem ciktisi yapmak; resmi contract ile uyumsuz oldugu icin reddedildi.
+* 2026-06-20 — Karar: Hız pipeline FTR submission icin ana puanlanan modul olmayacak. | Gerekçe: FTR `results.json` semasinda hiz alani yok; mevcut 005A grafikleri bbox geometry ve kadraj cikisi nedeniyle gurultulu. | Etki: Speed calismasi `slalom` destek sinyali ve rapor/evidence arastirma katmani olarak korunur; oncelik arac tipi, plaka, renk, surucu eylemi, nesne ve yolcu etiketlerine kayar. | Alternatifler: Hiz modelini ana gelistirme hedefi yapmak; FTR teslim riskini artirdigi icin reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -295,6 +301,7 @@
 * 2026-06-20 — Milestone: Automatic monocular speed redesign planı tamamlandı. | Sonuç: `research/05_speed_estimation/automatic_speed_estimation_redesign_2026_06_20.md` eklendi; speed README ve implementation plan yeni otomatik candidate sırasına referans verecek şekilde güncellendi.
 * 2026-06-20 — Milestone: `SPEED-EXP-005A` bbox geometry auto candidate ilk lokal koşusu tamamlandı. | Sonuç: 967 satırlı target timeseries CSV, 3 PNG zaman/hız grafiği, summary JSON ve rapor üretildi; `video_1/video_2` yaklaşık `2.7/2.5 km/h`, `video_3` yaklaşık `11.5 km/h` adayı verdi.
 * 2026-06-20 — Milestone: `SPEED-EXP-005A` moving-average hız grafikleri tamamlandı. | Sonuç: Raw segment, rolling median ve moving average çizgileri aynı PNG grafiklerde gösteriliyor; terminal bbox shrink gate sonrası moving-average mean adayları `video_1=2.64 km/h`, `video_2=2.33 km/h`, `video_3=15.06 km/h`.
+* 2026-06-20 — Milestone: FTR teslim dokumani repo kapsamiyla hizalandi. | Sonuç: FTR uyum matrisi, resmi output contract, submission requirements ve decision dosyasi eklendi; README, ROADMAP, STATUS, AI pipeline ve speed dokumanlari FTR onceligine gore guncellendi.
 
 ## 8) Yapılanlar
 
@@ -461,10 +468,13 @@
 * [x] `SPEED-EXP-005A` Naver/Revaud tarzı bbox geometry auto candidate adaptasyonunu başlat.
 * [x] `SPEED-EXP-005A` için full target track timeseries CSV ve zaman/hız PNG grafikleri üret.
 * [x] `SPEED-EXP-005A` moving-average speed çizgilerini ve pik bastırmalı ortalama hesabını ekle.
-* [ ] `SPEED-EXP-005A` grafiklerini manuel incele ve FOV/prior sensitivity sweep gerekip gerekmediğine karar ver.
-* [ ] `SPEED-EXP-005B` FARSEC-lite depth + track speed candidate prototipini başlat.
-* [ ] `SPEED-EXP-005C` plate-scale v2 fallback/sanity-check üret.
-* [ ] `SPEED-EXP-005D` if-not-then-do speed fusion script'ini yaz.
+* [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
+* [ ] FTR `results.json` adapter ve validator yaz.
+* [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
+* [ ] Vehicle info pipeline'a renk tahmini ve FTR tip mapping ekle.
+* [ ] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
+* [ ] `SPEED-EXP-005A` grafiklerini rapor/evidence baglaminda manuel incele; FTR ana yoluna bloklayici yapma.
+* [ ] `SPEED-EXP-005B/005C/005D` calismalarini FTR ana modullerinden sonra destek/fallback olarak degerlendir.
 * [ ] `SPEED-EXP-004C` aktif homografi profilini manuel ölçüm noktalarıyla doldur ve opsiyonel reprojection validation + absolute-candidate run'ı çalıştır.
 * [ ] Risk/evidence fusion JSON alanlarını aktif detector + tracking + plate/OCR sonuçlarıyla birleştir.
 * [ ] Cabin/driver-object kapsamı için pretrained baseline araştırma/notebook hazırlığına geç.

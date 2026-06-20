@@ -28,6 +28,7 @@ Kaynaklar:
 
 Kaynaklar:
 
+* `reports/PCR_FTR/ftr_delivery_alignment_2026_06_20.md`
 * `docs/03_sistem_mimarisi/01_uctan_uca_mimari.md`
 * `docs/03_sistem_mimarisi/02_normal_kritik_mod.md`
 * `docs/03_sistem_mimarisi/05_auth_normal_mode_flow.md`
@@ -57,6 +58,8 @@ Kaynaklar:
 
 Kaynaklar:
 
+* `architecture/contracts/ftr_results_output_contract.md`
+* `project/requirements/03_ftr_submission_requirements.md`
 * `docs/01_resmi_raporlar/PCR_FTR/03_3_cozum_detaylari.md`
 * `docs/04_yapay_zeka/08_model_gelistirme_yol_haritasi.md`
 * `docs/04_yapay_zeka/11_model_frekans_latency_budget.md`

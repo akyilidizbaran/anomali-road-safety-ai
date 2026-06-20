@@ -4,6 +4,7 @@ Burada Final Tasarım Raporu için yazılacak nihai veya ara taslaklar tutulur.
 
 Önerilen dosyalar:
 
+* `ftr_delivery_alignment_2026_06_20.md`
 * `00_kapak_bilgileri.md`
 * `01_proje_ozeti_taslak.md`
 * `02_veriseti_taslak.md`

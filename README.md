@@ -6,7 +6,22 @@ Bu repo, resmi PDR/ÖTR ve PCR/FTR rapor şablonları ile proje kapsam metnine g
 
 ## Current Status
 
-Bu repo şu anda **planning, documentation, research scaffolding ve technical contract definition** aşamasındadır.
+Bu repo şu anda **FTR teslim sözleşmesine hizalanmış model geliştirme ve submission hazırlığı** aşamasındadır.
+
+2026-06-13 tarihli FTR teslim dokümanına göre bundan sonraki ana hedef, tek video girdisini
+Docker içinde işleyip resmi formattaki `results.json` çıktısını üretmektir:
+
+```text
+/app/data/input/video.mp4 -> /app/data/output/results.json
+```
+
+FTR otomatik değerlendirme çıktısının ana contract dosyası:
+
+* `architecture/contracts/ftr_results_output_contract.md`
+
+FTR uyum matrisi:
+
+* `reports/PCR_FTR/ftr_delivery_alignment_2026_06_20.md`
 
 Hazır olanlar:
 
@@ -16,21 +31,28 @@ Hazır olanlar:
 * Number Verification, normal mod, QoD ve evidence akışı.
 * Veri/model/test strateji taslakları.
 * Contract, rapor ve metrik şablonları.
+* Araç tespiti, tracking, plaka tespiti ve CCT-XS OCR için baseline/fine-tune deney kayıtları.
+* FTR `results.json` contract ve teslim uyum matrisi.
 
 Henüz uygulanmayanlar:
 
-* Android canlı kamera uygulaması.
-* Backend inference server.
-* Gerçek zamanlı streaming pipeline.
-* Fine-tuned model ağırlıkları.
-* Evidence storage servisi.
-* Gerçek 5G/QoD ve Number Verification API entegrasyonu.
+* Root Dockerfile ve otomatik `/app/data/input/video.mp4` inference entrypoint.
+* FTR `results.json` adapter/validator.
+* Araç renk tahmini.
+* FTR etiket setine birebir uyan araç tipi mapping.
+* Sürücü eylemi, `teknocan`/`bilgisayar` nesne ve yolcu tespit pipeline'ı.
+* Tesla T4 / 10 dakika / 8 GB image limitleri altında runtime doğrulaması.
 
 Detaylı durum için `STATUS.md`, geliştirme sırası için `ROADMAP.md` dosyasına bakılmalıdır.
 
 ## Proje Konumu
 
-Anomali Road Safety AI; kullanıcı adı/şifre ve Number Verification doğrulaması sonrası telefon kamerasından alınan canlı yol görüntüsünü edge destekli yapay zeka çıkarım hattında analiz ederek araç, plaka, hız, şerit, sahne/görüş, genel yol durumu, araç dışı kullanıcı/yaya durumu ve koşullu cabin risk sinyallerini değerlendiren bir karar destek sistemi olarak tasarlanır.
+Anomali Road Safety AI; kullanıcı adı/şifre ve Number Verification doğrulaması sonrası telefon kamerasından alınan canlı yol görüntüsünü edge destekli yapay zeka çıkarım hattında analiz eden geniş bir karar destek sistemi olarak tasarlanır.
+
+Ancak FTR değerlendirme hedefi bu geniş mimarinin Docker tabanlı, tek video girdili ve resmi JSON çıktılı alt kümesidir. FTR için üretilmesi gereken temel bilgiler:
+
+1. `arac_bilgisi`: `tip`, `plaka`, `renk`, `confidence_score`.
+2. `tespitler`: zaman bazlı `sofor_eylemi`, `nesneler`, `yolcular` etiketleri.
 
 Sistem hukuki karar veya otomatik ceza üretmez. Risk skoru, güven skoru, açıklama ve evidence package üretir.
 
@@ -53,39 +75,34 @@ Araç tespiti için ilk ölçülebilir baseline **YOLO11n** olarak kaydedilmişt
 
 İlk yerel manuel test seti `Test/video_1-3.mp4` dark/low-light videolarıdır. Bu videolar eğitim verisi değildir ve Git'e eklenmez; yalnız VD-EXP-001 smoke/manual benchmark için kullanılır.
 
-## MVP Hedefi
+## FTR Teslim Hedefi
 
-İlk çalışan MVP şu kapsama odaklanır:
+İlk çalışan FTR teslim paketi şu kapsama odaklanır:
 
-1. Android canlı kamera preview.
-2. Edge frame streaming.
-3. Araç tespiti.
-4. Hedef araç takibi.
-5. Plaka tespiti/OCR.
-6. Hafif frame quality / ortam bağlamı.
-7. Evidence card generation.
-8. Temel system health ekranı.
+1. Root `Dockerfile`.
+2. `main.py` entrypoint.
+3. `/app/data/input/video.mp4` okuma.
+4. `/app/data/output/results.json` yazma.
+5. Araç tipi + plaka + renk özetleme.
+6. Sürücü eylemi, nesne ve yolcu tespitlerini saniye bazlı üretme.
+7. Tüm kategori ve etiketleri ASCII-safe, küçük harf ve resmi FTR listesiyle birebir uyumlu tutma.
+8. Tesla T4 üzerinde 10 dakika runtime limitine uygun inference.
 
-Şerit, hız kalibrasyonu, tam sahne/hava modeli, araç dışı kullanıcı, cabin risk ve gerçek QoD entegrasyonu kademeli olarak eklenecektir.
-
-Canlı frame hedefi 720p seviyesinde alınacak, model input boyutu preprocessing aşamasında seçilen modele göre resize edilecektir.
+Android canlı kamera, Number Verification, QoD, dashboard ve rich evidence katmanları proje
+mimarisinde korunur; fakat FTR otomatik değerlendirme için ikincil/future entegrasyon kapsamıdır.
 
 ## Tasarlanan Modül Sırası
 
-1. Araç tespiti
-2. Araç takibi ve hedef araç seçimi
-3. Plaka tespiti ve OCR
-4. Evidence package sistemi
-5. Sahne, hava, ışık ve görüş koşulu analizi
-6. Genel yol ve araç dışı kullanıcı/yaya durumu
-7. Context-gated model routing ve uzman model seçimi
-8. Şerit / road marking analizi
-9. Hız kestirimi
-10. Sürücü/yolcu ve araç içi risk analizi
-11. Risk skoru, kritik mod ve uzman model orkestrasyonu
-12. 5G QoD ve Number Verification adapterları
-13. LLM açıklama katmanı
-14. Test, metrik ve rapor kanıt sistemi
+1. FTR output adapter ve validator
+2. Docker submission paketi
+3. Araç tespiti, tracking ve tek ana araç seçimi
+4. Araç tipi mapping
+5. Plaka tespiti ve OCR normalization
+6. Araç rengi tahmini
+7. Sürücü eylemi / nesne / yolcu tespitleri
+8. `results.json` konsolidasyonu
+9. T4 runtime ve image boyutu optimizasyonu
+10. Rich evidence, QoD, Number Verification, dashboard ve LLM açıklama katmanı
 
 ## Klasörler
 

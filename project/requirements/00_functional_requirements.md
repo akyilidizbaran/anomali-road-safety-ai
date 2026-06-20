@@ -19,3 +19,18 @@ Riskli araç sinyali oluştuğunda kritik mod adayı üretilir ve QoD candidate/
 ## FR-005 Evidence Package
 
 Kritik olay için event JSON, karar gerekçesi, model versiyonları, bbox, confidence ve QoD durumu kaydedilir.
+
+## FR-006 FTR Results JSON
+
+Sistem FTR submission modunda `/app/data/input/video.mp4` dosyasını okuyarak
+`/app/data/output/results.json` dosyasını resmi FTR contract'a uygun üretir.
+
+## FR-007 Vehicle Info Extraction
+
+Her video için tek ana araç özelinde `tip`, `plaka`, `renk` ve ortak `confidence_score`
+alanları üretilir.
+
+## FR-008 Timed Driver/Object/Passenger Detections
+
+Sürücü eylemi, nesne ve yolcu tespitleri zaman saniyesiyle birlikte `tespitler[]` listesine
+resmi FTR etiketleriyle yazılır.

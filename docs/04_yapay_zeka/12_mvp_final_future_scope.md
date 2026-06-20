@@ -4,7 +4,46 @@
 
 Projenin mimari kapsamı geniştir; ancak ilk çalışan MVP daha dar ve gerçekçi olmalıdır. Bu ayrım yapılmazsa repo ve rapor, henüz uygulanmamış modüller için fazla iddialı görünebilir.
 
-## A) Core MVP
+## A) FTR Core Submission
+
+FTR Core Submission, resmi değerlendirme sisteminin doğrudan çalıştıracağı Docker tabanlı
+çıkarım paketidir.
+
+Must include:
+
+1. **Docker runtime**
+   * Root `Dockerfile`.
+   * `nvidia/cuda:12.1.0-base-ubuntu22.04` base image.
+   * T4 GPU uyumlu inference.
+
+2. **Path contract**
+   * Input: `/app/data/input/video.mp4`.
+   * Output: `/app/data/output/results.json`.
+   * Model directory: `/app/models/`.
+
+3. **FTR JSON output**
+   * `video_id`.
+   * `arac_bilgisi`.
+   * `tespitler`.
+   * ASCII-safe exact labels.
+
+4. **Vehicle information**
+   * `tip`.
+   * `plaka`.
+   * `renk`.
+   * `confidence_score`.
+
+5. **Timed detections**
+   * `sofor_eylemi`.
+   * `nesneler`.
+   * `yolcular`.
+
+6. **Validation**
+   * JSON schema/contract validation.
+   * Runtime smoke test.
+   * 10 dakika ve 8 GB image limit kontrolü.
+
+## B) Internal Core MVP
 
 Core MVP, ilk çalışan uçtan uca AI hattıdır.
 
@@ -58,7 +97,7 @@ Must include:
    * Plate crop if available.
    * Risk reasons and confidence scores.
 
-## B) Final Architecture Scope
+## C) Final Architecture Scope
 
 Final architecture scope, rapor ve final demo için kademeli eklenecek modülleri içerir.
 
@@ -74,9 +113,10 @@ May include:
    * Lane risk.
 
 3. **Speed estimation**
-   * MVP'de relative speed / motion anomaly fallback.
-   * Final scope'ta calibrated homography-based km/h denemesi.
-   * Relative speed / motion anomaly fallback if calibration does not exist.
+   * FTR JSON'da doğrudan hız alanı yoktur.
+   * `slalom` veya risk/evidence destek sinyali olarak kullanılabilir.
+   * Kalibrasyonsuz bbox geometry grafikleri gürültülü olduğu için final km/s iddiası kurulmaz.
+   * Kalibrasyon veya güvenilir depth/fusion olmadan relative/motion anomaly fallback korunur.
 
 4. **Risk scoring**
    * Rule-based başlangıç.
@@ -98,7 +138,7 @@ May include:
    * Karar verici değil.
    * API/local/template fallback.
 
-## C) Future / Research Scope
+## D) Future / Research Scope
 
 Future scope, daha fazla veri, deney ve entegrasyon gerektiren araştırma alanlarıdır.
 

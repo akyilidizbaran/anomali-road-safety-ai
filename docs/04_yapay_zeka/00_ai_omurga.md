@@ -6,9 +6,28 @@ Proje tek bir modelle değil, görev bazlı uzman modellerle ilerlemelidir. Çü
 
 Runtime hattın detaylı uçtan uca açıklaması için `docs/04_yapay_zeka/10_runtime_ai_pipeline_mimarisi.md` ana referans kabul edilir.
 
+## FTR Teslim Önceliği
+
+2026-06-13 tarihli FTR teslim dokümanına göre otomatik değerlendirme için ana çıktı
+`/app/data/output/results.json` dosyasıdır. Bu dosya proje içi zengin event/evidence JSON'u
+değil, yarışma formatındaki konsolide sonuç dosyasıdır.
+
+Bu nedenle AI omurgasının FTR önceliği şudur:
+
+1. Tek ana araç için `arac_bilgisi.tip`.
+2. Tek ana araç için `arac_bilgisi.plaka`.
+3. Tek ana araç için `arac_bilgisi.renk`.
+4. Ortak `arac_bilgisi.confidence_score`.
+5. Zaman bazlı `tespitler[]`: `sofor_eylemi`, `nesneler`, `yolcular`.
+
+Detaylı output contract: `architecture/contracts/ftr_results_output_contract.md`.
+
 ## Model Geliştirme Önceliği
 
-İlk model geliştirme odağı araç tespitidir. Araç tespiti tamamlandıktan sonra araç takibi, hedef araç seçimi, plaka/OCR, evidence, sahne/görüş, şerit, hız ve cabin risk modülleri sırayla eklenecektir.
+İlk model geliştirme odağı araç tespiti olarak başlamıştır. FTR dokümanı sonrası sıradaki
+öncelik, mevcut araç/plaka omurgasını FTR `results.json` contract'ına bağlamak ve eksik
+FTR alanlarını tamamlamaktır: araç rengi, FTR araç tipi mapping, sürücü eylemleri,
+nesneler ve yolcu konumları.
 
 Eğitim ve deney ortamı Google Colab olacak. Başlangıç model ailesi araştırma sonrası seçilecek. Başarı, tek bir metrikle değil doğruluk, hız, latency, model boyutu ve sistem entegrasyonunu birlikte değerlendiren dengeli metrik paketiyle ölçülecektir.
 
@@ -16,16 +35,18 @@ Eğitimin ana yükü sıfırdan model eğitmek değildir. İnternet üzerinden e
 
 ## Pipeline
 
-1. Context-gated scene/visibility/road analysis.
-2. Vehicle detection.
-3. Multi-vehicle lightweight tracking.
-4. Target/risky vehicle selection.
-5. Risk pre-score.
-6. QoD candidate/request decision.
-7. Expert model selection.
-8. Expert inference on target vehicle ROI.
-9. Event fusion.
-10. Evidence package.
+1. Video input read: `/app/data/input/video.mp4`.
+2. Frame preprocessing and sampling.
+3. Vehicle detection.
+4. Tracking and single main vehicle selection.
+5. Vehicle info experts: type, plate/OCR, color.
+6. Timed detection experts: driver action, object, passenger.
+7. Internal event/evidence fusion if needed.
+8. FTR output adapter.
+9. `results.json` write: `/app/data/output/results.json`.
+
+QoD, Number Verification, dashboard ve rich evidence katmanları geniş proje mimarisinde
+korunur; fakat FTR otomatik değerlendirmesinde zorunlu alan değildir.
 
 Detaylı routing politikası için `docs/04_yapay_zeka/11_context_gated_model_routing.md` kullanılmalıdır.
 
@@ -55,3 +76,4 @@ Daha sonra öğrenilebilir risk modeli geliştirilebilir.
 | Lane | 10-15 FPS veya risk penceresi |
 | Cabin risk | Kritik ROI varsa |
 | Evidence | Olay bazlı |
+| FTR output adapter | Video sonunda |

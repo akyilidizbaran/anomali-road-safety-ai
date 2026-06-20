@@ -1,42 +1,45 @@
 # Roadmap
 
-## MVP Target
+## FTR Submission Target
 
-The first working MVP will focus on:
+The first working target is now the official FTR submission package:
 
-1. Android live camera preview.
-2. Edge frame streaming.
-3. Vehicle detection.
-4. Target vehicle tracking.
-5. Plate detection/OCR.
-6. Lightweight frame-quality / environment context metadata.
-7. Evidence card generation.
-8. Basic system health screen.
+1. Root-level `Dockerfile`.
+2. Automatic `main.py` entrypoint.
+3. Read `/app/data/input/video.mp4`.
+4. Write `/app/data/output/results.json`.
+5. Produce `arac_bilgisi.tip`, `arac_bilgisi.plaka`, `arac_bilgisi.renk`, `arac_bilgisi.confidence_score`.
+6. Produce timed `tespitler[]` entries for `sofor_eylemi`, `nesneler`, and `yolcular`.
+7. Keep every JSON key and label ASCII-safe, lower-case and exact-match with the FTR document.
+8. Run under Tesla T4, 4 vCPU, 16 GB RAM, 2 GB SHM, max 8 GB image and 10-minute runtime constraints.
 
-Lane analysis, calibrated speed estimation, full scene/weather modeling, external road users, cabin risk and real QoD integration will be added progressively.
-
-Runtime assumption: Android captures live 720p frames/stream, MacBook runs the local edge/backend inference server, and Colab is used later for model research/fine-tune. The active model phase is pretrained zero-fine-tune benchmarking.
+The wider Android/live edge/QoD/evidence architecture stays in the project, but it is no longer the
+first acceptance target for FTR scoring.
 
 ## Near-Term Technical Order
 
-1. Run pretrained zero-fine-tune challengers on `Test/video_1-3.mp4`: `VD-EXP-008` YOLO11s, `VD-EXP-009` YOLOv10n, `VD-EXP-010` YOLOv8n.
-2. Record manual review counts and qualitative notes for `VD-EXP-001`, `VD-EXP-008`, `VD-EXP-009` and `VD-EXP-010`.
-3. Select the first vehicle detector baseline using recall feel, bbox usability, class flicker, latency/FPS, evidence crop usability and license/export risk.
-4. Run `TRK-EXP-001` ByteTrack and `TRK-EXP-002` BoT-SORT ReID-off on top of the selected pretrained detector.
-5. Add track-level class voting, confidence smoothing and `track_stability`.
-6. Add single target / risk candidate selection and first event/evidence JSON generation.
-7. Add backend stub with health, stream and recent events endpoints.
-8. Connect mobile camera screen to backend stub.
+1. Implement FTR `results.json` schema validator.
+2. Implement `ftr_output_adapter` that maps internal model outputs to `arac_bilgisi` and `tespitler`.
+3. Add root Dockerfile, `main.py`, `src/predict.py`, `src/utils.py` submission skeleton.
+4. Wire existing vehicle detection/tracking + plate OCR into `arac_bilgisi.plaka`.
+5. Add vehicle type mapping to FTR labels: `sedan`, `suv`, `hatchback`, `pickup`, `minibus`, `panelvan`, `kamyon`.
+6. Add vehicle color model or strong ROI color heuristic for `renk`.
+7. Start cabin/action/object/passenger pipeline for FTR labels.
+8. Add `slalom` candidate from tracking/lateral motion, but only if confidence is defensible.
+9. Run local smoke test that writes a valid `results.json`.
+10. Run Docker smoke test and check image size/runtime.
 
 ## Deferred Model Training Backlog
 
-Fine-tune is intentionally deferred until the pretrained baseline and tracking/evidence pipeline are measurable.
+Fine-tune is only useful if it improves one of the required FTR outputs.
 
-1. Select BDD100K download mode in `notebooks/VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb`.
-2. Run BDD100K -> YOLO conversion.
-3. Train condition-aware general vehicle detector.
-4. Compare baseline vs fine-tuned delta.
-5. Start `night_low_light` specialist only after the general baseline and tracking pipeline justify it.
+1. Vehicle type classifier/mapping quality.
+2. Plate OCR robustness.
+3. Vehicle color classification.
+4. Cabin driver action labels.
+5. Object/passenger labels.
+
+Speed and homography experiments are now research/support signals, not the main FTR scoring path.
 
 ## Report Order
 
@@ -45,3 +48,4 @@ Fine-tune is intentionally deferred until the pretrained baseline and tracking/e
 3. AI module selection rationale.
 4. Dataset/license inventory.
 5. Test and evidence metric tables.
+6. FTR delivery contract compliance checklist.

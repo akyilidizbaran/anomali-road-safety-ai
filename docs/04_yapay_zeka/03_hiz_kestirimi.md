@@ -1,5 +1,20 @@
 # Hız Kestirimi
 
+## FTR Kapsam Notu
+
+2026-06-13 FTR teslim dokümanı otomatik değerlendirme `results.json` şemasında hız alanı
+istememektedir. Bu nedenle hız kestirimi FTR submission için zorunlu puanlanan çıktı değildir.
+
+Hız modülü bundan sonra iki amaçla korunur:
+
+1. `slalom` gibi hareket tabanlı sürücü/araç davranışı etiketlerine destek sinyali üretmek.
+2. Proje raporunda risk/evidence zenginleştirme ve araştırma katkısı olarak anlatılmak.
+
+Mevcut `SPEED-EXP-005A` çizgi grafiklerinde raw ve moving-average hız sinyalleri bbox jitter,
+kadrajdan çıkış ve monoküler ölçek belirsizliği nedeniyle gürültülüdür. Bu durum araç/plaka
+pipeline'ının yanlış olduğu anlamına gelmez; yalnızca kalibrasyonsuz bbox-geometry hız adayının
+tek başına final mutlak km/s olarak kullanılamayacağını gösterir.
+
 ## Kritik İlke
 
 Gerçek km/s tahmini yalnız kamera sabitlenirse ve referans mesafe biliniyorsa savunulabilir. Kalibrasyon yoksa sistem mutlak hız iddiası üretmemelidir.
