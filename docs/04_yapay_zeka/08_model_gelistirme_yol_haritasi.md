@@ -112,6 +112,12 @@ aday kabul edildiği için sıradaki çalışma sırası aşağıdaki gibi günc
 4. **Cabin / Driver-Object-Passenger baseline**
    * FTR'nin asıl eksik kısmı budur.
    * `sofor_eylemi`, `nesneler`, `yolcular` için pretrained/fine-tune seçenekleri araştırılır.
+   * 2026-06-20 itibarıyla `CABIN-EXP-012-runtime-foundation` ile araç/cabin ROI,
+     visibility gate ve torso ROI üretimi çalışır hale getirildi.
+   * Bu deney ihlal kararı üretmez; phone/smoking/seatbelt/yolcu specialist modelleri için
+     giriş contract'ını hazırlar.
+   * Bir sonraki aktif cabin işi `PHONE-EXP-003/004` phone specialist baseline/fine-tune
+     çalışmasıdır.
 5. **Speed / Motion Signal**
    * FTR'de doğrudan hız alanı yoktur.
    * Yalnız `slalom` ve rapor/evidence desteği için kullanılabilir.

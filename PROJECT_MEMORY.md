@@ -220,6 +220,7 @@
 * 2026-06-20 — Karar: `SPEED-EXP-006B` demo transferi 3 lokal videoda yalnız smoke/trend testi olarak yorumlanacak. | Gerekçe: 006B output notebook'u final `huber_features` sklearn artifact'i export etmedi; lokal test 006B best geometry parametrelerini 005A target-track timeseries'e uyguladı. Sonuçlar `video_1=3.53`, `video_2=3.20`, `video_3=16.23 km/h` ve aynı düşük/daha hızlı sıralamayı korudu. | Etki: `speed_exp_006b_demo_transfer` raporu, summary JSON ve timeseries CSV eklendi; aktif Colab notebook'a gelecekte tam model inference için `Cell 10B` `.joblib` export hücresi eklendi. | Alternatifler: Hemen tam Huber model inference yapmak; model artifact'i olmadığı için yeniden Colab export gerektirir.
 * 2026-06-20 — Karar: Hız modülü bu faz için kilitlendi. | Gerekçe: VS13 006B geniş subset sonucu raporlanabilir düzeyde; lokal demo transferi trendi koruyor; ground-truth olmayan 3 videoda daha fazla tuning gerçek doğruluk kanıtı üretmez. | Etki: `speed_phase_lock_2026_06_20.md` eklendi; hız çıktısı `dataset_calibrated_approximate_candidate` / `support evidence` olarak kalacak ve FTR `results.json` içine yazılmayacak. | Alternatifler: 006C segment selector veya yeni dataset aramak; FTR ana teslim riskini artırdığı için future scope.
 * 2026-06-20 — Karar: Hız kapanışında VS13 genel performans karşılaştırması, 3 lokal demo video sonuçlarından ayrı raporlanacak. | Gerekçe: Kullanıcı yalnız 3 örnek video değil, VS13 veri setindeki genel performans kıyasının da görünmesini istedi; lokal videolarda ground-truth hız yokken VS13 bilinen-hız benchmark'ı gerçek metrik kaynağıdır. | Etki: `speed_phase_lock_2026_06_20.md` ve `docs/04_yapay_zeka/03_hiz_kestirimi.md` içinde `SPEED-EXP-006`, `006 patch`, `006B linear_raw`, `006B ridge_features` ve kilit `006B huber_features` metrikleri ayrıştırıldı. | Alternatifler: Sadece 3 demo video tablosu ile kapanış yapmak; doğruluk iddiası için yetersiz olduğu için reddedildi.
+* 2026-06-20 — Karar: Cabin/driver hattı önce runtime foundation olarak kurulacak, doğrudan phone/smoking/seatbelt fine-tune ile başlanmayacak. | Gerekçe: `CABIN_DRIVER_FINETUNE_HANDOFF.md` referans verdiği script/artifactlerin çoğunu repo içinde taşımıyor; phone gibi küçük nesnelerde model başarısızlığı ile ROI/visibility hatasını ayırmak için önce cabin ROI, visibility, face/occupant ve torso ROI contract'ı çalışmalıdır. | Etki: `CABIN-EXP-012-runtime-foundation` scripti, summary JSON, enriched event skeleton, rapor ve cabin decision dokümanları eklendi. | Alternatifler: Direkt phone fine-tune başlatmak; ROI/visibility temeli ölçülmeden overfit riski taşıdığı için reddedildi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -322,6 +323,7 @@
 * 2026-06-20 — Milestone: `SPEED-EXP-006B` demo transfer smoke test tamamlandı. | Sonuç: 3 lokal demo videoda 006B best geometry parametreleriyle trend grafikleri üretildi; video_1/video_2 düşük hız bandında, video_3 daha hızlı bandında kaldı.
 * 2026-06-20 — Milestone: Hız fazı kilitlendi. | Sonuç: Kilit raporu, önce/sonra tabloları ve ana hız dokümanı güncellendi; sıradaki ana iş FTR adapter/validator + Docker skeleton.
 * 2026-06-20 — Milestone: VS13 genel performans karşılaştırması hız kapanışına eklendi. | Sonuç: 18 video/3 araç sanity check ile 156 video/13 araç leave-one-vehicle-out 006B sonucu yan yana raporlandı; kilit modelin genel benchmark dayanağı görünür hale getirildi.
+* 2026-06-20 — Milestone: `CABIN-EXP-012` runtime foundation tamamlandı. | Sonuç: 3 target event/video işlendi; araç/cabin ROI, visibility, face fallback, torso ROI, overlay, summary JSON ve enriched event skeleton üretildi. Face fallback zayıf kaldığı için YuNet aktarımı veya phone ROI export öncesi manuel overlay kontrolü not edildi.
 
 ## 8) Yapılanlar
 
@@ -498,9 +500,12 @@
 * [x] `SPEED-EXP-006B` best geometry parametrelerini 3 lokal demo videoya uygula ve grafik/rapor üret.
 * [x] Hız modülünü bu faz için kilitle ve önce/sonra çıktı tablolarını Markdown olarak kaydet.
 * [x] VS13 genel performans karşılaştırmasını hız kilit raporu ve ana hız dokümanına ekle.
+* [x] `CABIN-EXP-012` cabin/driver runtime foundation scriptini, raporunu ve karar dokümanlarını ekle.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
+* [ ] `CABIN-EXP-012` overlaylerini manuel kontrol et; YuNet checkpoint aktarımı gerekip gerekmediğine karar ver.
+* [ ] `PHONE-EXP-003/004` phone specialist dataset export + Colab training notebook hazırlığına geç.
 * [ ] Vehicle info pipeline'a renk tahmini ve FTR tip mapping ekle.
 * [ ] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
 * [x] `SPEED-EXP-005A/005D` grafik ve fusion sonuçlarını rapor/evidence baglaminda incele; FTR ana yoluna bloklayici yapma.
