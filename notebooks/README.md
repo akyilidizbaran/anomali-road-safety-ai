@@ -94,6 +94,7 @@ kaggle competitions download -c state-farm-distracted-driver-detection
 
 Credential dosyası oluştuğu halde bu komut exit code `1` ile düşerse en sık nedenler:
 
+* `401 Unauthorized`: Kaggle API token geçersizdir, iptal edilmiştir veya username/token aynı hesaba ait değildir.
 * Kaggle hesabında yarışma kuralları/data terms kabul edilmemiştir.
 * Colab Secrets içindeki API key, kuralları kabul eden Kaggle hesabına ait değildir.
 * API token iptal edilmiş, yanlış kopyalanmış veya başında/sonunda boşluk vardır.
@@ -108,7 +109,10 @@ Kontrol adımları:
    `kaggle_username` / `kaggle_key` olarak ekle.
 4. Notebook Cell 1-3'ü yeniden çalıştır. Güncel notebook Kaggle stdout/stderr çıktısını
    görünür basar.
-5. API hâlâ engellenirse `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive'da
+5. Güncel notebook resmi competition endpoint'i başarısız olursa public Kaggle mirror
+   `rightway11/state-farm-distracted-driver-detection` kaynağını fallback olarak dener.
+   Bu fallback de `401` verirse sorun veri kaynağı değil Kaggle token/hesap doğrulamasıdır.
+6. API hâlâ engellenirse `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive'da
    `/content/drive/MyDrive/anomali-road-safety-ai/datasets/cabin_exp_020a/state_farm/`
    altına manuel yerleştir.
 

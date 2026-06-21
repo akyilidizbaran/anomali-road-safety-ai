@@ -199,7 +199,9 @@ dönerse kullanıcı:
 1. Aynı hesapla Kaggle data sayfasında Join/Accept Rules adımını tamamlamalı.
 2. Kaggle API token'ını yenilemeli.
 3. Colab Secrets değerlerini güncellemeli.
-4. Hâlâ engel varsa `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive altında
+4. Güncel notebook'un denediği `rightway11/state-farm-distracted-driver-detection` Kaggle mirror
+   fallback'i de `401 Unauthorized` veriyorsa sorun veri seti değil Kaggle token/hesap doğrulamasıdır.
+5. Hâlâ engel varsa `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive altında
    `datasets/cabin_exp_020a/state_farm/` klasörüne manuel koymalıdır.
 
 ## Kabul Kriteri
