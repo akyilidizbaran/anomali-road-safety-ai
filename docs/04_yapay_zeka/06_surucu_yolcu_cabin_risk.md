@@ -43,6 +43,16 @@ Detaylı plan:
 research/08_cabin_risk/model_first_cabin_baseline_plan_v1.md
 ```
 
+İlk somut notebook:
+
+```text
+notebooks/CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb
+```
+
+Bu notebook doğrudan eylem sınıflandırmaz. Önce `driver_cabin_visible` / `not_cabin_view`
+gate'ini öğrenir. Bu gate başarılı olmadan `telefonla_konusma`, `su_icme`, `arkaya_bakma` ve
+`etrafa_bakinma` eylem sınıflandırmasına geçilmemelidir.
+
 ## Olası Riskler
 
 * Telefon kullanımı.

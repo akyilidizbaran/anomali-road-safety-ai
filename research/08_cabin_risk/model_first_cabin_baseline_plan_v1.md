@@ -29,7 +29,47 @@ Bu karar şu kaynaklarla uyumludur:
 
 ## Yeni Deney Sırası
 
-### CABIN-EXP-020: Driver Action Classifier Baseline
+### CABIN-EXP-020A: Cabin / Driver View Baseline
+
+Amaç:
+
+Doğrudan eylem sınıflandırmasına geçmeden önce frame/crop içinde cabin ve sürücü görünür mü
+sorusunu model tabanlı cevaplamak.
+
+İlk sınıflar:
+
+```text
+driver_cabin_visible
+not_cabin_view
+```
+
+Önerilen ilk model:
+
+```text
+MobileNetV3-Large ve EfficientNet-B0 binary image classifier
+```
+
+Veri:
+
+* Pozitif: State Farm Distracted Driver Detection görüntüleri.
+* Negatif: mevcut BDD100K dış/yol görüntüleri veya Drive altında manuel
+  `datasets/cabin_exp_020a/negatives/not_cabin_view/` klasörü.
+
+İlk notebook:
+
+```text
+notebooks/CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb
+```
+
+Beklenen çıktı:
+
+```text
+models/checkpoints/cabin_driver/CABIN-EXP-020A/
+models/benchmarks/artifacts/cabin_driver/CABIN-EXP-020A/
+testing/reports/cabin_exp_020a_driver_view_baseline.md
+```
+
+### CABIN-EXP-020B: Driver Action Classifier Baseline
 
 Amaç:
 
@@ -65,15 +105,15 @@ ayrı specialist veya ek dataset ister.
 İlk notebook:
 
 ```text
-notebooks/CABIN_EXP_020_Driver_Action_Classifier_Colab.ipynb
+notebooks/CABIN_EXP_020B_Driver_Action_Classifier_Colab.ipynb
 ```
 
 Beklenen çıktı:
 
 ```text
-models/checkpoints/cabin_driver/CABIN-EXP-020-driver-action-classifier-best.pth
-models/benchmarks/artifacts/CABIN-EXP-020-driver-action-classifier-summary.json
-testing/reports/cabin_exp_020_driver_action_classifier.md
+models/checkpoints/cabin_driver/CABIN-EXP-020B-driver-action-classifier-best.pth
+models/benchmarks/artifacts/CABIN-EXP-020B-driver-action-classifier-summary.json
+testing/reports/cabin_exp_020b_driver_action_classifier.md
 ```
 
 ### CABIN-EXP-021: Small-Object Specialist Baseline
@@ -128,27 +168,26 @@ olduğu için ilk yaklaşım weakly-supervised/manual review destekli olmalıdı
 
 ## İlk Teknik Adım
 
-İlk yapılacak iş `CABIN-EXP-020` Colab notebook'u olmalıdır.
+İlk yapılacak iş `CABIN-EXP-020A` Colab notebook'u olmalıdır.
 
 Notebook işlevleri:
 
 1. Kaggle/Drive üzerinden State Farm dataset kontrolü.
-2. İsteğe bağlı AUC dataset manuel/Drive girişi.
+2. Negatif sınıf için BDD100K veya manuel `not_cabin_view` klasörü kontrolü.
 3. Train/val/test split'i sürücü/session leakage olmayacak şekilde kurma.
 4. MobileNetV3-Large ve EfficientNet-B0 kıyaslama.
-5. FTR label mapping üretme.
-6. Confusion matrix, classification report, per-class F1.
-7. Checkpoint export.
-8. Lokal 3 video için crop/frame smoke inference scriptine uygun artifact üretme.
+5. `driver_cabin_visible` / `not_cabin_view` confusion matrix ve per-class F1 üretme.
+6. Checkpoint export.
+7. Lokal 3 video için smoke inference artifact üretme.
 
 ## Kabul Kriteri
 
-`CABIN-EXP-020` baseline kabulü için:
+`CABIN-EXP-020A` baseline kabulü için:
 
 * Validation/test per-class metrikleri raporlanmalı.
-* `telefonla_konusma` ve `su_icme` sınıfları ayrı izlenmeli.
+* `driver_cabin_visible` false positive ve false negative davranışı ayrı izlenmeli.
 * Model sadece accuracy ile değil confusion matrix ile değerlendirilmeli.
-* FTR label mapping açıkça yazılmalı.
+* FTR etkisi açıkça yazılmalı: `not_cabin_view` ise `sofor_eylemi` yazılmamalı.
 * Lokal 3 videoda kesin iddia kurulmadan smoke inference yapılmalı.
 * Domain farkı açıkça yazılmalı: public driver datasets genelde araç içi kameradır, bizim demo
   dış kamera/yan cam görüşüdür.
@@ -165,7 +204,7 @@ Notebook işlevleri:
 Bir sonraki implementation işi:
 
 ```text
-notebooks/CABIN_EXP_020_Driver_Action_Classifier_Colab.ipynb
+notebooks/CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb
 ```
 
 Bu notebook, önceki BDD100K/condition/VATTR notebooklarında yaşanan Drive/cache/path sorunlarını

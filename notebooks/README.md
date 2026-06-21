@@ -11,6 +11,7 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `VATTR_EXP_001_BoxCars_Vehicle_Attribute_Classifier_Colab.ipynb`: BoxCars116k üzerinden araç crop'ları için vehicle attribute / dimension prior classifier kurar. İlk amaç marka-modeli kesin kanıt yapmak değil, `Speed Fusion Layer` için `body_type`, yaklaşık `wheelbase` ön bilgisi ve güven skoru üretmektir. Varsayılan smoke mode küçük subset ile çalışır; ağır run için `SMOKE_MODE=False`, daha fazla epoch ve ek backbone açılır.
 * `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb`: VS13 bilinen hızlı araç videolarını doğrudan resmi linklerden Colab/Drive cache'e indirir, küçük subset çıkarır, video dosya adındaki hız suffix'inden ground-truth km/s okur, YOLO + ByteTrack ile ana araç track'i üretir, bbox-geometry hız adayını hesaplar ve train/val/test split üzerinde global scale/FOV/vehicle-height/moving-average parametre optimizasyonu yapar. Bu notebook yeni neural speed modeli eğitmez; hız adayının bilinen km/s videolarda ne kadar kalibre edilebildiğini ölçer.
 * `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb`: `SPEED-EXP-006` sanity check sonrası genişletilmiş hız kalibrasyon notebook'udur. VS13 içindeki 13 araç paketini destekler, varsayılan olarak her araçtan dengeli 12 video seçer, leave-one-vehicle-out cross-validation uygular ve `global_alpha`, `linear_raw`, `huber_raw` ile hafif tabular regressor kalibrasyonlarını karşılaştırır. FTR `results.json` hız alanı istemediği için bu notebook FTR ana teslimini bloklamaz; sonuç iyi çıkarsa yalnız `dataset-calibrated approximate speed candidate`, aksi halde `relative/support evidence` kararı üretir.
+* `CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb`: `CABIN-EXP-012` heuristik ROI denemesi reddedildikten sonra model-first cabin/driver görünürlük gate baseline'ını kurar. State Farm Distracted Driver görüntülerini pozitif `driver_cabin_visible`, mevcut BDD100K veya manuel `not_cabin_view` klasörünü negatif sınıf olarak kullanır; MobileNetV3-Large ve EfficientNet-B0 binary classifier karşılaştırması, leakage-safe split, confusion matrix, checkpoint export ve lokal video smoke inference üretir.
 
 ## Output-Saved Notebooklar
 
@@ -142,3 +143,15 @@ Bu sayede notebook tek dosyada otomatik indirme yapabilir; key repoya yazılmaz.
 * `vs13b_best_loo_predictions.csv`.
 * `speed_exp_006b_vs13_wide_subset_calibration_summary.json`.
 * Leave-one-vehicle-out GT-vs-pred, absolute error ve confidence-vs-error grafikleri.
+
+`CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb` şu çıktıları üretir:
+
+* State Farm Kaggle competition cache ve extracted train klasörü.
+* `cabin_exp_020a_metadata.csv`.
+* `cabin_exp_020a_splits.csv`.
+* MobileNetV3-Large / EfficientNet-B0 leaderboard.
+* `cabin_exp_020a_test_classification_report.csv`.
+* `cabin_exp_020a_confusion_matrix.png`.
+* `cabin_exp_020a_summary.json`.
+* `CABIN-EXP-020A-<backbone>-best.pth`.
+* Opsiyonel lokal demo video smoke CSV ve preview görselleri.

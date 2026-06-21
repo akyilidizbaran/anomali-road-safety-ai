@@ -222,6 +222,7 @@
 * 2026-06-20 — Karar: Hız kapanışında VS13 genel performans karşılaştırması, 3 lokal demo video sonuçlarından ayrı raporlanacak. | Gerekçe: Kullanıcı yalnız 3 örnek video değil, VS13 veri setindeki genel performans kıyasının da görünmesini istedi; lokal videolarda ground-truth hız yokken VS13 bilinen-hız benchmark'ı gerçek metrik kaynağıdır. | Etki: `speed_phase_lock_2026_06_20.md` ve `docs/04_yapay_zeka/03_hiz_kestirimi.md` içinde `SPEED-EXP-006`, `006 patch`, `006B linear_raw`, `006B ridge_features` ve kilit `006B huber_features` metrikleri ayrıştırıldı. | Alternatifler: Sadece 3 demo video tablosu ile kapanış yapmak; doğruluk iddiası için yetersiz olduğu için reddedildi.
 * 2026-06-20 — Karar: Cabin/driver hattı önce runtime foundation olarak kurulacak, doğrudan phone/smoking/seatbelt fine-tune ile başlanmayacak. | Gerekçe: `CABIN_DRIVER_FINETUNE_HANDOFF.md` referans verdiği script/artifactlerin çoğunu repo içinde taşımıyor; phone gibi küçük nesnelerde model başarısızlığı ile ROI/visibility hatasını ayırmak için önce cabin ROI, visibility, face/occupant ve torso ROI contract'ı çalışmalıdır. | Etki: `CABIN-EXP-012-runtime-foundation` scripti, summary JSON, enriched event skeleton, rapor ve cabin decision dokümanları eklendi. Bu karar 2026-06-21'de manuel overlay kalite kontrolü sonrası geçersiz kılındı. | Alternatifler: Direkt phone fine-tune başlatmak; ROI/visibility temeli ölçülmeden overfit riski taşıdığı için reddedildi.
 * 2026-06-21 — Karar: `CABIN-EXP-012` heuristik runtime foundation baseline olarak reddedildi ve repodan kaldırıldı. | Gerekçe: Kullanıcı overlay manuel kontrolünde çıktının çok kötü göründüğünü belirtti; heuristik ROI/visibility yaklaşımı güvenilir cabin/driver baseline üretmedi. | Etki: `CABIN-EXP-012` scripti, summary JSON, enriched event skeleton, rapor ve ona bağlı cabin/phone plan dosyaları kaldırıldı. Yeni yön model-first baseline: driver action classifier + small-object specialist + passenger/seat-region modeli. Detay plan `research/08_cabin_risk/model_first_cabin_baseline_plan_v1.md`. | Alternatifler: Heuristik foundation üzerinde iyileştirme yapmak; baseline kurmak için yeterince sağlam görünmediği için reddedildi.
+* 2026-06-21 — Karar: Cabin/driver model-first yolunda ilk adım `CABIN-EXP-020A` cabin/driver view binary classifier olacak. | Gerekçe: Kullanıcı eylemlere geçmeden önce cabin view ve sürücüyü tespit etmenin daha doğru olduğunu belirtti; action classifier hatasını crop/görünürlük hatasından ayırmak için önce `driver_cabin_visible` / `not_cabin_view` gate'i gerekir. | Etki: `notebooks/CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb` eklendi; State Farm pozitif veri, BDD100K veya manuel negatif klasör desteklenir. | Alternatifler: Tek seferde `telefonla_konusma/su_icme/arkaya_bakma/etrafa_bakinma` eğitmek; foundation belirsizliği nedeniyle ertelendi.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
@@ -326,7 +327,8 @@
 * 2026-06-20 — Milestone: VS13 genel performans karşılaştırması hız kapanışına eklendi. | Sonuç: 18 video/3 araç sanity check ile 156 video/13 araç leave-one-vehicle-out 006B sonucu yan yana raporlandı; kilit modelin genel benchmark dayanağı görünür hale getirildi.
 * 2026-06-20 — Milestone: `CABIN-EXP-012` runtime foundation tamamlandı. | Sonuç: 3 target event/video işlendi; araç/cabin ROI, visibility, face fallback, torso ROI, overlay, summary JSON ve enriched event skeleton üretildi. Face fallback zayıf kaldığı için YuNet aktarımı veya phone ROI export öncesi manuel overlay kontrolü not edildi.
 * 2026-06-21 — Milestone: `CABIN-EXP-012` reddedildi ve kaldırıldı. | Sonuç: Handoff'taki tüm özellikleri çalışır hale getirme hedefi korunur, fakat yeni başlangıç heuristik ROI değil model-first distracted-driver/action baseline olacaktır.
-* 2026-06-21 — Milestone: Model-first cabin baseline planı eklendi. | Sonuç: İlk uygulama `CABIN-EXP-020` driver action classifier; ikinci katman `CABIN-EXP-021` small-object specialist; üçüncü katman passenger/seat-region baseline olarak belirlendi.
+* 2026-06-21 — Milestone: Model-first cabin baseline planı eklendi. | Sonuç: İlk uygulama `CABIN-EXP-020A` cabin/driver view gate; ikinci uygulama `CABIN-EXP-020B` driver action classifier; üçüncü katman `CABIN-EXP-021` small-object specialist; dördüncü katman passenger/seat-region baseline olarak belirlendi.
+* 2026-06-21 — Milestone: `CABIN-EXP-020A` Colab notebook hazırlandı. | Sonuç: State Farm Kaggle download, BDD/manual negative source, leakage-safe split, MobileNetV3/EfficientNet karşılaştırması, checkpoint export, confusion matrix ve lokal smoke inference akışı tek notebook'a bağlandı.
 
 ## 8) Yapılanlar
 
@@ -506,10 +508,12 @@
 * [x] `CABIN-EXP-012` cabin/driver runtime foundation scriptini, raporunu ve karar dokümanlarını ekle.
 * [x] Manuel kontrol sonrası `CABIN-EXP-012` deneyini baseline olarak reddet ve repodan kaldır.
 * [x] Model-first cabin baseline planını oluştur.
+* [x] `CABIN-EXP-020A` cabin/driver view baseline Colab notebook'unu hazırla.
 * [x] FTR teslim dokumanini incele ve repo onceliklerini resmi `results.json` contract'ina gore guncelle.
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
-* [ ] Cabin/driver için model-first baseline notebook'u hazırla: driver action classifier + small-object specialist yol haritası.
+* [ ] `CABIN-EXP-020A` notebook'unu Colab'da çalıştır; State Farm + negatif veri kaynaklarını doğrula.
+* [ ] `CABIN-EXP-020B` driver action classifier notebook'una geç.
 * [ ] Phone/smoking/seatbelt/yolcu/nesne özelliklerini ayrı baseline/fine-tune fazlarına böl.
 * [ ] Vehicle info pipeline'a renk tahmini ve FTR tip mapping ekle.
 * [ ] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
