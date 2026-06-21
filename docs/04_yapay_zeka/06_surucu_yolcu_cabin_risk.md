@@ -13,51 +13,35 @@ Dışarıdan bakan telefon kamerası sürücüyü her zaman göremez. Cam yansı
 5. Görünürlük yeterliyse cabin risk modeli çalışır.
 6. Görünürlük yetersizse “analiz güvenilir değil” çıktısı verilir.
 
-## 2026-06-20 Runtime Foundation Durumu
+## 2026-06-21 Baseline Reset Kararı
 
-Cabin/driver hattı `CABIN-EXP-012-runtime-foundation` ile ilk kez repo içinde çalışır hale
-getirildi. Bu deney ihlal kararı üretmez; yalnız sonraki specialist modeller için şu girdileri
-üretir:
+`CABIN-EXP-012-runtime-foundation` heuristik ROI/visibility denemesi manuel kontrolde baseline
+kalitesinde görülmediği için repodan kaldırıldı. Bu nedenle cabin/driver tarafında devam yönü
+heuristik cabin ROI üretmek değil, doğrudan model tabanlı bir baseline seçip onun üzerinde
+fine-tune etmektir.
 
-* araç ROI,
-* cabin/cam ROI,
-* visibility status,
-* face/occupant candidate,
-* driver candidate,
-* torso/upper-body ROI candidate,
-* enriched event skeleton.
+Yeni baseline yaklaşımı:
 
-Çalıştırma:
+1. **Driver action classifier baseline**
+   * State Farm / AUC Distracted Driver tarzı sürücü eylemi veri setleriyle başlar.
+   * İlk hedef FTR `sofor_eylemi` etiketleridir: `telefonla_konusma`, `sigara_icme`,
+     `su_icme`, `etrafa_bakinma`, `arkaya_bakma`, `esneme`.
+2. **Small-object specialist baseline**
+   * Telefon, sigara, bilgisayar ve teknocan gibi küçük nesneler için YOLO tabanlı ayrı
+     detector kullanılır.
+   * Bu model action classifier çıktısını destekleyen veya çürüten evidence sinyali üretir.
+3. **Passenger / seat-region baseline**
+   * `on_koltuk`, `arka_koltuk_1`, `arka_koltuk_2` için ayrı yolcu/koltuk konumu çalışması
+     gerekir.
 
-```bash
-.venv-yolo-run/bin/python scripts/benchmarks/run_cabin_driver_runtime_foundation.py
-```
+Bu reset sonrası seatbelt hâlâ dikkatli ele alınmalıdır: kemer görünmüyorsa `unknown` kalır;
+yokluk doğrudan `emniyet_kemeri_ihlali` sayılmaz.
 
-Üretilen küçük artifactler:
+Detaylı plan:
 
 ```text
-models/benchmarks/artifacts/CABIN-EXP-012-runtime-foundation-summary.json
-models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-cabin012.json
-testing/reports/cabin_exp_012_runtime_foundation.md
+research/08_cabin_risk/model_first_cabin_baseline_plan_v1.md
 ```
-
-İlk koşuda üç video da işlendi. Ancak YuNet checkpoint repo içinde bulunmadığı için face/occupant
-tespitinde OpenCV Haar fallback kullanıldı ve face rate düşük kaldı. Bu nedenle bu sonuç phone,
-smoking veya seatbelt kararının hazır olduğu anlamına gelmez. Foundation, öncelikle ROI ve
-visibility gate doğrulaması olarak kullanılmalıdır.
-
-| Video | View profile | Analysis-ready rate | Face frame rate | Karar |
-|---|---|---:|---:|---|
-| `video_1.mp4` | `side_driver_window` | `0.25` | `0.15` | ROI kullanılabilir; face fallback sınırlı. |
-| `video_2.mp4` | `side_driver_window` | `0.2632` | `0.0` | ROI kullanılabilir; face yok. |
-| `video_3.mp4` | `front_lhd` | `0.1176` | `0.0` | Görünürlük düşük; risk kapalı kalmalı. |
-
-Kilit politika:
-
-* `poor` veya `not_visible` karelerden risk kararı üretilmez.
-* Telefon, sigara veya kemer kararı face/torso çıktısından türetilmez; ayrı specialist gerekir.
-* Seatbelt bilinmiyorsa `unknown` kalır.
-* Phone bu aşamada `null` kalır ve `PHONE-EXP-003/004` specialist çalışmasıyla açılır.
 
 ## Olası Riskler
 
