@@ -72,14 +72,45 @@ Notebook şu sırayla credential okur:
 1. Colab Secrets:
    * `KAGGLE_USERNAME`
    * `KAGGLE_KEY`
+   * alternatif küçük harfli adlar: `kaggle_username`, `kaggle_key`
 2. Ortam değişkenleri:
    * `KAGGLE_USERNAME`
    * `KAGGLE_KEY`
+   * alternatif küçük harfli adlar: `kaggle_username`, `kaggle_key`
 3. Runtime prompt:
    * username normal input,
    * API key `getpass` ile gizli input.
 
 Bu sayede notebook tek dosyada otomatik indirme yapabilir; key repoya yazılmaz.
+
+### State Farm Kaggle Troubleshooting
+
+`CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb` State Farm verisini resmi Kaggle
+competition endpoint'i ile indirir:
+
+```text
+kaggle competitions download -c state-farm-distracted-driver-detection
+```
+
+Credential dosyası oluştuğu halde bu komut exit code `1` ile düşerse en sık nedenler:
+
+* Kaggle hesabında yarışma kuralları/data terms kabul edilmemiştir.
+* Colab Secrets içindeki API key, kuralları kabul eden Kaggle hesabına ait değildir.
+* API token iptal edilmiş, yanlış kopyalanmış veya başında/sonunda boşluk vardır.
+* Eski competition endpoint'i ilgili hesaba geçici olarak kapalıdır.
+
+Kontrol adımları:
+
+1. Aynı Kaggle hesabıyla `https://www.kaggle.com/competitions/state-farm-distracted-driver-detection/data`
+   sayfasına gir ve Join/Accept Rules adımı görünüyorsa tamamla.
+2. Kaggle Account > Settings > API > Create New Token ile yeni token üret.
+3. Colab Secrets içine `KAGGLE_USERNAME` / `KAGGLE_KEY` veya küçük harfli
+   `kaggle_username` / `kaggle_key` olarak ekle.
+4. Notebook Cell 1-3'ü yeniden çalıştır. Güncel notebook Kaggle stdout/stderr çıktısını
+   görünür basar.
+5. API hâlâ engellenirse `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive'da
+   `/content/drive/MyDrive/anomali-road-safety-ai/datasets/cabin_exp_020a/state_farm/`
+   altına manuel yerleştir.
 
 ## Tek Notebook Akışı
 

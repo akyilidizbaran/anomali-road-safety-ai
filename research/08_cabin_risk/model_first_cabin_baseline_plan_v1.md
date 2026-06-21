@@ -180,6 +180,28 @@ Notebook işlevleri:
 6. Checkpoint export.
 7. Lokal 3 video için smoke inference artifact üretme.
 
+## State Farm Veri Erişim Notu
+
+State Farm veri seti Kaggle competition endpoint'i üzerinden geldiği için yalnız API key'in
+tanımlı olması yeterli değildir. Aynı Kaggle hesabında competition/data terms kabul edilmiş
+olmalıdır.
+
+Kontrol:
+
+```text
+https://www.kaggle.com/competitions/state-farm-distracted-driver-detection/data
+```
+
+Notebook `KAGGLE_USERNAME` / `KAGGLE_KEY` ve küçük harfli `kaggle_username` / `kaggle_key`
+Colab Secret adlarını destekler. Buna rağmen `kaggle competitions download` exit code `1`
+dönerse kullanıcı:
+
+1. Aynı hesapla Kaggle data sayfasında Join/Accept Rules adımını tamamlamalı.
+2. Kaggle API token'ını yenilemeli.
+3. Colab Secrets değerlerini güncellemeli.
+4. Hâlâ engel varsa `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive altında
+   `datasets/cabin_exp_020a/state_farm/` klasörüne manuel koymalıdır.
+
 ## Kabul Kriteri
 
 `CABIN-EXP-020A` baseline kabulü için:
