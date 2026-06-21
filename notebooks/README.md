@@ -112,9 +112,13 @@ Kontrol adımları:
 5. Güncel notebook resmi competition endpoint'i başarısız olursa public Kaggle mirror
    `rightway11/state-farm-distracted-driver-detection` kaynağını fallback olarak dener.
    Bu fallback de `401` verirse sorun veri kaynağı değil Kaggle token/hesap doğrulamasıdır.
-6. API hâlâ engellenirse `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive'da
+6. API hâlâ engellenirse `state-farm-distracted-driver-detection.zip`, `imgs.zip` veya
+   extracted `imgs/train/c0..c9` yapısını Drive'da
    `/content/drive/MyDrive/anomali-road-safety-ai/datasets/cabin_exp_020a/state_farm/`
    altına manuel yerleştir.
+7. Büyük zip dosyası connector/upload limiti nedeniyle parçalara bölünmüşse parçalar
+   `state_farm/chunks/state-farm-distracted-driver-detection.zip.part-*` altında durabilir.
+   Güncel notebook Cell 3 bu parçaları otomatik birleştirip zip'i yeniden oluşturur.
 
 ## Tek Notebook Akışı
 

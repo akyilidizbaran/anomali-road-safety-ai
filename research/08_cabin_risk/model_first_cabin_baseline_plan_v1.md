@@ -201,8 +201,12 @@ dönerse kullanıcı:
 3. Colab Secrets değerlerini güncellemeli.
 4. Güncel notebook'un denediği `rightway11/state-farm-distracted-driver-detection` Kaggle mirror
    fallback'i de `401 Unauthorized` veriyorsa sorun veri seti değil Kaggle token/hesap doğrulamasıdır.
-5. Hâlâ engel varsa `imgs.zip` veya extracted `imgs/train/c0..c9` yapısını Drive altında
+5. Hâlâ engel varsa `state-farm-distracted-driver-detection.zip`, `imgs.zip` veya
+   extracted `imgs/train/c0..c9` yapısını Drive altında
    `datasets/cabin_exp_020a/state_farm/` klasörüne manuel koymalıdır.
+6. Büyük zip connector limiti nedeniyle parçalı yüklendiyse dosyalar
+   `datasets/cabin_exp_020a/state_farm/chunks/state-farm-distracted-driver-detection.zip.part-*`
+   altında tutulabilir. `CABIN-EXP-020A` notebook'u bu parçaları Colab içinde yeniden birleştirir.
 
 ## Kabul Kriteri
 
