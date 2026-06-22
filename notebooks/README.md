@@ -12,6 +12,7 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `SPEED_EXP_006_VS13_Known_Speed_Calibration_Colab.ipynb`: VS13 bilinen hızlı araç videolarını doğrudan resmi linklerden Colab/Drive cache'e indirir, küçük subset çıkarır, video dosya adındaki hız suffix'inden ground-truth km/s okur, YOLO + ByteTrack ile ana araç track'i üretir, bbox-geometry hız adayını hesaplar ve train/val/test split üzerinde global scale/FOV/vehicle-height/moving-average parametre optimizasyonu yapar. Bu notebook yeni neural speed modeli eğitmez; hız adayının bilinen km/s videolarda ne kadar kalibre edilebildiğini ölçer.
 * `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb`: `SPEED-EXP-006` sanity check sonrası genişletilmiş hız kalibrasyon notebook'udur. VS13 içindeki 13 araç paketini destekler, varsayılan olarak her araçtan dengeli 12 video seçer, leave-one-vehicle-out cross-validation uygular ve `global_alpha`, `linear_raw`, `huber_raw` ile hafif tabular regressor kalibrasyonlarını karşılaştırır. FTR `results.json` hız alanı istemediği için bu notebook FTR ana teslimini bloklamaz; sonuç iyi çıkarsa yalnız `dataset-calibrated approximate speed candidate`, aksi halde `relative/support evidence` kararı üretir.
 * `CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb`: `CABIN-EXP-012` heuristik ROI denemesi reddedildikten sonra model-first cabin/driver görünürlük gate baseline'ını kurar. State Farm Distracted Driver görüntülerini pozitif `driver_cabin_visible`, mevcut BDD100K veya manuel `not_cabin_view` klasörünü negatif sınıf olarak kullanır; MobileNetV3-Large ve EfficientNet-B0 binary classifier karşılaştırması, leakage-safe split, confusion matrix, checkpoint export ve lokal video smoke inference üretir.
+* `COLOR_EXP_001_VCoR_Vehicle_Color_Classifier_Colab.ipynb`: FTR `arac_bilgisi.renk` alanı için 9 sınıflı dedicated vehicle color classifier eğitir. Birincil kaynak VCoR Kaggle dataset'idir; Kaggle credential, manual zip fallback, Drive cache, local Colab extraction, MobileNetV3-Large / EfficientNet-B0 karşılaştırması, confusion matrix, label-map/checkpoint export ve opsiyonel target ROI smoke inference destekler.
 
 ## Output-Saved Notebooklar
 
@@ -124,6 +125,33 @@ Kontrol adımları:
    `/content/anomali-road-safety-ai-work/datasets/cabin_exp_020a/state_farm/`. Bu, Drive mount
    üzerinde çok sayıda küçük dosya yazarken oluşan `OSError: [Errno 5] Input/output error`
    problemini önler.
+
+### COLOR-EXP-001 VCoR Kullanımı
+
+`COLOR_EXP_001_VCoR_Vehicle_Color_Classifier_Colab.ipynb`, VCoR dataset'ini şu Kaggle slug ile indirir:
+
+```text
+landrykezebou/vcor-vehicle-color-recognition-dataset
+```
+
+Credential dosyası oluştuğu halde Kaggle indirme başarısız olursa:
+
+1. VCoR zip dosyasını manuel indir.
+2. Drive içinde şu klasöre koy:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/color_exp_001/vcor/
+```
+
+3. Notebook Cell 2'de `DOWNLOAD_METHOD = 'manual'` yap ve Cell 3'ten devam et.
+
+Notebook zip'i Drive'da saklar fakat image extract işlemini local Colab runtime altında yapar:
+
+```text
+/content/anomali-road-safety-ai-work/datasets/color_exp_001/vcor/extracted/
+```
+
+Bu yöntem Drive mount içine binlerce küçük dosya yazma problemini önler.
 
 ## Tek Notebook Akışı
 
