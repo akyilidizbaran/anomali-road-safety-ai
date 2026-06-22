@@ -1,0 +1,180 @@
+{
+  "experiment_id": "VEHINFO-EXP-001-type-color-baseline",
+  "generated_at_utc": "2026-06-22T16:51:57Z",
+  "inputs": {
+    "events": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons.json",
+    "crop_dir": "runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames",
+    "videos_dir": "Test",
+    "openvino_dir": "models/checkpoints/vehicle_info/openvino_vehicle_attributes_0039/FP16",
+    "vattr_checkpoint": "models/checkpoints/vehicle_attribute/VATTR-EXP-001-efficientnet_b0-best.pth",
+    "vattr_label_map": "models/checkpoints/vehicle_attribute/VATTR-EXP-001-label-map.json"
+  },
+  "events": [
+    {
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "video": "video_1.mp4",
+      "track_id": "TRK-001",
+      "status": "computed",
+      "crop_count": 13,
+      "target_vehicle_detector_class": "car",
+      "track_stability": 0.964,
+      "selection_score": 0.905,
+      "ftr_vehicle_type_candidate": "suv",
+      "ftr_vehicle_type_confidence": 0.575722,
+      "ftr_vehicle_color_candidate": "siyah",
+      "ftr_vehicle_color_confidence": 0.781397,
+      "type_vote_scores": {
+        "hatchback": 1.352136,
+        "kamyon": 0.505293,
+        "minibus": 1.775854,
+        "panelvan": 0.74934,
+        "suv": 5.946983
+      },
+      "color_vote_scores": {
+        "gri": 0.570674,
+        "kirmizi": 1.44957,
+        "siyah": 7.221348
+      },
+      "openvino_type_votes": {
+        "car": 12,
+        "truck": 1
+      },
+      "openvino_color_votes": {
+        "siyah": 7,
+        "kirmizi": 2,
+        "gri": 4
+      },
+      "heuristic_color_votes": {
+        "siyah": 12,
+        "kahverengi": 1
+      },
+      "vattr_body_votes": {
+        "suv": 7,
+        "hatchback": 2,
+        "mpv": 3,
+        "van": 1
+      },
+      "warnings": [
+        "openvino_hsv_color_disagreement"
+      ]
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "video": "video_2.mp4",
+      "track_id": "TRK-001",
+      "status": "computed",
+      "crop_count": 13,
+      "target_vehicle_detector_class": "car",
+      "track_stability": 0.949,
+      "selection_score": 0.898,
+      "ftr_vehicle_type_candidate": "suv",
+      "ftr_vehicle_type_confidence": 0.519102,
+      "ftr_vehicle_color_candidate": "siyah",
+      "ftr_vehicle_color_confidence": 0.767283,
+      "type_vote_scores": {
+        "minibus": 3.4322,
+        "panelvan": 0.381969,
+        "sedan": 0.715252,
+        "suv": 4.889252
+      },
+      "color_vote_scores": {
+        "kirmizi": 1.361806,
+        "mavi": 0.637022,
+        "siyah": 6.590278
+      },
+      "openvino_type_votes": {
+        "car": 12,
+        "truck": 1
+      },
+      "openvino_color_votes": {
+        "siyah": 8,
+        "kirmizi": 3,
+        "mavi": 2
+      },
+      "heuristic_color_votes": {
+        "siyah": 12,
+        "kahverengi": 1
+      },
+      "vattr_body_votes": {
+        "suv": 6,
+        "van": 1,
+        "combi": 1,
+        "mpv": 5
+      },
+      "warnings": [
+        "openvino_hsv_color_disagreement",
+        "track_type_temporal_vote_low_confidence",
+        "vattr_combi_mapping_ambiguous",
+        "vehicle_type_low_confidence"
+      ]
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "video": "video_3.mp4",
+      "track_id": "TRK-002",
+      "status": "computed",
+      "crop_count": 13,
+      "target_vehicle_detector_class": "car",
+      "track_stability": 0.949,
+      "selection_score": 0.916,
+      "ftr_vehicle_type_candidate": "panelvan",
+      "ftr_vehicle_type_confidence": 0.365252,
+      "ftr_vehicle_color_candidate": "siyah",
+      "ftr_vehicle_color_confidence": 0.661287,
+      "type_vote_scores": {
+        "hatchback": 0.327477,
+        "kamyon": 2.127675,
+        "minibus": 2.315943,
+        "panelvan": 3.404048,
+        "sedan": 0.299976,
+        "suv": 0.844599
+      },
+      "color_vote_scores": {
+        "gri": 0.633242,
+        "kirmizi": 0.80499,
+        "mavi": 1.98329,
+        "siyah": 6.680023
+      },
+      "openvino_type_votes": {
+        "truck": 3,
+        "car": 10
+      },
+      "openvino_color_votes": {
+        "mavi": 4,
+        "siyah": 7,
+        "gri": 1,
+        "kirmizi": 1
+      },
+      "heuristic_color_votes": {
+        "siyah": 13
+      },
+      "vattr_body_votes": {
+        "van": 6,
+        "mpv": 3,
+        "hatchback": 2,
+        "suv": 2
+      },
+      "warnings": [
+        "openvino_hsv_color_disagreement",
+        "track_type_temporal_vote_low_confidence",
+        "vehicle_type_coarse_fallback",
+        "vehicle_type_low_confidence"
+      ]
+    }
+  ],
+  "artifacts": {
+    "per_crop_csv": "models/benchmarks/artifacts/vehicle_info/VEHINFO-EXP-001-type-color-baseline/vehinfo_exp_001_type_color_per_crop.csv",
+    "summary_json": "models/benchmarks/artifacts/vehicle_info/VEHINFO-EXP-001-type-color-baseline/vehinfo_exp_001_type_color_summary.json",
+    "enriched_events_json": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-vehinfo001.json",
+    "review_videos": [
+      "runs/vehicle_info/VEHINFO-EXP-001-type-color-baseline/video_1_vehinfo001_overlay.mp4",
+      "runs/vehicle_info/VEHINFO-EXP-001-type-color-baseline/video_2_vehinfo001_overlay.mp4",
+      "runs/vehicle_info/VEHINFO-EXP-001-type-color-baseline/video_3_vehinfo001_overlay.mp4"
+    ]
+  },
+  "notes": [
+    "This baseline is diagnostic, not final FTR vehicle type/color accuracy.",
+    "OpenVINO type labels are coarse; car subtype relies on VATTR evidence when confident enough.",
+    "Color supports OpenVINO plus HSV/Lab agreement/disagreement warnings."
+  ]
+}
