@@ -13,6 +13,7 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `SPEED_EXP_006B_VS13_Wide_Subset_Speed_Calibration_Colab.ipynb`: `SPEED-EXP-006` sanity check sonrası genişletilmiş hız kalibrasyon notebook'udur. VS13 içindeki 13 araç paketini destekler, varsayılan olarak her araçtan dengeli 12 video seçer, leave-one-vehicle-out cross-validation uygular ve `global_alpha`, `linear_raw`, `huber_raw` ile hafif tabular regressor kalibrasyonlarını karşılaştırır. FTR `results.json` hız alanı istemediği için bu notebook FTR ana teslimini bloklamaz; sonuç iyi çıkarsa yalnız `dataset-calibrated approximate speed candidate`, aksi halde `relative/support evidence` kararı üretir.
 * `CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb`: `CABIN-EXP-012` heuristik ROI denemesi reddedildikten sonra model-first cabin/driver görünürlük gate baseline'ını kurar. State Farm Distracted Driver görüntülerini pozitif `driver_cabin_visible`, mevcut BDD100K veya manuel `not_cabin_view` klasörünü negatif sınıf olarak kullanır; MobileNetV3-Large ve EfficientNet-B0 binary classifier karşılaştırması, leakage-safe split, confusion matrix, checkpoint export ve lokal video smoke inference üretir.
 * `COLOR_EXP_001_VCoR_Vehicle_Color_Classifier_Colab.ipynb`: FTR `arac_bilgisi.renk` alanı için 9 sınıflı dedicated vehicle color classifier eğitir. Birincil kaynak VCoR Kaggle dataset'idir; Kaggle credential, manual zip fallback, Drive cache, local Colab extraction, MobileNetV3-Large / EfficientNet-B0 karşılaştırması, confusion matrix, label-map/checkpoint export ve opsiyonel target ROI smoke inference destekler.
+* `TYPE_EXP_001_FTR_Vehicle_Type_Classifier_Colab.ipynb`: FTR `arac_bilgisi.tip` alanı için 7 sınıflı dedicated vehicle type classifier eğitir. Birincil otomatik kaynak Stanford Cars Kaggle mirror'dır; konservatif class-name parsing, manual FTR folder fallback, group-aware split, MobileNetV3-Large / EfficientNet-B0 karşılaştırması, checkpoint/label-map export ve opsiyonel target ROI smoke inference destekler.
 
 ## Output-Saved Notebooklar
 
@@ -153,6 +154,35 @@ Notebook zip'i Drive'da saklar fakat image extract işlemini local Colab runtime
 ```
 
 Bu yöntem Drive mount içine binlerce küçük dosya yazma problemini önler.
+
+### TYPE-EXP-001 Stanford Cars / Manual FTR Kullanımı
+
+`TYPE_EXP_001_FTR_Vehicle_Type_Classifier_Colab.ipynb`, Stanford Cars veri setini şu Kaggle slug'larıyla dener:
+
+```text
+eduardo4jesus/stanford-cars-dataset
+jessicali9530/stanford-cars-dataset
+```
+
+Credential veya dataset erişimi problem çıkarırsa Stanford Cars zip dosyasını Drive içine koy:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/stanford_cars/
+```
+
+Eksik/zayıf FTR tip sınıfları için manual ek veri klasörü desteklenir:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/manual/sedan/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/manual/suv/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/manual/hatchback/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/manual/pickup/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/manual/minibus/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/manual/panelvan/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_001/manual/kamyon/
+```
+
+Stanford Cars class-name parsing konservatiftir: `coupe`, `convertible`, `wagon` gibi FTR ile net örtüşmeyen sınıflar otomatik olarak yanlış etikete zorlanmaz, skipped metadata'ya yazılır. Final FTR promotion için düşük/eksik sınıflar manual/BoxCars/CompCars-derived ek veriyle güçlendirilmelidir.
 
 ## Tek Notebook Akışı
 
