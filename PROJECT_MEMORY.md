@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `TYPE-EXP-001` FTR araç tipi classifier outfull koşusunu değerlendirdik.
-* Son değişiklik neydi? Outfull koşusu teknik olarak tamamlandı ama final terfi için yetersiz bulundu; `van` substring kaynaklı label-noise mapper bug'i token-aware matching ile düzeltildi.
-* Bir sonraki net adım ne? Patch'li `TYPE-EXP-001` notebook yeniden koşulacak; `kamyon` sınıfı için ek veri/manual klasör sağlanacak ve target ROI smoke inference yapılacak.
+* Şu an ne yapıyoruz? `TYPE-EXP-001` FTR araç tipi classifier'ın lokal target ROI smoke testini tamamladık.
+* Son değişiklik neydi? Drive'daki `TYPE-EXP-001-efficientnet_b0-best.pth` checkpoint'i indirildi ve 39 lokal target ROI sample frame üzerinde test edildi; sonuç final terfi için yetersiz bulundu.
+* Bir sonraki net adım ne? Patch'li `TYPE-EXP-001` notebook yeniden koşulacak; `kamyon` sınıfı için ek veri/manual klasör sağlanacak ve track-level temporal voting ile tekrar smoke/manual review yapılacak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -232,6 +232,7 @@
 * 2026-06-22 — Karar: `TYPE-EXP-001` Stanford Cars parser class-folder varsayımından annotation-based parser'a geçirildi. | Gerekçe: Kaggle arşivi `cars_train/cars_test` klasörleri altında 16185 image çıkardı; gerçek class label'lar `.mat` annotation metadata içinde olduğu için parent folder parsing `Stanford records: 0 skipped: 16185` hatası üretti. | Etki: Cell 4/5 artık `cars_meta.mat` ve annotation `.mat` dosyalarından `class_id -> class_name -> FTR type` mapping yapar; class-folder parser yalnız fallback olarak kalır. | Alternatifler: Kullanıcıdan manual klasör istemek; veri zaten annotation içerdiği için gereksiz.
 * 2026-06-22 — Karar: `TYPE-EXP-001` Stanford `.mat` parser fallback'leri NumPy array truth-value hatasına karşı explicit `is None` kontrolleri kullanacak. | Gerekçe: `scipy.io.loadmat` array döndürdüğü için `mat.get(...) or mat.get(...)` ifadesi `ValueError: truth value of an array is ambiguous` üretir. | Etki: Cell 4/5 `class_names/classNames` ve `annotations/annos/records` fallbacklerini güvenli çözer; Colab'da Cell 4 ve Cell 5 yeniden çalıştırılmalı. | Alternatifler: Boolean `or` zincirini korumak; NumPy array ile güvenli olmadığı için reddedildi.
 * 2026-06-22 — Karar: `TYPE-EXP-001` outfull koşusu final FTR araç tipi modeli olarak kilitlenmeyecek. | Gerekçe: Teknik koşu tamamlandı ama test macro-F1 `0.6120`, `kamyon` support `0`, target ROI smoke skipped ve `Vantage` -> `panelvan` substring label-noise hatası bulundu. | Etki: Aktif notebook token-aware mapping'e geçirildi; patch sonrası yeniden run, `kamyon` ek veri ve target ROI smoke/manual review zorunlu. | Alternatifler: Outfull checkpoint'i doğrudan runtime'a almak; sınıf kapsamı ve label-noise nedeniyle reddedildi.
+* 2026-06-22 — Karar: Drive'daki `TYPE-EXP-001-efficientnet_b0-best.pth` lokal target ROI smoke sonucunda diagnostic baseline olarak tutulacak, final runtime tip modeli yapılmayacak. | Gerekçe: 39 ROI frame'de `suv=21`, `hatchback=15`, `sedan=2`, `panelvan=1`; aynı hedef araç içinde yan/arka crop'larda `hatchback` karışması var ve checkpoint mapper bug fix öncesi eğitildi. | Etki: `scripts/benchmarks/run_type_classifier_smoke.py` ve `testing/reports/type_exp_001_local_smoke_review.md` eklendi; final için patch'li rerun + kamyon veri + temporal voting gerekir. | Alternatifler: Gate `conf>=0.60/margin>=0.15` ile doğrudan kullanmak; track-level stabilite yetersizliği nedeniyle reddedildi.
 * 2026-06-20 — Karar: Hız modülü bu faz için kilitlendi. | Gerekçe: VS13 006B geniş subset sonucu raporlanabilir düzeyde; lokal demo transferi trendi koruyor; ground-truth olmayan 3 videoda daha fazla tuning gerçek doğruluk kanıtı üretmez. | Etki: `speed_phase_lock_2026_06_20.md` eklendi; hız çıktısı `dataset_calibrated_approximate_candidate` / `support evidence` olarak kalacak ve FTR `results.json` içine yazılmayacak. | Alternatifler: 006C segment selector veya yeni dataset aramak; FTR ana teslim riskini artırdığı için future scope.
 * 2026-06-20 — Karar: Hız kapanışında VS13 genel performans karşılaştırması, 3 lokal demo video sonuçlarından ayrı raporlanacak. | Gerekçe: Kullanıcı yalnız 3 örnek video değil, VS13 veri setindeki genel performans kıyasının da görünmesini istedi; lokal videolarda ground-truth hız yokken VS13 bilinen-hız benchmark'ı gerçek metrik kaynağıdır. | Etki: `speed_phase_lock_2026_06_20.md` ve `docs/04_yapay_zeka/03_hiz_kestirimi.md` içinde `SPEED-EXP-006`, `006 patch`, `006B linear_raw`, `006B ridge_features` ve kilit `006B huber_features` metrikleri ayrıştırıldı. | Alternatifler: Sadece 3 demo video tablosu ile kapanış yapmak; doğruluk iddiası için yetersiz olduğu için reddedildi.
 * 2026-06-20 — Karar: Cabin/driver hattı önce runtime foundation olarak kurulacak, doğrudan phone/smoking/seatbelt fine-tune ile başlanmayacak. | Gerekçe: `CABIN_DRIVER_FINETUNE_HANDOFF.md` referans verdiği script/artifactlerin çoğunu repo içinde taşımıyor; phone gibi küçük nesnelerde model başarısızlığı ile ROI/visibility hatasını ayırmak için önce cabin ROI, visibility, face/occupant ve torso ROI contract'ı çalışmalıdır. | Etki: `CABIN-EXP-012-runtime-foundation` scripti, summary JSON, enriched event skeleton, rapor ve cabin decision dokümanları eklendi. Bu karar 2026-06-21'de manuel overlay kalite kontrolü sonrası geçersiz kılındı. | Alternatifler: Direkt phone fine-tune başlatmak; ROI/visibility temeli ölçülmeden overfit riski taşıdığı için reddedildi.
@@ -352,6 +353,7 @@
 * 2026-06-22 — Milestone: `TYPE-EXP-001` Colab notebook'u hazırlandı. | Sonuç: `notebooks/TYPE_EXP_001_FTR_Vehicle_Type_Classifier_Colab.ipynb`, Stanford Cars/manual dataset edinimi, FTR tip mapping, split, eğitim, evaluation, checkpoint export ve smoke inference akışını tek dosyada topluyor.
 * 2026-06-22 — Milestone: `TYPE-EXP-001` Stanford metadata parsing bug'i düzeltildi. | Sonuç: `testing/reports/type_exp_001_stanford_annotation_parser_fix.md` eklendi; notebook artık Stanford class annotation dosyalarını okuyarak FTR mapping üretir.
 * 2026-06-22 — Milestone: `TYPE-EXP-001` outfull koşusu incelendi. | Sonuç: `efficientnet_b0` best checkpoint üretildi ama final promotion reddedildi; `testing/reports/type_exp_001_outfull_review.md` eklendi.
+* 2026-06-22 — Milestone: `TYPE-EXP-001` checkpoint'i lokal target ROI crop'larında smoke test edildi. | Sonuç: 39 crop işlendi, çoğunluk `suv` olsa da `hatchback` karışması yüksek; final terfi reddedildi.
 
 ## 8) Yapılanlar
 
@@ -548,7 +550,8 @@
 * [x] `TYPE-EXP-001` Colab ağır run çıktısını incele; missing/low support sınıflar, macro-F1, confusion matrix ve target ROI smoke sonuçlarını raporla.
 * [ ] Patch'li `TYPE-EXP-001` notebook'u yeniden çalıştır; token-aware mapping sonrası class counts ve macro-F1 değişimini kontrol et.
 * [ ] `TYPE-EXP-001` için `kamyon` sınıfına ek veri/manual klasör veya güvenilir external source ekle.
-* [ ] `TYPE-EXP-001` checkpoint'ini target ROI crop'ları üzerinde smoke/manual review ile doğrula.
+* [x] `TYPE-EXP-001` checkpoint'ini target ROI crop'ları üzerinde smoke/manual review ile doğrula.
+* [ ] Patch sonrası yeni `TYPE-EXP-001` checkpoint'ini target ROI crop'larında tekrar test et; track-level temporal voting ekle.
 * [ ] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
 * [x] `SPEED-EXP-005A/005D` grafik ve fusion sonuçlarını rapor/evidence baglaminda incele; FTR ana yoluna bloklayici yapma.
 * [ ] `SPEED-EXP-005B/005C` depth/plate v2 calismalarini yalniz FTR ana modullerinden sonra future/support olarak degerlendir.
@@ -652,6 +655,7 @@
 * State Farm zip Drive'da mevcut olsa bile Drive içine full extract denenmemeli. Drive'daki kısmi `state_farm/imgs/` klasörü eski başarısız denemeden kalabilir; güncel notebook bunu kaynak olarak tercih etmez, local `STATE_FARM_EXTRACT_ROOT` kullanır.
 * Stanford Cars `.mat` parser'ında NumPy array döndüren `mat.get(...)` sonuçları Python `or` zincirine sokulmamalı. `class_names/classNames` ve `annotations/annos/records` gibi fallback alanları explicit `is None` kontrolüyle çözülmeli.
 * Vehicle type mapping'de `needle in norm` substring kontrolü kullanılmamalı. `van` token'ı `vantage` içinde eşleşerek coupe/convertible araçları `panelvan` label'ına kirletebilir; token/phrase boundary match kullanılmalı.
+* `TYPE-EXP-001` lokal smoke testte tek frame top-1 etiketi doğrudan `arac_bilgisi.tip` olarak taşınmamalı. Aynı track içinde `suv/hatchback` karışması var; track-level temporal voting ve margin/confidence gate olmadan runtime'a bağlamak yanlış stabilite izlenimi verir.
 
 ### Güncelleme Kaydı
 
