@@ -184,6 +184,8 @@ Eksik/zayıf FTR tip sınıfları için manual ek veri klasörü desteklenir:
 
 Stanford Cars class-name parsing konservatiftir: `coupe`, `convertible`, `wagon` gibi FTR ile net örtüşmeyen sınıflar otomatik olarak yanlış etikete zorlanmaz, skipped metadata'ya yazılır. Final FTR promotion için düşük/eksik sınıflar manual/BoxCars/CompCars-derived ek veriyle güçlendirilmelidir.
 
+Not: Bazı Kaggle Stanford Cars arşivleri class-folder yapısı yerine `cars_train` / `cars_test` klasörleri ve `.mat` annotation dosyalarıyla gelir. Güncel `TYPE-EXP-001` notebook'u bu yapıyı destekler; `cars_meta.mat` ve annotation `.mat` dosyalarından `class_id -> class_name -> FTR type` mapping yapar. `Stanford records: 0 skipped: 16185` görülürse eski notebook çalışıyordur; güncel notebook ile Cell 4 ve Cell 5'i yeniden çalıştır.
+
 ## Tek Notebook Akışı
 
 `VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` şu çıktıları üretir:
