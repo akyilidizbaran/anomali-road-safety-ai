@@ -60,3 +60,35 @@ If any FTR class is still low or missing, add images under:
 ## Notes
 
 This fix does not loosen the FTR mapping rules. Ambiguous classes such as `coupe`, `convertible`, `roadster`, or `wagon` are still skipped rather than forced into an incorrect FTR label.
+
+## Follow-up Fix: NumPy Array Truth-Value
+
+After the first parser patch, Cell 5 produced a second error:
+
+```text
+ValueError: The truth value of an array with more than one element is ambiguous.
+```
+
+The root cause was a Python fallback pattern inside the `.mat` parser:
+
+```python
+mat.get("class_names") or mat.get("classNames")
+```
+
+`scipy.io.loadmat` can return NumPy arrays for these keys. NumPy arrays cannot be used directly in boolean `or` expressions when they contain more than one element.
+
+The notebook now uses explicit `is None` checks for:
+
+- `class_names` / `classNames`
+- `annotations` / `annos` / `records`
+
+This keeps fallback behavior but avoids NumPy truth-value ambiguity.
+
+## Required Colab Action
+
+Pull/reopen the updated notebook, then rerun:
+
+1. Cell 4: mapping + Stanford annotation parser helpers
+2. Cell 5: dataset metadata build
+
+If the Colab runtime was not restarted, the previously extracted Stanford files can be reused. Dataset download should not be repeated unless the local runtime was cleared.
