@@ -21,6 +21,7 @@ Colab çıktısı alınmış notebooklar `notebooks/Outputs Saved/` altında tut
 Git'te takip edilen output-saved koşular:
 
 * `Outputs Saved/COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab_outputsaved.ipynb`
+* `Outputs Saved/COLOR_EXP_001_VCoR_Vehicle_Color_Classifier_Colab_outsaved.ipynb`
 
 ## Kural
 
