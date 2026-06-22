@@ -399,6 +399,27 @@ Hardest labels:
 * `minibus` vs `panelvan`: may need custom mapping or additional data.
 * `kamyon`: can be bootstrapped from broad detector/truck labels.
 
+### TYPE-EXP-002 — Multi-source FTR vehicle type classifier
+
+Status: active follow-up after `TYPE-EXP-001` local smoke review.
+
+Goal: keep the same official FTR label set, but remove the single-source weakness of the Stanford-heavy first run.
+
+Primary data spine:
+
+1. Stanford Cars for conservative model-name body mapping.
+2. Car Body Type Kaggle datasets for direct `sedan/suv/hatchback/pickup/van` style labels.
+3. MIO-TCD classification subset/mirror for `pickup`, `work van`, `single unit truck`, and `articulated truck`.
+4. Manual FTR folders for missing or weak classes.
+
+The key correction is `kamyon` support. `TYPE-EXP-001` produced `0` mapped `kamyon` records, so it cannot be promoted to final FTR `tip`. `TYPE-EXP-002` therefore uses a strict coverage gate: if any of the 7 FTR classes has insufficient data, the notebook stops before training.
+
+Notebook:
+
+```text
+notebooks/TYPE_EXP_002_Multisource_FTR_Vehicle_Type_Classifier_Colab.ipynb
+```
+
 ### VEHINFO-EXP-002 — Fusion + FTR adapter
 
 Goal: write final `arac_bilgisi` using temporal voting.

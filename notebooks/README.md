@@ -186,6 +186,47 @@ Stanford Cars class-name parsing konservatiftir: `coupe`, `convertible`, `wagon`
 
 Not: Bazı Kaggle Stanford Cars arşivleri class-folder yapısı yerine `cars_train` / `cars_test` klasörleri ve `.mat` annotation dosyalarıyla gelir. Güncel `TYPE-EXP-001` notebook'u bu yapıyı destekler; `cars_meta.mat` ve annotation `.mat` dosyalarından `class_id -> class_name -> FTR type` mapping yapar. `Stanford records: 0 skipped: 16185` görülürse eski notebook çalışıyordur; güncel notebook ile Cell 4 ve Cell 5'i yeniden çalıştır.
 
+### TYPE-EXP-002 Multi-source FTR Kullanımı
+
+`TYPE_EXP_002_Multisource_FTR_Vehicle_Type_Classifier_Colab.ipynb`, `TYPE-EXP-001` sonrasında açılan daha güçlü FTR tip deneyidir. Hedef sınıflar aynıdır:
+
+```text
+sedan, suv, hatchback, pickup, minibus, panelvan, kamyon
+```
+
+Ana veri kaynakları:
+
+```text
+Stanford Cars Kaggle mirror
+Car Body Type Kaggle dataset
+MIO-TCD classification subset/mirror
+Manual FTR folders
+```
+
+Drive dizinleri:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/stanford_cars/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/car_body_type/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/mio_tcd/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/
+/content/drive/MyDrive/anomali-road-safety-ai/runs/vehicle_type/TYPE-EXP-002/
+```
+
+Manual klasörler:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/sedan/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/suv/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/hatchback/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/pickup/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/minibus/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/panelvan/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_002/manual/kamyon/
+```
+
+Bu notebook `STRICT_CLASS_COVERAGE=True` ile gelir. Her sınıfta yeterli örnek yoksa eğitim hücresine geçmeden durur; bu özellikle `kamyon`, `minibus`, `panelvan` sınıflarında sessiz/eksik eğitim yapılmasını önler.
+
 ## Tek Notebook Akışı
 
 `VD_EXP_002_BDD100K_YOLO11n_Colab.ipynb` şu çıktıları üretir:
