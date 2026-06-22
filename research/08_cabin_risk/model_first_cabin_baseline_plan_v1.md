@@ -207,6 +207,9 @@ dönerse kullanıcı:
 6. Büyük zip connector limiti nedeniyle parçalı yüklendiyse dosyalar
    `datasets/cabin_exp_020a/state_farm/chunks/state-farm-distracted-driver-detection.zip.part-*`
    altında tutulabilir. `CABIN-EXP-020A` notebook'u bu parçaları Colab içinde yeniden birleştirir.
+7. Drive mount içine tüm zip extract edilmemelidir. Notebook yalnız `driver_imgs_list.csv` ve
+   `imgs/train/**` üyelerini local `/content/anomali-road-safety-ai-work/...` çalışma alanına
+   çıkarır; `imgs/test` bu deneyde gerekli değildir.
 
 ## Kabul Kriteri
 

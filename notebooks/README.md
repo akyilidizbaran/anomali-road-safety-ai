@@ -119,6 +119,11 @@ Kontrol adımları:
 7. Büyük zip dosyası connector/upload limiti nedeniyle parçalara bölünmüşse parçalar
    `state_farm/chunks/state-farm-distracted-driver-detection.zip.part-*` altında durabilir.
    Güncel notebook Cell 3 bu parçaları otomatik birleştirip zip'i yeniden oluşturur.
+8. Güncel notebook State Farm zip'ini Google Drive içine tamamen extract etmez. Yalnız
+   `driver_imgs_list.csv` ve `imgs/train/**` üyelerini local Colab çalışma alanına çıkarır:
+   `/content/anomali-road-safety-ai-work/datasets/cabin_exp_020a/state_farm/`. Bu, Drive mount
+   üzerinde çok sayıda küçük dosya yazarken oluşan `OSError: [Errno 5] Input/output error`
+   problemini önler.
 
 ## Tek Notebook Akışı
 
