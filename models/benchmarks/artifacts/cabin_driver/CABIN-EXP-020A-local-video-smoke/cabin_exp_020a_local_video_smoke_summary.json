@@ -1,0 +1,108 @@
+{
+  "experiment_id": "CABIN-EXP-020A",
+  "created_at_utc": "2026-06-22T15:07:45.548353+00:00",
+  "checkpoint": "models/checkpoints/cabin_driver/CABIN-EXP-020A/CABIN-EXP-020A-mobilenet_v3_large-best.pth",
+  "backbone": "mobilenet_v3_large",
+  "labels": [
+    "driver_cabin_visible",
+    "not_cabin_view"
+  ],
+  "device": "mps",
+  "img_size": 224,
+  "sample_every": 5,
+  "expected_label": "not_cabin_view",
+  "videos_dir": "Test",
+  "output_dir": "runs/cabin/CABIN-EXP-020A-local-video-smoke",
+  "summary_json": "models/benchmarks/artifacts/cabin_driver/CABIN-EXP-020A-local-video-smoke/cabin_exp_020a_local_video_smoke_summary.json",
+  "per_frame_csv": "models/benchmarks/artifacts/cabin_driver/CABIN-EXP-020A-local-video-smoke/cabin_exp_020a_local_video_smoke_frames.csv",
+  "report": "testing/reports/cabin_exp_020a_local_video_smoke.md",
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "input_video_uri": "Test/video_1.mp4",
+      "output_video_uri": "runs/cabin/CABIN-EXP-020A-local-video-smoke/video_1_cabin020a_smoke.mp4",
+      "fps": 50.0,
+      "resolution": {
+        "width": 3840,
+        "height": 2160
+      },
+      "output_resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "total_frames_metadata": 423,
+      "processed_frames": 423,
+      "sampled_frames": 85,
+      "sample_every": 5,
+      "expected_label": "not_cabin_view",
+      "expected_label_ratio": 1.0,
+      "non_expected_label_ratio": 0.0,
+      "label_counts": {
+        "not_cabin_view": 85
+      },
+      "mean_confidence_by_label": {
+        "not_cabin_view": 0.999997
+      },
+      "max_driver_cabin_visible_probability": 1.8e-05,
+      "status": "pass"
+    },
+    {
+      "video": "video_2.mp4",
+      "input_video_uri": "Test/video_2.mp4",
+      "output_video_uri": "runs/cabin/CABIN-EXP-020A-local-video-smoke/video_2_cabin020a_smoke.mp4",
+      "fps": 50.0,
+      "resolution": {
+        "width": 3840,
+        "height": 2160
+      },
+      "output_resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "total_frames_metadata": 457,
+      "processed_frames": 457,
+      "sampled_frames": 92,
+      "sample_every": 5,
+      "expected_label": "not_cabin_view",
+      "expected_label_ratio": 1.0,
+      "non_expected_label_ratio": 0.0,
+      "label_counts": {
+        "not_cabin_view": 92
+      },
+      "mean_confidence_by_label": {
+        "not_cabin_view": 0.999997
+      },
+      "max_driver_cabin_visible_probability": 4e-05,
+      "status": "pass"
+    },
+    {
+      "video": "video_3.mp4",
+      "input_video_uri": "Test/video_3.mp4",
+      "output_video_uri": "runs/cabin/CABIN-EXP-020A-local-video-smoke/video_3_cabin020a_smoke.mp4",
+      "fps": 50.0,
+      "resolution": {
+        "width": 3840,
+        "height": 2160
+      },
+      "output_resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "total_frames_metadata": 383,
+      "processed_frames": 383,
+      "sampled_frames": 77,
+      "sample_every": 5,
+      "expected_label": "not_cabin_view",
+      "expected_label_ratio": 1.0,
+      "non_expected_label_ratio": 0.0,
+      "label_counts": {
+        "not_cabin_view": 77
+      },
+      "mean_confidence_by_label": {
+        "not_cabin_view": 0.999998
+      },
+      "max_driver_cabin_visible_probability": 3.3e-05,
+      "status": "pass"
+    }
+  ]
+}

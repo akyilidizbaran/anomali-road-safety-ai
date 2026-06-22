@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? Cabin/driver modülünde `CABIN-EXP-020A` cabin/driver görünürlük gate çıktısını değerlendiriyoruz.
-* Son değişiklik neydi? `CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab_outquestion.ipynb` teknik olarak tamamlandı: State Farm train split local'e çıkarıldı, 12k pozitif + 11.1k BDD negatif ile iki backbone eğitildi, checkpoint/report üretildi.
-* Bir sonraki net adım ne? 020A'yı final saha kararı saymadan önce local/demo video smoke inference için Drive `Test/video_*.mp4` erişimi sağlanacak; sonra 020B driver action classifier'a geçilecek.
+* Şu an ne yapıyoruz? Cabin/driver modülünde `CABIN-EXP-020A` cabin-view gate kendi yol videolarımızda doğrulandı; sıradaki somut modül `CABIN-EXP-020B` driver action classifier.
+* Son değişiklik neydi? `CABIN-EXP-020A` MobileNetV3-Large checkpoint'i lokal `Test/video_1-3.mp4` üzerinde overlay video smoke testten geçti: sampled frame'lerin tamamı `not_cabin_view` döndü.
+* Bir sonraki net adım ne? 020A'yı yalnız routing/gate olarak kullanıp `telefonla_konusma`, `su_icme`, `arkaya_bakma`, `etrafa_bakinma` gibi eylemler için 020B action classifier veri/model fazına geçilecek.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -223,6 +223,7 @@
 * 2026-06-21 — Karar: State Farm zip Drive'a tek parça yerine 95 MiB split chunk'lar halinde yüklendi. | Gerekçe: Google Drive connector tek dosya upload limitinde 4.0 GB zip'i reddetti; 480 MiB parçalar da 100 MiB upload limitine takıldı. | Etki: Drive `datasets/cabin_exp_020a/state_farm/chunks/` altında 44 adet `state-farm-distracted-driver-detection.zip.part-*` dosyası var; notebook Cell 3 bunları `state-farm-distracted-driver-detection.zip` olarak yeniden birleştirir ve extract eder. | Alternatifler: Kullanıcıdan Drive UI ile manuel tek zip yüklemesini istemek.
 * 2026-06-22 — Karar: State Farm extraction Drive mount yerine local Colab runtime'a yapılacak. | Gerekçe: Full zip'i `/content/drive/MyDrive/.../state_farm` altına açarken `OSError: [Errno 5] Input/output error` oluştu; binlerce küçük JPG'i Drive mount'a yazmak kırılgan ve yavaş. | Etki: Notebook `state-farm-distracted-driver-detection.zip` dosyasını Drive'da tutar, yalnız `driver_imgs_list.csv` ve `imgs/train/**` üyelerini `/content/anomali-road-safety-ai-work/datasets/cabin_exp_020a/state_farm/` altına çıkarır; `imgs/test` çıkarılmaz. | Alternatifler: Drive içine full extract veya kullanıcıdan manuel extract; I/O riski nedeniyle reddedildi.
 * 2026-06-22 — Karar: `CABIN-EXP-020A` outquestion run teknik olarak başarılı ama final saha güvenilirliği için yetersiz kabul edilecek. | Gerekçe: Train/val/test split sağlıklı, driver leakage `0`, test macro-F1 `1.0`; fakat görev çok kolay ayrışıyor (`State Farm` araç içi görüntüler vs `BDD100K` dış yol görüntüleri), local demo smoke inference çalışmadı çünkü Drive `Test/video_*.mp4` bulunamadı. | Etki: Checkpoint ilk cabin-view gate adayı olarak saklanabilir; raporda bu sonuç yalnız dataset-level sanity check olarak anlatılmalı. 020B'ye geçmeden önce demo video smoke kontrolü yapılmalı. | Alternatifler: Bu sonucu doğrudan saha cabin gate finali saymak; domain gap nedeniyle reddedildi.
+* 2026-06-22 — Karar: `CABIN-EXP-020A` lokal demo video smoke testi cabin-view routing gate için yeterli kabul edilecek. | Gerekçe: `Test/video_1-3.mp4` dış yol kamerası videolarında sampled frame'lerin `100%`ü `not_cabin_view` döndü; maksimum `driver_cabin_visible` olasılığı `0.00004` altında kaldı. | Etki: 020A, dış yol frame'lerini cabin/action hattına yanlış göndermeme gate'i olarak kullanılabilir; sürücü eylem tanıma hâlâ ayrı `CABIN-EXP-020B` model fazıdır. | Alternatifler: 020A'yı action detector gibi kullanmak veya yalnız Colab metrikleriyle geçmek; kapsam ve domain-gap nedeniyle reddedildi.
 * 2026-06-20 — Karar: Hız modülü bu faz için kilitlendi. | Gerekçe: VS13 006B geniş subset sonucu raporlanabilir düzeyde; lokal demo transferi trendi koruyor; ground-truth olmayan 3 videoda daha fazla tuning gerçek doğruluk kanıtı üretmez. | Etki: `speed_phase_lock_2026_06_20.md` eklendi; hız çıktısı `dataset_calibrated_approximate_candidate` / `support evidence` olarak kalacak ve FTR `results.json` içine yazılmayacak. | Alternatifler: 006C segment selector veya yeni dataset aramak; FTR ana teslim riskini artırdığı için future scope.
 * 2026-06-20 — Karar: Hız kapanışında VS13 genel performans karşılaştırması, 3 lokal demo video sonuçlarından ayrı raporlanacak. | Gerekçe: Kullanıcı yalnız 3 örnek video değil, VS13 veri setindeki genel performans kıyasının da görünmesini istedi; lokal videolarda ground-truth hız yokken VS13 bilinen-hız benchmark'ı gerçek metrik kaynağıdır. | Etki: `speed_phase_lock_2026_06_20.md` ve `docs/04_yapay_zeka/03_hiz_kestirimi.md` içinde `SPEED-EXP-006`, `006 patch`, `006B linear_raw`, `006B ridge_features` ve kilit `006B huber_features` metrikleri ayrıştırıldı. | Alternatifler: Sadece 3 demo video tablosu ile kapanış yapmak; doğruluk iddiası için yetersiz olduğu için reddedildi.
 * 2026-06-20 — Karar: Cabin/driver hattı önce runtime foundation olarak kurulacak, doğrudan phone/smoking/seatbelt fine-tune ile başlanmayacak. | Gerekçe: `CABIN_DRIVER_FINETUNE_HANDOFF.md` referans verdiği script/artifactlerin çoğunu repo içinde taşımıyor; phone gibi küçük nesnelerde model başarısızlığı ile ROI/visibility hatasını ayırmak için önce cabin ROI, visibility, face/occupant ve torso ROI contract'ı çalışmalıdır. | Etki: `CABIN-EXP-012-runtime-foundation` scripti, summary JSON, enriched event skeleton, rapor ve cabin decision dokümanları eklendi. Bu karar 2026-06-21'de manuel overlay kalite kontrolü sonrası geçersiz kılındı. | Alternatifler: Direkt phone fine-tune başlatmak; ROI/visibility temeli ölçülmeden overfit riski taşıdığı için reddedildi.
@@ -335,6 +336,7 @@
 * 2026-06-21 — Milestone: Model-first cabin baseline planı eklendi. | Sonuç: İlk uygulama `CABIN-EXP-020A` cabin/driver view gate; ikinci uygulama `CABIN-EXP-020B` driver action classifier; üçüncü katman `CABIN-EXP-021` small-object specialist; dördüncü katman passenger/seat-region baseline olarak belirlendi.
 * 2026-06-21 — Milestone: `CABIN-EXP-020A` Colab notebook hazırlandı. | Sonuç: State Farm Kaggle download, BDD/manual negative source, leakage-safe split, MobileNetV3/EfficientNet karşılaştırması, checkpoint export, confusion matrix ve lokal smoke inference akışı tek notebook'a bağlandı.
 * 2026-06-22 — Milestone: `CABIN-EXP-020A` outquestion Colab run tamamlandı. | Sonuç: 22.424 State Farm train image local runtime'a çıkarıldı; 12.000 dengeli pozitif + 11.124 BDD negatif kullanıldı; MobileNetV3-Large ve EfficientNet-B0 test macro-F1 `1.0` verdi; smoke video adımı veri bulunmadığı için skip edildi.
+* 2026-06-22 — Milestone: `CABIN-EXP-020A` lokal demo video smoke testi tamamlandı. | Sonuç: MobileNetV3-Large checkpoint `Test/video_1-3.mp4` üzerinde overlay MP4, per-frame CSV, summary JSON ve rapor üretti; üç videoda da `not_cabin_view` oranı `1.000` oldu.
 
 ## 8) Yapılanlar
 
@@ -519,7 +521,7 @@
 * [ ] FTR `results.json` adapter ve validator yaz.
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
 * [x] `CABIN-EXP-020A` notebook'unu Colab'da çalıştır; State Farm + negatif veri kaynaklarını doğrula.
-* [ ] `CABIN-EXP-020A` checkpoint'ini `Test/video_*.mp4` veya local demo frame/crop seti üzerinde smoke inference ile doğrula.
+* [x] `CABIN-EXP-020A` checkpoint'ini `Test/video_*.mp4` veya local demo frame/crop seti üzerinde smoke inference ile doğrula.
 * [ ] `CABIN-EXP-020B` driver action classifier notebook'una geç.
 * [ ] Phone/smoking/seatbelt/yolcu/nesne özelliklerini ayrı baseline/fine-tune fazlarına böl.
 * [ ] Vehicle info pipeline'a renk tahmini ve FTR tip mapping ekle.
@@ -625,4 +627,4 @@
 
 ### Güncelleme Kaydı
 
-* Son güncelleme: 2026-06-21
+* Son güncelleme: 2026-06-22
