@@ -60,33 +60,96 @@ Per-class test metrics:
 | `panelvan` | 0.9628 | 0.7768 | 0.8599 | 466 |
 | `kamyon` | 0.9225 | 0.9704 | 0.9458 | 540 |
 
-## Interpretation
+## Dataset-Level Interpretation
 
 `TYPE-EXP-002` is a real improvement over `TYPE-EXP-001` for the commercial/large-vehicle side:
 
 - `kamyon` is now trained and performs strongly in the dataset split.
 - `panelvan` and `pickup` are strong compared with the first run.
 
-It is **not yet a final FTR vehicle type model**:
+It is **not yet a final universal FTR vehicle type model**:
 
 - `minibus` remains the main blocker. It has only 209 raw examples and a test F1 of `0.0625`.
 - `sedan`, `suv`, and `hatchback` are still moderate and likely affected by source taxonomy and viewpoint mismatch.
-- The Colab target ROI smoke cell skipped because ROI crops were not present in Drive.
-- Local target ROI/video smoke test could not be completed until the `TYPE-EXP-002-efficientnet_b0-best.pth` checkpoint is available on the local machine.
 
 ## Local Manual Test Status
 
-The local smoke test code path is ready:
+DNS/Drive download blocking was resolved and the `TYPE-EXP-002` checkpoint was tested locally.
+
+Local checkpoint:
+
+```text
+runs/vehicle_type/TYPE-EXP-002-local-smoke/artifacts/TYPE-EXP-002-efficientnet_b0-best.pth
+```
+
+The checkpoint loads correctly and reports:
+
+| Field | Value |
+|---|---|
+| Experiment ID | `TYPE-EXP-002` |
+| Backbone | `efficientnet_b0` |
+| Best validation macro-F1 | `0.6301` |
+| Labels | `sedan`, `suv`, `hatchback`, `pickup`, `minibus`, `panelvan`, `kamyon` |
+
+### Target ROI Crop Smoke
+
+Input:
+
+```text
+runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames
+```
+
+Output:
+
+```text
+runs/vehicle_type/TYPE-EXP-002-local-smoke/type-exp-002_local_smoke_predictions.csv
+runs/vehicle_type/TYPE-EXP-002-local-smoke/type-exp-002_local_smoke_summary.json
+runs/vehicle_type/TYPE-EXP-002-local-smoke/type-exp-002_local_smoke_contact_sheet.jpg
+```
+
+Summary:
+
+| Video | Frames | Top-1 counts | Gate-pass frames | Gated top-1 counts | Mean confidence | Mean margin |
+|---|---:|---|---:|---|---:|---:|
+| `video_1` | 13 | `suv=9`, `hatchback=3`, `panelvan=1` | 9 | `suv=7`, `hatchback=2` | 0.6642 | 0.5385 |
+| `video_2` | 13 | `suv=10`, `hatchback=1`, `minibus=1`, `kamyon=1` | 7 | `suv=7` | 0.6115 | 0.4572 |
+| `video_3` | 13 | `suv=13` | 10 | `suv=10` | 0.7261 | 0.6115 |
+
+Overall, 32 of 39 sampled ROI crops are classified as `suv`. After the confidence/margin gate, all three videos have a `suv` majority.
+
+### Target ROI Clip Overlay Smoke
+
+Input:
+
+```text
+runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/clips
+```
+
+Output:
+
+```text
+runs/vehicle_type/TYPE-EXP-002-local-video-smoke/type-exp-002_local_video_smoke_predictions.csv
+runs/vehicle_type/TYPE-EXP-002-local-video-smoke/type-exp-002_local_video_smoke_summary.json
+runs/vehicle_type/TYPE-EXP-002-local-video-smoke/video_1_type-exp-002_type_overlay.mp4
+runs/vehicle_type/TYPE-EXP-002-local-video-smoke/video_2_type-exp-002_type_overlay.mp4
+runs/vehicle_type/TYPE-EXP-002-local-video-smoke/video_3_type-exp-002_type_overlay.mp4
+```
+
+Summary:
+
+| Video | Sampled frames | Top-1 counts | Gate-pass frames | Gated top-1 counts | Mean confidence | Mean margin |
+|---|---:|---|---:|---|---:|---:|
+| `video_1` | 344 | `suv=267`, `hatchback=66`, `pickup=2`, `minibus=3`, `kamyon=1`, `sedan=3`, `panelvan=2` | 266 | `suv=215`, `hatchback=51` | 0.7358 | 0.6317 |
+| `video_2` | 344 | `suv=280`, `hatchback=51`, `minibus=6`, `panelvan=1`, `kamyon=5`, `sedan=1` | 260 | `suv=244`, `hatchback=16` | 0.7240 | 0.6134 |
+| `video_3` | 287 | `suv=261`, `hatchback=25`, `kamyon=1` | 203 | `suv=192`, `hatchback=11` | 0.7133 | 0.5938 |
+
+Overall, the clip smoke test produced `suv=808/975` raw top-1 predictions. After the gate, `suv=651/729` frames remain. This is strong enough for the current three target tracks to emit a track-level `suv` result, but the output must be produced with temporal/gated majority voting, not with a single-frame top-1 decision.
+
+## Local Tooling Status
 
 - `scripts/benchmarks/run_type_classifier_smoke.py` now derives output filenames from the checkpoint experiment ID.
 - `scripts/benchmarks/run_type_classifier_video_smoke.py` was added to generate annotated MP4 overlays from target ROI clips.
-- Both scripts were validated with the existing `TYPE-EXP-001` checkpoint.
-
-The `TYPE-EXP-002` checkpoint could not be downloaded by shell during this review:
-
-- Google Drive connector saw the file and confirmed its size: `16,375,323` bytes.
-- Local direct download failed because the machine could not resolve Google auth/download hosts.
-- Therefore, no `TYPE-EXP-002` local manual overlay should be claimed yet.
+- Both scripts were validated with the `TYPE-EXP-002` checkpoint.
 
 ## Manual Test Command
 
@@ -127,12 +190,16 @@ runs/vehicle_type/TYPE-EXP-002-local-video-smoke/video_3_type-exp-002_type_overl
 
 ## Next Decision
 
-Do not lock `TYPE-EXP-002` yet.
+Lock `TYPE-EXP-002` as the current working baseline for the active 3-video demo target vehicle type signal, with a clear caveat:
+
+- For the current target track, report `tip=suv` only after track-level temporal/gated majority.
+- Do not describe the model as final for all FTR vehicle types.
+- Keep `minibus` and `sedan/suv/hatchback` separation as the next dataset-improvement area.
 
 Recommended next steps:
 
-1. Download/copy the `TYPE-EXP-002-efficientnet_b0-best.pth` checkpoint locally and run the two smoke commands above.
-2. If the same target vehicle remains unstable across the three videos, add track-level temporal voting before rejecting the checkpoint.
-3. Add targeted `minibus` data before the next full training run.
-4. Consider splitting `minibus` vs `panelvan` review data manually, because the dataset taxonomies do not cleanly match the FTR labels.
-
+1. Add the vehicle-type adapter output to the FTR/evidence vehicle info fusion layer.
+2. Use `min_confidence=0.60`, `min_margin=0.15`, and per-track majority voting as the first gate.
+3. Store raw per-frame predictions in evidence/debug artifacts, but expose only the voted track-level label in final structured output.
+4. Add targeted `minibus` data before the next full training run.
+5. Consider splitting `minibus` vs `panelvan` review data manually, because the dataset taxonomies do not cleanly match the FTR labels.

@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `TYPE-EXP-002` multi-source FTR araç tipi classifier koşusunu inceledik ve local manuel test hattını hazırladık.
-* Son değişiklik neydi? `TYPE-EXP-002` output notebook'u incelendi; `efficientnet_b0` best checkpoint test macro-F1 `0.6312` verdi, `kamyon/panelvan/pickup` güçlendi ama `minibus` F1 `0.0625` ile ana blocker kaldı.
-* Bir sonraki net adım ne? `TYPE-EXP-002-efficientnet_b0-best.pth` checkpoint'i local `runs/vehicle_type/TYPE-EXP-002-local-smoke/artifacts/` altına alınacak ve `run_type_classifier_smoke.py` + `run_type_classifier_video_smoke.py` ile 3 target ROI video üzerinde manuel overlay review üretilecek.
+* Şu an ne yapıyoruz? `TYPE-EXP-002` multi-source FTR araç tipi classifier koşusunun local target ROI crop ve video overlay smoke testlerini tamamladık.
+* Son değişiklik neydi? DNS/Drive erişim problemi giderildikten sonra `TYPE-EXP-002-efficientnet_b0-best.pth` local'e alındı; 39 crop'ta `suv=32`, 975 video frame'inde `suv=808` raw top-1 çıktı. Gate sonrası üç target track'in çoğunluğu `suv`.
+* Bir sonraki net adım ne? `TYPE-EXP-002` çıktısını vehicle-info/FTR adapter'a tek-frame kararı olarak değil, `min_confidence=0.60`, `min_margin=0.15` ve track-level temporal majority ile bağlamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -235,6 +235,7 @@
 * 2026-06-22 — Karar: Drive'daki `TYPE-EXP-001-efficientnet_b0-best.pth` lokal target ROI smoke sonucunda diagnostic baseline olarak tutulacak, final runtime tip modeli yapılmayacak. | Gerekçe: 39 ROI frame'de `suv=21`, `hatchback=15`, `sedan=2`, `panelvan=1`; aynı hedef araç içinde yan/arka crop'larda `hatchback` karışması var ve checkpoint mapper bug fix öncesi eğitildi. | Etki: `scripts/benchmarks/run_type_classifier_smoke.py` ve `testing/reports/type_exp_001_local_smoke_review.md` eklendi; final için patch'li rerun + kamyon veri + temporal voting gerekir. | Alternatifler: Gate `conf>=0.60/margin>=0.15` ile doğrudan kullanmak; track-level stabilite yetersizliği nedeniyle reddedildi.
 * 2026-06-22 — Karar: `TYPE-EXP-002` multi-source FTR araç tipi deneyi açılacak ve `TYPE-EXP-001` yeniden koşusu yerine ana tip yolu olacak. | Gerekçe: Kullanıcı FTR görselindeki tüm tipleri (`sedan`, `suv`, `hatchback`, `pickup`, `minibus`, `panelvan`, `kamyon`) yakalamak istiyor; EXP-001 Stanford ağırlıklı kaldığı için `kamyon` yok ve lokal ROI stabilitesi yetersiz. | Etki: `notebooks/TYPE_EXP_002_Multisource_FTR_Vehicle_Type_Classifier_Colab.ipynb`, `research/09_vehicle_info/type_exp_002_multisource_dataset_plan.md` ve notebook README güncellemesi eklendi; EXP-002 Stanford Cars + Car Body Type Kaggle + MIO-TCD subset/mirror + manual FTR klasörleri kullanır. | Alternatifler: EXP-001'i sadece patch'leyip tekrar koşmak; sınıf coverage problemini tek başına çözmeyeceği için ikincil/fallback haline getirildi.
 * 2026-06-23 — Karar: `TYPE-EXP-002` koşusu final FTR `tip` modeli olarak hemen kilitlenmeyecek. | Gerekçe: Tüm 7 FTR sınıfı doldu ve `kamyon`/`panelvan`/`pickup` güçlü çıktı; ancak test macro-F1 `0.6312`, `sedan/suv/hatchback` orta düzey, `minibus` F1 `0.0625`. Ayrıca target ROI smoke Colab'da skip edildi ve local checkpoint indirme DNS/Drive erişim problemi nedeniyle tamamlanamadı. | Etki: `testing/reports/type_exp_002_run_review.md` eklendi; `scripts/benchmarks/run_type_classifier_video_smoke.py` ile checkpoint local'e alınır alınmaz overlay MP4 üretilecek. | Alternatifler: Dataset-level metrikle checkpoint'i final yapmak; minibus ve local ROI doğrulama eksikliği nedeniyle reddedildi.
+* 2026-06-23 — Karar: `TYPE-EXP-002` current-demo vehicle type working baseline olarak kullanılacak, ancak yalnız track-level temporal/gated majority ile. | Gerekçe: DNS sorunu giderilince checkpoint local'e alındı; 39 target ROI crop'ta `suv=32/39`, video overlay smoke'ta `suv=808/975` raw top-1 ve gate sonrası `suv=651/729` çıktı. Üç videoda da gated çoğunluk `suv`, fakat frame-level outlier'lar ve dataset-level `minibus` zayıflığı sürüyor. | Etki: `testing/reports/type_exp_002_run_review.md` güncellendi; FTR/evidence adapter'a `min_confidence=0.60`, `min_margin=0.15`, track-level majority gate ile bağlanmalı. | Alternatifler: Modeli reddetmek veya tek-frame top-1'i doğrudan `arac_bilgisi.tip` yapmak; ilki demo kanıtını boşa çıkarır, ikincisi stabiliteyi abartır.
 * 2026-06-20 — Karar: Hız modülü bu faz için kilitlendi. | Gerekçe: VS13 006B geniş subset sonucu raporlanabilir düzeyde; lokal demo transferi trendi koruyor; ground-truth olmayan 3 videoda daha fazla tuning gerçek doğruluk kanıtı üretmez. | Etki: `speed_phase_lock_2026_06_20.md` eklendi; hız çıktısı `dataset_calibrated_approximate_candidate` / `support evidence` olarak kalacak ve FTR `results.json` içine yazılmayacak. | Alternatifler: 006C segment selector veya yeni dataset aramak; FTR ana teslim riskini artırdığı için future scope.
 * 2026-06-20 — Karar: Hız kapanışında VS13 genel performans karşılaştırması, 3 lokal demo video sonuçlarından ayrı raporlanacak. | Gerekçe: Kullanıcı yalnız 3 örnek video değil, VS13 veri setindeki genel performans kıyasının da görünmesini istedi; lokal videolarda ground-truth hız yokken VS13 bilinen-hız benchmark'ı gerçek metrik kaynağıdır. | Etki: `speed_phase_lock_2026_06_20.md` ve `docs/04_yapay_zeka/03_hiz_kestirimi.md` içinde `SPEED-EXP-006`, `006 patch`, `006B linear_raw`, `006B ridge_features` ve kilit `006B huber_features` metrikleri ayrıştırıldı. | Alternatifler: Sadece 3 demo video tablosu ile kapanış yapmak; doğruluk iddiası için yetersiz olduğu için reddedildi.
 * 2026-06-20 — Karar: Cabin/driver hattı önce runtime foundation olarak kurulacak, doğrudan phone/smoking/seatbelt fine-tune ile başlanmayacak. | Gerekçe: `CABIN_DRIVER_FINETUNE_HANDOFF.md` referans verdiği script/artifactlerin çoğunu repo içinde taşımıyor; phone gibi küçük nesnelerde model başarısızlığı ile ROI/visibility hatasını ayırmak için önce cabin ROI, visibility, face/occupant ve torso ROI contract'ı çalışmalıdır. | Etki: `CABIN-EXP-012-runtime-foundation` scripti, summary JSON, enriched event skeleton, rapor ve cabin decision dokümanları eklendi. Bu karar 2026-06-21'de manuel overlay kalite kontrolü sonrası geçersiz kılındı. | Alternatifler: Direkt phone fine-tune başlatmak; ROI/visibility temeli ölçülmeden overfit riski taşıdığı için reddedildi.
@@ -358,6 +359,7 @@
 * 2026-06-22 — Milestone: `TYPE-EXP-001` checkpoint'i lokal target ROI crop'larında smoke test edildi. | Sonuç: 39 crop işlendi, çoğunluk `suv` olsa da `hatchback` karışması yüksek; final terfi reddedildi.
 * 2026-06-22 — Milestone: `TYPE-EXP-002` multi-source Colab notebook'u hazırlandı. | Sonuç: Notebook 7 FTR tip sınıfını strict coverage gate ile hedefler; MIO-TCD `pickup/work van/truck`, Car Body Type body-style ve Stanford conservative mapping kaynaklarını tek eğitim akışında toplar.
 * 2026-06-23 — Milestone: `TYPE-EXP-002` output notebook'u incelendi. | Sonuç: `efficientnet_b0` best checkpoint üretildi; dataset-level `test_macro_f1=0.6312`, `test_accuracy=0.7392`; local video/manual smoke için generic image ve video overlay scriptleri hazırlandı.
+* 2026-06-23 — Milestone: `TYPE-EXP-002` local target ROI crop ve video overlay smoke testleri tamamlandı. | Sonuç: Checkpoint local'e indirildi; 39 crop'ta `suv=32`, 975 video frame'inde `suv=808` raw top-1, gate sonrası `suv=651/729` üretildi. Üç demo target track için `suv` track-level çoğunlukla destekleniyor.
 
 ## 8) Yapılanlar
 
@@ -553,9 +555,10 @@
 * [x] `TYPE-EXP-001` için CompCars/Stanford/BoxCars tabanlı 7 FTR tip sınıflı Colab notebook hazırla.
 * [x] `TYPE-EXP-001` Colab ağır run çıktısını incele; missing/low support sınıflar, macro-F1, confusion matrix ve target ROI smoke sonuçlarını raporla.
 * [x] `TYPE-EXP-002` multi-source FTR type notebook ve dataset planını hazırla.
-* [ ] `TYPE-EXP-002` notebook'u Colab'da çalıştır; coverage tablosunda 7 FTR tip sınıfının tamamının dolduğunu doğrula.
+* [x] `TYPE-EXP-002` notebook'u Colab'da çalıştır; coverage tablosunda 7 FTR tip sınıfının tamamının dolduğunu doğrula.
 * [x] `TYPE-EXP-002` çıktısını incele; macro-F1, per-class F1, confusion matrix, source leakage ve target ROI smoke durumunu raporla.
-* [ ] `TYPE-EXP-002-efficientnet_b0-best.pth` checkpoint'ini local'e al ve `Test/video_1-3` target ROI clip overlay smoke testini çalıştır.
+* [x] `TYPE-EXP-002-efficientnet_b0-best.pth` checkpoint'ini local'e al ve `Test/video_1-3` target ROI clip overlay smoke testini çalıştır.
+* [ ] `TYPE-EXP-002` track-level gated temporal majority output'unu vehicle-info/FTR adapter'a bağla.
 * [ ] `TYPE-EXP-002` düşük sınıfları için gerekirse manual FTR klasörlerine hedefli veri ekle.
 * [ ] Patch'li `TYPE-EXP-001` notebook'u yalnız fallback/karşılaştırma olarak yeniden çalıştır; token-aware mapping sonrası class counts ve macro-F1 değişimini kontrol et.
 * [ ] `TYPE-EXP-001` için `kamyon` sınıfına ek veri/manual klasör veya güvenilir external source ekle.
@@ -668,4 +671,4 @@
 
 ### Güncelleme Kaydı
 
-* Son güncelleme: 2026-06-22
+* Son güncelleme: 2026-06-23
