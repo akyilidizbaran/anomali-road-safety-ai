@@ -146,6 +146,13 @@ Yeni notebook extract işlemini yine local Colab runtime altında yapar:
 /content/anomali-road-safety-ai-work/datasets/driver_action_exp_020b/state_farm/
 ```
 
+Drive mount kopmalarını azaltmak için büyük zip arşivi extraction öncesinde local runtime'a
+tek parça kopyalanır:
+
+```text
+/content/anomali-road-safety-ai-work/archives/driver_action_exp_020b/state-farm-distracted-driver-detection.zip
+```
+
 Kalıcı metrik, checkpoint ve rapor çıktıları Drive'a yazılır; ham image extract çıktıları Drive'a
 basılmaz.
 

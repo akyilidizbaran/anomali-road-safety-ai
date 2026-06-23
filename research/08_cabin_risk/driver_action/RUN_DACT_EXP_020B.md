@@ -68,6 +68,18 @@ hatalarını önlemek için eğitim görüntüleri local Colab runtime altına �
 /content/anomali-road-safety-ai-work/datasets/driver_action_exp_020b/state_farm/
 ```
 
+Ek olarak, `OSError: [Errno 107] Transport endpoint is not connected` gibi
+Drive FUSE kopmalarını azaltmak için notebook, 4.3 GB State Farm zip'ini
+extraction öncesinde local runtime archive cache'e kopyalar:
+
+```text
+/content/anomali-road-safety-ai-work/archives/driver_action_exp_020b/state-farm-distracted-driver-detection.zip
+```
+
+Bu kopya tamamlandıktan sonra binlerce küçük image okuması Drive üzerinden değil
+local disk üzerinden yapılır. Kopyalama sırasında aynı hata alınırsa Colab
+runtime yeniden başlatılıp Drive `force_remount=True` ile tekrar bağlanmalıdır.
+
 ## State Farm Sınıf Eşlemesi
 
 | State Farm | İç Etiket | FTR Kararı |
