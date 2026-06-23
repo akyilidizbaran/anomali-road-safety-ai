@@ -181,6 +181,36 @@
       },
       "additionalProperties": true
     },
+    "driver_detection": {
+      "type": "object",
+      "description": "Driver presence and role-assignment signal. This does not imply a driver action or violation.",
+      "properties": {
+        "experiment_id": { "type": ["string", "null"] },
+        "module": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["detected", "not_detected", "ambiguous", "not_visible", "not_evaluable", "not_run", "unknown"]
+        },
+        "driver_present": { "type": ["boolean", "null"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "risk_enabled": { "type": "boolean" },
+        "action_enabled": { "type": "boolean" },
+        "failure_reason": { "type": ["string", "null"] },
+        "view_profile": { "type": ["string", "null"] },
+        "cabin_visibility": { "type": ["string", "null"] },
+        "cabin_visibility_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "occupant_count_estimate": { "type": ["integer", "null"], "minimum": 0 },
+        "passenger_count": { "type": ["integer", "null"], "minimum": 0 },
+        "driver_candidate_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "temporal_detection_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "role_assignment_status": { "type": ["string", "null"] },
+        "best_frame": { "type": ["integer", "null"], "minimum": 0 },
+        "source_roi_uri": { "type": ["string", "null"] },
+        "annotated_video_uri": { "type": ["string", "null"] },
+        "model_version": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
     "external_users": {
       "type": "array",
       "items": {

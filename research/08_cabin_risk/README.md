@@ -31,6 +31,8 @@ Cabin risk modülünün MVP mi opsiyonel mi olacağına dair karar.
 
 * `driver_action/driver_action_model_data_research_2026_06_23.md`: FTR
   `sofor_eylemi` alanı için veri/model araştırması ve deney sıralaması.
+* `driver_detection/`: Sürücü var/yok ve role-assignment modülü. İlk baseline
+  `DRIVER-EXP-001` olarak `CABIN-EXP-004` YuNet summary çıktısından ayrıştırıldı.
 * `slalom` cabin-view modeli değildir; dış kamera target-track hareket heuristiği
   olarak `DACT-EXP-001` ile kilitlenir.
 * İlk cabin/action deney adayı `DACT-EXP-020B` olmalıdır: State Farm tabanlı

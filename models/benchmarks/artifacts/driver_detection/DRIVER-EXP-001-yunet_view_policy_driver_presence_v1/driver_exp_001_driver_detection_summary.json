@@ -1,0 +1,134 @@
+{
+  "experiment_id": "DRIVER-EXP-001",
+  "experiment_name": "yunet_view_policy_driver_presence_v1",
+  "stage": "driver_detection_event_enrichment",
+  "created_at_utc": "2026-06-23T19:17:42Z",
+  "source_cabin_experiment_id": "CABIN-EXP-004",
+  "source_cabin_model": "opencv_yunet_2026may",
+  "risk_enabled": false,
+  "action_enabled": false,
+  "aggregate": {
+    "video_count": 3,
+    "status_counts": {
+      "detected": 3
+    },
+    "driver_detected_video_count": 3,
+    "mean_driver_confidence": 0.7986
+  },
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "track_id": "TRK-001",
+      "driver_detection": {
+        "experiment_id": "DRIVER-EXP-001",
+        "module": "driver_detection",
+        "status": "detected",
+        "driver_present": true,
+        "confidence": 0.8117,
+        "risk_enabled": false,
+        "action_enabled": false,
+        "failure_reason": null,
+        "view_profile": "side_driver_window",
+        "cabin_visibility": "limited",
+        "cabin_visibility_score": 0.548,
+        "face_count": 2,
+        "occupant_count_estimate": 2,
+        "passenger_count": 1,
+        "driver_candidate_rate": 0.8026,
+        "temporal_detection_rate": 0.9742,
+        "raw_face_detection_rate": 0.8655,
+        "longest_eligible_face_miss_run": 6,
+        "role_assignment_status": "assigned_side_driver_largest_face",
+        "best_frame": 2,
+        "source_roi_uri": "runs/cabin/cabin_exp_004/rois/video_1/frame_000002_cabin.jpg",
+        "annotated_video_uri": "runs/cabin/cabin_exp_004/annotated/video_1_opencv_yunet_2026may.mp4",
+        "source_cabin_experiment_id": "CABIN-EXP-004",
+        "model_version": "opencv_yunet_2026may",
+        "decision_note": "Driver detection is a presence/role-assignment signal only. It does not infer phone, smoking, seatbelt, fatigue, or legal risk."
+      },
+      "driver_cabin": {
+        "visibility": "limited",
+        "driver_detected": true,
+        "occupant_count_estimate": 2,
+        "passenger_count": 1
+      }
+    },
+    {
+      "video": "video_2.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "track_id": "TRK-001",
+      "driver_detection": {
+        "experiment_id": "DRIVER-EXP-001",
+        "module": "driver_detection",
+        "status": "detected",
+        "driver_present": true,
+        "confidence": 0.7988,
+        "risk_enabled": false,
+        "action_enabled": false,
+        "failure_reason": null,
+        "view_profile": "side_driver_window",
+        "cabin_visibility": "limited",
+        "cabin_visibility_score": 0.546,
+        "face_count": 2,
+        "occupant_count_estimate": 2,
+        "passenger_count": 1,
+        "driver_candidate_rate": 0.8531,
+        "temporal_detection_rate": 0.8735,
+        "raw_face_detection_rate": 0.7918,
+        "longest_eligible_face_miss_run": 9,
+        "role_assignment_status": "assigned_side_driver_largest_face",
+        "best_frame": 21,
+        "source_roi_uri": "runs/cabin/cabin_exp_004/rois/video_2/frame_000021_cabin.jpg",
+        "annotated_video_uri": "runs/cabin/cabin_exp_004/annotated/video_2_opencv_yunet_2026may.mp4",
+        "source_cabin_experiment_id": "CABIN-EXP-004",
+        "model_version": "opencv_yunet_2026may",
+        "decision_note": "Driver detection is a presence/role-assignment signal only. It does not infer phone, smoking, seatbelt, fatigue, or legal risk."
+      },
+      "driver_cabin": {
+        "visibility": "limited",
+        "driver_detected": true,
+        "occupant_count_estimate": 2,
+        "passenger_count": 1
+      }
+    },
+    {
+      "video": "video_3.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "track_id": "TRK-002",
+      "driver_detection": {
+        "experiment_id": "DRIVER-EXP-001",
+        "module": "driver_detection",
+        "status": "detected",
+        "driver_present": true,
+        "confidence": 0.7853,
+        "risk_enabled": false,
+        "action_enabled": false,
+        "failure_reason": null,
+        "view_profile": "front_lhd",
+        "cabin_visibility": "limited",
+        "cabin_visibility_score": 0.468,
+        "face_count": 1,
+        "occupant_count_estimate": 1,
+        "passenger_count": 0,
+        "driver_candidate_rate": 0.859,
+        "temporal_detection_rate": 0.8718,
+        "raw_face_detection_rate": 0.8105,
+        "longest_eligible_face_miss_run": 12,
+        "role_assignment_status": "assigned_front_lhd_right_side_face",
+        "best_frame": 78,
+        "source_roi_uri": "runs/cabin/cabin_exp_004/rois/video_3/frame_000078_cabin.jpg",
+        "annotated_video_uri": "runs/cabin/cabin_exp_004/annotated/video_3_opencv_yunet_2026may.mp4",
+        "source_cabin_experiment_id": "CABIN-EXP-004",
+        "model_version": "opencv_yunet_2026may",
+        "decision_note": "Driver detection is a presence/role-assignment signal only. It does not infer phone, smoking, seatbelt, fatigue, or legal risk."
+      },
+      "driver_cabin": {
+        "visibility": "limited",
+        "driver_detected": true,
+        "occupant_count_estimate": 1,
+        "passenger_count": 0
+      }
+    }
+  ]
+}

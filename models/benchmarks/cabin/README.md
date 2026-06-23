@@ -6,6 +6,7 @@ sonuçlarını tutar.
 Ana tablo:
 
 * `cabin_baseline_comparison.csv`
+* `driver_detection_baseline_comparison.csv`
 * `driver_pose_baseline_comparison.csv`
 * `driver_torso_baseline_comparison.csv`
 * `seatbelt_baseline_comparison.csv`
@@ -15,6 +16,8 @@ Deneyler:
 * `CABIN-EXP-001`: MediaPipe BlazeFace full-range.
 * `CABIN-EXP-002`: MediaPipe BlazeFace short-range.
 * `CABIN-EXP-003`: Seçilen baseline event/evidence enrichment.
+* `DRIVER-EXP-001`: Seçilen YuNet cabin/face summary üstünden driver presence
+  ve role-assignment event enrichment.
 
 Cabin crop, yüz görüntüsü ve overlay videoları kişisel veri riski nedeniyle yalnız
 ignore edilen `runs/cabin/` altında tutulur.

@@ -1,0 +1,2 @@
+experiment_id,model,status,video_count,driver_detected_video_count,mean_driver_confidence,risk_enabled,action_enabled,decision,notes
+DRIVER-EXP-001,yunet_view_policy_driver_presence_v1,selected_presence_gate,3,3,0.7986,False,False,selected,Dedicated driver presence contract extracted from CABIN-EXP-004 YuNet view-profile policy.
