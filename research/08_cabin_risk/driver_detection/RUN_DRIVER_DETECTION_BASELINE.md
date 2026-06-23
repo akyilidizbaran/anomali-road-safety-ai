@@ -27,7 +27,24 @@ Doğrulama:
 
 ```bash
 python3 -m py_compile scripts/benchmarks/enrich_event_skeleton_with_driver_detection.py
+python3 -m py_compile scripts/benchmarks/render_driver_detection_overlay.py
 python3 -m json.tool models/benchmarks/artifacts/driver_detection/DRIVER-EXP-001-yunet_view_policy_driver_presence_v1/driver_exp_001_driver_detection_summary.json >/dev/null
+```
+
+## Görsel Overlay Üretimi
+
+Driver'ın video üzerinde görülmesi için:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/render_driver_detection_overlay.py
+```
+
+Çıktılar:
+
+```text
+runs/driver_detection/DRIVER-EXP-001-yunet_view_policy_driver_presence_v1/annotated/video_1_driver_detection.mp4
+runs/driver_detection/DRIVER-EXP-001-yunet_view_policy_driver_presence_v1/annotated/video_2_driver_detection.mp4
+runs/driver_detection/DRIVER-EXP-001-yunet_view_policy_driver_presence_v1/annotated/video_3_driver_detection.mp4
 ```
 
 Not: Bu modül sürücü eylemi üretmez. Çıktı yalnız sonraki

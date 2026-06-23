@@ -3,7 +3,7 @@
 ## 0) TL;DR (En güncel durum)
 
 * Şu an ne yapıyoruz? FTR surucu eylemlerinde once driver'in kendisini tespit eden gate/evidence modulu kuruldu.
-* Son değişiklik neydi? `DRIVER-EXP-001` driver detection enrichment scripti eklendi ve 3 target event uzerinde `driver_present=true` uretti.
+* Son değişiklik neydi? `DRIVER-EXP-001` driver detection overlay videolari uretildi; target vehicle, cabin ROI ve driver face bbox video ustunde gosteriliyor.
 * Bir sonraki net adım ne? `DRIVER-EXP-001` uzerinden `DACT-EXP-020B` State Farm tabanli driver action classifier Colab notebook'unu hazirla; ilk hedefler `telefonla_konusma`, `su_icme`, `arkaya_bakma_candidate` ve hard-negative siniflaridir.
 
 ## 1) Proje Amacı ve Kapsam
@@ -382,6 +382,7 @@
 * 2026-06-23 — Milestone: `DACT-EXP-001` slalom baseline tamamlandi. | Sonuç: `video_1` ve `video_2` `not_detected`, `video_3` `candidate` cikti; summary JSON, enriched event JSON, timeseries CSV, plotlar ve overlay videolar uretildi.
 * 2026-06-23 — Milestone: Driver action model/veri arastirmasi tamamlandi. | Sonuç: `DACT-EXP-020B` icin State Farm birincil baslangic, AUC external validation, DMD/Drive&Act orta vadeli kaynak, YawDD/NTHU yawn kaynagi, smoking/seatbelt ayri specialist fazlari olarak kaydedildi.
 * 2026-06-23 — Milestone: `DRIVER-EXP-001` driver detection modulu tamamlandi. | Sonuç: 3 target event'te driver detection `detected`; ortalama confidence `0.7986`; `risk_enabled=false` ve `action_enabled=false` olarak event/evidence JSON'a islendi.
+* 2026-06-23 — Milestone: `DRIVER-EXP-001` goruntu overlay videolari uretildi. | Sonuç: `runs/driver_detection/DRIVER-EXP-001-yunet_view_policy_driver_presence_v1/annotated/` altinda 3 MP4 cikti; videolarda target vehicle, cabin ROI, driver face bbox ve status paneli gorunur.
 
 ## 8) Yapılanlar
 
@@ -568,6 +569,7 @@
 * [x] `CABIN-EXP-020A` notebook'unu Colab'da çalıştır; State Farm + negatif veri kaynaklarını doğrula.
 * [x] `CABIN-EXP-020A` checkpoint'ini `Test/video_*.mp4` veya local demo frame/crop seti üzerinde smoke inference ile doğrula.
 * [x] `DRIVER-EXP-001` driver presence / role-assignment modülünü oluştur ve event/evidence JSON'a bağla.
+* [x] `DRIVER-EXP-001` için video overlay çıktısı üret; driver bbox/ROI görsel kontrolünü mümkün kıl.
 * [ ] `DACT-EXP-020B` State Farm tabanli driver action classifier notebook'unu hazirla.
 * [ ] `DACT-EXP-020B` Colab run sonrasi `telefonla_konusma`, `su_icme`, `arkaya_bakma_candidate` per-class metriklerini ve confusion matrix'i raporla.
 * [ ] Phone/smoking/seatbelt/yolcu/nesne özelliklerini ayrı baseline/fine-tune fazlarına böl.
