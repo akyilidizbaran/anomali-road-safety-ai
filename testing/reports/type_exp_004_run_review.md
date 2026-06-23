@@ -22,11 +22,17 @@ runs/vehicle_type/TYPE-EXP-004-local-smoke/artifacts/TYPE-EXP-004-efficientnet_b
 
 ## Decision
 
-`TYPE-EXP-004` should not be promoted as the active runtime/FTR vehicle type model.
+`TYPE-EXP-004` is kept as the broad-dataset vehicle type candidate after user review.
 
-The controlled minibus repair worked on the dataset split, but it did not solve the local target ROI false-mode problem. On the same three target ROI videos used for `TYPE-EXP-002` and `TYPE-EXP-003`, `TYPE-EXP-004` still shifts `video_2` and `video_3` toward `minibus` after the confidence/margin gate.
+The controlled minibus repair worked on the dataset split. It did not fully solve the local target ROI false-mode problem on the three example videos, so the model must still be used with track-level temporal majority and confidence/margin gates.
 
-Active runtime baseline remains:
+Broad-dataset candidate:
+
+```text
+TYPE-EXP-004-efficientnet_b0-best.pth
+```
+
+Local 3-video fallback remains:
 
 ```text
 TYPE-EXP-002-efficientnet_b0-best.pth
@@ -208,24 +214,24 @@ Same local target ROI video holdout:
 |---|---|---:|---|---|---|---|
 | TYPE-EXP-002 | suv 808, hatchback 142, minibus 9 | 729 | suv 215, hatchback 51 | suv 244, hatchback 16 | suv 192, hatchback 11 | Keep active |
 | TYPE-EXP-003 | suv 504, minibus 382 | 564 | suv 169, minibus 56 | minibus 80, suv 62 | minibus 109, suv 79 | Reject |
-| TYPE-EXP-004 | suv 383, minibus 306, sedan 147 | 433 | suv 80, hatchback 28, minibus 21 | minibus 52, suv 42 | minibus 104, suv 72 | Reject |
+| TYPE-EXP-004 | suv 383, minibus 306, sedan 147 | 433 | suv 80, hatchback 28, minibus 21 | minibus 52, suv 42 | minibus 104, suv 72 | Keep as broad candidate, local caveat |
 
 `TYPE-EXP-004` improves dataset-level minibus performance, but it is still worse than `TYPE-EXP-002` on the fixed local demo holdout.
 
 ## Interpretation
 
-The likely issue is not simple class imbalance anymore. The model learned a stronger minibus decision boundary from Vehicle-10/focus data, but the local target SUV crop geometry, low-light quality, rear/side viewpoint, or crop framing overlaps with minibus-like visual cues. Because the active demo target vehicle should remain stable at track level, the runtime model cannot be promoted only from dataset metrics.
+The likely issue is not simple class imbalance anymore. The model learned a stronger minibus decision boundary from Vehicle-10/focus data, but the local target SUV crop geometry, low-light quality, rear/side viewpoint, or crop framing overlaps with minibus-like visual cues. Since the three local videos are examples rather than the full target distribution, the final project decision is to keep `TYPE-EXP-004` as the broad-dataset candidate and document this local caveat.
 
 ## Recommendation
 
-1. Keep `TYPE-EXP-002` as the current vehicle type runtime baseline.
-2. Use `TYPE-EXP-004` only as documented evidence that minibus dataset repair was attempted and improved benchmark metrics.
-3. Do not run more minibus-only repair without a local holdout-aware validation set.
-4. Next type experiment, if needed, should add target-geometry hard negatives and/or viewpoint-aware ROI augmentation, not simply more minibus examples.
-5. Proceed with FTR/evidence adapter integration using `TYPE-EXP-002` and track-level gated temporal majority.
+1. Keep `TYPE-EXP-004` as the broad-dataset vehicle type candidate.
+2. Use `TYPE-EXP-004` only through track-level temporal majority and confidence/margin gates.
+3. Keep `TYPE-EXP-002` as the local 3-video fallback if the demo specifically targets the current example videos.
+4. Do not run more minibus-only repair without a local holdout-aware validation set.
+5. Next type experiment, if needed, should add target-geometry hard negatives and/or viewpoint-aware ROI augmentation, not simply more minibus examples.
 
 ## Freeze Status
 
-`TYPE-EXP-004` is closed as a non-promoted experiment.
+`TYPE-EXP-004` is retained as the broad-dataset candidate.
 
-Runtime active model remains `TYPE-EXP-002`.
+Local 3-video fallback remains `TYPE-EXP-002`.
