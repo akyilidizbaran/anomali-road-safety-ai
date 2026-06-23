@@ -45,6 +45,31 @@ Bu yüzden EXP-003, tüm sınıfları yeniden agresif şekilde karıştırmak ye
 - Vehicle-10 tar.gz: https://drive.google.com/file/d/1Z2LL-vcjKnpcX2rLyBkKG577mkPcYIpR/view?usp=sharing
 - Car Body Type Kaggle: https://www.kaggle.com/datasets/ademboukhris/cars-body-type-cropped
 
+## Vehicle-10 İndirme Notu
+
+Vehicle-10, minibus için doğru ek kaynaklardan biridir; GitHub README'si veri setinde `minibus` sınıfı ve yaklaşık `1477` minibus örneği olduğunu belirtir. Ancak dosyalar Google Drive üzerinden verildiği için Colab içinde `gdown` bazen quota, confirmation veya büyük dosya aktarımı sebebiyle takılabilir.
+
+Bu nedenle güncel EXP-003 notebook şu sırayla çalışır:
+
+1. Önce Drive altında mevcut `vehicle-10.zip`, `vehicle-10.tar.gz`, `.tgz` veya `.tar` arşivi var mı bakar.
+2. Arşiv varsa onu local Colab runtime'a extract eder.
+3. Arşiv yoksa önce Linux için `vehicle-10.tar.gz` dosyasını `gdown --fuzzy --continue` ile dener.
+4. Tar indirme başarısız olursa zip dosyasını dener.
+5. Her gdown denemesinde timeout uygulanır; hücrenin sonsuz beklemesi engellenir.
+6. Hâlâ başarısızsa notebook manuel fallback mesajı verir. Bu durumda arşiv şu klasöre konulmalıdır:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/vehicle_10/
+```
+
+Alternatif olarak yalnız minibus örnekleri şu klasöre manuel eklenebilir:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/manual/minibus/
+```
+
+Vehicle-10 alınamazsa EXP-003 hâlâ VTID2 ve EXP-002 kaynaklarını okuyabilir; fakat `minibus` coverage gate büyük olasılıkla durur. Bu istenen davranıştır, çünkü EXP-003'ün temel amacı minibus zayıflığını da gidermektir.
+
 ## Notebook
 
 Aktif notebook:
@@ -127,4 +152,3 @@ EXP-003, EXP-002 yerine runtime baseline olabilmek için şunları sağlamalı:
 - Test macro-F1 artışı yalnız focus dışı sınıfları bozarak elde edilirse.
 
 Bu durumda EXP-002 aktif baseline kalır; EXP-003 yalnız araştırma deneyi olarak raporlanır.
-

@@ -258,6 +258,18 @@ TYPE-EXP-002 base sources
 Manual focus folders
 ```
 
+Vehicle-10 Google Drive bağlantısı Colab `gdown` tarafında quota/confirmation/large-file sebepleriyle takılabilir. Güncel notebook önce Drive'da mevcut arşivi arar; yoksa önce `vehicle-10.tar.gz`, sonra `vehicle-10.zip` dosyasını timeout'lu şekilde dener. Otomatik indirme başarısız olursa dosyayı manuel olarak şu klasöre koy:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/vehicle_10/
+```
+
+Yalnız minibus örneği ekleyeceksen alternatif klasör:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/manual/minibus/
+```
+
 Drive dizinleri:
 
 ```text
