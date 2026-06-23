@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Run TYPE-EXP-001 vehicle type classifier on local target ROI crops."""
+"""Run a vehicle type classifier checkpoint on local target ROI crops.
+
+The script was first used for TYPE-EXP-001, but it is intentionally checkpoint
+driven: output names and summaries derive from ``checkpoint["experiment_id"]``.
+"""
 
 from __future__ import annotations
 
@@ -25,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--checkpoint",
         default="runs/vehicle_type/TYPE-EXP-001-local-smoke/artifacts/TYPE-EXP-001-efficientnet_b0-best.pth",
-        help="TYPE-EXP-001 .pth checkpoint path.",
+        help="Vehicle type classifier .pth checkpoint path.",
     )
     parser.add_argument(
         "--input-dir",
@@ -48,6 +52,11 @@ def build_model(num_classes: int) -> nn.Module:
     in_features = model.classifier[-1].in_features
     model.classifier[-1] = nn.Linear(in_features, num_classes)
     return model
+
+
+def experiment_slug(value: str | None) -> str:
+    value = value or "vehicle-type"
+    return re.sub(r"[^A-Za-z0-9_.-]+", "_", value).strip("_").lower()
 
 
 def image_transform(image_size: int) -> T.Compose:
@@ -176,7 +185,10 @@ def main() -> None:
                     }
                 )
 
-    csv_path = output_dir / "type_exp_001_local_smoke_predictions.csv"
+    exp_id = checkpoint.get("experiment_id", "vehicle-type-local-smoke")
+    slug = experiment_slug(str(exp_id))
+
+    csv_path = output_dir / f"{slug}_local_smoke_predictions.csv"
     with csv_path.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
@@ -200,7 +212,7 @@ def main() -> None:
         }
 
     summary = {
-        "experiment_id": "TYPE-EXP-001-local-smoke",
+        "experiment_id": f"{exp_id}-local-smoke",
         "source_checkpoint": str(checkpoint_path),
         "checkpoint_experiment_id": checkpoint.get("experiment_id"),
         "checkpoint_backbone": checkpoint.get("backbone"),
@@ -217,10 +229,10 @@ def main() -> None:
         "csv": str(csv_path),
     }
 
-    summary_path = output_dir / "type_exp_001_local_smoke_summary.json"
+    summary_path = output_dir / f"{slug}_local_smoke_summary.json"
     summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
-    sheet_path = output_dir / "type_exp_001_local_smoke_contact_sheet.jpg"
+    sheet_path = output_dir / f"{slug}_local_smoke_contact_sheet.jpg"
     make_contact_sheet(rows, sheet_path)
 
     print(json.dumps(summary, indent=2))
