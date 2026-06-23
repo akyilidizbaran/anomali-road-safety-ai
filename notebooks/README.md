@@ -17,6 +17,7 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `TYPE_EXP_002_Multisource_FTR_Vehicle_Type_Classifier_Colab.ipynb`: `TYPE-EXP-001` sonrasında açılan multi-source FTR tip deneyidir. Stanford Cars + Car Body Type + MIO-TCD + manual FTR klasörlerini birleştirerek 7 resmi tipi kapsar; `kamyon/panelvan/pickup` desteğini güçlendirir ve EfficientNet-B0 checkpoint export eder.
 * `TYPE_EXP_003_Focus_Sedan_SUV_Hatchback_Minibus_Colab.ipynb`: `TYPE-EXP-002-efficientnet_b0-best.pth` checkpoint'inden devam eden odak refinement deneyidir. VTID2 / Vehicle Type Image Dataset ile `sedan/suv/hatchback`, Vehicle-10 ile `minibus` sınıfını güçlendirir. Amaç yeni taxonomy açmak değil; EXP-002'de orta/zayıf kalan sınıfları iyileştirirken aynı 7 FTR tip çıkışını korumaktır.
 * `TYPE_EXP_004_T4_Controlled_Minibus_Repair_Colab.ipynb`: `TYPE-EXP-003` lokal smoke testte `minibus` false mode ürettiği için açılan T4 uyumlu kontrollü minibus repair deneyidir. `TYPE-EXP-002` checkpoint'inden devam eder, Vehicle-10 minibus örneklerini source/class cap ile sınırlar, class/sampler weight değerlerini clip eder ve selection skoruna `minibus_precision`, `minibus_false_positive_rate` ve guard sınıf macro-F1 ekler. Amaç minibus F1'i raporlanabilir seviyeye çıkarmak, fakat `suv/panelvan/sedan/hatchback` sınıflarını minibus'a kaydırmamaktır.
+* `DACT_EXP_020B_Driver_Action_Classifier_Colab.ipynb`: `DRIVER-EXP-001` driver presence gate sonrasında çalışacak ilk driver-action classifier notebook'udur. State Farm Distracted Driver verisini kullanarak `telefonla_konusma`, `su_icme`, `arkaya_bakma_candidate`, phone-use hard negative ve diğer dikkat dağınıklığı hard-negative sınıflarını ayırır. Varsayılan `RUN_MODE='quick'` ile yavaş başlangıç/sanity run yapar; ağır koşu için `RUN_MODE='full'` MobileNetV3-Large + EfficientNet-B0 karşılaştırmasını açar. `sigara_icme`, `esneme`, `emniyet_kemeri_ihlali` ve `etrafa_bakinma` bu notebook ile kapatılmaz; ayrı specialist fazlarıdır.
 
 ## Output-Saved Notebooklar
 
@@ -130,6 +131,23 @@ Kontrol adımları:
    `/content/anomali-road-safety-ai-work/datasets/cabin_exp_020a/state_farm/`. Bu, Drive mount
    üzerinde çok sayıda küçük dosya yazarken oluşan `OSError: [Errno 5] Input/output error`
    problemini önler.
+
+`DACT_EXP_020B_Driver_Action_Classifier_Colab.ipynb` aynı State Farm zip/cache mantığını kullanır.
+Zip daha önce `CABIN-EXP-020A` için Drive'a konduysa tekrar indirme yapmadan şu kaynaktan
+kullanır:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/cabin_exp_020a/state_farm/state-farm-distracted-driver-detection.zip
+```
+
+Yeni notebook extract işlemini yine local Colab runtime altında yapar:
+
+```text
+/content/anomali-road-safety-ai-work/datasets/driver_action_exp_020b/state_farm/
+```
+
+Kalıcı metrik, checkpoint ve rapor çıktıları Drive'a yazılır; ham image extract çıktıları Drive'a
+basılmaz.
 
 ### COLOR-EXP-001 VCoR Kullanımı
 
