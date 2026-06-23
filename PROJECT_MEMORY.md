@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? FTR surucu eylemleri icin ilk dis-kamera tabanli davranis sinyali olarak `slalom` baseline'i kuruldu.
-* Son değişiklik neydi? `DACT-EXP-001` track-residual slalom heuristic scripti eklendi; 3 video uzerinde kosuldu, `video_3` candidate, `video_1/video_2` not_detected uretildi.
-* Bir sonraki net adım ne? Slalom overlay ve residual grafiklerini manuel incele; karar mantigi kabul edilirse `telefonla_konusma` icin phone/arm-state evidence hattina gec.
+* Şu an ne yapıyoruz? FTR surucu eylemlerinde `slalom` mevcut faz icin kilitlendi; siradaki faz cabin/driver action model ve veri arastirmasi.
+* Son değişiklik neydi? `research/08_cabin_risk/driver_action/driver_action_model_data_research_2026_06_23.md` eklendi; driver action etiketleri icin veri/model secimi ve deney sirasi belirlendi.
+* Bir sonraki net adım ne? `DACT-EXP-020B` State Farm tabanli driver action classifier Colab notebook'unu hazirla; ilk hedefler `telefonla_konusma`, `su_icme`, `arkaya_bakma_candidate` ve hard-negative siniflaridir.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -246,6 +246,7 @@
 * 2026-06-23 — Karar: Phone specialist checkpointleri Git'e binary olarak eklenmeyecek, lokal checkpoint registry ile izlenecek. | Gerekçe: `.pt` dosyaları büyük/generated model artifact niteliğinde ve `.gitignore` altında; repo taşınabilirliği için registry dokümanı yeterli, gerçek ağırlıklar Drive/local artifact olarak yönetilmeli. | Etki: `models/checkpoints/cabin_phone/phone/*PHONE-EXP-003/004*.pt` lokal kopyalandı; `models/checkpoint_registry_cabin_phone.md` bu pathleri ve kullanım statüsünü kaydeder. | Alternatifler: `git add -f` ile binary commit etmek; repo boyutu ve artifact governance nedeniyle reddedildi.
 * 2026-06-23 — Karar: `driver_torso` ve `driver_arm_state` handoff kapsamı dedicated model checkpoint olarak değil, baseline pipeline olarak entegre edilecek. | Gerekçe: `handoff.zip` içinde bu iki modül için `.pt/.pth/.onnx/.engine` checkpoint yok; torso YuNet face summary + deterministik geometri, arm-state ise ViTPose/YOLO pose gözlemleri + LK tracking + temporal voting kullanıyor. | Etki: `models/checkpoint_registry_driver_cabin.md` ve `testing/reports/driver_torso_arm_state_handoff_baseline_review_2026_06_23.md` eklendi; torso mevcut comparison'da rejected, arm-state ise `risk_enabled=false` manual-review adayı olarak tutulur. | Alternatifler: Bu çıktıları final cabin risk modeli gibi sunmak; checkpoint/validation ve manual review eksikliği nedeniyle reddedildi.
 * 2026-06-23 — Karar: FTR `slalom` ilk asamada egitimsiz track-residual heuristic olarak kurulacak. | Gerekçe: Mevcut vehicle detection + ByteTrack + SPEED-EXP-005A full target timeseries, slalom icin yeterli baslangic sinyali sagliyor; elimizde insan etiketli slalom verisi olmadigi icin 3 video ile model egitmek overfit olur. | Etki: `run_driver_action_slalom_baseline.py` eklendi; `driver_action.slalom` alanlari event JSON'a yazildi; grafik/overlay manuel review ciktisi uretildi. | Alternatifler: Slalom classifier egitmek veya lane-line ground truth beklemek; veri yoklugu ve hizli FTR ilerleme ihtiyaci nedeniyle ertelendi.
+* 2026-06-23 — Karar: `slalom`, mevcut faz icin kilitli driver-action baseline olarak kabul edilecek; siradaki driver fazi `DACT-EXP-020B` action classifier arastirmasi ve notebook'u olacak. | Gerekçe: Kullanıcı `DACT-EXP-001` sonucunu mevcut haliyle kilitlemeyi onayladı; cabin driver eylemleri icin veri/model arastirmasinda State Farm/AUC/DMD/Drive&Act kaynaklari incelendi ve en hizli savunulabilir baslangicin phone-call/drinking/reaching sınıflari oldugu belirlendi. | Etki: `research/08_cabin_risk/driver_action/driver_action_model_data_research_2026_06_23.md` eklendi; `telefonla_konusma` ve `su_icme` ilk guclu sınıflar, `arkaya_bakma_candidate` weak label, `esneme/sigara_icme/emniyet_kemeri_ihlali/etrafa_bakinma` ayri specialist fazlari olarak belirlendi. | Alternatifler: Tum driver etiketlerini tek classifier'a zorlamak; etiket semantigi ve veri kapsami yetersizligi nedeniyle reddedildi.
 * 2026-06-20 — Karar: Hız modülü bu faz için kilitlendi. | Gerekçe: VS13 006B geniş subset sonucu raporlanabilir düzeyde; lokal demo transferi trendi koruyor; ground-truth olmayan 3 videoda daha fazla tuning gerçek doğruluk kanıtı üretmez. | Etki: `speed_phase_lock_2026_06_20.md` eklendi; hız çıktısı `dataset_calibrated_approximate_candidate` / `support evidence` olarak kalacak ve FTR `results.json` içine yazılmayacak. | Alternatifler: 006C segment selector veya yeni dataset aramak; FTR ana teslim riskini artırdığı için future scope.
 * 2026-06-20 — Karar: Hız kapanışında VS13 genel performans karşılaştırması, 3 lokal demo video sonuçlarından ayrı raporlanacak. | Gerekçe: Kullanıcı yalnız 3 örnek video değil, VS13 veri setindeki genel performans kıyasının da görünmesini istedi; lokal videolarda ground-truth hız yokken VS13 bilinen-hız benchmark'ı gerçek metrik kaynağıdır. | Etki: `speed_phase_lock_2026_06_20.md` ve `docs/04_yapay_zeka/03_hiz_kestirimi.md` içinde `SPEED-EXP-006`, `006 patch`, `006B linear_raw`, `006B ridge_features` ve kilit `006B huber_features` metrikleri ayrıştırıldı. | Alternatifler: Sadece 3 demo video tablosu ile kapanış yapmak; doğruluk iddiası için yetersiz olduğu için reddedildi.
 * 2026-06-20 — Karar: Cabin/driver hattı önce runtime foundation olarak kurulacak, doğrudan phone/smoking/seatbelt fine-tune ile başlanmayacak. | Gerekçe: `CABIN_DRIVER_FINETUNE_HANDOFF.md` referans verdiği script/artifactlerin çoğunu repo içinde taşımıyor; phone gibi küçük nesnelerde model başarısızlığı ile ROI/visibility hatasını ayırmak için önce cabin ROI, visibility, face/occupant ve torso ROI contract'ı çalışmalıdır. | Etki: `CABIN-EXP-012-runtime-foundation` scripti, summary JSON, enriched event skeleton, rapor ve cabin decision dokümanları eklendi. Bu karar 2026-06-21'de manuel overlay kalite kontrolü sonrası geçersiz kılındı. | Alternatifler: Direkt phone fine-tune başlatmak; ROI/visibility temeli ölçülmeden overfit riski taşıdığı için reddedildi.
@@ -378,6 +379,7 @@
 * 2026-06-23 — Milestone: Cabin/driver/phone handoff paketi entegre edildi. | Sonuç: `handoff.zip` geçici olarak extract edildi; 199 yeni non-run dosya import edildi, 10 büyük `runs/` dizini lokal kopyalandı, 4 phone specialist checkpoint lokal registry altına yerleştirildi ve 11 conflict overwrite edilmeden raporlandı.
 * 2026-06-23 — Milestone: Driver torso ve driver arm-state handoff baseline'ları incelendi. | Sonuç: Torso için 3 video overlay/ROI çıktısı, arm-state için 3 video ViTPose+LK çıktısı bulundu; dedicated checkpoint olmadığı ve mevcut çıktının final risk modeli sayılamayacağı registry/rapora işlendi.
 * 2026-06-23 — Milestone: `DACT-EXP-001` slalom baseline tamamlandi. | Sonuç: `video_1` ve `video_2` `not_detected`, `video_3` `candidate` cikti; summary JSON, enriched event JSON, timeseries CSV, plotlar ve overlay videolar uretildi.
+* 2026-06-23 — Milestone: Driver action model/veri arastirmasi tamamlandi. | Sonuç: `DACT-EXP-020B` icin State Farm birincil baslangic, AUC external validation, DMD/Drive&Act orta vadeli kaynak, YawDD/NTHU yawn kaynagi, smoking/seatbelt ayri specialist fazlari olarak kaydedildi.
 
 ## 8) Yapılanlar
 
@@ -563,7 +565,8 @@
 * [ ] Root Dockerfile + `main.py` + `src/predict.py` submission skeleton kur.
 * [x] `CABIN-EXP-020A` notebook'unu Colab'da çalıştır; State Farm + negatif veri kaynaklarını doğrula.
 * [x] `CABIN-EXP-020A` checkpoint'ini `Test/video_*.mp4` veya local demo frame/crop seti üzerinde smoke inference ile doğrula.
-* [ ] `CABIN-EXP-020B` driver action classifier notebook'una geç.
+* [ ] `DACT-EXP-020B` State Farm tabanli driver action classifier notebook'unu hazirla.
+* [ ] `DACT-EXP-020B` Colab run sonrasi `telefonla_konusma`, `su_icme`, `arkaya_bakma_candidate` per-class metriklerini ve confusion matrix'i raporla.
 * [ ] Phone/smoking/seatbelt/yolcu/nesne özelliklerini ayrı baseline/fine-tune fazlarına böl.
 * [x] Vehicle info pipeline'a renk tahmini ve FTR tip mapping ekle.
 * [x] `VEHINFO-EXP-001` local type/color baseline script'ini ekle ve 3 demo videoda overlay/CSV/JSON üret.
@@ -590,7 +593,7 @@
 * [ ] `TYPE-EXP-001` için `kamyon` sınıfına ek veri/manual klasör veya güvenilir external source ekle.
 * [x] `TYPE-EXP-001` checkpoint'ini target ROI crop'ları üzerinde smoke/manual review ile doğrula.
 * [ ] Patch sonrası yeni `TYPE-EXP-001` checkpoint'ini target ROI crop'larında tekrar test et; track-level temporal voting ekle.
-* [ ] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
+* [x] Cabin/driver action, object ve passenger tespitleri icin baseline arastirma/uygulama baslat.
 * [x] `SPEED-EXP-005A/005D` grafik ve fusion sonuçlarını rapor/evidence baglaminda incele; FTR ana yoluna bloklayici yapma.
 * [ ] `SPEED-EXP-005B/005C` depth/plate v2 calismalarini yalniz FTR ana modullerinden sonra future/support olarak degerlendir.
 * [ ] Patch'li `SPEED-EXP-006` notebook'ta Cell 8 sonrası yeniden çalıştır; `linear_raw` kalibrasyon ve yeni confidence dağılımını doğrula.
@@ -603,7 +606,7 @@
 * [ ] Imported cabin/phone scriptlerinin kalanlarını py-compile ve unit testlerden geçir.
 * [ ] Phone-call provisional baseline'ı event/evidence JSON'a risk üretmeden, yalnız evidence/supporting status olarak bağla.
 * [x] `DACT-EXP-001` slalom track-residual baseline'i yaz, 3 video uzerinde kos ve event/evidence JSON'a bagla.
-* [ ] `DACT-EXP-001` slalom overlay/grafiklerini manuel review et; false positive/false negative varsa thresholdlari revize et.
+* [x] `DACT-EXP-001` slalom mevcut faz icin kilitlendi; threshold revizyonu future/manual QA olarak kalacak.
 * [x] GitHub repo oluştur, private görünürlüğe al ve commitleri pushla.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler

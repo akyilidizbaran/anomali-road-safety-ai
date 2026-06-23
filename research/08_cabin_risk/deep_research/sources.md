@@ -25,6 +25,18 @@ Doğrulama tarihi: 2026-06-12
   https://heshameraqi.github.io/distraction_detection
 * Drive&Act:
   https://driveandact.com/
+* DMD Driver Monitoring Dataset:
+  https://dmd.vicomtech.org/
+* DMD GitHub / 2026 revision notes:
+  https://github.com/Vicomtech/DMD-Driver-Monitoring-Dataset
+* 3MDAD Multiview Multimodal Multispectral Driver Action Dataset:
+  https://sites.google.com/view/ihsen-alouani/datasets
+* YawDD Yawning Detection Dataset:
+  https://qualinet.github.io/databases/video/yawdd_a_yawning_detection_dataset/
+* MediaPipe Face Landmarker:
+  https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker
+* Hugging Face video classification guide:
+  https://huggingface.co/docs/transformers/en/tasks/video_classification
 
 Veri seti erişim ve lisans koşulları telefon/kemer fazı açılmadan önce yeniden
 doğrulanmalıdır.
