@@ -14,6 +14,8 @@ Bu klasör, Anomali Road Safety AI model deneylerini Google Colab üzerinde tekr
 * `CABIN_EXP_020A_Cabin_Driver_View_Baseline_Colab.ipynb`: `CABIN-EXP-012` heuristik ROI denemesi reddedildikten sonra model-first cabin/driver görünürlük gate baseline'ını kurar. State Farm Distracted Driver görüntülerini pozitif `driver_cabin_visible`, mevcut BDD100K veya manuel `not_cabin_view` klasörünü negatif sınıf olarak kullanır; MobileNetV3-Large ve EfficientNet-B0 binary classifier karşılaştırması, leakage-safe split, confusion matrix, checkpoint export ve lokal video smoke inference üretir.
 * `COLOR_EXP_001_VCoR_Vehicle_Color_Classifier_Colab.ipynb`: FTR `arac_bilgisi.renk` alanı için 9 sınıflı dedicated vehicle color classifier eğitir. Birincil kaynak VCoR Kaggle dataset'idir; Kaggle credential, manual zip fallback, Drive cache, local Colab extraction, MobileNetV3-Large / EfficientNet-B0 karşılaştırması, confusion matrix, label-map/checkpoint export ve opsiyonel target ROI smoke inference destekler.
 * `TYPE_EXP_001_FTR_Vehicle_Type_Classifier_Colab.ipynb`: FTR `arac_bilgisi.tip` alanı için 7 sınıflı dedicated vehicle type classifier eğitir. Birincil otomatik kaynak Stanford Cars Kaggle mirror'dır; konservatif class-name parsing, manual FTR folder fallback, group-aware split, MobileNetV3-Large / EfficientNet-B0 karşılaştırması, checkpoint/label-map export ve opsiyonel target ROI smoke inference destekler.
+* `TYPE_EXP_002_Multisource_FTR_Vehicle_Type_Classifier_Colab.ipynb`: `TYPE-EXP-001` sonrasında açılan multi-source FTR tip deneyidir. Stanford Cars + Car Body Type + MIO-TCD + manual FTR klasörlerini birleştirerek 7 resmi tipi kapsar; `kamyon/panelvan/pickup` desteğini güçlendirir ve EfficientNet-B0 checkpoint export eder.
+* `TYPE_EXP_003_Focus_Sedan_SUV_Hatchback_Minibus_Colab.ipynb`: `TYPE-EXP-002-efficientnet_b0-best.pth` checkpoint'inden devam eden odak refinement deneyidir. VTID2 / Vehicle Type Image Dataset ile `sedan/suv/hatchback`, Vehicle-10 ile `minibus` sınıfını güçlendirir. Amaç yeni taxonomy açmak değil; EXP-002'de orta/zayıf kalan sınıfları iyileştirirken aynı 7 FTR tip çıkışını korumaktır.
 
 ## Output-Saved Notebooklar
 
@@ -226,6 +228,61 @@ Manual klasörler:
 ```
 
 Bu notebook `STRICT_CLASS_COVERAGE=True` ile gelir. Her sınıfta yeterli örnek yoksa eğitim hücresine geçmeden durur; bu özellikle `kamyon`, `minibus`, `panelvan` sınıflarında sessiz/eksik eğitim yapılmasını önler.
+
+### TYPE-EXP-003 Focus Refinement Kullanımı
+
+`TYPE_EXP_003_Focus_Sedan_SUV_Hatchback_Minibus_Colab.ipynb`, `TYPE-EXP-002` sonrası açılan odaklı iyileştirme deneyidir. Yeni label taxonomy açmaz; aynı 7 FTR tipi korur:
+
+```text
+sedan, suv, hatchback, pickup, minibus, panelvan, kamyon
+```
+
+Odak sınıflar:
+
+```text
+sedan, suv, hatchback, minibus
+```
+
+Zorunlu başlangıç checkpoint:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/models/checkpoints/vehicle_type/TYPE-EXP-002-efficientnet_b0-best.pth
+```
+
+Ek veri kaynakları:
+
+```text
+VTID2 / Vehicle Type Image Dataset
+Vehicle-10
+TYPE-EXP-002 base sources
+Manual focus folders
+```
+
+Drive dizinleri:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/vtid2/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/vehicle_10/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/manual/
+/content/drive/MyDrive/anomali-road-safety-ai/runs/vehicle_type/TYPE-EXP-003/
+```
+
+Manual focus klasörleri:
+
+```text
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/manual/sedan/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/manual/suv/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/manual/hatchback/
+/content/drive/MyDrive/anomali-road-safety-ai/datasets/type_exp_003/manual/minibus/
+```
+
+Bu notebook model seçiminde yalnız genel macro-F1'e bakmaz. `sedan/suv/hatchback/minibus` için focus macro-F1'i de selection score'a dahil eder:
+
+```text
+selection_score = 0.45 * all_class_macro_f1 + 0.55 * focus_macro_f1
+```
+
+EXP-003 runtime'a ancak EXP-002'ye göre focus sınıfları iyileştirir, genel macro-F1'i ciddi düşürmez ve 3 lokal target ROI video smoke testte `suv` temporal/gated majority stabilitesini korursa alınmalıdır.
 
 ## Tek Notebook Akışı
 
