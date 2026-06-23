@@ -27,6 +27,7 @@ Git'te takip edilen output-saved koşular:
 
 * `Outputs Saved/COND_EXP_001_BDD100K_MobileNetV3_Condition_Classifier_Colab_outputsaved.ipynb`
 * `Outputs Saved/COLOR_EXP_001_VCoR_Vehicle_Color_Classifier_Colab_outsaved.ipynb`
+* `Outputs Saved/DACT_EXP_020B_Driver_Action_Classifier_Colab_outfull.ipynb`
 
 ## Kural
 

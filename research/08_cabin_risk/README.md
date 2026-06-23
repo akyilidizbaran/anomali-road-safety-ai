@@ -34,12 +34,15 @@ Cabin risk modülünün MVP mi opsiyonel mi olacağına dair karar.
 * `driver_action/RUN_DACT_EXP_020B.md`: State Farm tabanlı ilk driver-action
   classifier notebook'unun çalıştırma planı, sınıf eşlemesi, çıktı path'leri ve
   başarı kriterleri.
+* `../../testing/reports/dact_exp_020b_full_run_review.md`: `DACT-EXP-020B`
+  full run incelemesi ve baseline kilit kararı. Aktif checkpoint:
+  `DACT-EXP-020B-efficientnet_b0-best.pth`.
 * `driver_detection/`: Sürücü var/yok ve role-assignment modülü. İlk baseline
   `DRIVER-EXP-001` olarak `CABIN-EXP-004` YuNet summary çıktısından ayrıştırıldı.
 * `slalom` cabin-view modeli değildir; dış kamera target-track hareket heuristiği
   olarak `DACT-EXP-001` ile kilitlenir.
-* İlk cabin/action deney adayı `DACT-EXP-020B` olmalıdır: State Farm tabanlı
-  `telefonla_konusma`, `su_icme`, `arkaya_bakma_candidate` ve hard-negative
-  classifier.
+* İlk cabin/action baseline `DACT-EXP-020B` olarak kilitlendi: State Farm
+  tabanlı EfficientNet-B0 classifier, `telefonla_konusma`, `su_icme`,
+  `arkaya_bakma_candidate` ve hard-negative sınıflarını üretir.
 * `sigara_icme`, `esneme`, `emniyet_kemeri_ihlali` ve `etrafa_bakinma` ayrı
   uzman veri/model fazları gerektirir; State Farm ile tek başına kapatılmamalıdır.
