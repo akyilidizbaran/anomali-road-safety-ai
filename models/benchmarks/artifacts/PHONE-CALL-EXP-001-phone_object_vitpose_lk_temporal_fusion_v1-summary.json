@@ -1,0 +1,42 @@
+{
+  "experiment_id": "PHONE-CALL-EXP-001",
+  "stage": "phone_call_behavior_fusion",
+  "created_at_utc": "2026-06-17T18:47:00Z",
+  "model_key": "phone_object_vitpose_lk_temporal_fusion_v1",
+  "input_arm_summary": "models/benchmarks/artifacts/phone_call_inputs/video_2/ARM-EXP-001-vitpose_b_lk_arm_tracker_v1-summary.json",
+  "input_phone_summary": "models/benchmarks/artifacts/PHONE-EXP-001-yolo11n_coco_cell_phone_driver_roi_v1-summary.json",
+  "risk_enabled": false,
+  "decision": "candidate_pending_controlled_negative_review",
+  "thresholds": {
+    "min_evaluable_frames": 10,
+    "min_hand_near_ear_rate": 0.45,
+    "min_sustained_seconds": 0.8,
+    "max_frame_gap": 2,
+    "window_seconds": 2.0
+  },
+  "videos": [
+    {
+      "video": "video_2.mp4",
+      "status": "completed",
+      "view_profile": "side_driver_window",
+      "behavior": {
+        "phone_call_status": "handheld_call_likely",
+        "phone_call_confidence": 0.9649,
+        "phone_call_evidence_source": "pose_temporal",
+        "evaluable_frame_count": 209,
+        "hand_near_ear_candidate_frame_count": 202,
+        "hand_near_ear_candidate_rate": 0.9665,
+        "dominant_hand_side": "right",
+        "dominant_hand_side_rate": 0.7158,
+        "longest_hand_near_ear_frames": 180,
+        "longest_hand_near_ear_seconds": 3.6,
+        "phone_object_detected": false,
+        "phone_risk": null,
+        "risk_enabled": false
+      },
+      "object_model_key": "yolo11n_coco_cell_phone_driver_roi_v1",
+      "arm_model_key": "vitpose_b_lk_arm_tracker_v1",
+      "annotated_video": "runs/phone_call/phone_call_exp_001/annotated/video_2_phone_object_vitpose_lk_temporal_fusion_v1.mp4"
+    }
+  ]
+}

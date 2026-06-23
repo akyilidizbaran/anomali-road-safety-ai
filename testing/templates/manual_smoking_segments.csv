@@ -1,0 +1,4 @@
+video,session_id,split,start_frame,end_frame,start_seconds,end_seconds,label,cigarette_visibility,negative_subtype,reviewer,notes
+video_1.mp4,session_video_1,review,,,,,unknown,,,,Set label: smoking / neutral / face_touch_hard_negative / drink_eat_hard_negative / phone_call_hard_negative / not_evaluable / unknown
+video_2.mp4,session_video_2,review,,,,,unknown,,,,Set label: smoking / neutral / face_touch_hard_negative / drink_eat_hard_negative / phone_call_hard_negative / not_evaluable / unknown
+video_3.mp4,session_video_3,review,,,,,unknown,,,,Set label: smoking / neutral / face_touch_hard_negative / drink_eat_hard_negative / phone_call_hard_negative / not_evaluable / unknown

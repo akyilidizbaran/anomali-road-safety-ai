@@ -1,0 +1,836 @@
+{
+  "experiment_id": "SEATBELT-EXP-002",
+  "stage": "seatbelt_classifier_challenger",
+  "created_at_utc": "2026-06-14T14:52:00Z",
+  "input_cabin_summary": "models/benchmarks/artifacts/CABIN-EXP-004-opencv_yunet_2026may-summary.json",
+  "input_cabin_experiment_id": "CABIN-EXP-004",
+  "model_key": "extract_only",
+  "model_repo": "RISEF/yolov11s-seatbelt",
+  "model_path": null,
+  "license": "AGPL-3.0",
+  "decision_accepted": false,
+  "frame_stride": 10,
+  "max_hold_frames": 25,
+  "videos": [
+    {
+      "video": "video_2.mp4",
+      "status": "completed",
+      "view_profile": "side_driver_window",
+      "processed_frame_count": 35,
+      "direct_roi_frame_count": 28,
+      "held_roi_frame_count": 4,
+      "severe_low_light_frame_count": 32,
+      "mean_classifier_latency_ms": null,
+      "p95_classifier_latency_ms": null,
+      "temporal_candidate": null,
+      "annotated_video": "runs/seatbelt/seatbelt_exp_002/annotated/video_2_risef_yolo11s_seatbelt_cls.mp4",
+      "roi_dir": "runs/seatbelt/seatbelt_exp_002/rois/video_2",
+      "per_frame": [
+        {
+          "frame": 1,
+          "visibility": "good",
+          "visibility_score": 0.726,
+          "face_status": "view_profile_assignment",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2328,
+            686,
+            2658,
+            991
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 21.492,
+            "contrast": 17.568,
+            "dark_ratio": 0.9009,
+            "glare_ratio": 0.0021
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000001_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000001_routed.jpg"
+        },
+        {
+          "frame": 11,
+          "visibility": "good",
+          "visibility_score": 0.7273,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2318,
+            689,
+            2660,
+            989
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 21.191,
+            "contrast": 16.686,
+            "dark_ratio": 0.9042,
+            "glare_ratio": 0.0017
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000011_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000011_routed.jpg"
+        },
+        {
+          "frame": 21,
+          "visibility": "good",
+          "visibility_score": 0.7265,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2309,
+            690,
+            2651,
+            995
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 20.999,
+            "contrast": 16.313,
+            "dark_ratio": 0.9047,
+            "glare_ratio": 0.0016
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000021_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000021_routed.jpg"
+        },
+        {
+          "frame": 31,
+          "visibility": "good",
+          "visibility_score": 0.7264,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2293,
+            694,
+            2647,
+            994
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 20.706,
+            "contrast": 15.513,
+            "dark_ratio": 0.905,
+            "glare_ratio": 0.0014
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000031_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000031_routed.jpg"
+        },
+        {
+          "frame": 41,
+          "visibility": "good",
+          "visibility_score": 0.7164,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2294,
+            698,
+            2630,
+            1003
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 20.714,
+            "contrast": 15.466,
+            "dark_ratio": 0.9021,
+            "glare_ratio": 0.0013
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000041_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000041_routed.jpg"
+        },
+        {
+          "frame": 51,
+          "visibility": "limited",
+          "visibility_score": 0.688,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2278,
+            702,
+            2626,
+            1022
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 20.484,
+            "contrast": 14.914,
+            "dark_ratio": 0.9068,
+            "glare_ratio": 0.0011
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000051_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000051_routed.jpg"
+        },
+        {
+          "frame": 61,
+          "visibility": "limited",
+          "visibility_score": 0.6716,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2262,
+            708,
+            2616,
+            1024
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 20.199,
+            "contrast": 14.294,
+            "dark_ratio": 0.9078,
+            "glare_ratio": 0.0009
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000061_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000061_routed.jpg"
+        },
+        {
+          "frame": 71,
+          "visibility": "limited",
+          "visibility_score": 0.6524,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2244,
+            715,
+            2598,
+            1035
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 19.787,
+            "contrast": 13.071,
+            "dark_ratio": 0.9096,
+            "glare_ratio": 0.0004
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000071_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000071_routed.jpg"
+        },
+        {
+          "frame": 81,
+          "visibility": "limited",
+          "visibility_score": 0.6333,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2219,
+            718,
+            2579,
+            1050
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 19.489,
+            "contrast": 12.299,
+            "dark_ratio": 0.9112,
+            "glare_ratio": 0.0002
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000081_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000081_routed.jpg"
+        },
+        {
+          "frame": 91,
+          "visibility": "limited",
+          "visibility_score": 0.6221,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2187,
+            723,
+            2565,
+            1070
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 19.077,
+            "contrast": 12.006,
+            "dark_ratio": 0.9141,
+            "glare_ratio": 0.0002
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000091_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000091_routed.jpg"
+        },
+        {
+          "frame": 101,
+          "visibility": "limited",
+          "visibility_score": 0.6201,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2160,
+            735,
+            2538,
+            1079
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 18.712,
+            "contrast": 11.985,
+            "dark_ratio": 0.9146,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000101_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000101_routed.jpg"
+        },
+        {
+          "frame": 111,
+          "visibility": "limited",
+          "visibility_score": 0.624,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2113,
+            746,
+            2527,
+            1101
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 18.069,
+            "contrast": 11.742,
+            "dark_ratio": 0.9213,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000111_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000111_routed.jpg"
+        },
+        {
+          "frame": 121,
+          "visibility": "limited",
+          "visibility_score": 0.6214,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2084,
+            758,
+            2486,
+            1114
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 18.076,
+            "contrast": 12.22,
+            "dark_ratio": 0.9155,
+            "glare_ratio": 0.0001
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000121_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000121_routed.jpg"
+        },
+        {
+          "frame": 131,
+          "visibility": "limited",
+          "visibility_score": 0.6099,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            2028,
+            768,
+            2466,
+            1152
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 17.531,
+            "contrast": 11.907,
+            "dark_ratio": 0.9213,
+            "glare_ratio": 0.0001
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000131_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000131_routed.jpg"
+        },
+        {
+          "frame": 141,
+          "visibility": "limited",
+          "visibility_score": 0.5924,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1983,
+            781,
+            2421,
+            1180
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 17.607,
+            "contrast": 12.283,
+            "dark_ratio": 0.9169,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000141_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000141_routed.jpg"
+        },
+        {
+          "frame": 151,
+          "visibility": "limited",
+          "visibility_score": 0.5777,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1913,
+            798,
+            2387,
+            1213
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 17.467,
+            "contrast": 12.189,
+            "dark_ratio": 0.9173,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000151_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000151_routed.jpg"
+        },
+        {
+          "frame": 161,
+          "visibility": "limited",
+          "visibility_score": 0.5661,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1839,
+            815,
+            2343,
+            1254
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 17.592,
+            "contrast": 12.804,
+            "dark_ratio": 0.9174,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000161_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000161_routed.jpg"
+        },
+        {
+          "frame": 171,
+          "visibility": "limited",
+          "visibility_score": 0.5595,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1762,
+            840,
+            2278,
+            1290
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 17.945,
+            "contrast": 13.486,
+            "dark_ratio": 0.9124,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000171_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000171_routed.jpg"
+        },
+        {
+          "frame": 181,
+          "visibility": "limited",
+          "visibility_score": 0.5357,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1670,
+            859,
+            2216,
+            1325
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 18.625,
+            "contrast": 14.261,
+            "dark_ratio": 0.9089,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000181_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000181_routed.jpg"
+        },
+        {
+          "frame": 191,
+          "visibility": "limited",
+          "visibility_score": 0.5031,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1551,
+            883,
+            2163,
+            1420
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 18.969,
+            "contrast": 15.049,
+            "dark_ratio": 0.9064,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000191_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000191_routed.jpg"
+        },
+        {
+          "frame": 201,
+          "visibility": "poor",
+          "visibility_score": 0.3998,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1455,
+            916,
+            2043,
+            1477
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 19.201,
+            "contrast": 15.276,
+            "dark_ratio": 0.9074,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000201_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000201_routed.jpg"
+        },
+        {
+          "frame": 211,
+          "visibility": "poor",
+          "visibility_score": 0.3941,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1336,
+            958,
+            1918,
+            1555
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 18.727,
+            "contrast": 14.917,
+            "dark_ratio": 0.9208,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000211_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000211_routed.jpg"
+        },
+        {
+          "frame": 221,
+          "visibility": "poor",
+          "visibility_score": 0.421,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1226,
+            1003,
+            1742,
+            1545
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 19.669,
+            "contrast": 17.327,
+            "dark_ratio": 0.9217,
+            "glare_ratio": 0.0008
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000221_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000221_routed.jpg"
+        },
+        {
+          "frame": 231,
+          "visibility": "limited",
+          "visibility_score": 0.4555,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            1070,
+            1054,
+            1562,
+            1568
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 21.51,
+            "contrast": 17.684,
+            "dark_ratio": 0.8993,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000231_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000231_routed.jpg"
+        },
+        {
+          "frame": 241,
+          "visibility": "limited",
+          "visibility_score": 0.4947,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            851,
+            1091,
+            1391,
+            1778
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 24.71,
+            "contrast": 29.921,
+            "dark_ratio": 0.8678,
+            "glare_ratio": 0.01
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000241_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000241_routed.jpg"
+        },
+        {
+          "frame": 251,
+          "visibility": "limited",
+          "visibility_score": 0.5155,
+          "face_status": "no_face",
+          "roi_source": "temporal_hold",
+          "driver_context_bbox": [
+            817,
+            1106,
+            1357,
+            1793
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 20.041,
+            "contrast": 20.063,
+            "dark_ratio": 0.9129,
+            "glare_ratio": 0.0027
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000251_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000251_routed.jpg"
+        },
+        {
+          "frame": 261,
+          "visibility": "limited",
+          "visibility_score": 0.4981,
+          "face_status": "no_face",
+          "roi_source": "temporal_hold",
+          "driver_context_bbox": [
+            766,
+            1154,
+            1306,
+            1831
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 18.358,
+            "contrast": 15.111,
+            "dark_ratio": 0.9219,
+            "glare_ratio": 0.0007
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000261_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000261_routed.jpg"
+        },
+        {
+          "frame": 271,
+          "visibility": "poor",
+          "visibility_score": 0.4267,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            714,
+            1112,
+            1434,
+            1724
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 16.326,
+            "contrast": 12.621,
+            "dark_ratio": 0.9509,
+            "glare_ratio": 0.0006
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000271_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000271_routed.jpg"
+        },
+        {
+          "frame": 281,
+          "visibility": "poor",
+          "visibility_score": 0.3968,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            350,
+            1201,
+            1298,
+            1844
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 15.533,
+            "contrast": 9.812,
+            "dark_ratio": 0.962,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000281_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000281_routed.jpg"
+        },
+        {
+          "frame": 291,
+          "visibility": "poor",
+          "visibility_score": 0.3794,
+          "face_status": "temporal_face_match",
+          "roi_source": "direct_face",
+          "driver_context_bbox": [
+            51,
+            1258,
+            1239,
+            1845
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 14.239,
+            "contrast": 8.306,
+            "dark_ratio": 0.9848,
+            "glare_ratio": 0.0
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000291_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000291_routed.jpg"
+        },
+        {
+          "frame": 301,
+          "visibility": "poor",
+          "visibility_score": 0.38,
+          "face_status": "no_face",
+          "roi_source": "temporal_hold",
+          "driver_context_bbox": [
+            46,
+            1283,
+            1166,
+            1856
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 14.177,
+            "contrast": 9.414,
+            "dark_ratio": 0.9852,
+            "glare_ratio": 0.0004
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000301_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000301_routed.jpg"
+        },
+        {
+          "frame": 311,
+          "visibility": "poor",
+          "visibility_score": 0.3863,
+          "face_status": "no_face",
+          "roi_source": "temporal_hold",
+          "driver_context_bbox": [
+            41,
+            1344,
+            1073,
+            1881
+          ],
+          "condition": {
+            "lighting": "night_or_severe_low_light",
+            "preprocessing": "gamma_clahe",
+            "brightness": 14.296,
+            "contrast": 14.421,
+            "dark_ratio": 0.9799,
+            "glare_ratio": 0.0016
+          },
+          "classification": null,
+          "raw_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000311_raw.jpg",
+          "routed_roi_uri": "runs/seatbelt/seatbelt_exp_002/rois/video_2/frame_000311_routed.jpg"
+        },
+        {
+          "frame": 321,
+          "visibility": "poor",
+          "visibility_score": 0.4165,
+          "face_status": "no_face",
+          "roi_source": "not_evaluable",
+          "driver_context_bbox": null,
+          "condition": null,
+          "classification": null,
+          "raw_roi_uri": null,
+          "routed_roi_uri": null
+        },
+        {
+          "frame": 333,
+          "visibility": "poor",
+          "visibility_score": 0.4028,
+          "face_status": "no_face",
+          "roi_source": "not_evaluable",
+          "driver_context_bbox": null,
+          "condition": null,
+          "classification": null,
+          "raw_roi_uri": null,
+          "routed_roi_uri": null
+        },
+        {
+          "frame": 344,
+          "visibility": "limited",
+          "visibility_score": 0.5479,
+          "face_status": "no_face",
+          "roi_source": "not_evaluable",
+          "driver_context_bbox": null,
+          "condition": null,
+          "classification": null,
+          "raw_roi_uri": null,
+          "routed_roi_uri": null
+        }
+      ]
+    }
+  ]
+}

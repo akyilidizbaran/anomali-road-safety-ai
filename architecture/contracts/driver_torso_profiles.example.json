@@ -1,0 +1,31 @@
+{
+  "default_profile": "unknown",
+  "profiles": {
+    "side_driver_window": {
+      "description": "Driver chest crop from a lateral front-window view.",
+      "torso": {
+        "left_face_widths": 2.2,
+        "right_face_widths": 1.8,
+        "top_face_heights_from_bottom": -0.12,
+        "bottom_face_heights_from_bottom": 2.7,
+        "max_bottom_below_cabin_face_heights": 0.5,
+        "max_below_cabin_vertical_ratio": 0.45
+      }
+    },
+    "front_lhd": {
+      "description": "Driver chest crop through the windshield of an LHD vehicle.",
+      "torso": {
+        "left_face_widths": 2.0,
+        "right_face_widths": 2.0,
+        "top_face_heights_from_bottom": -0.10,
+        "bottom_face_heights_from_bottom": 2.9,
+        "max_bottom_below_cabin_face_heights": 1.0,
+        "max_below_cabin_vertical_ratio": 0.8
+      }
+    },
+    "unknown": {
+      "description": "No driver-role torso crop is produced.",
+      "torso": null
+    }
+  }
+}

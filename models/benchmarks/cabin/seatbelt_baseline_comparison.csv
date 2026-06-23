@@ -1,0 +1,3 @@
+experiment_id,model,status,completed_videos,evaluable_frames,evidence_rates,mean_latency_ms,max_p95_latency_ms,manual_review,decision,notes
+SEATBELT-EXP-001,opencv_diagonal_belt_evidence_v1,reference_not_selected,3,504,0.0402/0.0096/0.0000,1.715,4.716,failed,not_selected,Vehicle reflections and body edges can create false diagonal evidence; no labeled unbelted or incorrect validation; event status remains unknown
+SEATBELT-EXP-002,risef_yolo11s_seatbelt_cls,deferred_after_manual_review,0,0,pending,,,failed,not_selected,Condition-aware ROI was implemented but user manual review still found no reliable visible seatbelt result; defer until controlled data or a more suitable cabin view is available

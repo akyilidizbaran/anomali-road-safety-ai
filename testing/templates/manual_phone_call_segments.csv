@@ -1,0 +1,4 @@
+video,session_id,split,start_frame,end_frame,start_seconds,end_seconds,label,phone_visibility,negative_subtype,reviewer,notes
+video_1.mp4,session_video_1,review,,,,,unknown,,,,Set segment label after overlay review
+video_2.mp4,session_video_2,review,,,,,phone_call,not_visible,,User-confirmed handheld phone call; phone may be occluded
+video_3.mp4,session_video_3,review,,,,,unknown,,,,Set segment label after overlay review

@@ -1,0 +1,2 @@
+experiment_id,video,frame_or_interval,view_profile,lighting,roi_source,driver_identity_correct,belt_visible_to_human,raw_prediction,raw_confidence,routed_prediction,routed_confidence,reflection_false_positive,manual_label,reviewer_notes
+SEATBELT-EXP-002,video_2.mp4,4.4-5.6s,side_driver_window,night_or_severe_low_light,direct_and_held,,,,,,,,,

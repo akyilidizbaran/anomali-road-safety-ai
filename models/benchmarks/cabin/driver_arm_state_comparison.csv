@@ -1,0 +1,4 @@
+experiment_id,observation_model,tracker,state_scope,video_count,available_state_rate,longest_unavailable_seconds,manual_review,decision,notes
+ARM-EXP-001,POSE-EXP-010 ViTPose-B arm-focus,forward-backward LK bounded 12 frames,"near_face;raised;wheel_candidate;off_wheel_candidate",0,,,closed,reference_only,"Three-video arm-state promotion cancelled; POSE-EXP-009 remains the frozen shoulder/torso skeleton"
+ARM-EXP-001,POSE-EXP-010 ViTPose-B arm-focus,forward-backward LK bounded 12 frames,"near_face;raised;wheel_candidate;off_wheel_candidate",1,0.9851,0.04,closed,reference_only,"Best continuous arm observation on video_3 but lower-arm semantic classification is closed and cannot produce risk"
+ARM-EXP-001,POSE-EXP-011 YOLO11n-pose arm-focus,forward-backward LK bounded 12 frames,"near_face;raised;wheel_candidate;off_wheel_candidate",1,0.3209,0.94,rejected,rejected_for_continuous_baseline,"Keep YOLO pose as auxiliary association signal after object specialist"

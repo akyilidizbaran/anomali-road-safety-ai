@@ -1,0 +1,27 @@
+{
+  "default_profile": "unknown",
+  "profiles": {
+    "side_driver_window": {
+      "description": "Driver-side lateral view. Wheel zone is an expected region, not a detected steering wheel.",
+      "wheel_zone_face_units": {
+        "left": -4.2,
+        "top": 0.8,
+        "right": 1.0,
+        "bottom": 4.8
+      }
+    },
+    "front_lhd": {
+      "description": "Front windshield view for a left-hand-drive vehicle.",
+      "wheel_zone_face_units": {
+        "left": -3.8,
+        "top": 1.0,
+        "right": 1.2,
+        "bottom": 5.0
+      }
+    },
+    "unknown": {
+      "description": "Arm tracking only; no wheel-zone state assignment.",
+      "wheel_zone_face_units": null
+    }
+  }
+}

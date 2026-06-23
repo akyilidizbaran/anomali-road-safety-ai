@@ -1,0 +1,7 @@
+experiment_id,model,video_count,labeled_positive,labeled_negative,hard_negative_sessions,tp,fp,tn,fn,recall,specificity,hard_negative_specificity,decision,notes
+SMOKING-EXP-000,smoking_segment_review_pack_v1,3,0,0,0,,,,,,,,review_pack_ready,"Generated 6 mouth/hand review segments from existing videos; not a model and not a baseline"
+SMOKING-EXP-000-REVIEW,codex_visual_review,3,0,0,1,0,0,0,0,,,,not_trainable,"No visible smoking positive in current three videos; one phone_call_hard_negative, two unknown, three not_evaluable"
+SMOKING-EXP-001,cigarette_object_yolo26s_face_hand_roi_v1,0,0,0,0,,,,,,,,planned,"Object specialist challenger; no final risk until session-disjoint positives and hard negatives exist"
+SMOKING-EXP-002,cigarette_object_hand_mouth_temporal_fusion_v1,0,0,0,0,,,,,,,,planned,"Behavior fusion candidate; object absence is not negative, pose/hand alone is not risk"
+SMOKING-EXP-003,external_smoker_cigarette_challenger,0,0,0,0,,,,,,,,planned,"Ready model/domain-transfer challenger only"
+SMOKING-EXP-004,smoking_temporal_head_reviewed_segments_v1,0,0,0,0,,,,,,,,planned,"Trainable after reviewed segment labels contain at least two classes and enough sessions"

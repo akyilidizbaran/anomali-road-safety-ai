@@ -1,0 +1,1 @@
+experiment_id,video,reviewer,review_date,frame_or_segment,torso_roi_correct,belt_visible_manual,belt_usage_manual,model_candidate,evidence_line_on_belt,false_positive_source,visibility_manual,decision_evaluable,overall_pass,notes

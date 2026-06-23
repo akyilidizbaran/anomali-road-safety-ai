@@ -1,0 +1,4 @@
+experiment_id,video,reviewer,driver_face_correct,torso_horizontal_coverage,torso_vertical_coverage,seatbelt_region_included,passenger_excluded,vehicle_exterior_contamination,temporal_stability,long_gap_count,usable_for_seatbelt_specialist,overall_pass,notes
+TORSO-EXP-001,video_1.mp4,,,,,,,,,,,,
+TORSO-EXP-001,video_2.mp4,,,,,,,,,,,,
+TORSO-EXP-001,video_3.mp4,,,,,,,,,,,,

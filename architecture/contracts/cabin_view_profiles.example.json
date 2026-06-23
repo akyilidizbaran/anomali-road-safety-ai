@@ -1,0 +1,40 @@
+{
+  "default_profile": "unknown",
+  "profiles": {
+    "side_driver_window": {
+      "description": "Driver-side lateral view through the front side window.",
+      "roi": {
+        "left": 0.03,
+        "top": 0.02,
+        "right": 0.96,
+        "bottom": 0.76
+      },
+      "driver_assignment": "largest_face"
+    },
+    "front_lhd": {
+      "description": "Front windshield view for a left-hand-drive vehicle.",
+      "roi": {
+        "left": 0.16,
+        "top": 0.02,
+        "right": 0.84,
+        "bottom": 0.48
+      },
+      "driver_assignment": "largest_face_on_image_right"
+    },
+    "unknown": {
+      "description": "Occupant detection only; no driver role assignment.",
+      "roi": {
+        "left": 0.05,
+        "top": 0.02,
+        "right": 0.95,
+        "bottom": 0.70
+      },
+      "driver_assignment": "not_assigned"
+    }
+  },
+  "video_profiles": {
+    "video_1.mp4": "side_driver_window",
+    "video_2.mp4": "side_driver_window",
+    "video_3.mp4": "front_lhd"
+  }
+}

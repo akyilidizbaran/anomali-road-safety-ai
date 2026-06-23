@@ -1,0 +1,2 @@
+experiment_id,method,status,completed_videos,processed_frames,usable_torso_rate,available_torso_rate,ready_videos,manual_review,decision,notes
+TORSO-EXP-001,yunet_face_anchored_deterministic_torso_v1,rejected_full_video_user_review,3,968,0.8547,0.8547,3,failed,rejected,Sampled frames looked plausible but full-video user review found discontinuities incorrect placement and materially inconsistent behavior across all three videos; deterministic geometry is not a selected baseline

@@ -1,0 +1,4 @@
+experiment_id,video,interval,phone_visible,phone_bbox_correct,driver_roi_correct,near_face_correct,false_positive,false_negative,phone_in_driver_hand,overall_pass,reviewer_notes
+PHONE-EXP-001,video_1.mp4,,,,,,,,,,,
+PHONE-EXP-001,video_2.mp4,,,,,,,,,,,
+PHONE-EXP-001,video_3.mp4,,,,,,,,,,,

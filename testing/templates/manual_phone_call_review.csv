@@ -1,0 +1,4 @@
+video,ground_truth,session_id,negative_subtype,phone_visibility,predicted_status,skeleton_valid,ear_zone_valid,reviewer,notes
+video_1.mp4,positive,session_video_1,,not_visible,candidate,,,codex_visual_review,Hand remains at ear/side-face; phone not visibly separable
+video_2.mp4,positive,session_video_2,,not_visible,handheld_call_likely,,,,User-confirmed handheld phone call; phone occluded
+video_3.mp4,unknown,session_video_3,,,candidate,,,,Set positive/negative after full overlay review

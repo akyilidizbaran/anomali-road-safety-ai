@@ -1,0 +1,7 @@
+experiment_id,model,video_count,labeled_positive,labeled_negative,tp,fp,tn,fn,recall,specificity,decision,notes
+PHONE-CALL-EXP-001,phone_object_vitpose_lk_temporal_fusion_v1,1,1,0,1,0,0,0,1.0,,superseded,"Generic hand-near-face positive smoke only"
+PHONE-CALL-EXP-002,phone_yolo26s_vitpose_lk_ear_temporal_fusion_v2,3,2,0,1,0,0,1,0.5,,candidate_not_accepted,"EXP-007 pose reliability guardrail attached; video_1 remains candidate/FN under borderline pose; still lacks negative and hard-negative sessions"
+PHONE-CALL-EXP-003,statefarm_yolo26s_distraction_cls,3,1,0,,,,,,,rejected_domain_transfer,"Single-frame cabin classifier: positive video_2 phone mean 0.1293-0.1568; video_3 scored 0.3396-0.3868"
+PHONE-CALL-EXP-004,aicity2024_x3d_rearview_fold0,3,1,0,,,,,,,rejected_domain_transfer,"Temporal 16-class driver action model: only 1/11 cabin clips in video_2 top-ranked phone; no sustained phone evidence"
+PHONE-CALL-EXP-005,phone_call_temporal_head_v1,3,2,3,,,,,,,reviewed_seed_not_baseline,"Small temporal head over pose/object features trained from Codex visual-review labels; baseline_eligible=false: requires >=3 positive and >=5 negative sessions"
+PHONE-CALL-PROVISIONAL-BASELINE,exp002_plus_exp007_guarded_geometric_fusion,3,2,0,1,0,0,1,0.5,,provisional_integration_baseline,"Frozen for integration/demo with phone_risk=null; not final accepted baseline because specificity and hard-negative coverage are missing"

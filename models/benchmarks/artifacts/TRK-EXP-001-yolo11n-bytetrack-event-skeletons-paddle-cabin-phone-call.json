@@ -1,0 +1,1732 @@
+{
+  "generated_at_utc": "2026-06-12T15:31:31Z",
+  "source_event_stage": "plate_ocr_enriched_event_skeleton",
+  "event_stage": "cabin_driver_enriched_event_skeleton",
+  "source_experiment_id": "TRK-EXP-001",
+  "source_ocr_experiment_id": "POCR-EXP-002",
+  "cabin_experiment_id": "CABIN-EXP-004",
+  "created_at_utc": "2026-06-20T16:42:11Z",
+  "events": [
+    {
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "event_type": "target_vehicle_selected",
+      "timestamp_utc": "2026-06-10T21:09:12Z",
+      "frame_id": "video_1:frame_000276",
+      "source": {
+        "device_id": "local_macbook_edge_baseline",
+        "session_id": "TRK-EXP-001",
+        "camera_mode": "offline_replay",
+        "resolution": "3840x2160",
+        "fps": 50.0,
+        "orientation": "landscape",
+        "network_type": "not_available_offline",
+        "calibration_profile_id": null,
+        "source_video": "video_1.mp4"
+      },
+      "system": {
+        "mode": "normal",
+        "qod_status": "not_needed",
+        "number_verification_status": "not_available",
+        "latency_ms": 15.472,
+        "pipeline_fps": 34.972,
+        "runtime_profile": "macbook_local_edge_offline_benchmark"
+      },
+      "frame_quality": {
+        "status": "not_run",
+        "quality_flags": [
+          "condition_profile_from_benchmark_summary"
+        ]
+      },
+      "target_vehicle": {
+        "status": "selected",
+        "track_id": "TRK-001",
+        "vehicle_type": "car",
+        "bbox": [
+          0.0,
+          845.54,
+          1684.17,
+          2131.89
+        ],
+        "bbox_xyxy": [
+          0.0,
+          845.54,
+          1684.17,
+          2131.89
+        ],
+        "bbox_xywh": null,
+        "confidence": 0.944,
+        "track_stability": 0.964,
+        "selection_score": 0.905,
+        "selection_reasons": [
+          "track_stability_high",
+          "large_visible_bbox",
+          "detector_confidence_high",
+          "long_enough_for_temporal_modules",
+          "vehicle_class_prioritized_for_plate_speed"
+        ],
+        "frame_window": {
+          "first_frame": 1,
+          "last_frame": 344,
+          "best_frame": 276,
+          "track_age_frames": 342
+        },
+        "class_votes": {
+          "car": 276.578,
+          "motorcycle": 6.928
+        },
+        "class_purity": 0.976,
+        "id_switch_suspected": false
+      },
+      "scene": {
+        "status": "not_run",
+        "weather": "unknown",
+        "lighting": "dark",
+        "visibility": "unknown",
+        "confidence": null
+      },
+      "plate": {
+        "status": "detected",
+        "detected": true,
+        "bbox": null,
+        "ocr_status": "read",
+        "ocr_text": "34TC8532",
+        "raw_text_best_frame": "34 TC 8532",
+        "format_valid": true,
+        "province_code_valid": true,
+        "confidence": 0.5349,
+        "vote_confidence": 0.5349,
+        "candidate_count": 11,
+        "best_frame": 128,
+        "source_crop_uri": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_1/frame_000128_plate0.jpg",
+        "source_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_1",
+        "ocr_engine": "paddle",
+        "failure_reason": null
+      },
+      "speed": {
+        "status": "not_run",
+        "mode": "not_available",
+        "estimated_kmh": null,
+        "relative_motion_score": null,
+        "motion_anomaly": null,
+        "calibration_profile_id": null,
+        "confidence": null
+      },
+      "lane": {
+        "status": "not_run",
+        "lane_status": null,
+        "lane_visibility": null,
+        "lane_risk": null,
+        "confidence": null
+      },
+      "driver_cabin": {
+        "status": "ok",
+        "visibility": "limited",
+        "driver_detected": true,
+        "passenger_count": 1,
+        "phone_risk": null,
+        "seatbelt_status": "unknown",
+        "confidence": 0.548,
+        "failure_reason": null,
+        "visibility_score": 0.548,
+        "visibility_reasons": [
+          "blur_or_soft_focus",
+          "high_dark_pixel_ratio",
+          "low_brightness",
+          "low_contrast"
+        ],
+        "face_count": 2,
+        "occupant_count_estimate": 2,
+        "driver_candidate_detected": true,
+        "role_assignment_status": "assigned_side_driver_largest_face",
+        "temporal_detection_rate": 0.9742,
+        "best_frame": 2,
+        "source_roi_uri": "runs/cabin/cabin_exp_004/rois/video_1/frame_000002_cabin.jpg",
+        "model_version": "opencv_yunet_2026may",
+        "phone_analysis_status": "not_detected",
+        "phone_detected": false,
+        "phone_confidence": 0.2391,
+        "phone_detection_rate": 0.0343,
+        "phone_bbox": [
+          2221.46,
+          745.22,
+          2270.21,
+          813.37
+        ],
+        "phone_best_frame": 62,
+        "phone_source_roi_uri": "runs/phone_call_baseline_v2/object/phone_exp_004_three_video/rois/video_1/frame_000062_phone_roi.jpg",
+        "phone_model_version": "yolo26s_phone_windshield_seed_smoke",
+        "hand_association_status": "not_run",
+        "object_near_face_rate": 0.5,
+        "phone_call_status": "candidate",
+        "phone_call_confidence": 0.898,
+        "phone_call_evidence_source": "pose_temporal",
+        "hand_near_ear_candidate_rate": 0.8556,
+        "longest_hand_near_ear_seconds": 1.08,
+        "dominant_hand_side": "right",
+        "phone_call_baseline_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+        "phone_call_pose_reliability": "usable_borderline",
+        "phone_call_pose_policy": "borderline_requires_stronger_temporal_consistency"
+      },
+      "external_users": [],
+      "risk": {
+        "risk_score": 0.498,
+        "risk_level": "low",
+        "reasons": [
+          "tracking_candidate_event_only",
+          "target_vehicle_selected_for_downstream_experts",
+          "plate_ocr_final_decision_available"
+        ],
+        "fusion_confidence": 0.814,
+        "thresholds": {
+          "critical_mode_activation": "not_run",
+          "target_selection_score": 0.5
+        }
+      },
+      "routing_decision": {
+        "experts_called": [
+          "Vehicle Detection",
+          "ByteTrack",
+          "Plate OCR",
+          "Cabin Driver"
+        ],
+        "routing_reasons": [
+          "pretrained_detector_output_available",
+          "track_stability_computed",
+          "target_vehicle_selected_before_plate_speed_qod",
+          "selected_plate_ocr_baseline_connected",
+          "cabin_visibility_gate_passed"
+        ],
+        "qod_reason": "Track stability and evidence metadata are sufficient for this skeleton stage.",
+        "condition_profile": "dark",
+        "selected_detector": "yolo11n.pt",
+        "fallback_detector": "yolo11n.pt",
+        "routing_mode": "tracking_postprocess_baseline",
+        "fallbacks_used": [],
+        "selected_plate_detector": "yolo",
+        "selected_plate_ocr_engine": "paddle",
+        "selected_cabin_model": "opencv_yunet_2026may",
+        "cabin_view_profile": "side_driver_window"
+      },
+      "models": {
+        "vehicle_detector": "yolo11n.pt",
+        "vehicle_tracker": "ByteTrack:bytetrack.yaml",
+        "target_selector": "heuristic_track_target_selector_v1",
+        "event_builder": "tracking_event_skeleton_builder_v1",
+        "plate_detector": "yolo",
+        "plate_ocr": "PaddleOCR:PaddleOCR(lang=en)",
+        "plate_postprocess": "turkish_regex_province_temporal_vote_v1",
+        "cabin_visibility": "opencv_quality_gate_v1",
+        "cabin_face_detector": "opencv_yunet_2026may",
+        "cabin_role_policy": "view_profile_temporal_v1",
+        "phone_object_detector": "yolo26s_phone_windshield_seed_smoke",
+        "phone_call_behavior": "phone_yolo26s_vitpose_lk_ear_temporal_fusion_v2",
+        "phone_call_provisional_baseline": "PHONE-CALL-PROVISIONAL-BASELINE"
+      },
+      "evidence": {
+        "status": "partial",
+        "original_frame_uri": null,
+        "overlay_image_uri": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_1_tracked.mp4",
+        "target_vehicle_crop_uri": null,
+        "plate_crop_uri": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_1/frame_000128_plate0.jpg",
+        "json_uri": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-paddle-cabin.json",
+        "evidence_quality_score": 1.0,
+        "metadata_completeness_score": 1.0,
+        "track_history": {
+          "center_history_sample": [
+            [
+              2131.43,
+              978.22
+            ],
+            [
+              2127.85,
+              982.3
+            ],
+            [
+              2119.21,
+              980.26
+            ],
+            [
+              2105.8,
+              992.79
+            ],
+            [
+              2083.51,
+              1000.53
+            ],
+            [
+              2058.41,
+              1009.84
+            ],
+            [
+              2029.37,
+              1017.59
+            ],
+            [
+              1997.4,
+              1035.37
+            ],
+            [
+              1961.8,
+              1063.48
+            ],
+            [
+              1901.23,
+              1082.61
+            ],
+            [
+              1851.42,
+              1108.15
+            ],
+            [
+              1787.8,
+              1135.92
+            ],
+            [
+              1711.83,
+              1178.53
+            ],
+            [
+              1617.96,
+              1228.88
+            ],
+            [
+              1508.27,
+              1284.19
+            ],
+            [
+              1381.69,
+              1339.95
+            ],
+            [
+              1212.68,
+              1389.35
+            ],
+            [
+              1131.09,
+              1405.67
+            ],
+            [
+              1104.14,
+              1413.57
+            ],
+            [
+              1064.94,
+              1396.13
+            ],
+            [
+              1023.86,
+              1413.03
+            ],
+            [
+              970.21,
+              1413.54
+            ],
+            [
+              934.06,
+              1456.3
+            ],
+            [
+              875.23,
+              1478.02
+            ],
+            [
+              804.61,
+              1491.08
+            ],
+            [
+              720.74,
+              1513.32
+            ],
+            [
+              619.41,
+              1557.3
+            ],
+            [
+              523.34,
+              1583.59
+            ],
+            [
+              395.82,
+              1639.48
+            ],
+            [
+              213.33,
+              1858.53
+            ]
+          ],
+          "bbox_history_sample": [
+            [
+              1583.91,
+              562.35,
+              2678.96,
+              1394.1
+            ],
+            [
+              1577.39,
+              564.44,
+              2678.3,
+              1400.17
+            ],
+            [
+              1567.58,
+              565.13,
+              2670.85,
+              1395.4
+            ],
+            [
+              1538.37,
+              567.33,
+              2673.24,
+              1418.26
+            ],
+            [
+              1505.73,
+              568.84,
+              2661.3,
+              1432.22
+            ],
+            [
+              1468.11,
+              570.67,
+              2648.7,
+              1449.0
+            ],
+            [
+              1422.29,
+              569.09,
+              2636.46,
+              1466.09
+            ],
+            [
+              1372.06,
+              578.03,
+              2622.74,
+              1492.7
+            ],
+            [
+              1310.74,
+              583.54,
+              2612.86,
+              1543.42
+            ],
+            [
+              1231.87,
+              591.05,
+              2570.6,
+              1574.16
+            ],
+            [
+              1141.3,
+              589.42,
+              2561.54,
+              1626.89
+            ],
+            [
+              1040.96,
+              592.53,
+              2534.64,
+              1679.3
+            ],
+            [
+              920.41,
+              604.04,
+              2503.26,
+              1753.01
+            ],
+            [
+              768.99,
+              617.5,
+              2466.93,
+              1840.26
+            ],
+            [
+              591.64,
+              629.35,
+              2424.91,
+              1939.02
+            ],
+            [
+              389.67,
+              639.19,
+              2373.72,
+              2040.71
+            ],
+            [
+              132.22,
+              650.95,
+              2293.14,
+              2127.75
+            ],
+            [
+              11.05,
+              673.56,
+              2251.14,
+              2137.78
+            ],
+            [
+              0.0,
+              688.72,
+              2208.29,
+              2138.42
+            ],
+            [
+              6.09,
+              700.7,
+              2123.79,
+              2091.56
+            ],
+            [
+              0.0,
+              724.95,
+              2047.72,
+              2101.1
+            ],
+            [
+              13.92,
+              772.99,
+              1926.5,
+              2054.1
+            ],
+            [
+              0.0,
+              794.19,
+              1868.12,
+              2118.41
+            ],
+            [
+              0.0,
+              824.38,
+              1750.46,
+              2131.67
+            ],
+            [
+              0.0,
+              854.53,
+              1609.23,
+              2127.63
+            ],
+            [
+              0.0,
+              892.69,
+              1441.48,
+              2133.95
+            ],
+            [
+              0.0,
+              980.08,
+              1238.82,
+              2134.52
+            ],
+            [
+              0.0,
+              1032.3,
+              1046.68,
+              2134.89
+            ],
+            [
+              0.0,
+              1140.52,
+              791.64,
+              2138.43
+            ],
+            [
+              0.0,
+              1558.15,
+              426.66,
+              2158.92
+            ]
+          ],
+          "history_sample_available": true
+        },
+        "ocr_overlay_video_uri": "runs/plate_ocr/POCR-EXP-002-004-ocr/overlay/paddle/video_1_ocr_overlay.mp4",
+        "plate_ocr": {
+          "engine": "paddle",
+          "final_text": "34TC8532",
+          "vote_confidence": 0.5349,
+          "best_frame": 128,
+          "crop_count": 213,
+          "ocr_read_count": 209
+        },
+        "cabin_roi_uri": "runs/cabin/cabin_exp_004/rois/video_1/frame_000002_cabin.jpg",
+        "cabin_overlay_video_uri": "runs/cabin/cabin_exp_004/annotated/video_1_opencv_yunet_2026may.mp4",
+        "driver_cabin": {
+          "visibility": "limited",
+          "visibility_score": 0.548,
+          "occupant_count_estimate": 2,
+          "driver_candidate_detected": true,
+          "role_assignment_status": "assigned_side_driver_largest_face",
+          "temporal_detection_rate": 0.9742,
+          "phone_risk_status": "not_run",
+          "seatbelt_status": "unknown"
+        },
+        "phone_overlay_video_uri": "runs/phone_call_baseline_v2/object/phone_exp_004_three_video/annotated/video_1_yolo26s_phone_windshield_seed_smoke.mp4",
+        "phone_candidate_status": "not_detected",
+        "phone_risk_enabled": false,
+        "phone_call_overlay_video_uri": "runs/phone_call_baseline_v2/phone_call_exp_002/annotated/video_1_phone_yolo26s_vitpose_lk_ear_temporal_fusion_v2.mp4",
+        "phone_call_risk_enabled": false,
+        "phone_call_baseline_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+        "phone_call_baseline_uri": "models/benchmarks/artifacts/phone_call_baseline_v2/PHONE-CALL-PROVISIONAL-BASELINE.json",
+        "phone_call_pose_reliability": "usable_borderline",
+        "phone_call_pose_policy": "borderline_requires_stronger_temporal_consistency",
+        "phone_call_final_baseline_accepted": false
+      },
+      "explanation": {
+        "user_level_summary": "Hedef arac icin PaddleOCR tabanli plaka karari uretilmistir: 34TC8532.",
+        "technical_summary": "TRK-001 için stable_class=car, track_stability=0.964, selection_score=0.905 hesaplandı. Bu kayıt gerçek risk kararı değil, takipten event/evidence hattına geçiş skeleton'ıdır. Plate OCR entegrasyonu sonrasi final_text=34TC8532, ocr_status=read, vote_confidence=0.5349, best_frame=128. Cabin visibility=limited, occupant_count=2, driver_candidate=True, role_status=assigned_side_driver_largest_face. Phone and seatbelt analysis were not run. Phone candidate=not_detected, rate=0.0343. Phone-call behavior=candidate. Phone-call baseline=PHONE-CALL-PROVISIONAL-BASELINE. Phone object visibility alone is not interpreted as a violation.",
+        "llm_used": false,
+        "llm_provider": null,
+        "template_fallback_used": true,
+        "source": "template"
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "event_type": "target_vehicle_selected",
+      "timestamp_utc": "2026-06-10T21:09:12Z",
+      "frame_id": "video_2:frame_000281",
+      "source": {
+        "device_id": "local_macbook_edge_baseline",
+        "session_id": "TRK-EXP-001",
+        "camera_mode": "offline_replay",
+        "resolution": "3840x2160",
+        "fps": 50.0,
+        "orientation": "landscape",
+        "network_type": "not_available_offline",
+        "calibration_profile_id": null,
+        "source_video": "video_2.mp4"
+      },
+      "system": {
+        "mode": "normal",
+        "qod_status": "not_needed",
+        "number_verification_status": "not_available",
+        "latency_ms": 14.071,
+        "pipeline_fps": 36.683,
+        "runtime_profile": "macbook_local_edge_offline_benchmark"
+      },
+      "frame_quality": {
+        "status": "not_run",
+        "quality_flags": [
+          "condition_profile_from_benchmark_summary"
+        ]
+      },
+      "target_vehicle": {
+        "status": "selected",
+        "track_id": "TRK-001",
+        "vehicle_type": "car",
+        "bbox": [
+          0.0,
+          915.83,
+          1808.5,
+          2136.77
+        ],
+        "bbox_xyxy": [
+          0.0,
+          915.83,
+          1808.5,
+          2136.77
+        ],
+        "bbox_xywh": null,
+        "confidence": 0.9426,
+        "track_stability": 0.949,
+        "selection_score": 0.898,
+        "selection_reasons": [
+          "track_stability_high",
+          "large_visible_bbox",
+          "detector_confidence_high",
+          "long_enough_for_temporal_modules",
+          "vehicle_class_prioritized_for_plate_speed"
+        ],
+        "frame_window": {
+          "first_frame": 1,
+          "last_frame": 344,
+          "best_frame": 281,
+          "track_age_frames": 341
+        },
+        "class_votes": {
+          "car": 274.028,
+          "motorcycle": 4.142
+        },
+        "class_purity": 0.985,
+        "id_switch_suspected": true
+      },
+      "scene": {
+        "status": "not_run",
+        "weather": "unknown",
+        "lighting": "dark",
+        "visibility": "unknown",
+        "confidence": null
+      },
+      "plate": {
+        "status": "detected",
+        "detected": true,
+        "bbox": null,
+        "ocr_status": "read",
+        "ocr_text": "34TC8532",
+        "raw_text_best_frame": "34 TC 8532",
+        "format_valid": true,
+        "province_code_valid": true,
+        "confidence": 0.4419,
+        "vote_confidence": 0.4419,
+        "candidate_count": 7,
+        "best_frame": 117,
+        "source_crop_uri": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_2/frame_000117_plate0.jpg",
+        "source_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_2",
+        "ocr_engine": "paddle",
+        "failure_reason": null
+      },
+      "speed": {
+        "status": "not_run",
+        "mode": "not_available",
+        "estimated_kmh": null,
+        "relative_motion_score": null,
+        "motion_anomaly": null,
+        "calibration_profile_id": null,
+        "confidence": null
+      },
+      "lane": {
+        "status": "not_run",
+        "lane_status": null,
+        "lane_visibility": null,
+        "lane_risk": null,
+        "confidence": null
+      },
+      "driver_cabin": {
+        "status": "ok",
+        "visibility": "limited",
+        "driver_detected": true,
+        "passenger_count": 1,
+        "phone_risk": null,
+        "seatbelt_status": "unknown",
+        "confidence": 0.546,
+        "failure_reason": null,
+        "visibility_score": 0.546,
+        "visibility_reasons": [
+          "blur_or_soft_focus",
+          "high_dark_pixel_ratio",
+          "low_brightness",
+          "low_contrast"
+        ],
+        "face_count": 2,
+        "occupant_count_estimate": 2,
+        "driver_candidate_detected": true,
+        "role_assignment_status": "assigned_side_driver_largest_face",
+        "temporal_detection_rate": 0.8735,
+        "best_frame": 21,
+        "source_roi_uri": "runs/cabin/cabin_exp_004/rois/video_2/frame_000021_cabin.jpg",
+        "model_version": "opencv_yunet_2026may",
+        "phone_analysis_status": "candidate",
+        "phone_detected": true,
+        "phone_confidence": 0.6755,
+        "phone_detection_rate": 0.8163,
+        "phone_bbox": [
+          2147.59,
+          820.75,
+          2200.27,
+          901.13
+        ],
+        "phone_best_frame": 124,
+        "phone_source_roi_uri": "runs/phone_call_baseline_v2/object/phone_exp_004_three_video/rois/video_2/frame_000124_phone_roi.jpg",
+        "phone_model_version": "yolo26s_phone_windshield_seed_smoke",
+        "hand_association_status": "not_run",
+        "object_near_face_rate": 0.975,
+        "phone_call_status": "handheld_call_likely",
+        "phone_call_confidence": 1.0,
+        "phone_call_evidence_source": "object_pose_temporal",
+        "hand_near_ear_candidate_rate": 0.9474,
+        "longest_hand_near_ear_seconds": 3.6,
+        "dominant_hand_side": "right",
+        "phone_call_baseline_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+        "phone_call_pose_reliability": "decision_usable",
+        "phone_call_pose_policy": "standard"
+      },
+      "external_users": [],
+      "risk": {
+        "risk_score": 0.494,
+        "risk_level": "low",
+        "reasons": [
+          "tracking_candidate_event_only",
+          "target_vehicle_selected_for_downstream_experts",
+          "plate_ocr_final_decision_available"
+        ],
+        "fusion_confidence": 0.772,
+        "thresholds": {
+          "critical_mode_activation": "not_run",
+          "target_selection_score": 0.5
+        }
+      },
+      "routing_decision": {
+        "experts_called": [
+          "Vehicle Detection",
+          "ByteTrack",
+          "Plate OCR",
+          "Cabin Driver"
+        ],
+        "routing_reasons": [
+          "pretrained_detector_output_available",
+          "track_stability_computed",
+          "target_vehicle_selected_before_plate_speed_qod",
+          "selected_plate_ocr_baseline_connected",
+          "cabin_visibility_gate_passed"
+        ],
+        "qod_reason": "Track stability and evidence metadata are sufficient for this skeleton stage.",
+        "condition_profile": "dark",
+        "selected_detector": "yolo11n.pt",
+        "fallback_detector": "yolo11n.pt",
+        "routing_mode": "tracking_postprocess_baseline",
+        "fallbacks_used": [],
+        "selected_plate_detector": "yolo",
+        "selected_plate_ocr_engine": "paddle",
+        "selected_cabin_model": "opencv_yunet_2026may",
+        "cabin_view_profile": "side_driver_window"
+      },
+      "models": {
+        "vehicle_detector": "yolo11n.pt",
+        "vehicle_tracker": "ByteTrack:bytetrack.yaml",
+        "target_selector": "heuristic_track_target_selector_v1",
+        "event_builder": "tracking_event_skeleton_builder_v1",
+        "plate_detector": "yolo",
+        "plate_ocr": "PaddleOCR:PaddleOCR(lang=en)",
+        "plate_postprocess": "turkish_regex_province_temporal_vote_v1",
+        "cabin_visibility": "opencv_quality_gate_v1",
+        "cabin_face_detector": "opencv_yunet_2026may",
+        "cabin_role_policy": "view_profile_temporal_v1",
+        "phone_object_detector": "yolo26s_phone_windshield_seed_smoke",
+        "phone_call_behavior": "phone_yolo26s_vitpose_lk_ear_temporal_fusion_v2",
+        "phone_call_provisional_baseline": "PHONE-CALL-PROVISIONAL-BASELINE"
+      },
+      "evidence": {
+        "status": "partial",
+        "original_frame_uri": null,
+        "overlay_image_uri": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_2_tracked.mp4",
+        "target_vehicle_crop_uri": null,
+        "plate_crop_uri": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_2/frame_000117_plate0.jpg",
+        "json_uri": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-paddle-cabin.json",
+        "evidence_quality_score": 1.0,
+        "metadata_completeness_score": 1.0,
+        "track_history": {
+          "center_history_sample": [
+            [
+              2241.3,
+              992.54
+            ],
+            [
+              2233.28,
+              997.91
+            ],
+            [
+              2218.65,
+              1004.51
+            ],
+            [
+              2206.19,
+              1006.36
+            ],
+            [
+              2188.31,
+              1015.2
+            ],
+            [
+              2162.03,
+              1029.45
+            ],
+            [
+              2138.56,
+              1046.99
+            ],
+            [
+              2108.48,
+              1065.51
+            ],
+            [
+              2060.72,
+              1087.18
+            ],
+            [
+              2015.86,
+              1113.26
+            ],
+            [
+              1961.1,
+              1143.46
+            ],
+            [
+              1894.0,
+              1184.73
+            ],
+            [
+              1809.64,
+              1235.04
+            ],
+            [
+              1719.68,
+              1286.36
+            ],
+            [
+              1602.62,
+              1350.96
+            ],
+            [
+              1464.16,
+              1390.52
+            ],
+            [
+              1281.07,
+              1405.24
+            ],
+            [
+              1200.74,
+              1405.38
+            ],
+            [
+              1177.59,
+              1413.23
+            ],
+            [
+              1140.4,
+              1427.28
+            ],
+            [
+              1111.77,
+              1440.94
+            ],
+            [
+              1071.88,
+              1451.74
+            ],
+            [
+              1009.55,
+              1498.68
+            ],
+            [
+              957.94,
+              1508.21
+            ],
+            [
+              900.5,
+              1523.87
+            ],
+            [
+              823.17,
+              1537.51
+            ],
+            [
+              727.18,
+              1563.75
+            ],
+            [
+              607.17,
+              1637.62
+            ],
+            [
+              452.46,
+              1709.87
+            ],
+            [
+              210.67,
+              1945.66
+            ]
+          ],
+          "bbox_history_sample": [
+            [
+              1700.81,
+              570.36,
+              2781.8,
+              1414.71
+            ],
+            [
+              1687.77,
+              570.82,
+              2778.79,
+              1425.0
+            ],
+            [
+              1671.93,
+              576.65,
+              2765.36,
+              1432.37
+            ],
+            [
+              1653.45,
+              573.1,
+              2758.92,
+              1439.62
+            ],
+            [
+              1626.16,
+              573.97,
+              2750.46,
+              1456.42
+            ],
+            [
+              1584.59,
+              577.34,
+              2739.48,
+              1481.56
+            ],
+            [
+              1546.28,
+              583.2,
+              2730.84,
+              1510.78
+            ],
+            [
+              1497.82,
+              585.5,
+              2719.14,
+              1545.52
+            ],
+            [
+              1425.0,
+              592.7,
+              2696.44,
+              1581.65
+            ],
+            [
+              1346.17,
+              594.98,
+              2685.56,
+              1631.55
+            ],
+            [
+              1252.87,
+              598.22,
+              2669.33,
+              1688.69
+            ],
+            [
+              1142.53,
+              608.3,
+              2645.47,
+              1761.16
+            ],
+            [
+              1005.53,
+              619.87,
+              2613.75,
+              1850.21
+            ],
+            [
+              853.7,
+              627.08,
+              2585.65,
+              1945.63
+            ],
+            [
+              665.78,
+              645.93,
+              2539.45,
+              2055.98
+            ],
+            [
+              455.56,
+              653.74,
+              2472.75,
+              2127.3
+            ],
+            [
+              187.47,
+              668.68,
+              2374.66,
+              2141.81
+            ],
+            [
+              35.26,
+              677.28,
+              2366.22,
+              2133.49
+            ],
+            [
+              16.74,
+              703.97,
+              2338.43,
+              2122.49
+            ],
+            [
+              0.0,
+              732.32,
+              2280.8,
+              2122.24
+            ],
+            [
+              0.0,
+              752.74,
+              2223.54,
+              2129.13
+            ],
+            [
+              0.0,
+              770.77,
+              2143.76,
+              2132.7
+            ],
+            [
+              4.31,
+              857.66,
+              2014.78,
+              2139.7
+            ],
+            [
+              0.0,
+              881.58,
+              1915.88,
+              2134.84
+            ],
+            [
+              0.0,
+              910.12,
+              1800.99,
+              2137.63
+            ],
+            [
+              0.0,
+              938.75,
+              1646.33,
+              2136.26
+            ],
+            [
+              0.0,
+              992.55,
+              1454.36,
+              2134.95
+            ],
+            [
+              0.0,
+              1137.55,
+              1214.34,
+              2137.69
+            ],
+            [
+              0.0,
+              1281.54,
+              904.91,
+              2138.21
+            ],
+            [
+              4.81,
+              1739.54,
+              416.54,
+              2151.77
+            ]
+          ],
+          "history_sample_available": true
+        },
+        "ocr_overlay_video_uri": "runs/plate_ocr/POCR-EXP-002-004-ocr/overlay/paddle/video_2_ocr_overlay.mp4",
+        "plate_ocr": {
+          "engine": "paddle",
+          "final_text": "34TC8532",
+          "vote_confidence": 0.4419,
+          "best_frame": 117,
+          "crop_count": 194,
+          "ocr_read_count": 190
+        },
+        "cabin_roi_uri": "runs/cabin/cabin_exp_004/rois/video_2/frame_000021_cabin.jpg",
+        "cabin_overlay_video_uri": "runs/cabin/cabin_exp_004/annotated/video_2_opencv_yunet_2026may.mp4",
+        "driver_cabin": {
+          "visibility": "limited",
+          "visibility_score": 0.546,
+          "occupant_count_estimate": 2,
+          "driver_candidate_detected": true,
+          "role_assignment_status": "assigned_side_driver_largest_face",
+          "temporal_detection_rate": 0.8735,
+          "phone_risk_status": "not_run",
+          "seatbelt_status": "unknown"
+        },
+        "phone_overlay_video_uri": "runs/phone_call_baseline_v2/object/phone_exp_004_three_video/annotated/video_2_yolo26s_phone_windshield_seed_smoke.mp4",
+        "phone_candidate_status": "detected",
+        "phone_risk_enabled": false,
+        "phone_call_overlay_video_uri": "runs/phone_call_baseline_v2/phone_call_exp_002/annotated/video_2_phone_yolo26s_vitpose_lk_ear_temporal_fusion_v2.mp4",
+        "phone_call_risk_enabled": false,
+        "phone_call_baseline_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+        "phone_call_baseline_uri": "models/benchmarks/artifacts/phone_call_baseline_v2/PHONE-CALL-PROVISIONAL-BASELINE.json",
+        "phone_call_pose_reliability": "decision_usable",
+        "phone_call_pose_policy": "standard",
+        "phone_call_final_baseline_accepted": false
+      },
+      "explanation": {
+        "user_level_summary": "Hedef arac icin PaddleOCR tabanli plaka karari uretilmistir: 34TC8532.",
+        "technical_summary": "TRK-001 için stable_class=car, track_stability=0.949, selection_score=0.898 hesaplandı. Bu kayıt gerçek risk kararı değil, takipten event/evidence hattına geçiş skeleton'ıdır. Plate OCR entegrasyonu sonrasi final_text=34TC8532, ocr_status=read, vote_confidence=0.4419, best_frame=117. Cabin visibility=limited, occupant_count=2, driver_candidate=True, role_status=assigned_side_driver_largest_face. Phone and seatbelt analysis were not run. Phone candidate=detected, rate=0.8163. Phone-call behavior=handheld_call_likely. Phone-call baseline=PHONE-CALL-PROVISIONAL-BASELINE. Phone object visibility alone is not interpreted as a violation.",
+        "llm_used": false,
+        "llm_provider": null,
+        "template_fallback_used": true,
+        "source": "template"
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "event_type": "target_vehicle_selected",
+      "timestamp_utc": "2026-06-10T21:09:12Z",
+      "frame_id": "video_3:frame_000214",
+      "source": {
+        "device_id": "local_macbook_edge_baseline",
+        "session_id": "TRK-EXP-001",
+        "camera_mode": "offline_replay",
+        "resolution": "3840x2160",
+        "fps": 50.0,
+        "orientation": "landscape",
+        "network_type": "not_available_offline",
+        "calibration_profile_id": null,
+        "source_video": "video_3.mp4"
+      },
+      "system": {
+        "mode": "normal",
+        "qod_status": "not_needed",
+        "number_verification_status": "not_available",
+        "latency_ms": 14.121,
+        "pipeline_fps": 35.877,
+        "runtime_profile": "macbook_local_edge_offline_benchmark"
+      },
+      "frame_quality": {
+        "status": "not_run",
+        "quality_flags": [
+          "condition_profile_from_benchmark_summary"
+        ]
+      },
+      "target_vehicle": {
+        "status": "selected",
+        "track_id": "TRK-002",
+        "vehicle_type": "car",
+        "bbox": [
+          398.44,
+          668.73,
+          2495.55,
+          2143.97
+        ],
+        "bbox_xyxy": [
+          398.44,
+          668.73,
+          2495.55,
+          2143.97
+        ],
+        "bbox_xywh": null,
+        "confidence": 0.9499,
+        "track_stability": 0.949,
+        "selection_score": 0.916,
+        "selection_reasons": [
+          "track_stability_high",
+          "large_visible_bbox",
+          "near_frame_center",
+          "detector_confidence_high",
+          "long_enough_for_temporal_modules",
+          "vehicle_class_prioritized_for_plate_speed"
+        ],
+        "frame_window": {
+          "first_frame": 1,
+          "last_frame": 287,
+          "best_frame": 214,
+          "track_age_frames": 285
+        },
+        "class_votes": {
+          "car": 227.911,
+          "motorcycle": 2.101
+        },
+        "class_purity": 0.991,
+        "id_switch_suspected": true
+      },
+      "scene": {
+        "status": "not_run",
+        "weather": "unknown",
+        "lighting": "dark",
+        "visibility": "unknown",
+        "confidence": null
+      },
+      "plate": {
+        "status": "detected",
+        "detected": true,
+        "bbox": null,
+        "ocr_status": "read",
+        "ocr_text": "34TC8532",
+        "raw_text_best_frame": "34 TC 8532",
+        "format_valid": true,
+        "province_code_valid": true,
+        "confidence": 0.8336,
+        "vote_confidence": 0.8336,
+        "candidate_count": 29,
+        "best_frame": 101,
+        "source_crop_uri": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_3/frame_000101_plate0.jpg",
+        "source_crop_dir": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_3",
+        "ocr_engine": "paddle",
+        "failure_reason": null
+      },
+      "speed": {
+        "status": "not_run",
+        "mode": "not_available",
+        "estimated_kmh": null,
+        "relative_motion_score": null,
+        "motion_anomaly": null,
+        "calibration_profile_id": null,
+        "confidence": null
+      },
+      "lane": {
+        "status": "not_run",
+        "lane_status": null,
+        "lane_visibility": null,
+        "lane_risk": null,
+        "confidence": null
+      },
+      "driver_cabin": {
+        "status": "ok",
+        "visibility": "limited",
+        "driver_detected": true,
+        "passenger_count": 0,
+        "phone_risk": null,
+        "seatbelt_status": "unknown",
+        "confidence": 0.468,
+        "failure_reason": null,
+        "visibility_score": 0.468,
+        "visibility_reasons": [
+          "blur_or_soft_focus",
+          "high_dark_pixel_ratio",
+          "low_brightness",
+          "low_contrast"
+        ],
+        "face_count": 1,
+        "occupant_count_estimate": 1,
+        "driver_candidate_detected": true,
+        "role_assignment_status": "assigned_front_lhd_right_side_face",
+        "temporal_detection_rate": 0.8718,
+        "best_frame": 78,
+        "source_roi_uri": "runs/cabin/cabin_exp_004/rois/video_3/frame_000078_cabin.jpg",
+        "model_version": "opencv_yunet_2026may",
+        "phone_analysis_status": "not_detected",
+        "phone_detected": false,
+        "phone_confidence": 0.3532,
+        "phone_detection_rate": 0.0513,
+        "phone_bbox": [
+          1163.28,
+          1311.9,
+          1223.5,
+          1382.07
+        ],
+        "phone_best_frame": 230,
+        "phone_source_roi_uri": "runs/phone_call_baseline_v2/object/phone_exp_004_three_video/rois/video_3/frame_000230_phone_roi.jpg",
+        "phone_model_version": "yolo26s_phone_windshield_seed_smoke",
+        "hand_association_status": "not_run",
+        "object_near_face_rate": 0.0,
+        "phone_call_status": "candidate",
+        "phone_call_confidence": 0.7654,
+        "phone_call_evidence_source": "pose_temporal",
+        "hand_near_ear_candidate_rate": 0.4552,
+        "longest_hand_near_ear_seconds": 0.2,
+        "dominant_hand_side": "left",
+        "phone_call_baseline_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+        "phone_call_pose_reliability": "usable_borderline",
+        "phone_call_pose_policy": "borderline_requires_stronger_temporal_consistency"
+      },
+      "external_users": [],
+      "risk": {
+        "risk_score": 0.504,
+        "risk_level": "low",
+        "reasons": [
+          "tracking_candidate_event_only",
+          "target_vehicle_selected_for_downstream_experts",
+          "plate_ocr_final_decision_available"
+        ],
+        "fusion_confidence": 0.909,
+        "thresholds": {
+          "critical_mode_activation": "not_run",
+          "target_selection_score": 0.5
+        }
+      },
+      "routing_decision": {
+        "experts_called": [
+          "Vehicle Detection",
+          "ByteTrack",
+          "Plate OCR",
+          "Cabin Driver"
+        ],
+        "routing_reasons": [
+          "pretrained_detector_output_available",
+          "track_stability_computed",
+          "target_vehicle_selected_before_plate_speed_qod",
+          "selected_plate_ocr_baseline_connected",
+          "cabin_visibility_gate_passed"
+        ],
+        "qod_reason": "Track stability and evidence metadata are sufficient for this skeleton stage.",
+        "condition_profile": "dark",
+        "selected_detector": "yolo11n.pt",
+        "fallback_detector": "yolo11n.pt",
+        "routing_mode": "tracking_postprocess_baseline",
+        "fallbacks_used": [],
+        "selected_plate_detector": "yolo",
+        "selected_plate_ocr_engine": "paddle",
+        "selected_cabin_model": "opencv_yunet_2026may",
+        "cabin_view_profile": "front_lhd"
+      },
+      "models": {
+        "vehicle_detector": "yolo11n.pt",
+        "vehicle_tracker": "ByteTrack:bytetrack.yaml",
+        "target_selector": "heuristic_track_target_selector_v1",
+        "event_builder": "tracking_event_skeleton_builder_v1",
+        "plate_detector": "yolo",
+        "plate_ocr": "PaddleOCR:PaddleOCR(lang=en)",
+        "plate_postprocess": "turkish_regex_province_temporal_vote_v1",
+        "cabin_visibility": "opencv_quality_gate_v1",
+        "cabin_face_detector": "opencv_yunet_2026may",
+        "cabin_role_policy": "view_profile_temporal_v1",
+        "phone_object_detector": "yolo26s_phone_windshield_seed_smoke",
+        "phone_call_behavior": "phone_yolo26s_vitpose_lk_ear_temporal_fusion_v2",
+        "phone_call_provisional_baseline": "PHONE-CALL-PROVISIONAL-BASELINE"
+      },
+      "evidence": {
+        "status": "partial",
+        "original_frame_uri": null,
+        "overlay_image_uri": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_3_tracked.mp4",
+        "target_vehicle_crop_uri": null,
+        "plate_crop_uri": "runs/plate_ocr/POCR-EXP-001-plate-detection/plates/yolo/video_3/frame_000101_plate0.jpg",
+        "json_uri": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-paddle-cabin.json",
+        "evidence_quality_score": 1.0,
+        "metadata_completeness_score": 1.0,
+        "track_history": {
+          "center_history_sample": [
+            [
+              2898.09,
+              645.49
+            ],
+            [
+              2912.31,
+              650.71
+            ],
+            [
+              2924.04,
+              661.48
+            ],
+            [
+              2940.99,
+              650.58
+            ],
+            [
+              2922.95,
+              653.14
+            ],
+            [
+              2891.48,
+              674.92
+            ],
+            [
+              2857.91,
+              691.18
+            ],
+            [
+              2829.27,
+              695.18
+            ],
+            [
+              2804.67,
+              710.74
+            ],
+            [
+              2788.35,
+              729.32
+            ],
+            [
+              2812.44,
+              759.75
+            ],
+            [
+              2838.93,
+              791.9
+            ],
+            [
+              2838.67,
+              816.82
+            ],
+            [
+              2803.82,
+              834.19
+            ],
+            [
+              2714.12,
+              874.49
+            ],
+            [
+              2624.96,
+              912.45
+            ],
+            [
+              2509.2,
+              956.25
+            ],
+            [
+              2377.05,
+              1000.9
+            ],
+            [
+              2211.71,
+              1073.23
+            ],
+            [
+              2036.53,
+              1150.23
+            ],
+            [
+              1848.67,
+              1256.86
+            ],
+            [
+              1626.21,
+              1384.15
+            ],
+            [
+              1342.68,
+              1407.52
+            ],
+            [
+              1217.82,
+              1415.0
+            ],
+            [
+              1150.42,
+              1444.06
+            ],
+            [
+              1068.63,
+              1499.86
+            ],
+            [
+              973.34,
+              1523.04
+            ],
+            [
+              865.43,
+              1542.65
+            ],
+            [
+              688.81,
+              1631.81
+            ],
+            [
+              439.63,
+              1756.46
+            ]
+          ],
+          "bbox_history_sample": [
+            [
+              2711.03,
+              484.71,
+              3085.15,
+              806.27
+            ],
+            [
+              2720.82,
+              487.16,
+              3103.79,
+              814.26
+            ],
+            [
+              2716.32,
+              487.03,
+              3131.75,
+              835.94
+            ],
+            [
+              2741.59,
+              494.31,
+              3140.39,
+              806.85
+            ],
+            [
+              2716.24,
+              494.47,
+              3129.67,
+              811.81
+            ],
+            [
+              2664.11,
+              497.61,
+              3118.84,
+              852.24
+            ],
+            [
+              2610.92,
+              498.45,
+              3104.9,
+              883.91
+            ],
+            [
+              2578.31,
+              499.88,
+              3080.24,
+              890.47
+            ],
+            [
+              2538.92,
+              506.24,
+              3070.43,
+              915.25
+            ],
+            [
+              2519.56,
+              516.71,
+              3057.13,
+              941.94
+            ],
+            [
+              2528.69,
+              524.76,
+              3096.18,
+              994.75
+            ],
+            [
+              2538.52,
+              533.14,
+              3139.34,
+              1050.65
+            ],
+            [
+              2519.24,
+              534.67,
+              3158.1,
+              1098.98
+            ],
+            [
+              2478.57,
+              553.29,
+              3129.07,
+              1115.09
+            ],
+            [
+              2332.74,
+              554.04,
+              3095.51,
+              1194.93
+            ],
+            [
+              2181.65,
+              553.54,
+              3068.28,
+              1271.37
+            ],
+            [
+              1993.37,
+              562.47,
+              3025.02,
+              1350.02
+            ],
+            [
+              1783.71,
+              565.63,
+              2970.4,
+              1436.17
+            ],
+            [
+              1535.44,
+              595.04,
+              2887.99,
+              1551.42
+            ],
+            [
+              1266.34,
+              613.8,
+              2806.72,
+              1686.66
+            ],
+            [
+              969.44,
+              634.73,
+              2727.91,
+              1878.99
+            ],
+            [
+              615.5,
+              652.26,
+              2636.93,
+              2116.05
+            ],
+            [
+              262.46,
+              673.31,
+              2422.89,
+              2141.74
+            ],
+            [
+              67.32,
+              708.6,
+              2368.33,
+              2121.39
+            ],
+            [
+              13.72,
+              764.7,
+              2287.12,
+              2123.42
+            ],
+            [
+              6.77,
+              863.25,
+              2130.49,
+              2136.47
+            ],
+            [
+              0.0,
+              911.85,
+              1946.69,
+              2134.23
+            ],
+            [
+              0.0,
+              952.91,
+              1730.87,
+              2132.4
+            ],
+            [
+              0.0,
+              1128.43,
+              1377.62,
+              2135.18
+            ],
+            [
+              0.0,
+              1369.22,
+              879.27,
+              2143.7
+            ]
+          ],
+          "history_sample_available": true
+        },
+        "ocr_overlay_video_uri": "runs/plate_ocr/POCR-EXP-002-004-ocr/overlay/paddle/video_3_ocr_overlay.mp4",
+        "plate_ocr": {
+          "engine": "paddle",
+          "final_text": "34TC8532",
+          "vote_confidence": 0.8336,
+          "best_frame": 101,
+          "crop_count": 220,
+          "ocr_read_count": 211
+        },
+        "cabin_roi_uri": "runs/cabin/cabin_exp_004/rois/video_3/frame_000078_cabin.jpg",
+        "cabin_overlay_video_uri": "runs/cabin/cabin_exp_004/annotated/video_3_opencv_yunet_2026may.mp4",
+        "driver_cabin": {
+          "visibility": "limited",
+          "visibility_score": 0.468,
+          "occupant_count_estimate": 1,
+          "driver_candidate_detected": true,
+          "role_assignment_status": "assigned_front_lhd_right_side_face",
+          "temporal_detection_rate": 0.8718,
+          "phone_risk_status": "not_run",
+          "seatbelt_status": "unknown"
+        },
+        "phone_overlay_video_uri": "runs/phone_call_baseline_v2/object/phone_exp_004_three_video/annotated/video_3_yolo26s_phone_windshield_seed_smoke.mp4",
+        "phone_candidate_status": "not_detected",
+        "phone_risk_enabled": false,
+        "phone_call_overlay_video_uri": "runs/phone_call_baseline_v2/phone_call_exp_002/annotated/video_3_phone_yolo26s_vitpose_lk_ear_temporal_fusion_v2.mp4",
+        "phone_call_risk_enabled": false,
+        "phone_call_baseline_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+        "phone_call_baseline_uri": "models/benchmarks/artifacts/phone_call_baseline_v2/PHONE-CALL-PROVISIONAL-BASELINE.json",
+        "phone_call_pose_reliability": "usable_borderline",
+        "phone_call_pose_policy": "borderline_requires_stronger_temporal_consistency",
+        "phone_call_final_baseline_accepted": false
+      },
+      "explanation": {
+        "user_level_summary": "Hedef arac icin PaddleOCR tabanli plaka karari uretilmistir: 34TC8532.",
+        "technical_summary": "TRK-002 için stable_class=car, track_stability=0.949, selection_score=0.916 hesaplandı. Bu kayıt gerçek risk kararı değil, takipten event/evidence hattına geçiş skeleton'ıdır. Plate OCR entegrasyonu sonrasi final_text=34TC8532, ocr_status=read, vote_confidence=0.8336, best_frame=101. Cabin visibility=limited, occupant_count=1, driver_candidate=True, role_status=assigned_front_lhd_right_side_face. Phone and seatbelt analysis were not run. Phone candidate=not_detected, rate=0.0513. Phone-call behavior=candidate. Phone-call baseline=PHONE-CALL-PROVISIONAL-BASELINE. Phone object visibility alone is not interpreted as a violation.",
+        "llm_used": false,
+        "llm_provider": null,
+        "template_fallback_used": true,
+        "source": "template"
+      }
+    }
+  ],
+  "experiment_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+  "phone_risk_enabled": false,
+  "phone_call_baseline_id": "PHONE-CALL-PROVISIONAL-BASELINE",
+  "phone_call_final_baseline_accepted": false
+}

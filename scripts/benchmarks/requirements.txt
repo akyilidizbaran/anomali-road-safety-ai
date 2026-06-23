@@ -1,0 +1,18 @@
+# Shared local benchmark environment (Python 3.11).
+pip>=25,<27
+numpy>=1.26,<2
+opencv-python>=4.10,<5
+torch>=2.7,<3
+torchvision>=0.22,<1
+ultralytics>=8.3,<9
+lap>=0.5.12,<1
+mediapipe>=0.10,<1
+onnxruntime>=1.18,<2
+paddlepaddle>=3,<4
+paddleocr>=3,<4
+easyocr>=1.7,<2
+transformers>=4.40,<6
+huggingface-hub>=0.30,<2
+pillow>=11,<13
+jsonschema>=4,<5
+pytest>=8,<10

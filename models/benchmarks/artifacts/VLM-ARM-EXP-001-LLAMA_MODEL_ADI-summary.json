@@ -1,0 +1,97 @@
+{
+  "experiment_id": "VLM-ARM-EXP-001",
+  "stage": "driver_vlm_arm_state_challenger",
+  "created_at_utc": "2026-06-14T16:16:50Z",
+  "decision": "candidate_not_selected_pending_manual_review",
+  "provider": "ollama",
+  "model": "LLAMA_MODEL_ADI",
+  "model_key": "local_vlm_driver_arm_state_json",
+  "endpoint": "http://localhost:11434/api/chat",
+  "crop_source": "vehicle",
+  "sample_stride": 25,
+  "frames": [
+    150,
+    175,
+    200,
+    225,
+    240
+  ],
+  "risk_enabled": false,
+  "input_cabin_summary": "models/benchmarks/artifacts/CABIN-EXP-004-opencv_yunet_2026may-summary.json",
+  "videos": [
+    {
+      "video": "video_3.mp4",
+      "status": "completed",
+      "view_profile": "front_lhd",
+      "sampled_frame_count": 3,
+      "parse_failure_count": 3,
+      "mean_vlm_latency_ms": null,
+      "p95_vlm_latency_ms": null,
+      "state_rates": {
+        "unknown": 1.0
+      },
+      "per_frame": [
+        {
+          "frame": 150,
+          "visibility": "limited",
+          "crop_uri": "runs/driver_vlm_arm_state/vlm_arm_exp_001/video_3/frame_000150_vehicle.jpg",
+          "status": "failed",
+          "latency_ms": null,
+          "vlm": {
+            "driver_visible": null,
+            "arms_visible": null,
+            "arm_state": "unknown",
+            "phone_visible": null,
+            "confidence": null,
+            "reasons": [
+              "ConnectionError",
+              "HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port="
+            ]
+          },
+          "raw_text": "",
+          "risk_enabled": false
+        },
+        {
+          "frame": 225,
+          "visibility": "limited",
+          "crop_uri": "runs/driver_vlm_arm_state/vlm_arm_exp_001/video_3/frame_000225_vehicle.jpg",
+          "status": "failed",
+          "latency_ms": null,
+          "vlm": {
+            "driver_visible": null,
+            "arms_visible": null,
+            "arm_state": "unknown",
+            "phone_visible": null,
+            "confidence": null,
+            "reasons": [
+              "ConnectionError",
+              "HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port="
+            ]
+          },
+          "raw_text": "",
+          "risk_enabled": false
+        },
+        {
+          "frame": 240,
+          "visibility": "limited",
+          "crop_uri": "runs/driver_vlm_arm_state/vlm_arm_exp_001/video_3/frame_000240_vehicle.jpg",
+          "status": "failed",
+          "latency_ms": null,
+          "vlm": {
+            "driver_visible": null,
+            "arms_visible": null,
+            "arm_state": "unknown",
+            "phone_visible": null,
+            "confidence": null,
+            "reasons": [
+              "ConnectionError",
+              "HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError(\"HTTPConnection(host='localhost', port="
+            ]
+          },
+          "raw_text": "",
+          "risk_enabled": false
+        }
+      ]
+    }
+  ]
+}

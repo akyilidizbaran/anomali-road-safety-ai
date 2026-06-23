@@ -1,0 +1,7 @@
+experiment_id,model,input_roi,video_count,detection_rate,near_face_rate,manual_review,decision,notes
+PHONE-EXP-001,yolo11n_coco_cell_phone_driver_roi_v1,driver_phone_roi,0,,,pending,candidate_not_selected,"COCO cell phone object-only; no phone_risk"
+PHONE-EXP-001,yolo11n_coco_cell_phone_driver_roi_v1,driver_phone_roi,3,0.0,0.0,pending,candidate_not_selected,"Existing videos are negative/smoke only; controlled phone positives required"
+PHONE-EXP-001,yolo11n_coco_cell_phone_driver_roi_v1,driver_phone_roi,3,0.0,0.0,failed,rejected_false_negative,"video_2 is phone-positive; COCO cell phone missed the small/dark windshield phone at usable threshold"
+PHONE-EXP-002,yolo11n_phone_windshield_seed_v1,face_near_crop,1,,,pending,prepared_not_trained,"21 manually seeded positive video_2 face-near crops exported as YOLO dataset; train/eval not run yet"
+PHONE-EXP-003,yolo26s_p2_phone_windshield_v2,face_near_crop_960,0,,,pending,research_selected_dataset_gate,"Primary tiny/low-light phone challenger; official P2/4 small-object head; requires session-split positives and hard negatives"
+PHONE-EXP-004,yolo26s_phone_windshield_v2,face_near_crop_960,0,,,pending,control_planned,"Standard-head YOLO26s control using identical data and training policy to isolate P2 contribution"

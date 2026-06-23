@@ -1,0 +1,13 @@
+experiment_id,video,reviewer,upper_body_roi_correct,driver_pose_match_correct,shoulders_visible_when_expected,torso_roi_correct,arm_keypoints_usable,long_gap_count,false_driver_pose_count,seatbelt_anchor_usable,phone_anchor_usable,overall_pass,notes
+POSE-EXP-001,video_1.mp4,,,,,,,,,,,,
+POSE-EXP-001,video_2.mp4,,,,,,,,,,,,
+POSE-EXP-001,video_3.mp4,,,,,,,,,,,,
+POSE-EXP-002,video_1.mp4,,,,,,,,,,,,
+POSE-EXP-002,video_2.mp4,,,,,,,,,,,,
+POSE-EXP-002,video_3.mp4,,,,,,,,,,,,
+POSE-EXP-003,video_1.mp4,,,,,,,,,,,,
+POSE-EXP-003,video_2.mp4,,,,,,,,,,,,
+POSE-EXP-003,video_3.mp4,,,,,,,,,,,,
+POSE-EXP-004,video_1.mp4,,,,,,,,,,,,
+POSE-EXP-004,video_2.mp4,,,,,,,,,,,,
+POSE-EXP-004,video_3.mp4,,,,,,,,,,,,
