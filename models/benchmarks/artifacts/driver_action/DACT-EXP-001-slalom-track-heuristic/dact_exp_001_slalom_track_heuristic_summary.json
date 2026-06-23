@@ -1,0 +1,232 @@
+{
+  "generated_at_utc": "2026-06-23T18:48:05Z",
+  "experiment_id": "DACT-EXP-001",
+  "model_key": "track_lateral_residual_slalom_heuristic_v1",
+  "purpose": "Calibration-free slalom candidate from target-track lateral residual.",
+  "inputs": {
+    "timeseries_csv": "models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_timeseries.csv",
+    "events_json": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-speed005d.json",
+    "speed_summary_json": "models/benchmarks/artifacts/speed/SPEED-EXP-005A-bbox-geometry-auto/speed_exp_005a_bbox_geometry_summary.json"
+  },
+  "outputs": {
+    "summary_json": "models/benchmarks/artifacts/driver_action/DACT-EXP-001-slalom-track-heuristic/dact_exp_001_slalom_track_heuristic_summary.json",
+    "timeseries_csv": "models/benchmarks/artifacts/driver_action/DACT-EXP-001-slalom-track-heuristic/dact_exp_001_slalom_track_heuristic_timeseries.csv",
+    "enriched_events_json": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-slalom.json",
+    "runs_dir": "runs/driver_action/slalom_exp_001",
+    "report": "testing/reports/dact_exp_001_slalom_track_heuristic.md"
+  },
+  "settings": {
+    "min_confidence": 0.25,
+    "trend_degree": 2,
+    "smoothing_window": 11,
+    "min_track_duration": 2.0,
+    "min_valid_frame_ratio": 0.7,
+    "min_direction_changes": 2,
+    "candidate_amplitude_norm": 0.3,
+    "review_amplitude_norm": 0.18,
+    "min_candidate_rms_norm": 0.08
+  },
+  "videos": [
+    {
+      "video": "video_1.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "status": "not_detected",
+      "slalom_candidate": false,
+      "score": 0.457402,
+      "confidence": 0.775329,
+      "failure_reason": "slalom_thresholds_not_met",
+      "method": "track_lateral_residual_slalom_heuristic_v1",
+      "total_points": 342,
+      "valid_points": 342,
+      "valid_frame_ratio": 1.0,
+      "track_duration_seconds": 6.86,
+      "direction_change_count": 3,
+      "direction_sign_sequence": [
+        1,
+        -1,
+        1,
+        -1
+      ],
+      "turn_frame_ids": [
+        135,
+        197,
+        302
+      ],
+      "normalized_lateral_amplitude": 0.166705,
+      "normalized_lateral_rms": 0.052086,
+      "normalized_lateral_max_abs": 0.126754,
+      "residual_roughness_p95": 0.004414,
+      "median_bbox_width_px": 1445.074768,
+      "median_bbox_height_px": 1142.119873,
+      "mean_confidence": 0.828964,
+      "velocity_deadband_norm_s": 0.03,
+      "trend_degree": 2,
+      "trend_coefficients": [
+        -17.315776949,
+        -169.067164744,
+        2251.884223703
+      ],
+      "quality_flags": [
+        "track_duration_sufficient",
+        "valid_frame_ratio_sufficient",
+        "direction_changes_present"
+      ],
+      "warning_flags": [
+        "relative_motion_only_no_lane_ground_truth"
+      ],
+      "dropped_reason_counts": {},
+      "diagnostic_reason_counts": {
+        "edge_cutoff_observed": 93
+      },
+      "thresholds": {
+        "min_track_duration": 2.0,
+        "min_valid_frame_ratio": 0.7,
+        "min_direction_changes": 2,
+        "candidate_amplitude_norm": 0.3,
+        "review_amplitude_norm": 0.18,
+        "min_candidate_rms_norm": 0.08
+      },
+      "source_resolution": "3840x2160",
+      "source_event_present": true,
+      "plot_uri": "runs/driver_action/slalom_exp_001/plots/video_1_slalom_residual_plot.png",
+      "overlay_video_uri": "runs/driver_action/slalom_exp_001/annotated/video_1_slalom_track_heuristic.mp4"
+    },
+    {
+      "video": "video_2.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "status": "not_detected",
+      "slalom_candidate": false,
+      "score": 0.467166,
+      "confidence": 0.773112,
+      "failure_reason": "slalom_thresholds_not_met",
+      "method": "track_lateral_residual_slalom_heuristic_v1",
+      "total_points": 341,
+      "valid_points": 341,
+      "valid_frame_ratio": 1.0,
+      "track_duration_seconds": 6.86,
+      "direction_change_count": 3,
+      "direction_sign_sequence": [
+        1,
+        -1,
+        1,
+        -1
+      ],
+      "turn_frame_ids": [
+        130,
+        197,
+        303
+      ],
+      "normalized_lateral_amplitude": 0.174932,
+      "normalized_lateral_rms": 0.054829,
+      "normalized_lateral_max_abs": 0.133539,
+      "residual_roughness_p95": 0.005493,
+      "median_bbox_width_px": 1523.481934,
+      "median_bbox_height_px": 1163.882263,
+      "mean_confidence": 0.815747,
+      "velocity_deadband_norm_s": 0.031159,
+      "trend_degree": 2,
+      "trend_coefficients": [
+        -17.715327493,
+        -172.401548101,
+        2359.506906693
+      ],
+      "quality_flags": [
+        "track_duration_sufficient",
+        "valid_frame_ratio_sufficient",
+        "direction_changes_present"
+      ],
+      "warning_flags": [
+        "relative_motion_only_no_lane_ground_truth"
+      ],
+      "dropped_reason_counts": {},
+      "diagnostic_reason_counts": {
+        "edge_cutoff_observed": 85
+      },
+      "thresholds": {
+        "min_track_duration": 2.0,
+        "min_valid_frame_ratio": 0.7,
+        "min_direction_changes": 2,
+        "candidate_amplitude_norm": 0.3,
+        "review_amplitude_norm": 0.18,
+        "min_candidate_rms_norm": 0.08
+      },
+      "source_resolution": "3840x2160",
+      "source_event_present": true,
+      "plot_uri": "runs/driver_action/slalom_exp_001/plots/video_2_slalom_residual_plot.png",
+      "overlay_video_uri": "runs/driver_action/slalom_exp_001/annotated/video_2_slalom_track_heuristic.mp4"
+    },
+    {
+      "video": "video_3.mp4",
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "status": "candidate",
+      "slalom_candidate": true,
+      "score": 0.93154,
+      "confidence": 0.903066,
+      "failure_reason": null,
+      "method": "track_lateral_residual_slalom_heuristic_v1",
+      "total_points": 285,
+      "valid_points": 285,
+      "valid_frame_ratio": 1.0,
+      "track_duration_seconds": 5.72,
+      "direction_change_count": 4,
+      "direction_sign_sequence": [
+        -1,
+        1,
+        -1,
+        1,
+        -1
+      ],
+      "turn_frame_ids": [
+        84,
+        152,
+        223,
+        284
+      ],
+      "normalized_lateral_amplitude": 0.45811,
+      "normalized_lateral_rms": 0.138217,
+      "normalized_lateral_max_abs": 0.356447,
+      "residual_roughness_p95": 0.01342,
+      "median_bbox_width_px": 829.726807,
+      "median_bbox_height_px": 687.07196,
+      "mean_confidence": 0.807063,
+      "velocity_deadband_norm_s": 0.088767,
+      "trend_degree": 2,
+      "trend_coefficients": [
+        -115.648402302,
+        217.783972739,
+        2844.58742157
+      ],
+      "quality_flags": [
+        "track_duration_sufficient",
+        "valid_frame_ratio_sufficient",
+        "direction_changes_present",
+        "lateral_amplitude_candidate_level"
+      ],
+      "warning_flags": [
+        "relative_motion_only_no_lane_ground_truth"
+      ],
+      "dropped_reason_counts": {},
+      "diagnostic_reason_counts": {
+        "edge_cutoff_observed": 34
+      },
+      "thresholds": {
+        "min_track_duration": 2.0,
+        "min_valid_frame_ratio": 0.7,
+        "min_direction_changes": 2,
+        "candidate_amplitude_norm": 0.3,
+        "review_amplitude_norm": 0.18,
+        "min_candidate_rms_norm": 0.08
+      },
+      "source_resolution": "3840x2160",
+      "source_event_present": true,
+      "plot_uri": "runs/driver_action/slalom_exp_001/plots/video_3_slalom_residual_plot.png",
+      "overlay_video_uri": "runs/driver_action/slalom_exp_001/annotated/video_3_slalom_track_heuristic.mp4"
+    }
+  ],
+  "limitations": [
+    "No lane-line ground truth.",
+    "No human slalom labels.",
+    "Calibration-free track residual signal only.",
+    "Manual review required before using this as final FTR behavior evidence."
+  ]
+}

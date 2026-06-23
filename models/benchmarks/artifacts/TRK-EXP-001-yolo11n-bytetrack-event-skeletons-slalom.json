@@ -1,0 +1,5225 @@
+{
+  "generated_at_utc": "2026-06-19T09:04:49Z",
+  "source_event_stage": "speed_exp_004a_relative_track_bbox",
+  "event_stage": "speed_exp_004b_plate_vattr_sanity",
+  "source_experiment_id": "TRK-EXP-001",
+  "source_ocr_experiment_id": "POCR-EXP-006",
+  "ocr_baseline_decision": "CCT-XS original + temporal stability gate",
+  "stability_gate": {
+    "stable_count": 3,
+    "window_size": 7,
+    "min_confidence": 0.75,
+    "require_format_valid": true,
+    "require_province_code_valid": true
+  },
+  "events": [
+    {
+      "event_id": "EVT-TRK-EXP-001-video_1-TRK-001",
+      "event_type": "target_vehicle_selected",
+      "timestamp_utc": "2026-06-10T21:09:12Z",
+      "frame_id": "video_1:frame_000276",
+      "source": {
+        "device_id": "local_macbook_edge_baseline",
+        "session_id": "TRK-EXP-001",
+        "camera_mode": "offline_replay",
+        "resolution": "3840x2160",
+        "fps": 50.0,
+        "orientation": "landscape",
+        "network_type": "not_available_offline",
+        "calibration_profile_id": null,
+        "source_video": "video_1.mp4"
+      },
+      "system": {
+        "mode": "normal",
+        "qod_status": "not_needed",
+        "number_verification_status": "not_available",
+        "latency_ms": 15.472,
+        "pipeline_fps": 34.972,
+        "runtime_profile": "macbook_local_edge_offline_benchmark"
+      },
+      "frame_quality": {
+        "status": "not_run",
+        "quality_flags": [
+          "condition_profile_from_benchmark_summary"
+        ]
+      },
+      "target_vehicle": {
+        "status": "selected",
+        "track_id": "TRK-001",
+        "vehicle_type": "car",
+        "bbox": [
+          0.0,
+          845.54,
+          1684.17,
+          2131.89
+        ],
+        "bbox_xyxy": [
+          0.0,
+          845.54,
+          1684.17,
+          2131.89
+        ],
+        "bbox_xywh": null,
+        "confidence": 0.944,
+        "track_stability": 0.964,
+        "selection_score": 0.905,
+        "selection_reasons": [
+          "track_stability_high",
+          "large_visible_bbox",
+          "detector_confidence_high",
+          "long_enough_for_temporal_modules",
+          "vehicle_class_prioritized_for_plate_speed"
+        ],
+        "frame_window": {
+          "first_frame": 1,
+          "last_frame": 344,
+          "best_frame": 276,
+          "track_age_frames": 342
+        },
+        "class_votes": {
+          "car": 276.578,
+          "motorcycle": 6.928
+        },
+        "class_purity": 0.976,
+        "id_switch_suspected": false
+      },
+      "scene": {
+        "status": "not_run",
+        "weather": "unknown",
+        "lighting": "dark",
+        "visibility": "unknown",
+        "confidence": null
+      },
+      "plate": {
+        "status": "detected",
+        "detected": true,
+        "bbox": null,
+        "ocr_status": "stable_read",
+        "ocr_text": "34TC8532",
+        "ocr_text_masked": "34TC****",
+        "raw_text_best_frame": "34TC8532",
+        "format_valid": true,
+        "province_code_valid": true,
+        "confidence": 0.9903,
+        "vote_confidence": 0.9903,
+        "candidate_count": 4,
+        "best_frame": 3,
+        "source_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1/frame_000003_plate0.jpg",
+        "source_crop_dir": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1",
+        "ocr_engine": "fastplate",
+        "ocr_model_ref": "fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+        "temporal_vote": {
+          "text": "34TC8532",
+          "confidence": 0.9903,
+          "candidate_count": 4,
+          "top_candidates": [
+            {
+              "plate_text": "34TC8532",
+              "score": 353.3845,
+              "count": 202,
+              "max_confidence": 0.9998,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "04TC8532",
+              "score": 1.7384,
+              "count": 1,
+              "max_confidence": 0.9884,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "TC8522",
+              "score": 0.9421,
+              "count": 1,
+              "max_confidence": 0.9421,
+              "format_valid": false,
+              "province_code_valid": false
+            },
+            {
+              "plate_text": "TC053",
+              "score": 0.7978,
+              "count": 1,
+              "max_confidence": 0.7978,
+              "format_valid": false,
+              "province_code_valid": false
+            }
+          ]
+        },
+        "temporal_stability": {
+          "status": "passed",
+          "gate": {
+            "stable_count_required": 3,
+            "window_size": 7,
+            "min_confidence": 0.75,
+            "require_format_valid": true,
+            "require_province_code_valid": true
+          },
+          "failure_reason": null,
+          "first_readable_frame": 1,
+          "first_format_valid_frame": 1,
+          "first_province_valid_frame": 1,
+          "first_stable_frame": 3,
+          "stable_text": "34TC8532",
+          "stable_observations": 3,
+          "stable_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1/frame_000003_plate0.jpg",
+          "candidate_counts": {
+            "34TC8532": 3
+          }
+        },
+        "failure_reason": null
+      },
+      "speed": {
+        "status": "ok",
+        "mode": "approximate_candidate",
+        "estimated_kmh": 2.640442,
+        "relative_motion_score": 0.244016,
+        "motion_anomaly": "normal",
+        "calibration_profile_id": null,
+        "confidence": 0.7072,
+        "primary_speed_source": "bbox_geometry_auto",
+        "fallback_reason": null,
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "not_for_legal_enforcement": true,
+        "ftr_submission_note": "Speed is not a required field in FTR results.json; support evidence only."
+      },
+      "lane": {
+        "status": "not_run",
+        "lane_status": null,
+        "lane_visibility": null,
+        "lane_risk": null,
+        "confidence": null
+      },
+      "driver_cabin": {
+        "status": "not_run",
+        "visibility": "not_visible",
+        "driver_detected": null,
+        "passenger_count": null,
+        "phone_risk": null,
+        "seatbelt_status": null,
+        "confidence": null,
+        "failure_reason": "cabin_baseline_not_connected_yet"
+      },
+      "external_users": [],
+      "risk": {
+        "risk_score": 0.498,
+        "risk_level": "low",
+        "reasons": [
+          "tracking_candidate_event_only",
+          "target_vehicle_selected_for_downstream_experts",
+          "plate_ocr_stable_temporal_decision_available"
+        ],
+        "fusion_confidence": 0.973,
+        "thresholds": {
+          "critical_mode_activation": "not_run",
+          "target_selection_score": 0.5
+        },
+        "risk_factors": []
+      },
+      "routing_decision": {
+        "experts_called": [
+          "Vehicle Detection",
+          "ByteTrack",
+          "Plate OCR"
+        ],
+        "routing_reasons": [
+          "pretrained_detector_output_available",
+          "track_stability_computed",
+          "target_vehicle_selected_before_plate_speed_qod",
+          "selected_plate_ocr_baseline_connected"
+        ],
+        "qod_reason": "Track stability and evidence metadata are sufficient for this skeleton stage.",
+        "condition_profile": "dark",
+        "selected_detector": "yolo11n.pt",
+        "fallback_detector": "yolo11n.pt",
+        "routing_mode": "tracking_postprocess_baseline",
+        "fallbacks_used": [],
+        "selected_plate_detector": "yolo",
+        "selected_plate_ocr_engine": "fastplate",
+        "plate_ocr_stability_gate": {
+          "stable_count_required": 3,
+          "window_size": 7,
+          "min_confidence": 0.75,
+          "require_format_valid": true,
+          "require_province_code_valid": true
+        }
+      },
+      "models": {
+        "vehicle_detector": "yolo11n.pt",
+        "vehicle_tracker": "ByteTrack:bytetrack.yaml",
+        "target_selector": "heuristic_track_target_selector_v1",
+        "event_builder": "tracking_event_skeleton_builder_v1",
+        "plate_detector": "yolo",
+        "plate_ocr": "fast-plate-ocr:fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+        "plate_postprocess": "turkish_regex_province_temporal_vote_v1"
+      },
+      "evidence": {
+        "status": "partial",
+        "original_frame_uri": null,
+        "overlay_image_uri": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_1_tracked.mp4",
+        "target_vehicle_crop_uri": null,
+        "plate_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_1/frame_000003_plate0.jpg",
+        "json_uri": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json",
+        "evidence_quality_score": 1.0,
+        "metadata_completeness_score": 0.96,
+        "track_history": {
+          "center_history_sample": [
+            [
+              2131.43,
+              978.22
+            ],
+            [
+              2127.85,
+              982.3
+            ],
+            [
+              2119.21,
+              980.26
+            ],
+            [
+              2105.8,
+              992.79
+            ],
+            [
+              2083.51,
+              1000.53
+            ],
+            [
+              2058.41,
+              1009.84
+            ],
+            [
+              2029.37,
+              1017.59
+            ],
+            [
+              1997.4,
+              1035.37
+            ],
+            [
+              1961.8,
+              1063.48
+            ],
+            [
+              1901.23,
+              1082.61
+            ],
+            [
+              1851.42,
+              1108.15
+            ],
+            [
+              1787.8,
+              1135.92
+            ],
+            [
+              1711.83,
+              1178.53
+            ],
+            [
+              1617.96,
+              1228.88
+            ],
+            [
+              1508.27,
+              1284.19
+            ],
+            [
+              1381.69,
+              1339.95
+            ],
+            [
+              1212.68,
+              1389.35
+            ],
+            [
+              1131.09,
+              1405.67
+            ],
+            [
+              1104.14,
+              1413.57
+            ],
+            [
+              1064.94,
+              1396.13
+            ],
+            [
+              1023.86,
+              1413.03
+            ],
+            [
+              970.21,
+              1413.54
+            ],
+            [
+              934.06,
+              1456.3
+            ],
+            [
+              875.23,
+              1478.02
+            ],
+            [
+              804.61,
+              1491.08
+            ],
+            [
+              720.74,
+              1513.32
+            ],
+            [
+              619.41,
+              1557.3
+            ],
+            [
+              523.34,
+              1583.59
+            ],
+            [
+              395.82,
+              1639.48
+            ],
+            [
+              213.33,
+              1858.53
+            ]
+          ],
+          "bbox_history_sample": [
+            [
+              1583.91,
+              562.35,
+              2678.96,
+              1394.1
+            ],
+            [
+              1577.39,
+              564.44,
+              2678.3,
+              1400.17
+            ],
+            [
+              1567.58,
+              565.13,
+              2670.85,
+              1395.4
+            ],
+            [
+              1538.37,
+              567.33,
+              2673.24,
+              1418.26
+            ],
+            [
+              1505.73,
+              568.84,
+              2661.3,
+              1432.22
+            ],
+            [
+              1468.11,
+              570.67,
+              2648.7,
+              1449.0
+            ],
+            [
+              1422.29,
+              569.09,
+              2636.46,
+              1466.09
+            ],
+            [
+              1372.06,
+              578.03,
+              2622.74,
+              1492.7
+            ],
+            [
+              1310.74,
+              583.54,
+              2612.86,
+              1543.42
+            ],
+            [
+              1231.87,
+              591.05,
+              2570.6,
+              1574.16
+            ],
+            [
+              1141.3,
+              589.42,
+              2561.54,
+              1626.89
+            ],
+            [
+              1040.96,
+              592.53,
+              2534.64,
+              1679.3
+            ],
+            [
+              920.41,
+              604.04,
+              2503.26,
+              1753.01
+            ],
+            [
+              768.99,
+              617.5,
+              2466.93,
+              1840.26
+            ],
+            [
+              591.64,
+              629.35,
+              2424.91,
+              1939.02
+            ],
+            [
+              389.67,
+              639.19,
+              2373.72,
+              2040.71
+            ],
+            [
+              132.22,
+              650.95,
+              2293.14,
+              2127.75
+            ],
+            [
+              11.05,
+              673.56,
+              2251.14,
+              2137.78
+            ],
+            [
+              0.0,
+              688.72,
+              2208.29,
+              2138.42
+            ],
+            [
+              6.09,
+              700.7,
+              2123.79,
+              2091.56
+            ],
+            [
+              0.0,
+              724.95,
+              2047.72,
+              2101.1
+            ],
+            [
+              13.92,
+              772.99,
+              1926.5,
+              2054.1
+            ],
+            [
+              0.0,
+              794.19,
+              1868.12,
+              2118.41
+            ],
+            [
+              0.0,
+              824.38,
+              1750.46,
+              2131.67
+            ],
+            [
+              0.0,
+              854.53,
+              1609.23,
+              2127.63
+            ],
+            [
+              0.0,
+              892.69,
+              1441.48,
+              2133.95
+            ],
+            [
+              0.0,
+              980.08,
+              1238.82,
+              2134.52
+            ],
+            [
+              0.0,
+              1032.3,
+              1046.68,
+              2134.89
+            ],
+            [
+              0.0,
+              1140.52,
+              791.64,
+              2138.43
+            ],
+            [
+              0.0,
+              1558.15,
+              426.66,
+              2158.92
+            ]
+          ],
+          "history_sample_available": true
+        },
+        "ocr_overlay_video_uri": "runs/plate_ocr/POCR-EXP-006-manual-video-review/cct-xs/fastplate/video_1_ocr_overlay.mp4",
+        "plate_ocr": {
+          "engine": "fastplate",
+          "model_ref": "fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+          "final_text": "34TC8532",
+          "masked_text": "34TC****",
+          "status": "stable_read",
+          "vote_confidence": 0.9903,
+          "temporal_stability_status": "passed",
+          "first_stable_frame": 3,
+          "stable_observations": 3,
+          "best_frame": 3,
+          "crop_count": 206,
+          "processed_crops": 206,
+          "ocr_read_count": 205,
+          "format_valid_count": 203,
+          "province_valid_count": 203
+        }
+      },
+      "explanation": {
+        "user_level_summary": "Hedef arac icin CCT-XS OCR temporal stability gate sonrasi plaka karari uretilmistir: 34TC****.",
+        "technical_summary": "TRK-001 için stable_class=car, track_stability=0.964, selection_score=0.905 hesaplandı. Bu kayıt gerçek risk kararı değil, takipten event/evidence hattına geçiş skeleton'ıdır. Plate OCR entegrasyonu sonrasi final_text=34TC8532, ocr_status=stable_read, vote_confidence=0.9903, first_stable_frame=3, stable_observations=3.",
+        "llm_used": false,
+        "llm_provider": null,
+        "template_fallback_used": true,
+        "source": "template"
+      },
+      "speed_exp_004a": {
+        "experiment_id": "SPEED-EXP-004A",
+        "speed_mode": "relative",
+        "primary_speed_source": "bbox_bottom_center_relative",
+        "relative_speed_score": 0.244016,
+        "relative_speed_label": "normal",
+        "pixel_velocity_px_s_median": 307.39154,
+        "pixel_velocity_px_s_p95": 765.152946,
+        "scale_normalized_speed_median": 0.244016,
+        "scale_normalized_speed_p95": 0.55041,
+        "bbox_height_median": 1125.78,
+        "bbox_area_median": 1548371.5032,
+        "bbox_height_delta_norm_median": 0.014525,
+        "bbox_area_delta_log_median": 0.027427,
+        "bbox_motion_jitter_score": 0.646928,
+        "fusion_confidence": 0.8717,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "quality_flags": [
+          "bbox_height_sufficient",
+          "bbox_history_available",
+          "bbox_scale_near_constant",
+          "fps_available",
+          "track_stability_high"
+        ],
+        "warning_flags": [
+          "no_metric_calibration",
+          "not_absolute_kmh"
+        ],
+        "history": {
+          "sampled_frame_count": 30,
+          "sampled_frames": [
+            1,
+            13,
+            25,
+            36,
+            48,
+            60,
+            72,
+            84,
+            96,
+            107,
+            119,
+            131,
+            143,
+            155,
+            167,
+            178,
+            190,
+            202,
+            214,
+            226,
+            238,
+            249,
+            261,
+            273,
+            285,
+            297,
+            309,
+            320,
+            332,
+            344
+          ],
+          "sample_frame_note": "Frame ids are inferred by evenly spacing history samples across target_vehicle.frame_window.",
+          "bottom_center_history_sample": [
+            [
+              2131.435,
+              1394.1
+            ],
+            [
+              2127.845,
+              1400.17
+            ],
+            [
+              2119.215,
+              1395.4
+            ],
+            [
+              2105.805,
+              1418.26
+            ],
+            [
+              2083.515,
+              1432.22
+            ],
+            [
+              2058.405,
+              1449.0
+            ],
+            [
+              2029.375,
+              1466.09
+            ],
+            [
+              1997.4,
+              1492.7
+            ],
+            [
+              1961.8,
+              1543.42
+            ],
+            [
+              1901.235,
+              1574.16
+            ],
+            [
+              1851.42,
+              1626.89
+            ],
+            [
+              1787.8,
+              1679.3
+            ],
+            [
+              1711.835,
+              1753.01
+            ],
+            [
+              1617.96,
+              1840.26
+            ],
+            [
+              1508.275,
+              1939.02
+            ],
+            [
+              1381.695,
+              2040.71
+            ],
+            [
+              1212.68,
+              2127.75
+            ],
+            [
+              1131.095,
+              2137.78
+            ],
+            [
+              1104.145,
+              2138.42
+            ],
+            [
+              1064.94,
+              2091.56
+            ],
+            [
+              1023.86,
+              2101.1
+            ],
+            [
+              970.21,
+              2054.1
+            ],
+            [
+              934.06,
+              2118.41
+            ],
+            [
+              875.23,
+              2131.67
+            ],
+            [
+              804.615,
+              2127.63
+            ],
+            [
+              720.74,
+              2133.95
+            ],
+            [
+              619.41,
+              2134.52
+            ],
+            [
+              523.34,
+              2134.89
+            ],
+            [
+              395.82,
+              2138.43
+            ],
+            [
+              213.33,
+              2158.92
+            ]
+          ],
+          "bbox_width_median": 1430.86,
+          "bbox_height_median": 1125.78
+        },
+        "segments": [
+          {
+            "segment_index": 0,
+            "frame_start": 1,
+            "frame_end": 13,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2131.435,
+              1394.1
+            ],
+            "bottom_center_end": [
+              2127.845,
+              1400.17
+            ],
+            "dx_px": -3.59,
+            "dy_px": 6.07,
+            "pixel_displacement_px": 7.0522,
+            "pixel_velocity_px_per_frame": 0.58768,
+            "pixel_velocity_px_s": 29.384012,
+            "bbox_height_start": 831.75,
+            "bbox_height_end": 835.73,
+            "bbox_height_delta_norm": 0.004774,
+            "bbox_area_delta_log": 0.010111,
+            "scale_normalized_speed": 0.035244
+          },
+          {
+            "segment_index": 1,
+            "frame_start": 13,
+            "frame_end": 25,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2127.845,
+              1400.17
+            ],
+            "bottom_center_end": [
+              2119.215,
+              1395.4
+            ],
+            "dx_px": -8.63,
+            "dy_px": -4.77,
+            "pixel_displacement_px": 9.8605,
+            "pixel_velocity_px_per_frame": 0.82171,
+            "pixel_velocity_px_s": 41.085488,
+            "bbox_height_start": 835.73,
+            "bbox_height_end": 830.27,
+            "bbox_height_delta_norm": -0.006555,
+            "bbox_area_delta_log": -0.004413,
+            "scale_normalized_speed": 0.049322
+          },
+          {
+            "segment_index": 2,
+            "frame_start": 25,
+            "frame_end": 36,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              2119.215,
+              1395.4
+            ],
+            "bottom_center_end": [
+              2105.805,
+              1418.26
+            ],
+            "dx_px": -13.41,
+            "dy_px": 22.86,
+            "pixel_displacement_px": 26.503,
+            "pixel_velocity_px_per_frame": 2.409361,
+            "pixel_velocity_px_s": 120.46807,
+            "bbox_height_start": 830.27,
+            "bbox_height_end": 850.93,
+            "bbox_height_delta_norm": 0.024578,
+            "bbox_area_delta_log": 0.052819,
+            "scale_normalized_speed": 0.143312
+          },
+          {
+            "segment_index": 3,
+            "frame_start": 36,
+            "frame_end": 48,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2105.805,
+              1418.26
+            ],
+            "bottom_center_end": [
+              2083.515,
+              1432.22
+            ],
+            "dx_px": -22.29,
+            "dy_px": 13.96,
+            "pixel_displacement_px": 26.3007,
+            "pixel_velocity_px_per_frame": 2.191723,
+            "pixel_velocity_px_s": 109.586161,
+            "bbox_height_start": 850.93,
+            "bbox_height_end": 863.38,
+            "bbox_height_delta_norm": 0.014525,
+            "bbox_area_delta_log": 0.032601,
+            "scale_normalized_speed": 0.127849
+          },
+          {
+            "segment_index": 4,
+            "frame_start": 48,
+            "frame_end": 60,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2083.515,
+              1432.22
+            ],
+            "bottom_center_end": [
+              2058.405,
+              1449.0
+            ],
+            "dx_px": -25.11,
+            "dy_px": 16.78,
+            "pixel_displacement_px": 30.2007,
+            "pixel_velocity_px_per_frame": 2.516723,
+            "pixel_velocity_px_s": 125.836127,
+            "bbox_height_start": 863.38,
+            "bbox_height_end": 878.33,
+            "bbox_height_delta_norm": 0.017167,
+            "bbox_area_delta_log": 0.038588,
+            "scale_normalized_speed": 0.144497
+          },
+          {
+            "segment_index": 5,
+            "frame_start": 60,
+            "frame_end": 72,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2058.405,
+              1449.0
+            ],
+            "bottom_center_end": [
+              2029.375,
+              1466.09
+            ],
+            "dx_px": -29.03,
+            "dy_px": 17.09,
+            "pixel_displacement_px": 33.6869,
+            "pixel_velocity_px_per_frame": 2.807244,
+            "pixel_velocity_px_s": 140.362193,
+            "bbox_height_start": 878.33,
+            "bbox_height_end": 897.0,
+            "bbox_height_delta_norm": 0.021033,
+            "bbox_area_delta_log": 0.04908,
+            "scale_normalized_speed": 0.158125
+          },
+          {
+            "segment_index": 6,
+            "frame_start": 72,
+            "frame_end": 84,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2029.375,
+              1466.09
+            ],
+            "bottom_center_end": [
+              1997.4,
+              1492.7
+            ],
+            "dx_px": -31.975,
+            "dy_px": 26.61,
+            "pixel_displacement_px": 41.5992,
+            "pixel_velocity_px_per_frame": 3.466599,
+            "pixel_velocity_px_s": 173.329964,
+            "bbox_height_start": 897.0,
+            "bbox_height_end": 914.67,
+            "bbox_height_delta_norm": 0.019507,
+            "bbox_area_delta_log": 0.049134,
+            "scale_normalized_speed": 0.191348
+          },
+          {
+            "segment_index": 7,
+            "frame_start": 84,
+            "frame_end": 96,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1997.4,
+              1492.7
+            ],
+            "bottom_center_end": [
+              1961.8,
+              1543.42
+            ],
+            "dx_px": -35.6,
+            "dy_px": 50.72,
+            "pixel_displacement_px": 61.9668,
+            "pixel_velocity_px_per_frame": 5.163896,
+            "pixel_velocity_px_s": 258.194802,
+            "bbox_height_start": 914.67,
+            "bbox_height_end": 959.88,
+            "bbox_height_delta_norm": 0.048236,
+            "bbox_area_delta_log": 0.088551,
+            "scale_normalized_speed": 0.275474
+          },
+          {
+            "segment_index": 8,
+            "frame_start": 96,
+            "frame_end": 107,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              1961.8,
+              1543.42
+            ],
+            "bottom_center_end": [
+              1901.235,
+              1574.16
+            ],
+            "dx_px": -60.565,
+            "dy_px": 30.74,
+            "pixel_displacement_px": 67.9196,
+            "pixel_velocity_px_per_frame": 6.174506,
+            "pixel_velocity_px_s": 308.725279,
+            "bbox_height_start": 959.88,
+            "bbox_height_end": 983.11,
+            "bbox_height_delta_norm": 0.023912,
+            "bbox_area_delta_log": 0.05164,
+            "scale_normalized_speed": 0.317784
+          },
+          {
+            "segment_index": 9,
+            "frame_start": 107,
+            "frame_end": 119,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1901.235,
+              1574.16
+            ],
+            "bottom_center_end": [
+              1851.42,
+              1626.89
+            ],
+            "dx_px": -49.815,
+            "dy_px": 52.73,
+            "pixel_displacement_px": 72.5396,
+            "pixel_velocity_px_per_frame": 6.044963,
+            "pixel_velocity_px_s": 302.248148,
+            "bbox_height_start": 983.11,
+            "bbox_height_end": 1037.47,
+            "bbox_height_delta_norm": 0.053806,
+            "bbox_area_delta_log": 0.112924,
+            "scale_normalized_speed": 0.29917
+          },
+          {
+            "segment_index": 10,
+            "frame_start": 119,
+            "frame_end": 131,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1851.42,
+              1626.89
+            ],
+            "bottom_center_end": [
+              1787.8,
+              1679.3
+            ],
+            "dx_px": -63.62,
+            "dy_px": 52.41,
+            "pixel_displacement_px": 82.4276,
+            "pixel_velocity_px_per_frame": 6.868968,
+            "pixel_velocity_px_s": 343.448416,
+            "bbox_height_start": 1037.47,
+            "bbox_height_end": 1086.77,
+            "bbox_height_delta_norm": 0.046417,
+            "bbox_area_delta_log": 0.096842,
+            "scale_normalized_speed": 0.323361
+          },
+          {
+            "segment_index": 11,
+            "frame_start": 131,
+            "frame_end": 143,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1787.8,
+              1679.3
+            ],
+            "bottom_center_end": [
+              1711.835,
+              1753.01
+            ],
+            "dx_px": -75.965,
+            "dy_px": 73.71,
+            "pixel_displacement_px": 105.8482,
+            "pixel_velocity_px_per_frame": 8.820685,
+            "pixel_velocity_px_s": 441.034243,
+            "bbox_height_start": 1086.77,
+            "bbox_height_end": 1148.97,
+            "bbox_height_delta_norm": 0.055642,
+            "bbox_area_delta_log": 0.11364,
+            "scale_normalized_speed": 0.394531
+          },
+          {
+            "segment_index": 12,
+            "frame_start": 143,
+            "frame_end": 155,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1711.835,
+              1753.01
+            ],
+            "bottom_center_end": [
+              1617.96,
+              1840.26
+            ],
+            "dx_px": -93.875,
+            "dy_px": 87.25,
+            "pixel_displacement_px": 128.1604,
+            "pixel_velocity_px_per_frame": 10.68003,
+            "pixel_velocity_px_s": 534.001504,
+            "bbox_height_start": 1148.97,
+            "bbox_height_end": 1222.76,
+            "bbox_height_delta_norm": 0.062225,
+            "bbox_area_delta_log": 0.132433,
+            "scale_normalized_speed": 0.450305
+          },
+          {
+            "segment_index": 13,
+            "frame_start": 155,
+            "frame_end": 167,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1617.96,
+              1840.26
+            ],
+            "bottom_center_end": [
+              1508.275,
+              1939.02
+            ],
+            "dx_px": -109.685,
+            "dy_px": 98.76,
+            "pixel_displacement_px": 147.5952,
+            "pixel_velocity_px_per_frame": 12.299598,
+            "pixel_velocity_px_s": 614.979912,
+            "bbox_height_start": 1222.76,
+            "bbox_height_end": 1309.67,
+            "bbox_height_delta_norm": 0.068638,
+            "bbox_area_delta_log": 0.14535,
+            "scale_normalized_speed": 0.485684
+          },
+          {
+            "segment_index": 14,
+            "frame_start": 167,
+            "frame_end": 178,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              1508.275,
+              1939.02
+            ],
+            "bottom_center_end": [
+              1381.695,
+              2040.71
+            ],
+            "dx_px": -126.58,
+            "dy_px": 101.69,
+            "pixel_displacement_px": 162.368,
+            "pixel_velocity_px_per_frame": 14.760723,
+            "pixel_velocity_px_s": 738.036155,
+            "bbox_height_start": 1309.67,
+            "bbox_height_end": 1401.52,
+            "bbox_height_delta_norm": 0.067756,
+            "bbox_area_delta_log": 0.146821,
+            "scale_normalized_speed": 0.544437
+          },
+          {
+            "segment_index": 15,
+            "frame_start": 178,
+            "frame_end": 190,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1381.695,
+              2040.71
+            ],
+            "bottom_center_end": [
+              1212.68,
+              2127.75
+            ],
+            "dx_px": -169.015,
+            "dy_px": 87.04,
+            "pixel_displacement_px": 190.1106,
+            "pixel_velocity_px_per_frame": 15.842548,
+            "pixel_velocity_px_s": 792.127408,
+            "bbox_height_start": 1401.52,
+            "bbox_height_end": 1476.8,
+            "bbox_height_delta_norm": 0.052308,
+            "bbox_area_delta_log": 0.137714,
+            "scale_normalized_speed": 0.55041
+          },
+          {
+            "segment_index": 16,
+            "frame_start": 190,
+            "frame_end": 202,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1212.68,
+              2127.75
+            ],
+            "bottom_center_end": [
+              1131.095,
+              2137.78
+            ],
+            "dx_px": -81.585,
+            "dy_px": 10.03,
+            "pixel_displacement_px": 82.1992,
+            "pixel_velocity_px_per_frame": 6.849936,
+            "pixel_velocity_px_s": 342.496784,
+            "bbox_height_start": 1476.8,
+            "bbox_height_end": 1464.22,
+            "bbox_height_delta_norm": -0.008555,
+            "bbox_area_delta_log": 0.027427,
+            "scale_normalized_speed": 0.23291
+          },
+          {
+            "segment_index": 17,
+            "frame_start": 202,
+            "frame_end": 214,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1131.095,
+              2137.78
+            ],
+            "bottom_center_end": [
+              1104.145,
+              2138.42
+            ],
+            "dx_px": -26.95,
+            "dy_px": 0.64,
+            "pixel_displacement_px": 26.9576,
+            "pixel_velocity_px_per_frame": 2.246467,
+            "pixel_velocity_px_s": 112.323326,
+            "bbox_height_start": 1464.22,
+            "bbox_height_end": 1449.7,
+            "bbox_height_delta_norm": -0.009966,
+            "bbox_area_delta_log": -0.024264,
+            "scale_normalized_speed": 0.077094
+          },
+          {
+            "segment_index": 18,
+            "frame_start": 214,
+            "frame_end": 226,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1104.145,
+              2138.42
+            ],
+            "bottom_center_end": [
+              1064.94,
+              2091.56
+            ],
+            "dx_px": -39.205,
+            "dy_px": -46.86,
+            "pixel_displacement_px": 61.0974,
+            "pixel_velocity_px_per_frame": 5.09145,
+            "pixel_velocity_px_s": 254.572477,
+            "bbox_height_start": 1449.7,
+            "bbox_height_end": 1390.86,
+            "bbox_height_delta_norm": -0.041428,
+            "bbox_area_delta_log": -0.083322,
+            "scale_normalized_speed": 0.179241
+          },
+          {
+            "segment_index": 19,
+            "frame_start": 226,
+            "frame_end": 238,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1064.94,
+              2091.56
+            ],
+            "bottom_center_end": [
+              1023.86,
+              2101.1
+            ],
+            "dx_px": -41.08,
+            "dy_px": 9.54,
+            "pixel_displacement_px": 42.1732,
+            "pixel_velocity_px_per_frame": 3.514433,
+            "pixel_velocity_px_s": 175.721627,
+            "bbox_height_start": 1390.86,
+            "bbox_height_end": 1376.15,
+            "bbox_height_delta_norm": -0.010632,
+            "bbox_area_delta_log": -0.044236,
+            "scale_normalized_speed": 0.127012
+          },
+          {
+            "segment_index": 20,
+            "frame_start": 238,
+            "frame_end": 249,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              1023.86,
+              2101.1
+            ],
+            "bottom_center_end": [
+              970.21,
+              2054.1
+            ],
+            "dx_px": -53.65,
+            "dy_px": -47.0,
+            "pixel_displacement_px": 71.3255,
+            "pixel_velocity_px_per_frame": 6.484134,
+            "pixel_velocity_px_s": 324.206676,
+            "bbox_height_start": 1376.15,
+            "bbox_height_end": 1281.11,
+            "bbox_height_delta_norm": -0.071532,
+            "bbox_area_delta_log": -0.139837,
+            "scale_normalized_speed": 0.244016
+          },
+          {
+            "segment_index": 21,
+            "frame_start": 249,
+            "frame_end": 261,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              970.21,
+              2054.1
+            ],
+            "bottom_center_end": [
+              934.06,
+              2118.41
+            ],
+            "dx_px": -36.15,
+            "dy_px": 64.31,
+            "pixel_displacement_px": 73.774,
+            "pixel_velocity_px_per_frame": 6.147831,
+            "pixel_velocity_px_s": 307.39154,
+            "bbox_height_start": 1281.11,
+            "bbox_height_end": 1324.22,
+            "bbox_height_delta_norm": 0.033094,
+            "bbox_area_delta_log": 0.009576,
+            "scale_normalized_speed": 0.235971
+          },
+          {
+            "segment_index": 22,
+            "frame_start": 261,
+            "frame_end": 273,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              934.06,
+              2118.41
+            ],
+            "bottom_center_end": [
+              875.23,
+              2131.67
+            ],
+            "dx_px": -58.83,
+            "dy_px": 13.26,
+            "pixel_displacement_px": 60.3059,
+            "pixel_velocity_px_per_frame": 5.025488,
+            "pixel_velocity_px_s": 251.274408,
+            "bbox_height_start": 1324.22,
+            "bbox_height_end": 1307.29,
+            "bbox_height_delta_norm": -0.012867,
+            "bbox_area_delta_log": -0.077921,
+            "scale_normalized_speed": 0.190974
+          },
+          {
+            "segment_index": 23,
+            "frame_start": 273,
+            "frame_end": 285,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              875.23,
+              2131.67
+            ],
+            "bottom_center_end": [
+              804.615,
+              2127.63
+            ],
+            "dx_px": -70.615,
+            "dy_px": -4.04,
+            "pixel_displacement_px": 70.7305,
+            "pixel_velocity_px_per_frame": 5.894206,
+            "pixel_velocity_px_s": 294.710305,
+            "bbox_height_start": 1307.29,
+            "bbox_height_end": 1273.1,
+            "bbox_height_delta_norm": -0.0265,
+            "bbox_area_delta_log": -0.110624,
+            "scale_normalized_speed": 0.228423
+          },
+          {
+            "segment_index": 24,
+            "frame_start": 285,
+            "frame_end": 297,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              804.615,
+              2127.63
+            ],
+            "bottom_center_end": [
+              720.74,
+              2133.95
+            ],
+            "dx_px": -83.875,
+            "dy_px": 6.32,
+            "pixel_displacement_px": 84.1128,
+            "pixel_velocity_px_per_frame": 7.009397,
+            "pixel_velocity_px_s": 350.469874,
+            "bbox_height_start": 1273.1,
+            "bbox_height_end": 1241.26,
+            "bbox_height_delta_norm": -0.025327,
+            "bbox_area_delta_log": -0.135413,
+            "scale_normalized_speed": 0.278775
+          },
+          {
+            "segment_index": 25,
+            "frame_start": 297,
+            "frame_end": 309,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              720.74,
+              2133.95
+            ],
+            "bottom_center_end": [
+              619.41,
+              2134.52
+            ],
+            "dx_px": -101.33,
+            "dy_px": 0.57,
+            "pixel_displacement_px": 101.3316,
+            "pixel_velocity_px_per_frame": 8.4443,
+            "pixel_velocity_px_s": 422.215013,
+            "bbox_height_start": 1241.26,
+            "bbox_height_end": 1154.44,
+            "bbox_height_delta_norm": -0.07248,
+            "bbox_area_delta_log": -0.224023,
+            "scale_normalized_speed": 0.352477
+          },
+          {
+            "segment_index": 26,
+            "frame_start": 309,
+            "frame_end": 320,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              619.41,
+              2134.52
+            ],
+            "bottom_center_end": [
+              523.34,
+              2134.89
+            ],
+            "dx_px": -96.07,
+            "dy_px": 0.37,
+            "pixel_displacement_px": 96.0707,
+            "pixel_velocity_px_per_frame": 8.733701,
+            "pixel_velocity_px_s": 436.685057,
+            "bbox_height_start": 1154.44,
+            "bbox_height_end": 1102.59,
+            "bbox_height_delta_norm": -0.045945,
+            "bbox_area_delta_log": -0.214489,
+            "scale_normalized_speed": 0.386955
+          },
+          {
+            "segment_index": 27,
+            "frame_start": 320,
+            "frame_end": 332,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              523.34,
+              2134.89
+            ],
+            "bottom_center_end": [
+              395.82,
+              2138.43
+            ],
+            "dx_px": -127.52,
+            "dy_px": 3.54,
+            "pixel_displacement_px": 127.5691,
+            "pixel_velocity_px_per_frame": 10.630761,
+            "pixel_velocity_px_s": 531.538026,
+            "bbox_height_start": 1102.59,
+            "bbox_height_end": 997.91,
+            "bbox_height_delta_norm": -0.099672,
+            "bbox_area_delta_log": -0.379026,
+            "scale_normalized_speed": 0.506106
+          },
+          {
+            "segment_index": 28,
+            "frame_start": 332,
+            "frame_end": 344,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              395.82,
+              2138.43
+            ],
+            "bottom_center_end": [
+              213.33,
+              2158.92
+            ],
+            "dx_px": -182.49,
+            "dy_px": 20.49,
+            "pixel_displacement_px": 183.6367,
+            "pixel_velocity_px_per_frame": 15.303059,
+            "pixel_velocity_px_s": 765.152946,
+            "bbox_height_start": 997.91,
+            "bbox_height_end": 600.77,
+            "bbox_height_delta_norm": -0.496835,
+            "bbox_area_delta_log": -1.12557,
+            "scale_normalized_speed": 0.957231
+          }
+        ],
+        "limitations": [
+          "This output is calibration-free relative motion, not legal or final km/h.",
+          "History sample frame ids are inferred because the upstream sample does not store per-point frame ids.",
+          "Perspective and bbox clipping can affect score magnitude."
+        ]
+      },
+      "speed_exp_004b": {
+        "experiment_id": "SPEED-EXP-004B",
+        "speed_mode": "relative",
+        "primary_speed_source": "relative_track_bbox",
+        "candidate_speeds": [
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.244016,
+            "relative_speed_label": "normal",
+            "confidence": 0.8717,
+            "quality_flags": [
+              "bbox_height_sufficient",
+              "bbox_history_available",
+              "bbox_scale_near_constant",
+              "fps_available",
+              "track_stability_high"
+            ],
+            "failure_flags": [
+              "no_metric_calibration",
+              "not_absolute_kmh"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.7806,
+            "confidence": 0.28,
+            "quality_flags": [
+              "full_frame_plate_bbox_available"
+            ],
+            "failure_flags": [
+              "low_plate_crop_aspect_differs_from_standard_geomean"
+            ]
+          }
+        ],
+        "vehicle_dimension_prior": {
+          "source": "VATTR-EXP-001",
+          "status": "computed",
+          "predicted_body_label": "suv",
+          "vehicle_attribute_confidence": 0.463309,
+          "top1_top2_margin": 0.261441,
+          "min_confidence_required": 0.6,
+          "min_margin_required": 0.15,
+          "use_for_speed_fusion": false,
+          "prior": {
+            "body_type": "suv",
+            "wheelbase_m_mean": 2.85,
+            "wheelbase_m_min": 2.6,
+            "wheelbase_m_max": 3.1,
+            "length_m_mean": 4.65,
+            "source": "generic_vehicle_dimension_prior",
+            "label_name": "suv",
+            "selected_split": "body",
+            "use_for_speed_fusion": true
+          },
+          "crop_count": 13,
+          "best_crop_uri": "runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_1-TRK-001_TRK-001_frame_000282_target_roi.jpg",
+          "top3_mean_probabilities": [
+            {
+              "label": "suv",
+              "confidence": 0.463309
+            },
+            {
+              "label": "mpv",
+              "confidence": 0.201868
+            },
+            {
+              "label": "hatchback",
+              "confidence": 0.158975
+            }
+          ],
+          "per_crop_vote_counts": {
+            "hatchback": 2,
+            "mpv": 3,
+            "suv": 7,
+            "van": 1
+          },
+          "failure_reason": "vehicle_attribute_low_confidence"
+        },
+        "plate_scale_sanity": {
+          "status": "completed",
+          "source_experiment": "SPEED-EXP-002",
+          "source_variant": "geomean",
+          "speed_kmh": 3.7806,
+          "confidence": 0.28,
+          "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+          "usable_measurement_count": 201,
+          "plate_aspect_ratio_median": 3.3519,
+          "full_frame_plate_bbox_available": true
+        },
+        "sanity_check": {
+          "decision": "use_relative_with_supporting_priors",
+          "disagreement_flags": [],
+          "quality_flags": [
+            "relative_track_speed_available"
+          ],
+          "warning_flags": [
+            "not_absolute_kmh",
+            "not_for_legal_enforcement",
+            "plate_scale_low_confidence",
+            "vehicle_attribute_low_confidence"
+          ]
+        },
+        "fusion_confidence": 0.8717,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "limitations": [
+          "VATTR is a body/dimension prior, not a direct speed estimator.",
+          "Plate-scale candidate remains low-confidence without calibrated camera geometry.",
+          "Final absolute km/h requires homography or measured reference."
+        ]
+      },
+      "speed_exp_005d": {
+        "experiment_id": "SPEED-EXP-005D",
+        "video": "video_1.mp4",
+        "speed_mode": "approximate_candidate",
+        "primary_speed_source": "bbox_geometry_auto",
+        "estimated_kmh": 2.640442,
+        "speed_range_kmh": [
+          1.890297,
+          3.501875
+        ],
+        "relative_speed_label": "normal",
+        "relative_speed_score": 0.244016,
+        "fusion_confidence": 0.7072,
+        "decision": "use_bbox_geometry_with_plate_relative_support",
+        "fallback_reason": null,
+        "candidate_agreement": {
+          "bbox_vs_plate_relative_diff_ratio": 0.301581,
+          "max_allowed_ratio": 0.45,
+          "relative_label_supports_candidate": true
+        },
+        "candidate_speeds": [
+          {
+            "source": "bbox_geometry_auto",
+            "speed_kmh": 2.640442,
+            "speed_range_kmh": [
+              1.890297,
+              3.501875
+            ],
+            "confidence": 0.72,
+            "warnings": [
+              "approximate_monocular_speed",
+              "auto_scale_approximation",
+              "not_for_legal_enforcement",
+              "invalid_segments_filtered"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.7806,
+            "confidence": 0.28,
+            "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean"
+          },
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.244016,
+            "relative_speed_label": "normal",
+            "confidence": 0.8717
+          }
+        ],
+        "slalom_support": {
+          "slalom_candidate": false,
+          "source": "relative_track_bbox",
+          "note": "Only a support signal for the FTR sofor_eylemi/slalom label; not a final action detector."
+        },
+        "quality_flags": [
+          "bbox_geometry_candidate_available",
+          "plate_scale_candidate_available",
+          "relative_track_signal_available",
+          "bbox_plate_candidates_agree",
+          "relative_label_supports_bbox_candidate"
+        ],
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "failure_flags": [],
+        "limitations": [
+          "No ground-truth speed is available for these videos.",
+          "The km/h value is approximate and must not be used for legal enforcement.",
+          "Camera FOV, vehicle dimensions and plate geometry are assumed priors.",
+          "FTR results.json does not require a speed field; this block is support evidence."
+        ]
+      },
+      "driver_action": {
+        "slalom": {
+          "status": "not_detected",
+          "detected": false,
+          "score": 0.457402,
+          "confidence": 0.775329,
+          "direction_change_count": 3,
+          "normalized_lateral_amplitude": 0.166705,
+          "normalized_lateral_rms": 0.052086,
+          "track_duration_seconds": 6.86,
+          "method": "track_lateral_residual_slalom_heuristic_v1",
+          "failure_reason": "slalom_thresholds_not_met",
+          "warning_flags": [
+            "relative_motion_only_no_lane_ground_truth"
+          ],
+          "quality_flags": [
+            "track_duration_sufficient",
+            "valid_frame_ratio_sufficient",
+            "direction_changes_present"
+          ],
+          "plot_uri": "runs/driver_action/slalom_exp_001/plots/video_1_slalom_residual_plot.png",
+          "overlay_video_uri": "runs/driver_action/slalom_exp_001/annotated/video_1_slalom_track_heuristic.mp4",
+          "not_for_legal_enforcement": true
+        }
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_2-TRK-001",
+      "event_type": "target_vehicle_selected",
+      "timestamp_utc": "2026-06-10T21:09:12Z",
+      "frame_id": "video_2:frame_000281",
+      "source": {
+        "device_id": "local_macbook_edge_baseline",
+        "session_id": "TRK-EXP-001",
+        "camera_mode": "offline_replay",
+        "resolution": "3840x2160",
+        "fps": 50.0,
+        "orientation": "landscape",
+        "network_type": "not_available_offline",
+        "calibration_profile_id": null,
+        "source_video": "video_2.mp4"
+      },
+      "system": {
+        "mode": "normal",
+        "qod_status": "not_needed",
+        "number_verification_status": "not_available",
+        "latency_ms": 14.071,
+        "pipeline_fps": 36.683,
+        "runtime_profile": "macbook_local_edge_offline_benchmark"
+      },
+      "frame_quality": {
+        "status": "not_run",
+        "quality_flags": [
+          "condition_profile_from_benchmark_summary"
+        ]
+      },
+      "target_vehicle": {
+        "status": "selected",
+        "track_id": "TRK-001",
+        "vehicle_type": "car",
+        "bbox": [
+          0.0,
+          915.83,
+          1808.5,
+          2136.77
+        ],
+        "bbox_xyxy": [
+          0.0,
+          915.83,
+          1808.5,
+          2136.77
+        ],
+        "bbox_xywh": null,
+        "confidence": 0.9426,
+        "track_stability": 0.949,
+        "selection_score": 0.898,
+        "selection_reasons": [
+          "track_stability_high",
+          "large_visible_bbox",
+          "detector_confidence_high",
+          "long_enough_for_temporal_modules",
+          "vehicle_class_prioritized_for_plate_speed"
+        ],
+        "frame_window": {
+          "first_frame": 1,
+          "last_frame": 344,
+          "best_frame": 281,
+          "track_age_frames": 341
+        },
+        "class_votes": {
+          "car": 274.028,
+          "motorcycle": 4.142
+        },
+        "class_purity": 0.985,
+        "id_switch_suspected": true
+      },
+      "scene": {
+        "status": "not_run",
+        "weather": "unknown",
+        "lighting": "dark",
+        "visibility": "unknown",
+        "confidence": null
+      },
+      "plate": {
+        "status": "detected",
+        "detected": true,
+        "bbox": null,
+        "ocr_status": "stable_read",
+        "ocr_text": "34TC8532",
+        "ocr_text_masked": "34TC****",
+        "raw_text_best_frame": "34TC8532",
+        "format_valid": true,
+        "province_code_valid": true,
+        "confidence": 0.9733,
+        "vote_confidence": 0.9733,
+        "candidate_count": 8,
+        "best_frame": 4,
+        "source_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2/frame_000004_plate0.jpg",
+        "source_crop_dir": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2",
+        "ocr_engine": "fastplate",
+        "ocr_model_ref": "fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+        "temporal_vote": {
+          "text": "34TC8532",
+          "confidence": 0.9733,
+          "candidate_count": 8,
+          "top_candidates": [
+            {
+              "plate_text": "34TC8532",
+              "score": 330.7088,
+              "count": 189,
+              "max_confidence": 0.9998,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "34TC8522",
+              "score": 1.7461,
+              "count": 1,
+              "max_confidence": 0.9961,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "34TC0521",
+              "score": 1.6676,
+              "count": 1,
+              "max_confidence": 0.9176,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "34TC061",
+              "score": 1.5974,
+              "count": 1,
+              "max_confidence": 0.8474,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "20U101",
+              "score": 1.1646,
+              "count": 1,
+              "max_confidence": 0.4146,
+              "format_valid": true,
+              "province_code_valid": true
+            }
+          ]
+        },
+        "temporal_stability": {
+          "status": "passed",
+          "gate": {
+            "stable_count_required": 3,
+            "window_size": 7,
+            "min_confidence": 0.75,
+            "require_format_valid": true,
+            "require_province_code_valid": true
+          },
+          "failure_reason": null,
+          "first_readable_frame": 2,
+          "first_format_valid_frame": 2,
+          "first_province_valid_frame": 2,
+          "first_stable_frame": 4,
+          "stable_text": "34TC8532",
+          "stable_observations": 3,
+          "stable_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2/frame_000004_plate0.jpg",
+          "candidate_counts": {
+            "34TC8532": 3
+          }
+        },
+        "failure_reason": null
+      },
+      "speed": {
+        "status": "ok",
+        "mode": "approximate_candidate",
+        "estimated_kmh": 2.334246,
+        "relative_motion_score": 0.22973,
+        "motion_anomaly": "normal",
+        "calibration_profile_id": null,
+        "confidence": 0.651,
+        "primary_speed_source": "bbox_geometry_auto",
+        "fallback_reason": null,
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "not_for_legal_enforcement": true,
+        "ftr_submission_note": "Speed is not a required field in FTR results.json; support evidence only."
+      },
+      "lane": {
+        "status": "not_run",
+        "lane_status": null,
+        "lane_visibility": null,
+        "lane_risk": null,
+        "confidence": null
+      },
+      "driver_cabin": {
+        "status": "not_run",
+        "visibility": "not_visible",
+        "driver_detected": null,
+        "passenger_count": null,
+        "phone_risk": null,
+        "seatbelt_status": null,
+        "confidence": null,
+        "failure_reason": "cabin_baseline_not_connected_yet"
+      },
+      "external_users": [],
+      "risk": {
+        "risk_score": 0.494,
+        "risk_level": "low",
+        "reasons": [
+          "tracking_candidate_event_only",
+          "target_vehicle_selected_for_downstream_experts",
+          "plate_ocr_stable_temporal_decision_available"
+        ],
+        "fusion_confidence": 0.958,
+        "thresholds": {
+          "critical_mode_activation": "not_run",
+          "target_selection_score": 0.5
+        },
+        "risk_factors": []
+      },
+      "routing_decision": {
+        "experts_called": [
+          "Vehicle Detection",
+          "ByteTrack",
+          "Plate OCR"
+        ],
+        "routing_reasons": [
+          "pretrained_detector_output_available",
+          "track_stability_computed",
+          "target_vehicle_selected_before_plate_speed_qod",
+          "selected_plate_ocr_baseline_connected"
+        ],
+        "qod_reason": "Track stability and evidence metadata are sufficient for this skeleton stage.",
+        "condition_profile": "dark",
+        "selected_detector": "yolo11n.pt",
+        "fallback_detector": "yolo11n.pt",
+        "routing_mode": "tracking_postprocess_baseline",
+        "fallbacks_used": [],
+        "selected_plate_detector": "yolo",
+        "selected_plate_ocr_engine": "fastplate",
+        "plate_ocr_stability_gate": {
+          "stable_count_required": 3,
+          "window_size": 7,
+          "min_confidence": 0.75,
+          "require_format_valid": true,
+          "require_province_code_valid": true
+        }
+      },
+      "models": {
+        "vehicle_detector": "yolo11n.pt",
+        "vehicle_tracker": "ByteTrack:bytetrack.yaml",
+        "target_selector": "heuristic_track_target_selector_v1",
+        "event_builder": "tracking_event_skeleton_builder_v1",
+        "plate_detector": "yolo",
+        "plate_ocr": "fast-plate-ocr:fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+        "plate_postprocess": "turkish_regex_province_temporal_vote_v1"
+      },
+      "evidence": {
+        "status": "partial",
+        "original_frame_uri": null,
+        "overlay_image_uri": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_2_tracked.mp4",
+        "target_vehicle_crop_uri": null,
+        "plate_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_2/frame_000004_plate0.jpg",
+        "json_uri": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json",
+        "evidence_quality_score": 1.0,
+        "metadata_completeness_score": 0.96,
+        "track_history": {
+          "center_history_sample": [
+            [
+              2241.3,
+              992.54
+            ],
+            [
+              2233.28,
+              997.91
+            ],
+            [
+              2218.65,
+              1004.51
+            ],
+            [
+              2206.19,
+              1006.36
+            ],
+            [
+              2188.31,
+              1015.2
+            ],
+            [
+              2162.03,
+              1029.45
+            ],
+            [
+              2138.56,
+              1046.99
+            ],
+            [
+              2108.48,
+              1065.51
+            ],
+            [
+              2060.72,
+              1087.18
+            ],
+            [
+              2015.86,
+              1113.26
+            ],
+            [
+              1961.1,
+              1143.46
+            ],
+            [
+              1894.0,
+              1184.73
+            ],
+            [
+              1809.64,
+              1235.04
+            ],
+            [
+              1719.68,
+              1286.36
+            ],
+            [
+              1602.62,
+              1350.96
+            ],
+            [
+              1464.16,
+              1390.52
+            ],
+            [
+              1281.07,
+              1405.24
+            ],
+            [
+              1200.74,
+              1405.38
+            ],
+            [
+              1177.59,
+              1413.23
+            ],
+            [
+              1140.4,
+              1427.28
+            ],
+            [
+              1111.77,
+              1440.94
+            ],
+            [
+              1071.88,
+              1451.74
+            ],
+            [
+              1009.55,
+              1498.68
+            ],
+            [
+              957.94,
+              1508.21
+            ],
+            [
+              900.5,
+              1523.87
+            ],
+            [
+              823.17,
+              1537.51
+            ],
+            [
+              727.18,
+              1563.75
+            ],
+            [
+              607.17,
+              1637.62
+            ],
+            [
+              452.46,
+              1709.87
+            ],
+            [
+              210.67,
+              1945.66
+            ]
+          ],
+          "bbox_history_sample": [
+            [
+              1700.81,
+              570.36,
+              2781.8,
+              1414.71
+            ],
+            [
+              1687.77,
+              570.82,
+              2778.79,
+              1425.0
+            ],
+            [
+              1671.93,
+              576.65,
+              2765.36,
+              1432.37
+            ],
+            [
+              1653.45,
+              573.1,
+              2758.92,
+              1439.62
+            ],
+            [
+              1626.16,
+              573.97,
+              2750.46,
+              1456.42
+            ],
+            [
+              1584.59,
+              577.34,
+              2739.48,
+              1481.56
+            ],
+            [
+              1546.28,
+              583.2,
+              2730.84,
+              1510.78
+            ],
+            [
+              1497.82,
+              585.5,
+              2719.14,
+              1545.52
+            ],
+            [
+              1425.0,
+              592.7,
+              2696.44,
+              1581.65
+            ],
+            [
+              1346.17,
+              594.98,
+              2685.56,
+              1631.55
+            ],
+            [
+              1252.87,
+              598.22,
+              2669.33,
+              1688.69
+            ],
+            [
+              1142.53,
+              608.3,
+              2645.47,
+              1761.16
+            ],
+            [
+              1005.53,
+              619.87,
+              2613.75,
+              1850.21
+            ],
+            [
+              853.7,
+              627.08,
+              2585.65,
+              1945.63
+            ],
+            [
+              665.78,
+              645.93,
+              2539.45,
+              2055.98
+            ],
+            [
+              455.56,
+              653.74,
+              2472.75,
+              2127.3
+            ],
+            [
+              187.47,
+              668.68,
+              2374.66,
+              2141.81
+            ],
+            [
+              35.26,
+              677.28,
+              2366.22,
+              2133.49
+            ],
+            [
+              16.74,
+              703.97,
+              2338.43,
+              2122.49
+            ],
+            [
+              0.0,
+              732.32,
+              2280.8,
+              2122.24
+            ],
+            [
+              0.0,
+              752.74,
+              2223.54,
+              2129.13
+            ],
+            [
+              0.0,
+              770.77,
+              2143.76,
+              2132.7
+            ],
+            [
+              4.31,
+              857.66,
+              2014.78,
+              2139.7
+            ],
+            [
+              0.0,
+              881.58,
+              1915.88,
+              2134.84
+            ],
+            [
+              0.0,
+              910.12,
+              1800.99,
+              2137.63
+            ],
+            [
+              0.0,
+              938.75,
+              1646.33,
+              2136.26
+            ],
+            [
+              0.0,
+              992.55,
+              1454.36,
+              2134.95
+            ],
+            [
+              0.0,
+              1137.55,
+              1214.34,
+              2137.69
+            ],
+            [
+              0.0,
+              1281.54,
+              904.91,
+              2138.21
+            ],
+            [
+              4.81,
+              1739.54,
+              416.54,
+              2151.77
+            ]
+          ],
+          "history_sample_available": true
+        },
+        "ocr_overlay_video_uri": "runs/plate_ocr/POCR-EXP-006-manual-video-review/cct-xs/fastplate/video_2_ocr_overlay.mp4",
+        "plate_ocr": {
+          "engine": "fastplate",
+          "model_ref": "fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+          "final_text": "34TC8532",
+          "masked_text": "34TC****",
+          "status": "stable_read",
+          "vote_confidence": 0.9733,
+          "temporal_stability_status": "passed",
+          "first_stable_frame": 4,
+          "stable_observations": 3,
+          "best_frame": 4,
+          "crop_count": 201,
+          "processed_crops": 201,
+          "ocr_read_count": 197,
+          "format_valid_count": 193,
+          "province_valid_count": 193
+        }
+      },
+      "explanation": {
+        "user_level_summary": "Hedef arac icin CCT-XS OCR temporal stability gate sonrasi plaka karari uretilmistir: 34TC****.",
+        "technical_summary": "TRK-001 için stable_class=car, track_stability=0.949, selection_score=0.898 hesaplandı. Bu kayıt gerçek risk kararı değil, takipten event/evidence hattına geçiş skeleton'ıdır. Plate OCR entegrasyonu sonrasi final_text=34TC8532, ocr_status=stable_read, vote_confidence=0.9733, first_stable_frame=4, stable_observations=3.",
+        "llm_used": false,
+        "llm_provider": null,
+        "template_fallback_used": true,
+        "source": "template"
+      },
+      "speed_exp_004a": {
+        "experiment_id": "SPEED-EXP-004A",
+        "speed_mode": "relative",
+        "primary_speed_source": "bbox_bottom_center_relative",
+        "relative_speed_score": 0.22973,
+        "relative_speed_label": "normal",
+        "pixel_velocity_px_s_median": 261.361693,
+        "pixel_velocity_px_s_p95": 765.266931,
+        "scale_normalized_speed_median": 0.22973,
+        "scale_normalized_speed_p95": 0.694362,
+        "bbox_height_median": 1147.63,
+        "bbox_area_median": 1697070.1362,
+        "bbox_height_delta_norm_median": 0.001801,
+        "bbox_area_delta_log_median": 0.023493,
+        "bbox_motion_jitter_score": 0.930511,
+        "fusion_confidence": 0.5877,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "quality_flags": [
+          "bbox_height_sufficient",
+          "bbox_history_available",
+          "bbox_scale_near_constant",
+          "fps_available",
+          "track_stability_high"
+        ],
+        "warning_flags": [
+          "id_switch_suspected",
+          "no_metric_calibration",
+          "not_absolute_kmh"
+        ],
+        "history": {
+          "sampled_frame_count": 30,
+          "sampled_frames": [
+            1,
+            13,
+            25,
+            36,
+            48,
+            60,
+            72,
+            84,
+            96,
+            107,
+            119,
+            131,
+            143,
+            155,
+            167,
+            178,
+            190,
+            202,
+            214,
+            226,
+            238,
+            249,
+            261,
+            273,
+            285,
+            297,
+            309,
+            320,
+            332,
+            344
+          ],
+          "sample_frame_note": "Frame ids are inferred by evenly spacing history samples across target_vehicle.frame_window.",
+          "bottom_center_history_sample": [
+            [
+              2241.305,
+              1414.71
+            ],
+            [
+              2233.28,
+              1425.0
+            ],
+            [
+              2218.645,
+              1432.37
+            ],
+            [
+              2206.185,
+              1439.62
+            ],
+            [
+              2188.31,
+              1456.42
+            ],
+            [
+              2162.035,
+              1481.56
+            ],
+            [
+              2138.56,
+              1510.78
+            ],
+            [
+              2108.48,
+              1545.52
+            ],
+            [
+              2060.72,
+              1581.65
+            ],
+            [
+              2015.865,
+              1631.55
+            ],
+            [
+              1961.1,
+              1688.69
+            ],
+            [
+              1894.0,
+              1761.16
+            ],
+            [
+              1809.64,
+              1850.21
+            ],
+            [
+              1719.675,
+              1945.63
+            ],
+            [
+              1602.615,
+              2055.98
+            ],
+            [
+              1464.155,
+              2127.3
+            ],
+            [
+              1281.065,
+              2141.81
+            ],
+            [
+              1200.74,
+              2133.49
+            ],
+            [
+              1177.585,
+              2122.49
+            ],
+            [
+              1140.4,
+              2122.24
+            ],
+            [
+              1111.77,
+              2129.13
+            ],
+            [
+              1071.88,
+              2132.7
+            ],
+            [
+              1009.545,
+              2139.7
+            ],
+            [
+              957.94,
+              2134.84
+            ],
+            [
+              900.495,
+              2137.63
+            ],
+            [
+              823.165,
+              2136.26
+            ],
+            [
+              727.18,
+              2134.95
+            ],
+            [
+              607.17,
+              2137.69
+            ],
+            [
+              452.455,
+              2138.21
+            ],
+            [
+              210.675,
+              2151.77
+            ]
+          ],
+          "bbox_width_median": 1478.65,
+          "bbox_height_median": 1147.63
+        },
+        "segments": [
+          {
+            "segment_index": 0,
+            "frame_start": 1,
+            "frame_end": 13,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2241.305,
+              1414.71
+            ],
+            "bottom_center_end": [
+              2233.28,
+              1425.0
+            ],
+            "dx_px": -8.025,
+            "dy_px": 10.29,
+            "pixel_displacement_px": 13.0493,
+            "pixel_velocity_px_per_frame": 1.087443,
+            "pixel_velocity_px_s": 54.372162,
+            "bbox_height_start": 844.35,
+            "bbox_height_end": 854.18,
+            "bbox_height_delta_norm": 0.011575,
+            "bbox_area_delta_log": 0.020811,
+            "scale_normalized_speed": 0.064023
+          },
+          {
+            "segment_index": 1,
+            "frame_start": 13,
+            "frame_end": 25,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2233.28,
+              1425.0
+            ],
+            "bottom_center_end": [
+              2218.645,
+              1432.37
+            ],
+            "dx_px": -14.635,
+            "dy_px": 7.37,
+            "pixel_displacement_px": 16.386,
+            "pixel_velocity_px_per_frame": 1.365498,
+            "pixel_velocity_px_s": 68.274889,
+            "bbox_height_start": 854.18,
+            "bbox_height_end": 855.72,
+            "bbox_height_delta_norm": 0.001801,
+            "bbox_area_delta_log": 0.004008,
+            "scale_normalized_speed": 0.079858
+          },
+          {
+            "segment_index": 2,
+            "frame_start": 25,
+            "frame_end": 36,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              2218.645,
+              1432.37
+            ],
+            "bottom_center_end": [
+              2206.185,
+              1439.62
+            ],
+            "dx_px": -12.46,
+            "dy_px": 7.25,
+            "pixel_displacement_px": 14.4158,
+            "pixel_velocity_px_per_frame": 1.310524,
+            "pixel_velocity_px_s": 65.526176,
+            "bbox_height_start": 855.72,
+            "bbox_height_end": 866.52,
+            "bbox_height_delta_norm": 0.012542,
+            "bbox_area_delta_log": 0.023493,
+            "scale_normalized_speed": 0.076094
+          },
+          {
+            "segment_index": 3,
+            "frame_start": 36,
+            "frame_end": 48,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2206.185,
+              1439.62
+            ],
+            "bottom_center_end": [
+              2188.31,
+              1456.42
+            ],
+            "dx_px": -17.875,
+            "dy_px": 16.8,
+            "pixel_displacement_px": 24.5307,
+            "pixel_velocity_px_per_frame": 2.044226,
+            "pixel_velocity_px_s": 102.211282,
+            "bbox_height_start": 866.52,
+            "bbox_height_end": 882.45,
+            "bbox_height_delta_norm": 0.018216,
+            "bbox_area_delta_log": 0.035107,
+            "scale_normalized_speed": 0.116882
+          },
+          {
+            "segment_index": 4,
+            "frame_start": 48,
+            "frame_end": 60,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2188.31,
+              1456.42
+            ],
+            "bottom_center_end": [
+              2162.035,
+              1481.56
+            ],
+            "dx_px": -26.275,
+            "dy_px": 25.14,
+            "pixel_displacement_px": 36.3648,
+            "pixel_velocity_px_per_frame": 3.030396,
+            "pixel_velocity_px_s": 151.519802,
+            "bbox_height_start": 882.45,
+            "bbox_height_end": 904.22,
+            "bbox_height_delta_norm": 0.024369,
+            "bbox_area_delta_log": 0.051215,
+            "scale_normalized_speed": 0.169611
+          },
+          {
+            "segment_index": 5,
+            "frame_start": 60,
+            "frame_end": 72,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2162.035,
+              1481.56
+            ],
+            "bottom_center_end": [
+              2138.56,
+              1510.78
+            ],
+            "dx_px": -23.475,
+            "dy_px": 29.22,
+            "pixel_displacement_px": 37.4818,
+            "pixel_velocity_px_per_frame": 3.123482,
+            "pixel_velocity_px_s": 156.174094,
+            "bbox_height_start": 904.22,
+            "bbox_height_end": 927.58,
+            "bbox_height_delta_norm": 0.025505,
+            "bbox_area_delta_log": 0.050873,
+            "scale_normalized_speed": 0.170514
+          },
+          {
+            "segment_index": 6,
+            "frame_start": 72,
+            "frame_end": 84,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2138.56,
+              1510.78
+            ],
+            "bottom_center_end": [
+              2108.48,
+              1545.52
+            ],
+            "dx_px": -30.08,
+            "dy_px": 34.74,
+            "pixel_displacement_px": 45.953,
+            "pixel_velocity_px_per_frame": 3.829413,
+            "pixel_velocity_px_s": 191.470643,
+            "bbox_height_start": 927.58,
+            "bbox_height_end": 960.02,
+            "bbox_height_delta_norm": 0.034372,
+            "bbox_area_delta_log": 0.064936,
+            "scale_normalized_speed": 0.202872
+          },
+          {
+            "segment_index": 7,
+            "frame_start": 84,
+            "frame_end": 96,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2108.48,
+              1545.52
+            ],
+            "bottom_center_end": [
+              2060.72,
+              1581.65
+            ],
+            "dx_px": -47.76,
+            "dy_px": 36.13,
+            "pixel_displacement_px": 59.8865,
+            "pixel_velocity_px_per_frame": 4.990543,
+            "pixel_velocity_px_s": 249.52714,
+            "bbox_height_start": 960.02,
+            "bbox_height_end": 988.95,
+            "bbox_height_delta_norm": 0.029687,
+            "bbox_area_delta_log": 0.069908,
+            "scale_normalized_speed": 0.256061
+          },
+          {
+            "segment_index": 8,
+            "frame_start": 96,
+            "frame_end": 107,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              2060.72,
+              1581.65
+            ],
+            "bottom_center_end": [
+              2015.865,
+              1631.55
+            ],
+            "dx_px": -44.855,
+            "dy_px": 49.9,
+            "pixel_displacement_px": 67.0968,
+            "pixel_velocity_px_per_frame": 6.099709,
+            "pixel_velocity_px_s": 304.98547,
+            "bbox_height_start": 988.95,
+            "bbox_height_end": 1036.57,
+            "bbox_height_delta_norm": 0.04702,
+            "bbox_area_delta_log": 0.099093,
+            "scale_normalized_speed": 0.301143
+          },
+          {
+            "segment_index": 9,
+            "frame_start": 107,
+            "frame_end": 119,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              2015.865,
+              1631.55
+            ],
+            "bottom_center_end": [
+              1961.1,
+              1688.69
+            ],
+            "dx_px": -54.765,
+            "dy_px": 57.14,
+            "pixel_displacement_px": 79.1466,
+            "pixel_velocity_px_per_frame": 6.59555,
+            "pixel_velocity_px_s": 329.777514,
+            "bbox_height_start": 1036.57,
+            "bbox_height_end": 1090.47,
+            "bbox_height_delta_norm": 0.050681,
+            "bbox_area_delta_log": 0.106638,
+            "scale_normalized_speed": 0.310081
+          },
+          {
+            "segment_index": 10,
+            "frame_start": 119,
+            "frame_end": 131,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1961.1,
+              1688.69
+            ],
+            "bottom_center_end": [
+              1894.0,
+              1761.16
+            ],
+            "dx_px": -67.1,
+            "dy_px": 72.47,
+            "pixel_displacement_px": 98.7639,
+            "pixel_velocity_px_per_frame": 8.230326,
+            "pixel_velocity_px_s": 411.516312,
+            "bbox_height_start": 1090.47,
+            "bbox_height_end": 1152.86,
+            "bbox_height_delta_norm": 0.055623,
+            "bbox_area_delta_log": 0.114899,
+            "scale_normalized_speed": 0.36688
+          },
+          {
+            "segment_index": 11,
+            "frame_start": 131,
+            "frame_end": 143,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1894.0,
+              1761.16
+            ],
+            "bottom_center_end": [
+              1809.64,
+              1850.21
+            ],
+            "dx_px": -84.36,
+            "dy_px": 89.05,
+            "pixel_displacement_px": 122.6642,
+            "pixel_velocity_px_per_frame": 10.222019,
+            "pixel_velocity_px_s": 511.100938,
+            "bbox_height_start": 1152.86,
+            "bbox_height_end": 1230.34,
+            "bbox_height_delta_norm": 0.065022,
+            "bbox_area_delta_log": 0.13275,
+            "scale_normalized_speed": 0.42892
+          },
+          {
+            "segment_index": 12,
+            "frame_start": 143,
+            "frame_end": 155,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1809.64,
+              1850.21
+            ],
+            "bottom_center_end": [
+              1719.675,
+              1945.63
+            ],
+            "dx_px": -89.965,
+            "dy_px": 95.42,
+            "pixel_displacement_px": 131.1437,
+            "pixel_velocity_px_per_frame": 10.928644,
+            "pixel_velocity_px_s": 546.432204,
+            "bbox_height_start": 1230.34,
+            "bbox_height_end": 1318.55,
+            "bbox_height_delta_norm": 0.069214,
+            "bbox_area_delta_log": 0.143362,
+            "scale_normalized_speed": 0.428761
+          },
+          {
+            "segment_index": 13,
+            "frame_start": 155,
+            "frame_end": 167,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1719.675,
+              1945.63
+            ],
+            "bottom_center_end": [
+              1602.615,
+              2055.98
+            ],
+            "dx_px": -117.06,
+            "dy_px": 110.35,
+            "pixel_displacement_px": 160.8731,
+            "pixel_velocity_px_per_frame": 13.406095,
+            "pixel_velocity_px_s": 670.304736,
+            "bbox_height_start": 1318.55,
+            "bbox_height_end": 1410.05,
+            "bbox_height_delta_norm": 0.067067,
+            "bbox_area_delta_log": 0.145744,
+            "scale_normalized_speed": 0.491318
+          },
+          {
+            "segment_index": 14,
+            "frame_start": 167,
+            "frame_end": 178,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              1602.615,
+              2055.98
+            ],
+            "bottom_center_end": [
+              1464.155,
+              2127.3
+            ],
+            "dx_px": -138.46,
+            "dy_px": 71.32,
+            "pixel_displacement_px": 155.7489,
+            "pixel_velocity_px_per_frame": 14.158989,
+            "pixel_velocity_px_s": 707.94946,
+            "bbox_height_start": 1410.05,
+            "bbox_height_end": 1473.56,
+            "bbox_height_delta_norm": 0.044049,
+            "bbox_area_delta_log": 0.117862,
+            "scale_normalized_speed": 0.491016
+          },
+          {
+            "segment_index": 15,
+            "frame_start": 178,
+            "frame_end": 190,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1464.155,
+              2127.3
+            ],
+            "bottom_center_end": [
+              1281.065,
+              2141.81
+            ],
+            "dx_px": -183.09,
+            "dy_px": 14.51,
+            "pixel_displacement_px": 183.6641,
+            "pixel_velocity_px_per_frame": 15.305339,
+            "pixel_velocity_px_s": 765.266931,
+            "bbox_height_start": 1473.56,
+            "bbox_height_end": 1473.13,
+            "bbox_height_delta_norm": -0.000292,
+            "bbox_area_delta_log": 0.08062,
+            "scale_normalized_speed": 0.519408
+          },
+          {
+            "segment_index": 16,
+            "frame_start": 190,
+            "frame_end": 202,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1281.065,
+              2141.81
+            ],
+            "bottom_center_end": [
+              1200.74,
+              2133.49
+            ],
+            "dx_px": -80.325,
+            "dy_px": -8.32,
+            "pixel_displacement_px": 80.7547,
+            "pixel_velocity_px_per_frame": 6.729562,
+            "pixel_velocity_px_s": 336.478083,
+            "bbox_height_start": 1473.13,
+            "bbox_height_end": 1456.21,
+            "bbox_height_delta_norm": -0.011552,
+            "bbox_area_delta_log": 0.05211,
+            "scale_normalized_speed": 0.22973
+          },
+          {
+            "segment_index": 17,
+            "frame_start": 202,
+            "frame_end": 214,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1200.74,
+              2133.49
+            ],
+            "bottom_center_end": [
+              1177.585,
+              2122.49
+            ],
+            "dx_px": -23.155,
+            "dy_px": -11.0,
+            "pixel_displacement_px": 25.635,
+            "pixel_velocity_px_per_frame": 2.136251,
+            "pixel_velocity_px_s": 106.812565,
+            "bbox_height_start": 1456.21,
+            "bbox_height_end": 1418.52,
+            "bbox_height_delta_norm": -0.026222,
+            "bbox_area_delta_log": -0.030208,
+            "scale_normalized_speed": 0.074311
+          },
+          {
+            "segment_index": 18,
+            "frame_start": 214,
+            "frame_end": 226,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1177.585,
+              2122.49
+            ],
+            "bottom_center_end": [
+              1140.4,
+              2122.24
+            ],
+            "dx_px": -37.185,
+            "dy_px": -0.25,
+            "pixel_displacement_px": 37.1858,
+            "pixel_velocity_px_per_frame": 3.09882,
+            "pixel_velocity_px_s": 154.941002,
+            "bbox_height_start": 1418.52,
+            "bbox_height_end": 1389.92,
+            "bbox_height_delta_norm": -0.020367,
+            "bbox_area_delta_log": -0.038137,
+            "scale_normalized_speed": 0.11034
+          },
+          {
+            "segment_index": 19,
+            "frame_start": 226,
+            "frame_end": 238,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1140.4,
+              2122.24
+            ],
+            "bottom_center_end": [
+              1111.77,
+              2129.13
+            ],
+            "dx_px": -28.63,
+            "dy_px": 6.89,
+            "pixel_displacement_px": 29.4474,
+            "pixel_velocity_px_per_frame": 2.453949,
+            "pixel_velocity_px_s": 122.697474,
+            "bbox_height_start": 1389.92,
+            "bbox_height_end": 1376.39,
+            "bbox_height_delta_norm": -0.009782,
+            "bbox_area_delta_log": -0.035208,
+            "scale_normalized_speed": 0.088708
+          },
+          {
+            "segment_index": 20,
+            "frame_start": 238,
+            "frame_end": 249,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              1111.77,
+              2129.13
+            ],
+            "bottom_center_end": [
+              1071.88,
+              2132.7
+            ],
+            "dx_px": -39.89,
+            "dy_px": 3.57,
+            "pixel_displacement_px": 40.0494,
+            "pixel_velocity_px_per_frame": 3.640857,
+            "pixel_velocity_px_s": 182.042873,
+            "bbox_height_start": 1376.39,
+            "bbox_height_end": 1361.93,
+            "bbox_height_delta_norm": -0.010561,
+            "bbox_area_delta_log": -0.047101,
+            "scale_normalized_speed": 0.13296
+          },
+          {
+            "segment_index": 21,
+            "frame_start": 249,
+            "frame_end": 261,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1071.88,
+              2132.7
+            ],
+            "bottom_center_end": [
+              1009.545,
+              2139.7
+            ],
+            "dx_px": -62.335,
+            "dy_px": 7.0,
+            "pixel_displacement_px": 62.7268,
+            "pixel_velocity_px_per_frame": 5.227234,
+            "pixel_velocity_px_s": 261.361693,
+            "bbox_height_start": 1361.93,
+            "bbox_height_end": 1282.04,
+            "bbox_height_delta_norm": -0.060432,
+            "bbox_area_delta_log": -0.124643,
+            "scale_normalized_speed": 0.197704
+          },
+          {
+            "segment_index": 22,
+            "frame_start": 261,
+            "frame_end": 273,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              1009.545,
+              2139.7
+            ],
+            "bottom_center_end": [
+              957.94,
+              2134.84
+            ],
+            "dx_px": -51.605,
+            "dy_px": -4.86,
+            "pixel_displacement_px": 51.8333,
+            "pixel_velocity_px_per_frame": 4.319445,
+            "pixel_velocity_px_s": 215.97227,
+            "bbox_height_start": 1282.04,
+            "bbox_height_end": 1253.26,
+            "bbox_height_delta_norm": -0.022703,
+            "bbox_area_delta_log": -0.070896,
+            "scale_normalized_speed": 0.170372
+          },
+          {
+            "segment_index": 23,
+            "frame_start": 273,
+            "frame_end": 285,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              957.94,
+              2134.84
+            ],
+            "bottom_center_end": [
+              900.495,
+              2137.63
+            ],
+            "dx_px": -57.445,
+            "dy_px": 2.79,
+            "pixel_displacement_px": 57.5127,
+            "pixel_velocity_px_per_frame": 4.792726,
+            "pixel_velocity_px_s": 239.636303,
+            "bbox_height_start": 1253.26,
+            "bbox_height_end": 1227.51,
+            "bbox_height_delta_norm": -0.02076,
+            "bbox_area_delta_log": -0.082601,
+            "scale_normalized_speed": 0.193195
+          },
+          {
+            "segment_index": 24,
+            "frame_start": 285,
+            "frame_end": 297,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              900.495,
+              2137.63
+            ],
+            "bottom_center_end": [
+              823.165,
+              2136.26
+            ],
+            "dx_px": -77.33,
+            "dy_px": -1.37,
+            "pixel_displacement_px": 77.3421,
+            "pixel_velocity_px_per_frame": 6.445178,
+            "pixel_velocity_px_s": 322.258895,
+            "bbox_height_start": 1227.51,
+            "bbox_height_end": 1197.51,
+            "bbox_height_delta_norm": -0.024742,
+            "bbox_area_delta_log": -0.114531,
+            "scale_normalized_speed": 0.265778
+          },
+          {
+            "segment_index": 25,
+            "frame_start": 297,
+            "frame_end": 309,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              823.165,
+              2136.26
+            ],
+            "bottom_center_end": [
+              727.18,
+              2134.95
+            ],
+            "dx_px": -95.985,
+            "dy_px": -1.31,
+            "pixel_displacement_px": 95.9939,
+            "pixel_velocity_px_per_frame": 7.999495,
+            "pixel_velocity_px_s": 399.974746,
+            "bbox_height_start": 1197.51,
+            "bbox_height_end": 1142.4,
+            "bbox_height_delta_norm": -0.047104,
+            "bbox_area_delta_log": -0.171096,
+            "scale_normalized_speed": 0.341872
+          },
+          {
+            "segment_index": 26,
+            "frame_start": 309,
+            "frame_end": 320,
+            "frame_delta": 11,
+            "dt_s": 0.22,
+            "bottom_center_start": [
+              727.18,
+              2134.95
+            ],
+            "bottom_center_end": [
+              607.17,
+              2137.69
+            ],
+            "dx_px": -120.01,
+            "dy_px": 2.74,
+            "pixel_displacement_px": 120.0413,
+            "pixel_velocity_px_per_frame": 10.912843,
+            "pixel_velocity_px_s": 545.642159,
+            "bbox_height_start": 1142.4,
+            "bbox_height_end": 1000.14,
+            "bbox_height_delta_norm": -0.132796,
+            "bbox_area_delta_log": -0.313357,
+            "scale_normalized_speed": 0.509341
+          },
+          {
+            "segment_index": 27,
+            "frame_start": 320,
+            "frame_end": 332,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              607.17,
+              2137.69
+            ],
+            "bottom_center_end": [
+              452.455,
+              2138.21
+            ],
+            "dx_px": -154.715,
+            "dy_px": 0.52,
+            "pixel_displacement_px": 154.7159,
+            "pixel_velocity_px_per_frame": 12.892989,
+            "pixel_velocity_px_s": 644.649474,
+            "bbox_height_start": 1000.14,
+            "bbox_height_end": 856.67,
+            "bbox_height_delta_norm": -0.154534,
+            "bbox_area_delta_log": -0.448963,
+            "scale_normalized_speed": 0.694362
+          },
+          {
+            "segment_index": 28,
+            "frame_start": 332,
+            "frame_end": 344,
+            "frame_delta": 12,
+            "dt_s": 0.24,
+            "bottom_center_start": [
+              452.455,
+              2138.21
+            ],
+            "bottom_center_end": [
+              210.675,
+              2151.77
+            ],
+            "dx_px": -241.78,
+            "dy_px": 13.56,
+            "pixel_displacement_px": 242.16,
+            "pixel_velocity_px_per_frame": 20.179996,
+            "pixel_velocity_px_s": 1008.999797,
+            "bbox_height_start": 856.67,
+            "bbox_height_end": 412.23,
+            "bbox_height_delta_norm": -0.700512,
+            "bbox_area_delta_log": -1.518939,
+            "scale_normalized_speed": 1.590354
+          }
+        ],
+        "limitations": [
+          "This output is calibration-free relative motion, not legal or final km/h.",
+          "History sample frame ids are inferred because the upstream sample does not store per-point frame ids.",
+          "Perspective and bbox clipping can affect score magnitude."
+        ]
+      },
+      "speed_exp_004b": {
+        "experiment_id": "SPEED-EXP-004B",
+        "speed_mode": "relative",
+        "primary_speed_source": "relative_track_bbox",
+        "candidate_speeds": [
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.22973,
+            "relative_speed_label": "normal",
+            "confidence": 0.5877,
+            "quality_flags": [
+              "bbox_height_sufficient",
+              "bbox_history_available",
+              "bbox_scale_near_constant",
+              "fps_available",
+              "track_stability_high"
+            ],
+            "failure_flags": [
+              "id_switch_suspected",
+              "no_metric_calibration",
+              "not_absolute_kmh"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.8768,
+            "confidence": 0.28,
+            "quality_flags": [
+              "full_frame_plate_bbox_available"
+            ],
+            "failure_flags": [
+              "low_plate_crop_aspect_differs_from_standard_geomean"
+            ]
+          }
+        ],
+        "vehicle_dimension_prior": {
+          "source": "VATTR-EXP-001",
+          "status": "computed",
+          "predicted_body_label": "suv",
+          "vehicle_attribute_confidence": 0.418496,
+          "top1_top2_margin": 0.11561,
+          "min_confidence_required": 0.6,
+          "min_margin_required": 0.15,
+          "use_for_speed_fusion": false,
+          "prior": {
+            "body_type": "suv",
+            "wheelbase_m_mean": 2.85,
+            "wheelbase_m_min": 2.6,
+            "wheelbase_m_max": 3.1,
+            "length_m_mean": 4.65,
+            "source": "generic_vehicle_dimension_prior",
+            "label_name": "suv",
+            "selected_split": "body",
+            "use_for_speed_fusion": true
+          },
+          "crop_count": 13,
+          "best_crop_uri": "runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_2-TRK-001_TRK-001_frame_000095_target_roi.jpg",
+          "top3_mean_probabilities": [
+            {
+              "label": "suv",
+              "confidence": 0.418496
+            },
+            {
+              "label": "mpv",
+              "confidence": 0.302886
+            },
+            {
+              "label": "van",
+              "confidence": 0.137723
+            }
+          ],
+          "per_crop_vote_counts": {
+            "combi": 1,
+            "mpv": 5,
+            "suv": 6,
+            "van": 1
+          },
+          "failure_reason": "vehicle_attribute_low_confidence"
+        },
+        "plate_scale_sanity": {
+          "status": "completed",
+          "source_experiment": "SPEED-EXP-002",
+          "source_variant": "geomean",
+          "speed_kmh": 3.8768,
+          "confidence": 0.28,
+          "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+          "usable_measurement_count": 190,
+          "plate_aspect_ratio_median": 3.3939,
+          "full_frame_plate_bbox_available": true
+        },
+        "sanity_check": {
+          "decision": "use_relative_with_supporting_priors",
+          "disagreement_flags": [],
+          "quality_flags": [
+            "relative_track_speed_available"
+          ],
+          "warning_flags": [
+            "not_absolute_kmh",
+            "not_for_legal_enforcement",
+            "plate_scale_low_confidence",
+            "vehicle_attribute_low_confidence"
+          ]
+        },
+        "fusion_confidence": 0.5877,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "limitations": [
+          "VATTR is a body/dimension prior, not a direct speed estimator.",
+          "Plate-scale candidate remains low-confidence without calibrated camera geometry.",
+          "Final absolute km/h requires homography or measured reference."
+        ]
+      },
+      "speed_exp_005d": {
+        "experiment_id": "SPEED-EXP-005D",
+        "video": "video_2.mp4",
+        "speed_mode": "approximate_candidate",
+        "primary_speed_source": "bbox_geometry_auto",
+        "estimated_kmh": 2.334246,
+        "speed_range_kmh": [
+          1.473131,
+          3.207053
+        ],
+        "relative_speed_label": "normal",
+        "relative_speed_score": 0.22973,
+        "fusion_confidence": 0.651,
+        "decision": "use_bbox_geometry_with_plate_relative_support",
+        "fallback_reason": null,
+        "candidate_agreement": {
+          "bbox_vs_plate_relative_diff_ratio": 0.397894,
+          "max_allowed_ratio": 0.45,
+          "relative_label_supports_candidate": true
+        },
+        "candidate_speeds": [
+          {
+            "source": "bbox_geometry_auto",
+            "speed_kmh": 2.334246,
+            "speed_range_kmh": [
+              1.473131,
+              3.207053
+            ],
+            "confidence": 0.72,
+            "warnings": [
+              "approximate_monocular_speed",
+              "auto_scale_approximation",
+              "not_for_legal_enforcement",
+              "invalid_segments_filtered"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 3.8768,
+            "confidence": 0.28,
+            "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean"
+          },
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.22973,
+            "relative_speed_label": "normal",
+            "confidence": 0.5877
+          }
+        ],
+        "slalom_support": {
+          "slalom_candidate": false,
+          "source": "relative_track_bbox",
+          "note": "Only a support signal for the FTR sofor_eylemi/slalom label; not a final action detector."
+        },
+        "quality_flags": [
+          "bbox_geometry_candidate_available",
+          "plate_scale_candidate_available",
+          "relative_track_signal_available",
+          "bbox_plate_candidates_agree",
+          "relative_label_supports_bbox_candidate"
+        ],
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "failure_flags": [],
+        "limitations": [
+          "No ground-truth speed is available for these videos.",
+          "The km/h value is approximate and must not be used for legal enforcement.",
+          "Camera FOV, vehicle dimensions and plate geometry are assumed priors.",
+          "FTR results.json does not require a speed field; this block is support evidence."
+        ]
+      },
+      "driver_action": {
+        "slalom": {
+          "status": "not_detected",
+          "detected": false,
+          "score": 0.467166,
+          "confidence": 0.773112,
+          "direction_change_count": 3,
+          "normalized_lateral_amplitude": 0.174932,
+          "normalized_lateral_rms": 0.054829,
+          "track_duration_seconds": 6.86,
+          "method": "track_lateral_residual_slalom_heuristic_v1",
+          "failure_reason": "slalom_thresholds_not_met",
+          "warning_flags": [
+            "relative_motion_only_no_lane_ground_truth"
+          ],
+          "quality_flags": [
+            "track_duration_sufficient",
+            "valid_frame_ratio_sufficient",
+            "direction_changes_present"
+          ],
+          "plot_uri": "runs/driver_action/slalom_exp_001/plots/video_2_slalom_residual_plot.png",
+          "overlay_video_uri": "runs/driver_action/slalom_exp_001/annotated/video_2_slalom_track_heuristic.mp4",
+          "not_for_legal_enforcement": true
+        }
+      }
+    },
+    {
+      "event_id": "EVT-TRK-EXP-001-video_3-TRK-002",
+      "event_type": "target_vehicle_selected",
+      "timestamp_utc": "2026-06-10T21:09:12Z",
+      "frame_id": "video_3:frame_000214",
+      "source": {
+        "device_id": "local_macbook_edge_baseline",
+        "session_id": "TRK-EXP-001",
+        "camera_mode": "offline_replay",
+        "resolution": "3840x2160",
+        "fps": 50.0,
+        "orientation": "landscape",
+        "network_type": "not_available_offline",
+        "calibration_profile_id": null,
+        "source_video": "video_3.mp4"
+      },
+      "system": {
+        "mode": "normal",
+        "qod_status": "not_needed",
+        "number_verification_status": "not_available",
+        "latency_ms": 14.121,
+        "pipeline_fps": 35.877,
+        "runtime_profile": "macbook_local_edge_offline_benchmark"
+      },
+      "frame_quality": {
+        "status": "not_run",
+        "quality_flags": [
+          "condition_profile_from_benchmark_summary"
+        ]
+      },
+      "target_vehicle": {
+        "status": "selected",
+        "track_id": "TRK-002",
+        "vehicle_type": "car",
+        "bbox": [
+          398.44,
+          668.73,
+          2495.55,
+          2143.97
+        ],
+        "bbox_xyxy": [
+          398.44,
+          668.73,
+          2495.55,
+          2143.97
+        ],
+        "bbox_xywh": null,
+        "confidence": 0.9499,
+        "track_stability": 0.949,
+        "selection_score": 0.916,
+        "selection_reasons": [
+          "track_stability_high",
+          "large_visible_bbox",
+          "near_frame_center",
+          "detector_confidence_high",
+          "long_enough_for_temporal_modules",
+          "vehicle_class_prioritized_for_plate_speed"
+        ],
+        "frame_window": {
+          "first_frame": 1,
+          "last_frame": 287,
+          "best_frame": 214,
+          "track_age_frames": 285
+        },
+        "class_votes": {
+          "car": 227.911,
+          "motorcycle": 2.101
+        },
+        "class_purity": 0.991,
+        "id_switch_suspected": true
+      },
+      "scene": {
+        "status": "not_run",
+        "weather": "unknown",
+        "lighting": "dark",
+        "visibility": "unknown",
+        "confidence": null
+      },
+      "plate": {
+        "status": "detected",
+        "detected": true,
+        "bbox": null,
+        "ocr_status": "stable_read",
+        "ocr_text": "34TC8532",
+        "ocr_text_masked": "34TC****",
+        "raw_text_best_frame": "34TC8532",
+        "format_valid": true,
+        "province_code_valid": true,
+        "confidence": 0.9052,
+        "vote_confidence": 0.9052,
+        "candidate_count": 19,
+        "best_frame": 25,
+        "source_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3/frame_000025_plate0.jpg",
+        "source_crop_dir": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3",
+        "ocr_engine": "fastplate",
+        "ocr_model_ref": "fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+        "temporal_vote": {
+          "text": "34TC8532",
+          "confidence": 0.9052,
+          "candidate_count": 19,
+          "top_candidates": [
+            {
+              "plate_text": "34TC8532",
+              "score": 307.0813,
+              "count": 176,
+              "max_confidence": 0.9997,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "34IC8532",
+              "score": 6.5777,
+              "count": 4,
+              "max_confidence": 0.9703,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "34TL8532",
+              "score": 3.3331,
+              "count": 2,
+              "max_confidence": 0.9263,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "34TC0532",
+              "score": 1.7383,
+              "count": 1,
+              "max_confidence": 0.9883,
+              "format_valid": true,
+              "province_code_valid": true
+            },
+            {
+              "plate_text": "74TC8532",
+              "score": 1.6552,
+              "count": 1,
+              "max_confidence": 0.9052,
+              "format_valid": true,
+              "province_code_valid": true
+            }
+          ]
+        },
+        "temporal_stability": {
+          "status": "passed",
+          "gate": {
+            "stable_count_required": 3,
+            "window_size": 7,
+            "min_confidence": 0.75,
+            "require_format_valid": true,
+            "require_province_code_valid": true
+          },
+          "failure_reason": null,
+          "first_readable_frame": 3,
+          "first_format_valid_frame": 10,
+          "first_province_valid_frame": 10,
+          "first_stable_frame": 25,
+          "stable_text": "34TC8532",
+          "stable_observations": 3,
+          "stable_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3/frame_000025_plate0.jpg",
+          "candidate_counts": {
+            "1": 4,
+            "34TC8532": 3,
+            "11": 2,
+            "34IC8532": 2,
+            "01LL1572": 1,
+            "01LL1777": 1,
+            "01LLL577": 1,
+            "14AC352": 1,
+            "14IC8572": 1,
+            "34TL8532": 1,
+            "74IC0572": 1,
+            "74IC8572": 1,
+            "74JC8572": 1,
+            "74TC8532": 1,
+            "74TC8572": 1
+          }
+        },
+        "failure_reason": null
+      },
+      "speed": {
+        "status": "ok",
+        "mode": "approximate_candidate",
+        "estimated_kmh": 15.064621,
+        "relative_motion_score": 0.62354,
+        "motion_anomaly": "fast",
+        "calibration_profile_id": null,
+        "confidence": 0.72,
+        "primary_speed_source": "bbox_geometry_auto",
+        "fallback_reason": null,
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "not_for_legal_enforcement": true,
+        "ftr_submission_note": "Speed is not a required field in FTR results.json; support evidence only."
+      },
+      "lane": {
+        "status": "not_run",
+        "lane_status": null,
+        "lane_visibility": null,
+        "lane_risk": null,
+        "confidence": null
+      },
+      "driver_cabin": {
+        "status": "not_run",
+        "visibility": "not_visible",
+        "driver_detected": null,
+        "passenger_count": null,
+        "phone_risk": null,
+        "seatbelt_status": null,
+        "confidence": null,
+        "failure_reason": "cabin_baseline_not_connected_yet"
+      },
+      "external_users": [],
+      "risk": {
+        "risk_score": 0.504,
+        "risk_level": "low",
+        "reasons": [
+          "tracking_candidate_event_only",
+          "target_vehicle_selected_for_downstream_experts",
+          "plate_ocr_stable_temporal_decision_available"
+        ],
+        "fusion_confidence": 0.934,
+        "thresholds": {
+          "critical_mode_activation": "not_run",
+          "target_selection_score": 0.5
+        },
+        "risk_factors": [
+          "slalom_candidate"
+        ]
+      },
+      "routing_decision": {
+        "experts_called": [
+          "Vehicle Detection",
+          "ByteTrack",
+          "Plate OCR"
+        ],
+        "routing_reasons": [
+          "pretrained_detector_output_available",
+          "track_stability_computed",
+          "target_vehicle_selected_before_plate_speed_qod",
+          "selected_plate_ocr_baseline_connected"
+        ],
+        "qod_reason": "Track stability and evidence metadata are sufficient for this skeleton stage.",
+        "condition_profile": "dark",
+        "selected_detector": "yolo11n.pt",
+        "fallback_detector": "yolo11n.pt",
+        "routing_mode": "tracking_postprocess_baseline",
+        "fallbacks_used": [],
+        "selected_plate_detector": "yolo",
+        "selected_plate_ocr_engine": "fastplate",
+        "plate_ocr_stability_gate": {
+          "stable_count_required": 3,
+          "window_size": 7,
+          "min_confidence": 0.75,
+          "require_format_valid": true,
+          "require_province_code_valid": true
+        }
+      },
+      "models": {
+        "vehicle_detector": "yolo11n.pt",
+        "vehicle_tracker": "ByteTrack:bytetrack.yaml",
+        "target_selector": "heuristic_track_target_selector_v1",
+        "event_builder": "tracking_event_skeleton_builder_v1",
+        "plate_detector": "yolo",
+        "plate_ocr": "fast-plate-ocr:fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+        "plate_postprocess": "turkish_regex_province_temporal_vote_v1"
+      },
+      "evidence": {
+        "status": "partial",
+        "original_frame_uri": null,
+        "overlay_image_uri": "runs/tracking/TRK-EXP-001-yolo11n-bytetrack/video_3_tracked.mp4",
+        "target_vehicle_crop_uri": null,
+        "plate_crop_uri": "runs/plate_ocr/POCR-EXP-005-local-smoke/plates/yolo/video_3/frame_000025_plate0.jpg",
+        "json_uri": "models/benchmarks/artifacts/TRK-EXP-001-yolo11n-bytetrack-event-skeletons-fastplate.json",
+        "evidence_quality_score": 1.0,
+        "metadata_completeness_score": 0.96,
+        "track_history": {
+          "center_history_sample": [
+            [
+              2898.09,
+              645.49
+            ],
+            [
+              2912.31,
+              650.71
+            ],
+            [
+              2924.04,
+              661.48
+            ],
+            [
+              2940.99,
+              650.58
+            ],
+            [
+              2922.95,
+              653.14
+            ],
+            [
+              2891.48,
+              674.92
+            ],
+            [
+              2857.91,
+              691.18
+            ],
+            [
+              2829.27,
+              695.18
+            ],
+            [
+              2804.67,
+              710.74
+            ],
+            [
+              2788.35,
+              729.32
+            ],
+            [
+              2812.44,
+              759.75
+            ],
+            [
+              2838.93,
+              791.9
+            ],
+            [
+              2838.67,
+              816.82
+            ],
+            [
+              2803.82,
+              834.19
+            ],
+            [
+              2714.12,
+              874.49
+            ],
+            [
+              2624.96,
+              912.45
+            ],
+            [
+              2509.2,
+              956.25
+            ],
+            [
+              2377.05,
+              1000.9
+            ],
+            [
+              2211.71,
+              1073.23
+            ],
+            [
+              2036.53,
+              1150.23
+            ],
+            [
+              1848.67,
+              1256.86
+            ],
+            [
+              1626.21,
+              1384.15
+            ],
+            [
+              1342.68,
+              1407.52
+            ],
+            [
+              1217.82,
+              1415.0
+            ],
+            [
+              1150.42,
+              1444.06
+            ],
+            [
+              1068.63,
+              1499.86
+            ],
+            [
+              973.34,
+              1523.04
+            ],
+            [
+              865.43,
+              1542.65
+            ],
+            [
+              688.81,
+              1631.81
+            ],
+            [
+              439.63,
+              1756.46
+            ]
+          ],
+          "bbox_history_sample": [
+            [
+              2711.03,
+              484.71,
+              3085.15,
+              806.27
+            ],
+            [
+              2720.82,
+              487.16,
+              3103.79,
+              814.26
+            ],
+            [
+              2716.32,
+              487.03,
+              3131.75,
+              835.94
+            ],
+            [
+              2741.59,
+              494.31,
+              3140.39,
+              806.85
+            ],
+            [
+              2716.24,
+              494.47,
+              3129.67,
+              811.81
+            ],
+            [
+              2664.11,
+              497.61,
+              3118.84,
+              852.24
+            ],
+            [
+              2610.92,
+              498.45,
+              3104.9,
+              883.91
+            ],
+            [
+              2578.31,
+              499.88,
+              3080.24,
+              890.47
+            ],
+            [
+              2538.92,
+              506.24,
+              3070.43,
+              915.25
+            ],
+            [
+              2519.56,
+              516.71,
+              3057.13,
+              941.94
+            ],
+            [
+              2528.69,
+              524.76,
+              3096.18,
+              994.75
+            ],
+            [
+              2538.52,
+              533.14,
+              3139.34,
+              1050.65
+            ],
+            [
+              2519.24,
+              534.67,
+              3158.1,
+              1098.98
+            ],
+            [
+              2478.57,
+              553.29,
+              3129.07,
+              1115.09
+            ],
+            [
+              2332.74,
+              554.04,
+              3095.51,
+              1194.93
+            ],
+            [
+              2181.65,
+              553.54,
+              3068.28,
+              1271.37
+            ],
+            [
+              1993.37,
+              562.47,
+              3025.02,
+              1350.02
+            ],
+            [
+              1783.71,
+              565.63,
+              2970.4,
+              1436.17
+            ],
+            [
+              1535.44,
+              595.04,
+              2887.99,
+              1551.42
+            ],
+            [
+              1266.34,
+              613.8,
+              2806.72,
+              1686.66
+            ],
+            [
+              969.44,
+              634.73,
+              2727.91,
+              1878.99
+            ],
+            [
+              615.5,
+              652.26,
+              2636.93,
+              2116.05
+            ],
+            [
+              262.46,
+              673.31,
+              2422.89,
+              2141.74
+            ],
+            [
+              67.32,
+              708.6,
+              2368.33,
+              2121.39
+            ],
+            [
+              13.72,
+              764.7,
+              2287.12,
+              2123.42
+            ],
+            [
+              6.77,
+              863.25,
+              2130.49,
+              2136.47
+            ],
+            [
+              0.0,
+              911.85,
+              1946.69,
+              2134.23
+            ],
+            [
+              0.0,
+              952.91,
+              1730.87,
+              2132.4
+            ],
+            [
+              0.0,
+              1128.43,
+              1377.62,
+              2135.18
+            ],
+            [
+              0.0,
+              1369.22,
+              879.27,
+              2143.7
+            ]
+          ],
+          "history_sample_available": true
+        },
+        "ocr_overlay_video_uri": "runs/plate_ocr/POCR-EXP-006-manual-video-review/cct-xs/fastplate/video_3_ocr_overlay.mp4",
+        "plate_ocr": {
+          "engine": "fastplate",
+          "model_ref": "fast-plate-ocr(cct-xs-v2-global-model, device=cpu)",
+          "final_text": "34TC8532",
+          "masked_text": "34TC****",
+          "status": "stable_read",
+          "vote_confidence": 0.9052,
+          "temporal_stability_status": "passed",
+          "first_stable_frame": 25,
+          "stable_observations": 3,
+          "best_frame": 25,
+          "crop_count": 206,
+          "processed_crops": 206,
+          "ocr_read_count": 202,
+          "format_valid_count": 195,
+          "province_valid_count": 194
+        }
+      },
+      "explanation": {
+        "user_level_summary": "Hedef arac icin CCT-XS OCR temporal stability gate sonrasi plaka karari uretilmistir: 34TC****.",
+        "technical_summary": "TRK-002 için stable_class=car, track_stability=0.949, selection_score=0.916 hesaplandı. Bu kayıt gerçek risk kararı değil, takipten event/evidence hattına geçiş skeleton'ıdır. Plate OCR entegrasyonu sonrasi final_text=34TC8532, ocr_status=stable_read, vote_confidence=0.9052, first_stable_frame=25, stable_observations=3.",
+        "llm_used": false,
+        "llm_provider": null,
+        "template_fallback_used": true,
+        "source": "template"
+      },
+      "speed_exp_004a": {
+        "experiment_id": "SPEED-EXP-004A",
+        "speed_mode": "relative",
+        "primary_speed_source": "bbox_bottom_center_relative",
+        "relative_speed_score": 0.62354,
+        "relative_speed_label": "fast",
+        "pixel_velocity_px_s_median": 414.122766,
+        "pixel_velocity_px_s_p95": 1423.50718,
+        "scale_normalized_speed_median": 0.62354,
+        "scale_normalized_speed_p95": 1.211803,
+        "bbox_height_median": 679.36,
+        "bbox_area_median": 562650.6391,
+        "bbox_height_delta_norm_median": 0.046073,
+        "bbox_area_delta_log_median": 0.103343,
+        "bbox_motion_jitter_score": 0.491673,
+        "fusion_confidence": 0.6298,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "quality_flags": [
+          "bbox_height_sufficient",
+          "bbox_history_available",
+          "bbox_scale_increasing",
+          "fps_available",
+          "track_stability_high"
+        ],
+        "warning_flags": [
+          "id_switch_suspected",
+          "no_metric_calibration",
+          "not_absolute_kmh"
+        ],
+        "history": {
+          "sampled_frame_count": 30,
+          "sampled_frames": [
+            1,
+            11,
+            21,
+            31,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            109,
+            119,
+            129,
+            139,
+            149,
+            159,
+            169,
+            179,
+            188,
+            198,
+            208,
+            218,
+            228,
+            238,
+            248,
+            257,
+            267,
+            277,
+            287
+          ],
+          "sample_frame_note": "Frame ids are inferred by evenly spacing history samples across target_vehicle.frame_window.",
+          "bottom_center_history_sample": [
+            [
+              2898.09,
+              806.27
+            ],
+            [
+              2912.305,
+              814.26
+            ],
+            [
+              2924.035,
+              835.94
+            ],
+            [
+              2940.99,
+              806.85
+            ],
+            [
+              2922.955,
+              811.81
+            ],
+            [
+              2891.475,
+              852.24
+            ],
+            [
+              2857.91,
+              883.91
+            ],
+            [
+              2829.275,
+              890.47
+            ],
+            [
+              2804.675,
+              915.25
+            ],
+            [
+              2788.345,
+              941.94
+            ],
+            [
+              2812.435,
+              994.75
+            ],
+            [
+              2838.93,
+              1050.65
+            ],
+            [
+              2838.67,
+              1098.98
+            ],
+            [
+              2803.82,
+              1115.09
+            ],
+            [
+              2714.125,
+              1194.93
+            ],
+            [
+              2624.965,
+              1271.37
+            ],
+            [
+              2509.195,
+              1350.02
+            ],
+            [
+              2377.055,
+              1436.17
+            ],
+            [
+              2211.715,
+              1551.42
+            ],
+            [
+              2036.53,
+              1686.66
+            ],
+            [
+              1848.675,
+              1878.99
+            ],
+            [
+              1626.215,
+              2116.05
+            ],
+            [
+              1342.675,
+              2141.74
+            ],
+            [
+              1217.825,
+              2121.39
+            ],
+            [
+              1150.42,
+              2123.42
+            ],
+            [
+              1068.63,
+              2136.47
+            ],
+            [
+              973.345,
+              2134.23
+            ],
+            [
+              865.435,
+              2132.4
+            ],
+            [
+              688.81,
+              2135.18
+            ],
+            [
+              439.635,
+              2143.7
+            ]
+          ],
+          "bbox_width_median": 821.02,
+          "bbox_height_median": 679.36
+        },
+        "segments": [
+          {
+            "segment_index": 0,
+            "frame_start": 1,
+            "frame_end": 11,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2898.09,
+              806.27
+            ],
+            "bottom_center_end": [
+              2912.305,
+              814.26
+            ],
+            "dx_px": 14.215,
+            "dy_px": 7.99,
+            "pixel_displacement_px": 16.3066,
+            "pixel_velocity_px_per_frame": 1.630663,
+            "pixel_velocity_px_s": 81.533172,
+            "bbox_height_start": 321.56,
+            "bbox_height_end": 327.1,
+            "bbox_height_delta_norm": 0.017081,
+            "bbox_area_delta_log": 0.040462,
+            "scale_normalized_speed": 0.25139
+          },
+          {
+            "segment_index": 1,
+            "frame_start": 11,
+            "frame_end": 21,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2912.305,
+              814.26
+            ],
+            "bottom_center_end": [
+              2924.035,
+              835.94
+            ],
+            "dx_px": 11.73,
+            "dy_px": 21.68,
+            "pixel_displacement_px": 24.6499,
+            "pixel_velocity_px_per_frame": 2.464985,
+            "pixel_velocity_px_s": 123.24927,
+            "bbox_height_start": 327.1,
+            "bbox_height_end": 348.91,
+            "bbox_height_delta_norm": 0.064526,
+            "bbox_area_delta_log": 0.145906,
+            "scale_normalized_speed": 0.364637
+          },
+          {
+            "segment_index": 2,
+            "frame_start": 21,
+            "frame_end": 31,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2924.035,
+              835.94
+            ],
+            "bottom_center_end": [
+              2940.99,
+              806.85
+            ],
+            "dx_px": 16.955,
+            "dy_px": -29.09,
+            "pixel_displacement_px": 33.6705,
+            "pixel_velocity_px_per_frame": 3.367046,
+            "pixel_velocity_px_s": 168.352318,
+            "bbox_height_start": 348.91,
+            "bbox_height_end": 312.54,
+            "bbox_height_delta_norm": -0.109971,
+            "bbox_area_delta_log": -0.150936,
+            "scale_normalized_speed": 0.50904
+          },
+          {
+            "segment_index": 3,
+            "frame_start": 31,
+            "frame_end": 40,
+            "frame_delta": 9,
+            "dt_s": 0.18,
+            "bottom_center_start": [
+              2940.99,
+              806.85
+            ],
+            "bottom_center_end": [
+              2922.955,
+              811.81
+            ],
+            "dx_px": -18.035,
+            "dy_px": 4.96,
+            "pixel_displacement_px": 18.7046,
+            "pixel_velocity_px_per_frame": 2.078291,
+            "pixel_velocity_px_s": 103.914558,
+            "bbox_height_start": 312.54,
+            "bbox_height_end": 317.34,
+            "bbox_height_delta_norm": 0.015241,
+            "bbox_area_delta_log": 0.051269,
+            "scale_normalized_speed": 0.32995
+          },
+          {
+            "segment_index": 4,
+            "frame_start": 40,
+            "frame_end": 50,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2922.955,
+              811.81
+            ],
+            "bottom_center_end": [
+              2891.475,
+              852.24
+            ],
+            "dx_px": -31.48,
+            "dy_px": 40.43,
+            "pixel_displacement_px": 51.2404,
+            "pixel_velocity_px_per_frame": 5.124037,
+            "pixel_velocity_px_s": 256.201839,
+            "bbox_height_start": 317.34,
+            "bbox_height_end": 354.63,
+            "bbox_height_delta_norm": 0.110987,
+            "bbox_area_delta_log": 0.206317,
+            "scale_normalized_speed": 0.76254
+          },
+          {
+            "segment_index": 5,
+            "frame_start": 50,
+            "frame_end": 60,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2891.475,
+              852.24
+            ],
+            "bottom_center_end": [
+              2857.91,
+              883.91
+            ],
+            "dx_px": -33.565,
+            "dy_px": 31.67,
+            "pixel_displacement_px": 46.1476,
+            "pixel_velocity_px_per_frame": 4.614757,
+            "pixel_velocity_px_s": 230.737845,
+            "bbox_height_start": 354.63,
+            "bbox_height_end": 385.46,
+            "bbox_height_delta_norm": 0.083314,
+            "bbox_area_delta_log": 0.166154,
+            "scale_normalized_speed": 0.62354
+          },
+          {
+            "segment_index": 6,
+            "frame_start": 60,
+            "frame_end": 70,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2857.91,
+              883.91
+            ],
+            "bottom_center_end": [
+              2829.275,
+              890.47
+            ],
+            "dx_px": -28.635,
+            "dy_px": 6.56,
+            "pixel_displacement_px": 29.3768,
+            "pixel_velocity_px_per_frame": 2.937681,
+            "pixel_velocity_px_s": 146.884038,
+            "bbox_height_start": 385.46,
+            "bbox_height_end": 390.59,
+            "bbox_height_delta_norm": 0.013221,
+            "bbox_area_delta_log": 0.029187,
+            "scale_normalized_speed": 0.378543
+          },
+          {
+            "segment_index": 7,
+            "frame_start": 70,
+            "frame_end": 80,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2829.275,
+              890.47
+            ],
+            "bottom_center_end": [
+              2804.675,
+              915.25
+            ],
+            "dx_px": -24.6,
+            "dy_px": 24.78,
+            "pixel_displacement_px": 34.9172,
+            "pixel_velocity_px_per_frame": 3.491716,
+            "pixel_velocity_px_s": 174.585824,
+            "bbox_height_start": 390.59,
+            "bbox_height_end": 409.01,
+            "bbox_height_delta_norm": 0.046073,
+            "bbox_area_delta_log": 0.103343,
+            "scale_normalized_speed": 0.436683
+          },
+          {
+            "segment_index": 8,
+            "frame_start": 80,
+            "frame_end": 90,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2804.675,
+              915.25
+            ],
+            "bottom_center_end": [
+              2788.345,
+              941.94
+            ],
+            "dx_px": -16.33,
+            "dy_px": 26.69,
+            "pixel_displacement_px": 31.2894,
+            "pixel_velocity_px_per_frame": 3.128938,
+            "pixel_velocity_px_s": 156.446876,
+            "bbox_height_start": 409.01,
+            "bbox_height_end": 425.23,
+            "bbox_height_delta_norm": 0.038886,
+            "bbox_area_delta_log": 0.050228,
+            "scale_normalized_speed": 0.375064
+          },
+          {
+            "segment_index": 9,
+            "frame_start": 90,
+            "frame_end": 100,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2788.345,
+              941.94
+            ],
+            "bottom_center_end": [
+              2812.435,
+              994.75
+            ],
+            "dx_px": 24.09,
+            "dy_px": 52.81,
+            "pixel_displacement_px": 58.045,
+            "pixel_velocity_px_per_frame": 5.804502,
+            "pixel_velocity_px_s": 290.225094,
+            "bbox_height_start": 425.23,
+            "bbox_height_end": 469.99,
+            "bbox_height_delta_norm": 0.099998,
+            "bbox_area_delta_log": 0.154245,
+            "scale_normalized_speed": 0.648388
+          },
+          {
+            "segment_index": 10,
+            "frame_start": 100,
+            "frame_end": 109,
+            "frame_delta": 9,
+            "dt_s": 0.18,
+            "bottom_center_start": [
+              2812.435,
+              994.75
+            ],
+            "bottom_center_end": [
+              2838.93,
+              1050.65
+            ],
+            "dx_px": 26.495,
+            "dy_px": 55.9,
+            "pixel_displacement_px": 61.8611,
+            "pixel_velocity_px_per_frame": 6.873455,
+            "pixel_velocity_px_s": 343.672748,
+            "bbox_height_start": 469.99,
+            "bbox_height_end": 517.51,
+            "bbox_height_delta_norm": 0.096243,
+            "bbox_area_delta_log": 0.15339,
+            "scale_normalized_speed": 0.696046
+          },
+          {
+            "segment_index": 11,
+            "frame_start": 109,
+            "frame_end": 119,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2838.93,
+              1050.65
+            ],
+            "bottom_center_end": [
+              2838.67,
+              1098.98
+            ],
+            "dx_px": -0.26,
+            "dy_px": 48.33,
+            "pixel_displacement_px": 48.3307,
+            "pixel_velocity_px_per_frame": 4.83307,
+            "pixel_velocity_px_s": 241.653497,
+            "bbox_height_start": 517.51,
+            "bbox_height_end": 564.31,
+            "bbox_height_delta_norm": 0.086521,
+            "bbox_area_delta_log": 0.147965,
+            "scale_normalized_speed": 0.446754
+          },
+          {
+            "segment_index": 12,
+            "frame_start": 119,
+            "frame_end": 129,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2838.67,
+              1098.98
+            ],
+            "bottom_center_end": [
+              2803.82,
+              1115.09
+            ],
+            "dx_px": -34.85,
+            "dy_px": 16.11,
+            "pixel_displacement_px": 38.3934,
+            "pixel_velocity_px_per_frame": 3.839342,
+            "pixel_velocity_px_s": 191.967094,
+            "bbox_height_start": 564.31,
+            "bbox_height_end": 561.8,
+            "bbox_height_delta_norm": -0.004458,
+            "bbox_area_delta_log": 0.013598,
+            "scale_normalized_speed": 0.340938
+          },
+          {
+            "segment_index": 13,
+            "frame_start": 129,
+            "frame_end": 139,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2803.82,
+              1115.09
+            ],
+            "bottom_center_end": [
+              2714.125,
+              1194.93
+            ],
+            "dx_px": -89.695,
+            "dy_px": 79.84,
+            "pixel_displacement_px": 120.0817,
+            "pixel_velocity_px_per_frame": 12.008172,
+            "pixel_velocity_px_s": 600.408582,
+            "bbox_height_start": 561.8,
+            "bbox_height_end": 640.89,
+            "bbox_height_delta_norm": 0.131522,
+            "bbox_area_delta_log": 0.290927,
+            "scale_normalized_speed": 0.998443
+          },
+          {
+            "segment_index": 14,
+            "frame_start": 139,
+            "frame_end": 149,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2714.125,
+              1194.93
+            ],
+            "bottom_center_end": [
+              2624.965,
+              1271.37
+            ],
+            "dx_px": -89.16,
+            "dy_px": 76.44,
+            "pixel_displacement_px": 117.4418,
+            "pixel_velocity_px_per_frame": 11.744181,
+            "pixel_velocity_px_s": 587.20906,
+            "bbox_height_start": 640.89,
+            "bbox_height_end": 717.83,
+            "bbox_height_delta_norm": 0.113254,
+            "bbox_area_delta_log": 0.263846,
+            "scale_normalized_speed": 0.864356
+          },
+          {
+            "segment_index": 15,
+            "frame_start": 149,
+            "frame_end": 159,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2624.965,
+              1271.37
+            ],
+            "bottom_center_end": [
+              2509.195,
+              1350.02
+            ],
+            "dx_px": -115.77,
+            "dy_px": 78.65,
+            "pixel_displacement_px": 139.959,
+            "pixel_velocity_px_per_frame": 13.995898,
+            "pixel_velocity_px_s": 699.794888,
+            "bbox_height_start": 717.83,
+            "bbox_height_end": 787.55,
+            "bbox_height_delta_norm": 0.092628,
+            "bbox_area_delta_log": 0.244181,
+            "scale_normalized_speed": 0.929725
+          },
+          {
+            "segment_index": 16,
+            "frame_start": 159,
+            "frame_end": 169,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2509.195,
+              1350.02
+            ],
+            "bottom_center_end": [
+              2377.055,
+              1436.17
+            ],
+            "dx_px": -132.14,
+            "dy_px": 86.15,
+            "pixel_displacement_px": 157.7428,
+            "pixel_velocity_px_per_frame": 15.774284,
+            "pixel_velocity_px_s": 788.714177,
+            "bbox_height_start": 787.55,
+            "bbox_height_end": 870.54,
+            "bbox_height_delta_norm": 0.100103,
+            "bbox_area_delta_log": 0.240195,
+            "scale_normalized_speed": 0.951353
+          },
+          {
+            "segment_index": 17,
+            "frame_start": 169,
+            "frame_end": 179,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2377.055,
+              1436.17
+            ],
+            "bottom_center_end": [
+              2211.715,
+              1551.42
+            ],
+            "dx_px": -165.34,
+            "dy_px": 115.25,
+            "pixel_displacement_px": 201.5437,
+            "pixel_velocity_px_per_frame": 20.154374,
+            "pixel_velocity_px_s": 1007.718687,
+            "bbox_height_start": 870.54,
+            "bbox_height_end": 956.38,
+            "bbox_height_delta_norm": 0.093972,
+            "bbox_area_delta_log": 0.224865,
+            "scale_normalized_speed": 1.103189
+          },
+          {
+            "segment_index": 18,
+            "frame_start": 179,
+            "frame_end": 188,
+            "frame_delta": 9,
+            "dt_s": 0.18,
+            "bottom_center_start": [
+              2211.715,
+              1551.42
+            ],
+            "bottom_center_end": [
+              2036.53,
+              1686.66
+            ],
+            "dx_px": -175.185,
+            "dy_px": 135.24,
+            "pixel_displacement_px": 221.3134,
+            "pixel_velocity_px_per_frame": 24.590383,
+            "pixel_velocity_px_s": 1229.51915,
+            "bbox_height_start": 956.38,
+            "bbox_height_end": 1072.86,
+            "bbox_height_delta_norm": 0.114802,
+            "bbox_area_delta_log": 0.244965,
+            "scale_normalized_speed": 1.211803
+          },
+          {
+            "segment_index": 19,
+            "frame_start": 188,
+            "frame_end": 198,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              2036.53,
+              1686.66
+            ],
+            "bottom_center_end": [
+              1848.675,
+              1878.99
+            ],
+            "dx_px": -187.855,
+            "dy_px": 192.33,
+            "pixel_displacement_px": 268.85,
+            "pixel_velocity_px_per_frame": 26.885001,
+            "pixel_velocity_px_s": 1344.250069,
+            "bbox_height_start": 1072.86,
+            "bbox_height_end": 1244.26,
+            "bbox_height_delta_norm": 0.147942,
+            "bbox_area_delta_log": 0.280628,
+            "scale_normalized_speed": 1.160277
+          },
+          {
+            "segment_index": 20,
+            "frame_start": 198,
+            "frame_end": 208,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              1848.675,
+              1878.99
+            ],
+            "bottom_center_end": [
+              1626.215,
+              2116.05
+            ],
+            "dx_px": -222.46,
+            "dy_px": 237.06,
+            "pixel_displacement_px": 325.0937,
+            "pixel_velocity_px_per_frame": 32.509367,
+            "pixel_velocity_px_s": 1625.468357,
+            "bbox_height_start": 1244.26,
+            "bbox_height_end": 1463.79,
+            "bbox_height_delta_norm": 0.162131,
+            "bbox_area_delta_log": 0.301849,
+            "scale_normalized_speed": 1.200471
+          },
+          {
+            "segment_index": 21,
+            "frame_start": 208,
+            "frame_end": 218,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              1626.215,
+              2116.05
+            ],
+            "bottom_center_end": [
+              1342.675,
+              2141.74
+            ],
+            "dx_px": -283.54,
+            "dy_px": 25.69,
+            "pixel_displacement_px": 284.7014,
+            "pixel_velocity_px_per_frame": 28.470144,
+            "pixel_velocity_px_s": 1423.50718,
+            "bbox_height_start": 1463.79,
+            "bbox_height_end": 1468.43,
+            "bbox_height_delta_norm": 0.003165,
+            "bbox_area_delta_log": 0.069667,
+            "scale_normalized_speed": 0.970942
+          },
+          {
+            "segment_index": 22,
+            "frame_start": 218,
+            "frame_end": 228,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              1342.675,
+              2141.74
+            ],
+            "bottom_center_end": [
+              1217.825,
+              2121.39
+            ],
+            "dx_px": -124.85,
+            "dy_px": -20.35,
+            "pixel_displacement_px": 126.4976,
+            "pixel_velocity_px_per_frame": 12.649761,
+            "pixel_velocity_px_s": 632.488043,
+            "bbox_height_start": 1468.43,
+            "bbox_height_end": 1412.79,
+            "bbox_height_delta_norm": -0.038623,
+            "bbox_area_delta_log": 0.024414,
+            "scale_normalized_speed": 0.439042
+          },
+          {
+            "segment_index": 23,
+            "frame_start": 228,
+            "frame_end": 238,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              1217.825,
+              2121.39
+            ],
+            "bottom_center_end": [
+              1150.42,
+              2123.42
+            ],
+            "dx_px": -67.405,
+            "dy_px": 2.03,
+            "pixel_displacement_px": 67.4356,
+            "pixel_velocity_px_per_frame": 6.743556,
+            "pixel_velocity_px_s": 337.177806,
+            "bbox_height_start": 1412.79,
+            "bbox_height_end": 1358.72,
+            "bbox_height_delta_norm": -0.039018,
+            "bbox_area_delta_log": -0.051095,
+            "scale_normalized_speed": 0.243317
+          },
+          {
+            "segment_index": 24,
+            "frame_start": 238,
+            "frame_end": 248,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              1150.42,
+              2123.42
+            ],
+            "bottom_center_end": [
+              1068.63,
+              2136.47
+            ],
+            "dx_px": -81.79,
+            "dy_px": 13.05,
+            "pixel_displacement_px": 82.8246,
+            "pixel_velocity_px_per_frame": 8.282455,
+            "pixel_velocity_px_s": 414.122766,
+            "bbox_height_start": 1358.72,
+            "bbox_height_end": 1273.22,
+            "bbox_height_delta_norm": -0.064971,
+            "bbox_area_delta_log": -0.133101,
+            "scale_normalized_speed": 0.31469
+          },
+          {
+            "segment_index": 25,
+            "frame_start": 248,
+            "frame_end": 257,
+            "frame_delta": 9,
+            "dt_s": 0.18,
+            "bottom_center_start": [
+              1068.63,
+              2136.47
+            ],
+            "bottom_center_end": [
+              973.345,
+              2134.23
+            ],
+            "dx_px": -95.285,
+            "dy_px": -2.24,
+            "pixel_displacement_px": 95.3113,
+            "pixel_velocity_px_per_frame": 10.590147,
+            "pixel_velocity_px_s": 529.507366,
+            "bbox_height_start": 1273.22,
+            "bbox_height_end": 1222.38,
+            "bbox_height_delta_norm": -0.040744,
+            "bbox_area_delta_log": -0.127788,
+            "scale_normalized_speed": 0.424353
+          },
+          {
+            "segment_index": 26,
+            "frame_start": 257,
+            "frame_end": 267,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              973.345,
+              2134.23
+            ],
+            "bottom_center_end": [
+              865.435,
+              2132.4
+            ],
+            "dx_px": -107.91,
+            "dy_px": -1.83,
+            "pixel_displacement_px": 107.9255,
+            "pixel_velocity_px_per_frame": 10.792552,
+            "pixel_velocity_px_s": 539.62758,
+            "bbox_height_start": 1222.38,
+            "bbox_height_end": 1179.49,
+            "bbox_height_delta_norm": -0.035714,
+            "bbox_area_delta_log": -0.153224,
+            "scale_normalized_speed": 0.44934
+          },
+          {
+            "segment_index": 27,
+            "frame_start": 267,
+            "frame_end": 277,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              865.435,
+              2132.4
+            ],
+            "bottom_center_end": [
+              688.81,
+              2135.18
+            ],
+            "dx_px": -176.625,
+            "dy_px": 2.78,
+            "pixel_displacement_px": 176.6469,
+            "pixel_velocity_px_per_frame": 17.664688,
+            "pixel_velocity_px_s": 883.234383,
+            "bbox_height_start": 1179.49,
+            "bbox_height_end": 1006.75,
+            "bbox_height_delta_norm": -0.158025,
+            "bbox_area_delta_log": -0.386622,
+            "scale_normalized_speed": 0.807994
+          },
+          {
+            "segment_index": 28,
+            "frame_start": 277,
+            "frame_end": 287,
+            "frame_delta": 10,
+            "dt_s": 0.2,
+            "bottom_center_start": [
+              688.81,
+              2135.18
+            ],
+            "bottom_center_end": [
+              439.635,
+              2143.7
+            ],
+            "dx_px": -249.175,
+            "dy_px": 8.52,
+            "pixel_displacement_px": 249.3206,
+            "pixel_velocity_px_per_frame": 24.932062,
+            "pixel_velocity_px_s": 1246.603095,
+            "bbox_height_start": 1006.75,
+            "bbox_height_end": 774.48,
+            "bbox_height_delta_norm": -0.260797,
+            "bbox_area_delta_log": -0.711311,
+            "scale_normalized_speed": 1.39971
+          }
+        ],
+        "limitations": [
+          "This output is calibration-free relative motion, not legal or final km/h.",
+          "History sample frame ids are inferred because the upstream sample does not store per-point frame ids.",
+          "Perspective and bbox clipping can affect score magnitude."
+        ]
+      },
+      "speed_exp_004b": {
+        "experiment_id": "SPEED-EXP-004B",
+        "speed_mode": "relative",
+        "primary_speed_source": "relative_track_bbox",
+        "candidate_speeds": [
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.62354,
+            "relative_speed_label": "fast",
+            "confidence": 0.6298,
+            "quality_flags": [
+              "bbox_height_sufficient",
+              "bbox_history_available",
+              "bbox_scale_increasing",
+              "fps_available",
+              "track_stability_high"
+            ],
+            "failure_flags": [
+              "id_switch_suspected",
+              "no_metric_calibration",
+              "not_absolute_kmh"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 12.8163,
+            "confidence": 0.28,
+            "quality_flags": [
+              "full_frame_plate_bbox_available"
+            ],
+            "failure_flags": [
+              "low_plate_crop_aspect_differs_from_standard_geomean"
+            ]
+          }
+        ],
+        "vehicle_dimension_prior": {
+          "source": "VATTR-EXP-001",
+          "status": "computed",
+          "predicted_body_label": "van",
+          "vehicle_attribute_confidence": 0.425803,
+          "top1_top2_margin": 0.157898,
+          "min_confidence_required": 0.6,
+          "min_margin_required": 0.15,
+          "use_for_speed_fusion": false,
+          "prior": {
+            "body_type": "van",
+            "wheelbase_m_mean": 3.2,
+            "wheelbase_m_min": 2.75,
+            "wheelbase_m_max": 3.75,
+            "length_m_mean": 4.9,
+            "source": "generic_vehicle_dimension_prior",
+            "label_name": "van",
+            "selected_split": "body",
+            "use_for_speed_fusion": true
+          },
+          "crop_count": 13,
+          "best_crop_uri": "runs/_archive/plate_ocr_v1_POCR-EXP-001-target-roi-crops/sample_frames/EVT-TRK-EXP-001-video_3-TRK-002_TRK-002_frame_000157_target_roi.jpg",
+          "top3_mean_probabilities": [
+            {
+              "label": "van",
+              "confidence": 0.425803
+            },
+            {
+              "label": "mpv",
+              "confidence": 0.267905
+            },
+            {
+              "label": "hatchback",
+              "confidence": 0.17168
+            }
+          ],
+          "per_crop_vote_counts": {
+            "hatchback": 2,
+            "mpv": 3,
+            "suv": 2,
+            "van": 6
+          },
+          "failure_reason": "vehicle_attribute_low_confidence"
+        },
+        "plate_scale_sanity": {
+          "status": "completed",
+          "source_experiment": "SPEED-EXP-002",
+          "source_variant": "geomean",
+          "speed_kmh": 12.8163,
+          "confidence": 0.28,
+          "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean",
+          "usable_measurement_count": 178,
+          "plate_aspect_ratio_median": 3.2069,
+          "full_frame_plate_bbox_available": true
+        },
+        "sanity_check": {
+          "decision": "use_relative_with_sanity_warnings",
+          "disagreement_flags": [
+            "relative_fast_plate_scale_low_disagreement"
+          ],
+          "quality_flags": [
+            "relative_track_speed_available"
+          ],
+          "warning_flags": [
+            "candidate_disagreement_high",
+            "not_absolute_kmh",
+            "not_for_legal_enforcement",
+            "plate_scale_low_confidence",
+            "vehicle_attribute_low_confidence"
+          ]
+        },
+        "fusion_confidence": 0.5098,
+        "fallback_reason": "no_reliable_metric_calibration",
+        "limitations": [
+          "VATTR is a body/dimension prior, not a direct speed estimator.",
+          "Plate-scale candidate remains low-confidence without calibrated camera geometry.",
+          "Final absolute km/h requires homography or measured reference."
+        ]
+      },
+      "speed_exp_005d": {
+        "experiment_id": "SPEED-EXP-005D",
+        "video": "video_3.mp4",
+        "speed_mode": "approximate_candidate",
+        "primary_speed_source": "bbox_geometry_auto",
+        "estimated_kmh": 15.064621,
+        "speed_range_kmh": [
+          9.416141,
+          19.913186
+        ],
+        "relative_speed_label": "fast",
+        "relative_speed_score": 0.62354,
+        "fusion_confidence": 0.72,
+        "decision": "use_bbox_geometry_with_plate_relative_support",
+        "fallback_reason": null,
+        "candidate_agreement": {
+          "bbox_vs_plate_relative_diff_ratio": 0.149245,
+          "max_allowed_ratio": 0.45,
+          "relative_label_supports_candidate": true
+        },
+        "candidate_speeds": [
+          {
+            "source": "bbox_geometry_auto",
+            "speed_kmh": 15.064621,
+            "speed_range_kmh": [
+              9.416141,
+              19.913186
+            ],
+            "confidence": 0.72,
+            "warnings": [
+              "approximate_monocular_speed",
+              "auto_scale_approximation",
+              "not_for_legal_enforcement",
+              "invalid_segments_filtered"
+            ]
+          },
+          {
+            "source": "plate_scale_geomean",
+            "speed_kmh": 12.8163,
+            "confidence": 0.28,
+            "confidence_note": "low_plate_crop_aspect_differs_from_standard_geomean"
+          },
+          {
+            "source": "relative_track_bbox",
+            "speed_kmh": null,
+            "relative_speed_score": 0.62354,
+            "relative_speed_label": "fast",
+            "confidence": 0.6298
+          }
+        ],
+        "slalom_support": {
+          "slalom_candidate": false,
+          "source": "relative_track_bbox",
+          "note": "Only a support signal for the FTR sofor_eylemi/slalom label; not a final action detector."
+        },
+        "quality_flags": [
+          "bbox_geometry_candidate_available",
+          "plate_scale_candidate_available",
+          "relative_track_signal_available",
+          "bbox_plate_candidates_agree",
+          "relative_label_supports_bbox_candidate"
+        ],
+        "warning_flags": [
+          "not_for_legal_enforcement",
+          "approximate_monocular_speed",
+          "no_ground_truth_speed"
+        ],
+        "failure_flags": [],
+        "limitations": [
+          "No ground-truth speed is available for these videos.",
+          "The km/h value is approximate and must not be used for legal enforcement.",
+          "Camera FOV, vehicle dimensions and plate geometry are assumed priors.",
+          "FTR results.json does not require a speed field; this block is support evidence."
+        ]
+      },
+      "driver_action": {
+        "slalom": {
+          "status": "candidate",
+          "detected": true,
+          "score": 0.93154,
+          "confidence": 0.903066,
+          "direction_change_count": 4,
+          "normalized_lateral_amplitude": 0.45811,
+          "normalized_lateral_rms": 0.138217,
+          "track_duration_seconds": 5.72,
+          "method": "track_lateral_residual_slalom_heuristic_v1",
+          "failure_reason": null,
+          "warning_flags": [
+            "relative_motion_only_no_lane_ground_truth"
+          ],
+          "quality_flags": [
+            "track_duration_sufficient",
+            "valid_frame_ratio_sufficient",
+            "direction_changes_present",
+            "lateral_amplitude_candidate_level"
+          ],
+          "plot_uri": "runs/driver_action/slalom_exp_001/plots/video_3_slalom_residual_plot.png",
+          "overlay_video_uri": "runs/driver_action/slalom_exp_001/annotated/video_3_slalom_track_heuristic.mp4",
+          "not_for_legal_enforcement": true
+        }
+      }
+    }
+  ],
+  "speed_experiment_id": "SPEED-EXP-005D",
+  "speed_experiment_note": "Candidate fusion support evidence; not required by FTR results.json.",
+  "driver_action_experiment_id": "DACT-EXP-001",
+  "driver_action_note": "Slalom is a calibration-free track residual candidate, not a legal determination."
+}
