@@ -288,7 +288,13 @@ def infer_crop(
     }
 
 
-def prepare_writer(video_path: Path, frame_width: int, frame_height: int, fps: float, output_width: int, output_path: Path) -> tuple[cv2.VideoWriter, tuple[int, int]]:
+def prepare_writer(
+    frame_width: int,
+    frame_height: int,
+    output_fps: float,
+    output_width: int,
+    output_path: Path,
+) -> tuple[cv2.VideoWriter, tuple[int, int]]:
     if output_width and output_width < frame_width:
         output_height = int(round(frame_height * output_width / frame_width))
         if output_height % 2:
@@ -300,7 +306,7 @@ def prepare_writer(video_path: Path, frame_width: int, frame_height: int, fps: f
     writer = cv2.VideoWriter(
         str(output_path),
         cv2.VideoWriter_fourcc(*"mp4v"),
-        fps,
+        output_fps,
         (output_width, output_height),
     )
     if not writer.isOpened():
@@ -480,6 +486,7 @@ def process_event(
     if not cap.isOpened():
         raise RuntimeError(f"Could not open video: {video_path}")
     fps = float(cap.get(cv2.CAP_PROP_FPS) or 25.0)
+    rendered_fps = max(1.0, fps / max(1, args.sample_every))
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
@@ -497,7 +504,7 @@ def process_event(
         if render_mode == "none":
             continue
         render_path = args.runs_dir / "annotated" / f"{Path(video_name).stem}_{render_mode}_dact020c.mp4"
-        writer, size = prepare_writer(video_path, frame_width, frame_height, fps, args.output_width, render_path)
+        writer, size = prepare_writer(frame_width, frame_height, rendered_fps, args.output_width, render_path)
         writers[render_mode] = writer
         writer_sizes[render_mode] = size
         rendered_paths[render_mode] = str(render_path.relative_to(ROOT))
@@ -607,6 +614,8 @@ def write_report(
         "* Dış kamera görüntüsünde classifier skorları final eylem kararı değildir.",
         "* `telefonla_konusma` ve `su_icme` yalnız driver/cabin görünürlük + temporal gate sonrası event'e taşınabilir.",
         "* `arkaya_bakma_candidate` final `arkaya_bakma` değildir; head/torso yönü gerekir.",
+        "* Dış kamera videosunda sürücü/telefon görünmüyorsa modelden gerçek `telefonla_konusma` kanıtı beklenmez; bu koşuda amaç görünmeyen eylemi tespit etmek değil, yanlış-domain skorlarını ölçmektir.",
+        "* `sample_every > 1` kullanıldığında annotated videolar hızlandırılmaz; sampled kareler `input_fps / sample_every` ile yazılarak zaman çizgisi korunur.",
         "",
         "## Genel Karar",
         "",
@@ -704,6 +713,11 @@ def main() -> None:
         "img_size": img_size,
         "labels": labels,
         "sample_every": args.sample_every,
+        "rendered_video_fps_policy": (
+            "Annotated videos preserve timeline by writing sampled frames at "
+            "input_fps / sample_every. Use --sample-every 1 for frame-by-frame "
+            "normal-FPS overlays."
+        ),
         "temporal_threshold": args.temporal_threshold,
         "min_positive_rate": args.min_positive_rate,
         "overall_decision": "do_not_emit_driver_action_from_exterior_smoke",

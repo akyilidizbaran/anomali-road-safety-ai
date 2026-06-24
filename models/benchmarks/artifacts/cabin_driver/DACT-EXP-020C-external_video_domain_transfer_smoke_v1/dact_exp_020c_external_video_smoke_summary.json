@@ -2,7 +2,7 @@
   "experiment_id": "DACT-EXP-020C",
   "experiment_name": "external_video_domain_transfer_smoke_v1",
   "source_model_experiment_id": "DACT-EXP-020B",
-  "created_at_utc": "2026-06-24T05:11:31Z",
+  "created_at_utc": "2026-06-24T05:18:16Z",
   "checkpoint": "models/checkpoints/cabin_driver/DACT-EXP-020B/DACT-EXP-020B-efficientnet_b0-best.pth",
   "label_map": "models/checkpoints/cabin_driver/DACT-EXP-020B/DACT-EXP-020B-label-map.json",
   "backbone": "efficientnet_b0",
@@ -16,7 +16,8 @@
     "passenger_interaction_candidate",
     "other_distraction_hard_negative"
   ],
-  "sample_every": 10,
+  "sample_every": 1,
+  "rendered_video_fps_policy": "Annotated videos preserve timeline by writing sampled frames at input_fps / sample_every. Use --sample-every 1 for frame-by-frame normal-FPS overlays.",
   "temporal_threshold": 0.75,
   "min_positive_rate": 0.2,
   "overall_decision": "do_not_emit_driver_action_from_exterior_smoke",
@@ -34,29 +35,29 @@
       "track_id": "TRK-001",
       "mode": "full_frame",
       "status": "external_smoke_only",
-      "sample_count": 35,
+      "sample_count": 344,
       "temporal_vote_label": "arkaya_bakma_candidate",
-      "temporal_vote_rate": 0.6571,
+      "temporal_vote_rate": 0.657,
       "mean_top1_confidence": 0.7057,
       "mean_probabilities": {
-        "safe_or_no_event": 0.0123,
-        "telefonla_konusma": 0.0462,
+        "safe_or_no_event": 0.0127,
+        "telefonla_konusma": 0.047,
         "phone_use_non_call": 0.394,
-        "su_icme": 0.0299,
-        "arkaya_bakma_candidate": 0.4772,
-        "passenger_interaction_candidate": 0.0184,
-        "other_distraction_hard_negative": 0.022
+        "su_icme": 0.0302,
+        "arkaya_bakma_candidate": 0.478,
+        "passenger_interaction_candidate": 0.0171,
+        "other_distraction_hard_negative": 0.021
       },
       "top1_counts": {
-        "arkaya_bakma_candidate": 23,
-        "phone_use_non_call": 12
+        "arkaya_bakma_candidate": 226,
+        "phone_use_non_call": 118
       },
       "positive_candidates": [
         {
           "label": "arkaya_bakma_candidate",
-          "positive_count": 8,
-          "positive_rate": 0.2286,
-          "mean_probability": 0.4772
+          "positive_count": 82,
+          "positive_rate": 0.2384,
+          "mean_probability": 0.478
         }
       ],
       "should_emit_driver_action": false,
@@ -70,31 +71,32 @@
       "track_id": "TRK-001",
       "mode": "target_vehicle",
       "status": "external_smoke_only",
-      "sample_count": 35,
+      "sample_count": 344,
       "temporal_vote_label": "arkaya_bakma_candidate",
-      "temporal_vote_rate": 0.4,
-      "mean_top1_confidence": 0.5971,
+      "temporal_vote_rate": 0.4186,
+      "mean_top1_confidence": 0.5997,
       "mean_probabilities": {
-        "safe_or_no_event": 0.0717,
-        "telefonla_konusma": 0.0201,
-        "phone_use_non_call": 0.115,
-        "su_icme": 0.0159,
-        "arkaya_bakma_candidate": 0.3795,
-        "passenger_interaction_candidate": 0.1542,
-        "other_distraction_hard_negative": 0.2437
+        "safe_or_no_event": 0.0675,
+        "telefonla_konusma": 0.025,
+        "phone_use_non_call": 0.1115,
+        "su_icme": 0.0168,
+        "arkaya_bakma_candidate": 0.3856,
+        "passenger_interaction_candidate": 0.1481,
+        "other_distraction_hard_negative": 0.2455
       },
       "top1_counts": {
-        "passenger_interaction_candidate": 7,
-        "arkaya_bakma_candidate": 14,
-        "other_distraction_hard_negative": 11,
-        "phone_use_non_call": 3
+        "passenger_interaction_candidate": 61,
+        "arkaya_bakma_candidate": 144,
+        "other_distraction_hard_negative": 107,
+        "safe_or_no_event": 1,
+        "phone_use_non_call": 31
       },
       "positive_candidates": [
         {
           "label": "arkaya_bakma_candidate",
-          "positive_count": 7,
-          "positive_rate": 0.2,
-          "mean_probability": 0.3795
+          "positive_count": 71,
+          "positive_rate": 0.2064,
+          "mean_probability": 0.3856
         }
       ],
       "should_emit_driver_action": false,
@@ -108,33 +110,33 @@
       "track_id": "TRK-001",
       "mode": "cabin_candidate",
       "status": "external_smoke_only",
-      "sample_count": 35,
+      "sample_count": 344,
       "temporal_vote_label": "arkaya_bakma_candidate",
-      "temporal_vote_rate": 0.3143,
-      "mean_top1_confidence": 0.5406,
+      "temporal_vote_rate": 0.3459,
+      "mean_top1_confidence": 0.5276,
       "mean_probabilities": {
-        "safe_or_no_event": 0.1479,
-        "telefonla_konusma": 0.0734,
-        "phone_use_non_call": 0.1123,
-        "su_icme": 0.0282,
-        "arkaya_bakma_candidate": 0.3194,
-        "passenger_interaction_candidate": 0.1775,
-        "other_distraction_hard_negative": 0.1413
+        "safe_or_no_event": 0.1529,
+        "telefonla_konusma": 0.0747,
+        "phone_use_non_call": 0.1057,
+        "su_icme": 0.0314,
+        "arkaya_bakma_candidate": 0.3203,
+        "passenger_interaction_candidate": 0.1746,
+        "other_distraction_hard_negative": 0.1405
       },
       "top1_counts": {
-        "safe_or_no_event": 7,
-        "passenger_interaction_candidate": 9,
-        "phone_use_non_call": 4,
-        "arkaya_bakma_candidate": 11,
-        "other_distraction_hard_negative": 2,
-        "telefonla_konusma": 2
+        "safe_or_no_event": 48,
+        "passenger_interaction_candidate": 87,
+        "phone_use_non_call": 45,
+        "other_distraction_hard_negative": 32,
+        "arkaya_bakma_candidate": 119,
+        "telefonla_konusma": 13
       },
       "positive_candidates": [
         {
           "label": "arkaya_bakma_candidate",
-          "positive_count": 9,
-          "positive_rate": 0.2571,
-          "mean_probability": 0.3194
+          "positive_count": 76,
+          "positive_rate": 0.2209,
+          "mean_probability": 0.3203
         }
       ],
       "should_emit_driver_action": false,
@@ -148,29 +150,29 @@
       "track_id": "TRK-001",
       "mode": "full_frame",
       "status": "external_smoke_only",
-      "sample_count": 35,
+      "sample_count": 344,
       "temporal_vote_label": "arkaya_bakma_candidate",
-      "temporal_vote_rate": 0.8286,
-      "mean_top1_confidence": 0.7545,
+      "temporal_vote_rate": 0.811,
+      "mean_top1_confidence": 0.7501,
       "mean_probabilities": {
-        "safe_or_no_event": 0.011,
-        "telefonla_konusma": 0.037,
-        "phone_use_non_call": 0.2212,
-        "su_icme": 0.0299,
-        "arkaya_bakma_candidate": 0.6603,
-        "passenger_interaction_candidate": 0.0142,
-        "other_distraction_hard_negative": 0.0265
+        "safe_or_no_event": 0.0121,
+        "telefonla_konusma": 0.0371,
+        "phone_use_non_call": 0.2281,
+        "su_icme": 0.0286,
+        "arkaya_bakma_candidate": 0.6524,
+        "passenger_interaction_candidate": 0.0161,
+        "other_distraction_hard_negative": 0.0255
       },
       "top1_counts": {
-        "arkaya_bakma_candidate": 29,
-        "phone_use_non_call": 6
+        "arkaya_bakma_candidate": 279,
+        "phone_use_non_call": 65
       },
       "positive_candidates": [
         {
           "label": "arkaya_bakma_candidate",
-          "positive_count": 16,
-          "positive_rate": 0.4571,
-          "mean_probability": 0.6603
+          "positive_count": 150,
+          "positive_rate": 0.436,
+          "mean_probability": 0.6524
         }
       ],
       "should_emit_driver_action": false,
@@ -184,32 +186,32 @@
       "track_id": "TRK-001",
       "mode": "target_vehicle",
       "status": "external_smoke_only",
-      "sample_count": 35,
+      "sample_count": 344,
       "temporal_vote_label": "arkaya_bakma_candidate",
-      "temporal_vote_rate": 0.3429,
-      "mean_top1_confidence": 0.6103,
+      "temporal_vote_rate": 0.3663,
+      "mean_top1_confidence": 0.6024,
       "mean_probabilities": {
-        "safe_or_no_event": 0.0835,
-        "telefonla_konusma": 0.0243,
-        "phone_use_non_call": 0.0897,
-        "su_icme": 0.0154,
-        "arkaya_bakma_candidate": 0.3818,
-        "passenger_interaction_candidate": 0.1965,
-        "other_distraction_hard_negative": 0.2087
+        "safe_or_no_event": 0.0826,
+        "telefonla_konusma": 0.0239,
+        "phone_use_non_call": 0.0983,
+        "su_icme": 0.0159,
+        "arkaya_bakma_candidate": 0.37,
+        "passenger_interaction_candidate": 0.1931,
+        "other_distraction_hard_negative": 0.2162
       },
       "top1_counts": {
-        "passenger_interaction_candidate": 11,
-        "other_distraction_hard_negative": 7,
-        "arkaya_bakma_candidate": 12,
-        "safe_or_no_event": 2,
-        "phone_use_non_call": 3
+        "passenger_interaction_candidate": 112,
+        "other_distraction_hard_negative": 70,
+        "safe_or_no_event": 7,
+        "arkaya_bakma_candidate": 126,
+        "phone_use_non_call": 29
       },
       "positive_candidates": [
         {
           "label": "arkaya_bakma_candidate",
-          "positive_count": 9,
-          "positive_rate": 0.2571,
-          "mean_probability": 0.3818
+          "positive_count": 78,
+          "positive_rate": 0.2267,
+          "mean_probability": 0.37
         }
       ],
       "should_emit_driver_action": false,
@@ -223,31 +225,33 @@
       "track_id": "TRK-001",
       "mode": "cabin_candidate",
       "status": "external_smoke_only",
-      "sample_count": 35,
+      "sample_count": 344,
       "temporal_vote_label": "passenger_interaction_candidate",
-      "temporal_vote_rate": 0.4857,
-      "mean_top1_confidence": 0.4809,
+      "temporal_vote_rate": 0.4651,
+      "mean_top1_confidence": 0.504,
       "mean_probabilities": {
-        "safe_or_no_event": 0.1253,
-        "telefonla_konusma": 0.0568,
-        "phone_use_non_call": 0.1121,
-        "su_icme": 0.0471,
-        "arkaya_bakma_candidate": 0.3877,
-        "passenger_interaction_candidate": 0.1821,
-        "other_distraction_hard_negative": 0.0888
+        "safe_or_no_event": 0.1229,
+        "telefonla_konusma": 0.0516,
+        "phone_use_non_call": 0.1083,
+        "su_icme": 0.0458,
+        "arkaya_bakma_candidate": 0.3985,
+        "passenger_interaction_candidate": 0.1868,
+        "other_distraction_hard_negative": 0.0861
       },
       "top1_counts": {
-        "passenger_interaction_candidate": 17,
-        "safe_or_no_event": 2,
-        "arkaya_bakma_candidate": 15,
-        "telefonla_konusma": 1
+        "passenger_interaction_candidate": 160,
+        "safe_or_no_event": 29,
+        "arkaya_bakma_candidate": 151,
+        "telefonla_konusma": 2,
+        "su_icme": 1,
+        "phone_use_non_call": 1
       },
       "positive_candidates": [
         {
           "label": "arkaya_bakma_candidate",
-          "positive_count": 7,
-          "positive_rate": 0.2,
-          "mean_probability": 0.3877
+          "positive_count": 85,
+          "positive_rate": 0.2471,
+          "mean_probability": 0.3985
         }
       ],
       "should_emit_driver_action": false,
@@ -261,30 +265,30 @@
       "track_id": "TRK-002",
       "mode": "full_frame",
       "status": "external_smoke_only",
-      "sample_count": 29,
+      "sample_count": 287,
       "temporal_vote_label": "phone_use_non_call",
-      "temporal_vote_rate": 0.5172,
-      "mean_top1_confidence": 0.6171,
+      "temporal_vote_rate": 0.5575,
+      "mean_top1_confidence": 0.6278,
       "mean_probabilities": {
-        "safe_or_no_event": 0.0093,
-        "telefonla_konusma": 0.0391,
-        "phone_use_non_call": 0.3691,
-        "su_icme": 0.1139,
-        "arkaya_bakma_candidate": 0.4045,
-        "passenger_interaction_candidate": 0.018,
-        "other_distraction_hard_negative": 0.0462
+        "safe_or_no_event": 0.009,
+        "telefonla_konusma": 0.0384,
+        "phone_use_non_call": 0.3746,
+        "su_icme": 0.1128,
+        "arkaya_bakma_candidate": 0.403,
+        "passenger_interaction_candidate": 0.0171,
+        "other_distraction_hard_negative": 0.0452
       },
       "top1_counts": {
-        "phone_use_non_call": 15,
-        "arkaya_bakma_candidate": 13,
-        "su_icme": 1
+        "phone_use_non_call": 160,
+        "arkaya_bakma_candidate": 118,
+        "su_icme": 9
       },
       "positive_candidates": [
         {
           "label": "arkaya_bakma_candidate",
-          "positive_count": 7,
-          "positive_rate": 0.2414,
-          "mean_probability": 0.4045
+          "positive_count": 74,
+          "positive_rate": 0.2578,
+          "mean_probability": 0.403
         }
       ],
       "should_emit_driver_action": false,
@@ -298,24 +302,25 @@
       "track_id": "TRK-002",
       "mode": "target_vehicle",
       "status": "external_smoke_only",
-      "sample_count": 29,
+      "sample_count": 287,
       "temporal_vote_label": "arkaya_bakma_candidate",
-      "temporal_vote_rate": 0.7931,
-      "mean_top1_confidence": 0.5354,
+      "temporal_vote_rate": 0.8014,
+      "mean_top1_confidence": 0.5221,
       "mean_probabilities": {
-        "safe_or_no_event": 0.0685,
-        "telefonla_konusma": 0.0211,
-        "phone_use_non_call": 0.0806,
-        "su_icme": 0.0353,
-        "arkaya_bakma_candidate": 0.4654,
-        "passenger_interaction_candidate": 0.1598,
-        "other_distraction_hard_negative": 0.1694
+        "safe_or_no_event": 0.0626,
+        "telefonla_konusma": 0.0228,
+        "phone_use_non_call": 0.0873,
+        "su_icme": 0.036,
+        "arkaya_bakma_candidate": 0.4598,
+        "passenger_interaction_candidate": 0.1667,
+        "other_distraction_hard_negative": 0.1648
       },
       "top1_counts": {
-        "arkaya_bakma_candidate": 23,
-        "other_distraction_hard_negative": 4,
-        "safe_or_no_event": 1,
-        "phone_use_non_call": 1
+        "arkaya_bakma_candidate": 230,
+        "passenger_interaction_candidate": 1,
+        "other_distraction_hard_negative": 39,
+        "safe_or_no_event": 2,
+        "phone_use_non_call": 15
       },
       "positive_candidates": [],
       "should_emit_driver_action": false,
@@ -329,22 +334,24 @@
       "track_id": "TRK-002",
       "mode": "cabin_candidate",
       "status": "external_smoke_only",
-      "sample_count": 29,
+      "sample_count": 287,
       "temporal_vote_label": "arkaya_bakma_candidate",
-      "temporal_vote_rate": 0.931,
-      "mean_top1_confidence": 0.5211,
+      "temporal_vote_rate": 0.8746,
+      "mean_top1_confidence": 0.5327,
       "mean_probabilities": {
-        "safe_or_no_event": 0.1295,
-        "telefonla_konusma": 0.034,
-        "phone_use_non_call": 0.0398,
-        "su_icme": 0.0534,
-        "arkaya_bakma_candidate": 0.481,
-        "passenger_interaction_candidate": 0.1161,
-        "other_distraction_hard_negative": 0.1462
+        "safe_or_no_event": 0.1257,
+        "telefonla_konusma": 0.0334,
+        "phone_use_non_call": 0.04,
+        "su_icme": 0.0521,
+        "arkaya_bakma_candidate": 0.4811,
+        "passenger_interaction_candidate": 0.1179,
+        "other_distraction_hard_negative": 0.1498
       },
       "top1_counts": {
-        "arkaya_bakma_candidate": 27,
-        "other_distraction_hard_negative": 2
+        "arkaya_bakma_candidate": 251,
+        "passenger_interaction_candidate": 4,
+        "safe_or_no_event": 4,
+        "other_distraction_hard_negative": 28
       },
       "positive_candidates": [],
       "should_emit_driver_action": false,

@@ -47,6 +47,16 @@ Video işleri için repo ortamında `.venv-yolo-run` kullanılmalıdır:
   --render-mode all
 ```
 
+Varsayılan `--sample-every 10` ayarında script her 10 kareden birinde inference
+çalıştırır. Manuel inceleme videosu hızlandırılmaması için output FPS
+`input_fps / sample_every` olarak yazılır. Kare kare normal FPS overlay istenirse:
+
+```bash
+.venv-yolo-run/bin/python scripts/benchmarks/run_dact_020b_external_video_smoke.py \
+  --sample-every 1 \
+  --render-mode all
+```
+
 Daha hızlı debug için:
 
 ```bash
@@ -74,6 +84,11 @@ runs/driver_action/DACT-EXP-020C-external_video_domain_transfer_smoke_v1/annotat
 
 `--render-mode all` ile her video için `full_frame`, `target_vehicle` ve
 `cabin_candidate` olmak üzere 9 annotated MP4 üretilir.
+
+Bu videolar gerçek phone-call/driver aksiyonu doğrulaması değildir. Kamera dış
+yol görüntüsü olduğu için sürücü veya telefon görünmüyorsa doğru çıktı
+`should_emit_driver_action=false` olmalıdır. Bu koşu, iç-kabin modelinin dış
+kamera crop'larında hangi yanlış-domain skorlarını ürettiğini görmek içindir.
 
 Küçük takip artefactleri:
 

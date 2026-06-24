@@ -1,6 +1,6 @@
 # DACT-EXP-020C External Video Smoke Test
 
-Tarih: 2026-06-24T05:11:31Z
+Tarih: 2026-06-24T05:18:16Z
 
 ## Amaç
 
@@ -12,6 +12,8 @@ DACT-EXP-020B iç-kabin State Farm görüntüleriyle eğitildi. Bu test, modelin
 * Dış kamera görüntüsünde classifier skorları final eylem kararı değildir.
 * `telefonla_konusma` ve `su_icme` yalnız driver/cabin görünürlük + temporal gate sonrası event'e taşınabilir.
 * `arkaya_bakma_candidate` final `arkaya_bakma` değildir; head/torso yönü gerekir.
+* Dış kamera videosunda sürücü/telefon görünmüyorsa modelden gerçek `telefonla_konusma` kanıtı beklenmez; bu koşuda amaç görünmeyen eylemi tespit etmek değil, yanlış-domain skorlarını ölçmektir.
+* `sample_every > 1` kullanıldığında annotated videolar hızlandırılmaz; sampled kareler `input_fps / sample_every` ile yazılarak zaman çizgisi korunur.
 
 ## Genel Karar
 
@@ -22,15 +24,15 @@ DACT-EXP-020B iç-kabin State Farm görüntüleriyle eğitildi. Bu test, modelin
 
 | Video | Mode | Samples | Temporal vote | Vote rate | Mean conf | Top-1 counts | Positive candidates |
 |---|---|---:|---|---:|---:|---|---|
-| video_1.mp4 | full_frame | 35 | arkaya_bakma_candidate | 0.6571 | 0.7057 | arkaya_bakma_candidate:23, phone_use_non_call:12 | arkaya_bakma_candidate=8/35 (0.2286) |
-| video_1.mp4 | target_vehicle | 35 | arkaya_bakma_candidate | 0.4 | 0.5971 | passenger_interaction_candidate:7, arkaya_bakma_candidate:14, other_distraction_hard_negative:11, phone_use_non_call:3 | arkaya_bakma_candidate=7/35 (0.2) |
-| video_1.mp4 | cabin_candidate | 35 | arkaya_bakma_candidate | 0.3143 | 0.5406 | safe_or_no_event:7, passenger_interaction_candidate:9, phone_use_non_call:4, arkaya_bakma_candidate:11, other_distraction_hard_negative:2, telefonla_konusma:2 | arkaya_bakma_candidate=9/35 (0.2571) |
-| video_2.mp4 | full_frame | 35 | arkaya_bakma_candidate | 0.8286 | 0.7545 | arkaya_bakma_candidate:29, phone_use_non_call:6 | arkaya_bakma_candidate=16/35 (0.4571) |
-| video_2.mp4 | target_vehicle | 35 | arkaya_bakma_candidate | 0.3429 | 0.6103 | passenger_interaction_candidate:11, other_distraction_hard_negative:7, arkaya_bakma_candidate:12, safe_or_no_event:2, phone_use_non_call:3 | arkaya_bakma_candidate=9/35 (0.2571) |
-| video_2.mp4 | cabin_candidate | 35 | passenger_interaction_candidate | 0.4857 | 0.4809 | passenger_interaction_candidate:17, safe_or_no_event:2, arkaya_bakma_candidate:15, telefonla_konusma:1 | arkaya_bakma_candidate=7/35 (0.2) |
-| video_3.mp4 | full_frame | 29 | phone_use_non_call | 0.5172 | 0.6171 | phone_use_non_call:15, arkaya_bakma_candidate:13, su_icme:1 | arkaya_bakma_candidate=7/29 (0.2414) |
-| video_3.mp4 | target_vehicle | 29 | arkaya_bakma_candidate | 0.7931 | 0.5354 | arkaya_bakma_candidate:23, other_distraction_hard_negative:4, safe_or_no_event:1, phone_use_non_call:1 | - |
-| video_3.mp4 | cabin_candidate | 29 | arkaya_bakma_candidate | 0.931 | 0.5211 | arkaya_bakma_candidate:27, other_distraction_hard_negative:2 | - |
+| video_1.mp4 | full_frame | 344 | arkaya_bakma_candidate | 0.657 | 0.7057 | arkaya_bakma_candidate:226, phone_use_non_call:118 | arkaya_bakma_candidate=82/344 (0.2384) |
+| video_1.mp4 | target_vehicle | 344 | arkaya_bakma_candidate | 0.4186 | 0.5997 | passenger_interaction_candidate:61, arkaya_bakma_candidate:144, other_distraction_hard_negative:107, safe_or_no_event:1, phone_use_non_call:31 | arkaya_bakma_candidate=71/344 (0.2064) |
+| video_1.mp4 | cabin_candidate | 344 | arkaya_bakma_candidate | 0.3459 | 0.5276 | safe_or_no_event:48, passenger_interaction_candidate:87, phone_use_non_call:45, other_distraction_hard_negative:32, arkaya_bakma_candidate:119, telefonla_konusma:13 | arkaya_bakma_candidate=76/344 (0.2209) |
+| video_2.mp4 | full_frame | 344 | arkaya_bakma_candidate | 0.811 | 0.7501 | arkaya_bakma_candidate:279, phone_use_non_call:65 | arkaya_bakma_candidate=150/344 (0.436) |
+| video_2.mp4 | target_vehicle | 344 | arkaya_bakma_candidate | 0.3663 | 0.6024 | passenger_interaction_candidate:112, other_distraction_hard_negative:70, safe_or_no_event:7, arkaya_bakma_candidate:126, phone_use_non_call:29 | arkaya_bakma_candidate=78/344 (0.2267) |
+| video_2.mp4 | cabin_candidate | 344 | passenger_interaction_candidate | 0.4651 | 0.504 | passenger_interaction_candidate:160, safe_or_no_event:29, arkaya_bakma_candidate:151, telefonla_konusma:2, su_icme:1, phone_use_non_call:1 | arkaya_bakma_candidate=85/344 (0.2471) |
+| video_3.mp4 | full_frame | 287 | phone_use_non_call | 0.5575 | 0.6278 | phone_use_non_call:160, arkaya_bakma_candidate:118, su_icme:9 | arkaya_bakma_candidate=74/287 (0.2578) |
+| video_3.mp4 | target_vehicle | 287 | arkaya_bakma_candidate | 0.8014 | 0.5221 | arkaya_bakma_candidate:230, passenger_interaction_candidate:1, other_distraction_hard_negative:39, safe_or_no_event:2, phone_use_non_call:15 | - |
+| video_3.mp4 | cabin_candidate | 287 | arkaya_bakma_candidate | 0.8746 | 0.5327 | arkaya_bakma_candidate:251, passenger_interaction_candidate:4, safe_or_no_event:4, other_distraction_hard_negative:28 | - |
 
 ## Çıktılar
 
